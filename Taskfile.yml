@@ -13,6 +13,19 @@ includes:
         optional: true
 
 tasks:
+    # ── Installation ──────────────────────────────────────────────
+
+    install:docker:
+        desc: Fresh install — Docker + Node required
+        cmd: bash bin/setup-env {{.CLI_ARGS}}
+
+    install:local:
+        desc: Fresh install — native/Herd/Sail (PHP, Composer, Node required locally)
+        cmds:
+            - composer install
+            - php artisan saucebase:install --all-modules
+            - npm install
+
     # ── Development ───────────────────────────────────────────────
 
     dev:
