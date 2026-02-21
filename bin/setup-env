@@ -70,7 +70,7 @@ docker compose exec -T app composer install
 
 # Hand off to artisan installer (pass all flags through)
 echo "Running artisan installer..."
-docker compose exec -T app php artisan saucebase:install "$@"
+docker compose exec app php artisan saucebase:install "$@"
 
 # Reload app container to pick up APP_KEY written to .env during install
 echo "Reloading app container..."

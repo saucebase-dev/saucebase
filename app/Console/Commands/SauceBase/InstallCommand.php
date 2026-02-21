@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use Symfony\Component\Process\Process;
 
+use function Laravel\Prompts\multiselect;
+
 class InstallCommand extends Command
 {
     protected $signature = 'saucebase:install
@@ -18,6 +20,12 @@ class InstallCommand extends Command
 
     protected $description = 'Install and configure Saucebase';
 
+    /** @var string[] */
+    protected array $selectedModules = [];
+
+    /** @var string[] */
+    protected array $availableModules = [];
+
     public function handle(): int
     {
         $this->displayWelcome();
@@ -26,7 +34,34 @@ class InstallCommand extends Command
             return $this->handleCIInstallation();
         }
 
+        $this->promptForModules();
+
         return $this->install();
+    }
+
+    protected function promptForModules(): void
+    {
+        if ($this->option('all-modules') || $this->option('modules')) {
+            return;
+        }
+
+        $available = $this->fetchAvailableModules();
+
+        if (empty($available)) {
+            return;
+        }
+
+        $options = collect($available)
+            ->mapWithKeys(fn (string $package) => [
+                $package => Str::studly(Str::after($package, '/')),
+            ])
+            ->all();
+
+        $this->selectedModules = multiselect(
+            label: 'Which modules would you like to install?',
+            options: $options,
+            default: [],
+        );
     }
 
     protected function install(): int
@@ -160,6 +195,10 @@ class InstallCommand extends Command
      */
     protected function fetchAvailableModules(): array
     {
+        if (! empty($this->availableModules)) {
+            return $this->availableModules;
+        }
+
         $response = Http::timeout(10)
             ->get('https://packagist.org/packages/list.json?type=saucebase-module&fields[]=abandoned');
 
@@ -169,10 +208,10 @@ class InstallCommand extends Command
 
         $packages = $response->json('packages', []);
 
-        return array_values(array_keys(array_filter(
+        return $this->availableModules = array_keys(array_filter(
             $packages,
             fn (array $p) => empty($p['abandoned'])
-        )));
+        ));
     }
 
     /**
@@ -181,30 +220,29 @@ class InstallCommand extends Command
      */
     protected function resolveModuleSelection(array $available): array
     {
+        // 1. Select all modules
         if ($this->option('all-modules')) {
             return $available;
         }
 
-        if ($input = $this->option('modules')) {
-            $requested = array_map('strtolower', array_map('trim', explode(',', (string) $input)));
+        // 2. Modules passed via --modules option
+        if ($modules = $this->option('modules')) {
+            $requested = collect(explode(',', $modules))
+                ->map(fn ($m) => strtolower(trim($m)))
+                ->filter()
+                ->values();
 
-            return array_values(array_filter($available, fn (string $package) => in_array(explode('/', $package)[1], $requested)));
+            return collect($available)
+                ->filter(function (string $package) use ($requested) {
+                    $name = strtolower(Str::after($package, '/'));
+
+                    return $requested->contains($name);
+                })
+                ->values()
+                ->all();
         }
 
-        if (! $this->input->isInteractive()) {
-            return $available;
-        }
-
-        /** @var string[] $selection */
-        $selection = $this->choice(
-            'Which modules would you like to enable?',
-            $available,
-            implode(',', $available),
-            attempts: null,
-            multiple: true,
-        );
-
-        return $selection;
+        return $this->selectedModules;
     }
 
     protected function createStorageLink(): void
