@@ -122,7 +122,7 @@ class InstallCommand extends Command
 
         // Phase 1: require all selected modules
         foreach ($selected as $module) {
-            $package = 'saucebase/' . strtolower($module);
+            $package = 'saucebase/'.strtolower($module);
 
             $this->components->task("Requiring {$package}", function () use ($package) {
                 $process = new Process(['composer', 'require', $package, '--no-interaction']);
@@ -160,7 +160,7 @@ class InstallCommand extends Command
     protected function fetchAvailableModules(): array
     {
         $response = Http::timeout(10)->get('https://packagist.org/packages/list.json', [
-            'vendor'   => 'saucebase',
+            'vendor' => 'saucebase',
             'fields[]' => ['type', 'abandoned'],
         ]);
 
