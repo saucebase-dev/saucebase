@@ -5,6 +5,7 @@ namespace App\Console\Commands\SauceBase;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 use Symfony\Component\Process\Process;
 
 class InstallCommand extends Command
@@ -120,10 +121,8 @@ class InstallCommand extends Command
 
         $this->newLine();
 
-        // Phase 1: require all selected modules
-        foreach ($selected as $module) {
-            $package = 'saucebase/'.strtolower($module);
-
+        // Phase 1: require all selected packages
+        foreach ($selected as $package) {
             $this->components->task("Requiring {$package}", function () use ($package) {
                 $process = new Process(['composer', 'require', $package, '--no-interaction']);
                 $process->setTimeout(300);
@@ -143,7 +142,9 @@ class InstallCommand extends Command
         });
 
         // Phase 3: enable and migrate each module
-        foreach ($selected as $module) {
+        foreach ($selected as $package) {
+            $module = Str::studly(explode('/', $package)[1]);
+
             $this->components->task("Enabling {$module} module", function () use ($module) {
                 return Artisan::call('module:enable', ['module' => $module]) === 0;
             });
@@ -159,24 +160,17 @@ class InstallCommand extends Command
      */
     protected function fetchAvailableModules(): array
     {
-        $results = [];
-        $url = 'https://packagist.org/search.json';
+        $response = Http::timeout(10)
+            ->get('https://packagist.org/packages/list.json?type=saucebase-module&fields[]=abandoned');
 
-        do {
-            $response = Http::timeout(10)->get($url, ['type' => 'saucebase-module']);
+        if (! $response->ok()) {
+            return [];
+        }
 
-            if (! $response->ok()) {
-                return [];
-            }
-
-            $results = array_merge($results, $response->json('results', []));
-            $url = $response->json('next', null);
-        } while ($url !== null);
-
-        return array_values(array_map(
-            fn (array $p) => ucfirst(explode('/', $p['name'])[1]),
-            array_filter($results, fn (array $p) => empty($p['abandoned']))
-        ));
+        return array_values(array_keys(array_filter(
+            $response->json('packages', []),
+            fn (array $p) => empty($p['abandoned'])
+        )));
     }
 
     /**
@@ -192,7 +186,7 @@ class InstallCommand extends Command
         if ($input = $this->option('modules')) {
             $requested = array_map('strtolower', array_map('trim', explode(',', (string) $input)));
 
-            return array_values(array_filter($available, fn (string $m) => in_array($m, $requested)));
+            return array_values(array_filter($available, fn (string $package) => in_array(explode('/', $package)[1], $requested)));
         }
 
         if (! $this->input->isInteractive()) {
