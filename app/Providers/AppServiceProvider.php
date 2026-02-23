@@ -13,7 +13,12 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Register any application services.
      */
-    public function register(): void {}
+    public function register(): void
+    {
+        if (class_exists(\Laravel\Telescope\TelescopeApplicationServiceProvider::class)) {
+            $this->app->register(TelescopeServiceProvider::class);
+        }
+    }
 
     /**
      * Bootstrap any application services.
@@ -54,15 +59,7 @@ class AppServiceProvider extends ServiceProvider
 
         // Set up global middleware for security headers in production/staging
         if ($enforceHttps) {
-            $this->app['router']->pushMiddlewareToGroup('web', function ($request, $next) {
-                $response = $next($request);
-
-                return $response->withHeaders([
-                    'Strict-Transport-Security' => 'max-age=31536000; includeSubDomains',
-                    'Content-Security-Policy' => 'upgrade-insecure-requests',
-                    'X-Content-Type-Options' => 'nosniff',
-                ]);
-            });
+            $this->app['router']->pushMiddlewareToGroup('web', \App\Http\Middleware\SecureHeaders::class);
         }
     }
 
