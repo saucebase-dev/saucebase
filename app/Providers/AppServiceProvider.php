@@ -67,15 +67,15 @@ class AppServiceProvider extends ServiceProvider
     protected function fixDiscoverEventsModulePathIssue(): void
     {
         DiscoverEvents::guessClassNamesUsing(function (\SplFileInfo $file, $basePath) {
-            $class = trim(Str::replaceFirst($basePath, '', $file->getRealPath()), DIRECTORY_SEPARATOR);
+            $pathname = $file->getRealPath() ?: $file->getPathname();
+            $class = trim(Str::replaceFirst($basePath, '', $pathname), DIRECTORY_SEPARATOR);
 
             // Check if this is a module file and skip if module is disabled
             $modulesPath = config('modules.paths.modules');
-            $realPath = $file->getRealPath();
 
-            if ($modulesPath && str_starts_with($realPath, $modulesPath.DIRECTORY_SEPARATOR)) {
+            if ($modulesPath && str_starts_with($pathname, $modulesPath.DIRECTORY_SEPARATOR)) {
                 // Extract module name from path (e.g., "/path/to/modules/Auth/..." -> "Auth")
-                $relativePath = Str::after($realPath, $modulesPath.DIRECTORY_SEPARATOR);
+                $relativePath = Str::after($pathname, $modulesPath.DIRECTORY_SEPARATOR);
                 $moduleName = Str::before($relativePath, DIRECTORY_SEPARATOR);
 
                 if ($moduleName && ! Module::isEnabled($moduleName)) {
