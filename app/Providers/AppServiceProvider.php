@@ -78,7 +78,7 @@ class AppServiceProvider extends ServiceProvider
                 $relativePath = Str::after($pathname, $modulesPath.DIRECTORY_SEPARATOR);
                 $moduleName = Str::before($relativePath, DIRECTORY_SEPARATOR);
 
-                if ($moduleName && ! Module::isEnabled($moduleName)) {
+                if ($moduleName && ! Module::find($moduleName)?->isEnabled()) {
                     return null;
                 }
             }
