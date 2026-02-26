@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9f8c1393c56083dfe3ca0fed90093c0d",
+    "content-hash": "c78ec2619f1be7d12de9897f1a649174",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -13067,16 +13067,16 @@
         },
         {
             "name": "saucebase/laravel-playwright",
-            "version": "v0.0.15",
+            "version": "v0.0.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sauce-base/laravel-playwright.git",
-                "reference": "637f77d59c1959ca0487128d353e0131df52af65"
+                "reference": "e42ebff5bafb83bcd3084743e91bc0e3d70553ca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sauce-base/laravel-playwright/zipball/637f77d59c1959ca0487128d353e0131df52af65",
-                "reference": "637f77d59c1959ca0487128d353e0131df52af65",
+                "url": "https://api.github.com/repos/sauce-base/laravel-playwright/zipball/e42ebff5bafb83bcd3084743e91bc0e3d70553ca",
+                "reference": "e42ebff5bafb83bcd3084743e91bc0e3d70553ca",
                 "shasum": ""
             },
             "require": {
@@ -13127,7 +13127,7 @@
                 "issues": "https://github.com/sauce-base/laravel-playwright/issues",
                 "source": "https://github.com/sauce-base/laravel-playwright"
             },
-            "time": "2026-02-26T19:36:26+00:00"
+            "time": "2026-02-26T20:33:43+00:00"
         },
         {
             "name": "saucebase/module-installer",
