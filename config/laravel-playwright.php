@@ -18,5 +18,5 @@ return [
      * You should set this to a random string in your .env file
      * to prevent unauthorized access to the endpoints.
      */
-    'secret' => env('PLAYWRIGHT_SECRET', 'saucebase-secret-key'),
+    'secret' => env('PLAYWRIGHT_SECRET'),
 ];
