@@ -1,4 +1,4 @@
-import { loginAs as doLoginAs } from '@e2e/helpers/auth.ts';
+import { loginAs as doLoginAs } from '@e2e/helpers/auth';
 import { expect } from '@playwright/test';
 import { test as base } from '@saucebase/laravel-playwright';
 
