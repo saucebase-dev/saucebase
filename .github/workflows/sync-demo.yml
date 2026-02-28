@@ -1,0 +1,96 @@
+name: Sync Demo
+
+on:
+    push:
+        branches: [main]
+    workflow_dispatch:
+    repository_dispatch:
+        types: [module-released]
+
+permissions:
+    contents: read
+
+jobs:
+    sync:
+        runs-on: ubuntu-latest
+        timeout-minutes: 30
+
+        steps:
+            - name: Checkout saucebase
+              uses: actions/checkout@v4
+
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '8.4'
+                  extensions: pdo, pdo_sqlite, mbstring, zip, pcntl, intl, exif
+                  coverage: none
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: '22'
+                  cache: 'npm'
+
+            - name: Install Composer dependencies
+              run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+            - name: Discover modules from Packagist
+              run: |
+                  PACKAGES=$(curl -s "https://packagist.org/packages/list.json?type=saucebase-module&fields[]=abandoned" \
+                    | jq -r '.packages | to_entries[] | select(.value.abandoned == false) | .key' \
+                    | tr '\n' ' ')
+                  echo "PACKAGES=$PACKAGES" >> $GITHUB_ENV
+
+            - name: Install modules
+              if: env.PACKAGES != ''
+              run: composer require $PACKAGES --no-interaction
+
+            - name: Enable modules
+              if: env.PACKAGES != ''
+              run: |
+                  for pkg in $PACKAGES; do
+                      name="${pkg#saucebase/}"
+                      mod=$(echo "$name" | sed 's/-\([a-z]\)/\u\1/g; s/^\([a-z]\)/\u\1/')
+                      jq ". + {\"$mod\": true}" modules_statuses.json > tmp.json && mv tmp.json modules_statuses.json
+                  done
+
+            - name: Apply patches
+              if: env.PACKAGES != ''
+              run: |
+                  apply_patches() {
+                      local dir="$1"
+                      for f in "$dir"/*.patch; do
+                          [ -f "$f" ] || continue
+                          echo "Applying patch: $f"
+                          patch -p1 < "$f"
+                      done
+                  }
+                  for pkg in $PACKAGES; do
+                      name="${pkg#saucebase/}"
+                      mod=$(echo "$name" | sed 's/-\([a-z]\)/\u\1/g; s/^\([a-z]\)/\u\1/')
+                      apply_patches "modules/$mod/.github/patches"
+                  done
+
+            - name: Regenerate autoloader
+              run: composer dump-autoload
+
+            - name: Copy environment file
+              run: cp .env.example .env
+
+            - name: Install Node dependencies
+              run: npm ci
+
+            - name: Build frontend assets
+              run: npm run build
+
+            - name: Push to demo repository
+              env:
+                  DEMO_PAT: ${{ secrets.DEMO_PAT }}
+              run: |
+                  git config user.name "github-actions[bot]"
+                  git config user.email "github-actions[bot]@users.noreply.github.com"
+                  git add -f modules/ public/build/ modules_statuses.json composer.lock composer.json
+                  git diff --staged --quiet || git commit -m "chore: sync demo from saucebase@$(git rev-parse --short HEAD)"
+                  git remote add demo "https://x-access-token:${DEMO_PAT}@github.com/sauce-base/demo.git"
+                  git push demo HEAD:main --force
