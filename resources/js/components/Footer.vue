@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Link } from '@inertiajs/vue3';
 import IconHeart from '~icons/heroicons/heart';
 </script>
 
@@ -22,6 +23,18 @@ import IconHeart from '~icons/heroicons/heart';
                     >
                         {{ $t('Documentation') }}
                     </a>
+                    <Link
+                        :href="route('privacy')"
+                        class="hover:text-gray-900 dark:hover:text-white"
+                    >
+                        {{ $t('Privacy') }}
+                    </Link>
+                    <Link
+                        :href="route('terms')"
+                        class="hover:text-gray-900 dark:hover:text-white"
+                    >
+                        {{ $t('Terms') }}
+                    </Link>
                 </div>
                 <div class="flex items-center gap-1">
                     <span>{{ $t('Made with') }}</span>
