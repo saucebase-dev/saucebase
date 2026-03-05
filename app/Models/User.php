@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Enums\Role;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -14,7 +16,7 @@ use Spatie\Permission\Traits\HasRoles;
 // use Modules\Billing\Traits\Billable;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-class User extends Authenticatable implements HasMedia
+class User extends Authenticatable implements FilamentUser, HasMedia
     // , MustVerifyEmail
 {
     use HasFactory,
@@ -129,5 +131,13 @@ class User extends Authenticatable implements HasMedia
     public function isSubscriber(): bool
     {
         return $this->hasRole(Role::SUBSCRIBER);
+    }
+
+    /**
+     * Determine if the user can access the Filament admin panel.
+     */
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->isAdmin();
     }
 }
