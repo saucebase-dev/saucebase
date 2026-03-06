@@ -115,6 +115,7 @@ jobs:
         runs-on: ubuntu-latest
         timeout-minutes: 30
         needs: phpunit
+        if: inputs.module != ''
 
         steps:
             - name: Download environment artifact
