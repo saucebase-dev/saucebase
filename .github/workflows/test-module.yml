@@ -1,6 +1,7 @@
 name: Module Tests
 
 on:
+    pull_request:
     workflow_call:
         inputs:
             module:
@@ -17,6 +18,7 @@ jobs:
     phpunit:
         runs-on: ubuntu-latest
         timeout-minutes: 20
+        if: inputs.module != ''
 
         steps:
             - name: Checkout module
