@@ -47,7 +47,7 @@ jobs:
                   DEPENDENCIES: ${{ inputs.dependencies }}
               run: |
                   for dep in $DEPENDENCIES; do
-                      composer require "$dep" --dev --no-interaction
+                      composer require "$dep" --dev --no-interaction --no-scripts
                   done
 
             - name: Enable modules
