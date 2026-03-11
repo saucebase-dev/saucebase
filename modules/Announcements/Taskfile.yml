@@ -5,7 +5,7 @@ tasks:
     # ── Testing ───────────────────────────────────────────────────
     test:php:
         desc: Run PHPUnit tests for Announcements module
-        cmd: php artisan test --testsuite=Modules --filter=Announcements
+        cmd: php artisan test --testsuite=Modules --filter='^Modules\\Announcements\\Tests'
 
     test:e2e:
         desc: Run E2E tests for Announcements module

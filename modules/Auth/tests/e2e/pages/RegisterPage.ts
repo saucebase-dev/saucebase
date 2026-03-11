@@ -22,9 +22,7 @@ export class RegisterPage {
     constructor(page: Page) {
         this.page = page;
         this.signupEndpoint = '/auth/register';
-        this.redirectEndpoint = this.userMustVerifyEmail
-            ? '/auth/verify-email'
-            : '/dashboard';
+        this.redirectEndpoint = this.userMustVerifyEmail ? '/auth/verify-email' : '/dashboard';
         this.nameInput = page.getByTestId('name');
         this.emailInput = page.getByTestId('email');
         this.passwordInput = page.getByTestId('password');
@@ -74,6 +72,7 @@ export class RegisterPage {
         await expect(this.passwordInput).toHaveAttribute('type', 'password');
     }
 
+
     async waitForLoginResponse() {
         return this.page.waitForResponse((response: Response) =>
             response.url().includes(this.signupEndpoint),
@@ -109,6 +108,7 @@ export class RegisterPage {
             await route.continue();
         });
     }
+
 
     /**
      * Verify redirect to specific intended URL

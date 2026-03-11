@@ -4,9 +4,7 @@ test.describe('Announcement Banner', () => {
     test.describe.configure({ mode: 'serial' });
 
     test.beforeEach(async ({ laravel }) => {
-        await laravel.callFunction(
-            'Modules\\Announcements\\Tests\\Support\\AnnouncementTestHelper::clean',
-        );
+        await laravel.callFunction('Modules\\Announcements\\Tests\\Support\\AnnouncementTestHelper::clean');
     });
 
     test('banner is visible on public page when active and show_on_frontend is true', async ({
@@ -88,9 +86,7 @@ test.describe('Announcement Banner', () => {
         await page.goto('/');
         await expect(page.getByText('Dismissable banner')).toBeVisible();
 
-        await page
-            .getByRole('button', { name: 'Dismiss announcement' })
-            .click();
+        await page.getByRole('button', { name: 'Dismiss announcement' }).click();
         await expect(page.getByText('Dismissable banner')).not.toBeVisible();
 
         await page.reload();
@@ -133,7 +129,7 @@ test.describe('Announcement Banner', () => {
         await expect(page.getByText('Scheduled announcement')).toBeVisible();
     });
 
-    test('banner is not visible when current time is outside the schedule window', async ({
+     test('banner is not visible when current time is outside the schedule window', async ({
         page,
         laravel,
     }) => {
@@ -149,8 +145,6 @@ test.describe('Announcement Banner', () => {
 
         await page.goto('/');
 
-        await expect(
-            page.getByText('Scheduled announcement'),
-        ).not.toBeVisible();
+        await expect(page.getByText('Scheduled announcement')).not.toBeVisible();
     });
 });

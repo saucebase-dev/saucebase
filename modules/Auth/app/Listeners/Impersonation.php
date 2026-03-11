@@ -3,14 +3,14 @@
 namespace Modules\Auth\Listeners;
 
 use App\Helpers\Toast;
-use Lab404\Impersonate\Events\TakeImpersonation;
+use STS\FilamentImpersonate\Events\EnterImpersonation;
 
 class Impersonation
 {
     /**
      * Handle the event.
      */
-    public function handle(TakeImpersonation $event): void
+    public function handle(EnterImpersonation $event): void
     {
         /** @var \App\Models\User $impersonated */
         $impersonated = $event->impersonated;

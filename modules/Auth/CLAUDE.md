@@ -4,19 +4,19 @@ Authentication, registration, password reset, email verification, OAuth (Sociali
 
 ## Key Files
 
-| Layer       | Files                                                                                                                                                                                                                                                                           |
-| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Layer | Files |
+|-------|-------|
 | Controllers | `LoginController`, `RegisterController`, `SocialiteController`, `ForgotPasswordController`, `ResetPasswordController`, `VerifyEmailController`, `EmailVerificationNotificationController`, `EmailVerificationPromptController`, `PasswordController`, `ReimpersonateController` |
-| Model       | `SocialAccount` (provider, tokens, avatar, last_login_at)                                                                                                                                                                                                                       |
-| Service     | `SocialiteService` — all OAuth logic (find/create user, link/disconnect accounts)                                                                                                                                                                                               |
-| Requests    | `LoginRequest` (credential validation + rate limiting), `RegisterRequest` (password hashing in `passedValidation`)                                                                                                                                                              |
-| Exceptions  | `AuthException` (credentials, throttle), `SocialiteException` (disconnect, account linking, provider validation)                                                                                                                                                                |
-| Listeners   | `AssignUserRole` (Registered), `UpdateUserLastLogin` (Login), `Impersonation` (TakeImpersonation — session history)                                                                                                                                                             |
-| Trait       | `Sociable` — added to User model (socialAccounts relation, connected_providers, disconnect)                                                                                                                                                                                     |
-| Filament    | `AuthPlugin`, `UserResource` (list, create, view, edit), `UserForm`, `UsersTable`                                                                                                                                                                                               |
-| Pages       | `Login`, `Register`, `ForgotPassword`, `ResetPassword`, `VerifyEmail`                                                                                                                                                                                                           |
-| Layout      | `AuthCardLayout` — card with logo, status alerts, page transitions                                                                                                                                                                                                              |
-| Component   | `SocialiteProviders` — Google/GitHub buttons with divider                                                                                                                                                                                                                       |
+| Model | `SocialAccount` (provider, tokens, avatar, last_login_at) |
+| Service | `SocialiteService` — all OAuth logic (find/create user, link/disconnect accounts) |
+| Requests | `LoginRequest` (credential validation + rate limiting), `RegisterRequest` (password hashing in `passedValidation`) |
+| Exceptions | `AuthException` (credentials, throttle), `SocialiteException` (disconnect, account linking, provider validation) |
+| Listeners | `AssignUserRole` (Registered), `UpdateUserLastLogin` (Login), `Impersonation` (TakeImpersonation — session history) |
+| Trait | `Sociable` — added to User model (socialAccounts relation, connected_providers, disconnect) |
+| Filament | `AuthPlugin`, `UserResource` (list, create, view, edit), `UserForm`, `UsersTable` |
+| Pages | `Login`, `Register`, `ForgotPassword`, `ResetPassword`, `VerifyEmail` |
+| Layout | `AuthCardLayout` — card with logo, status alerts, page transitions |
+| Component | `SocialiteProviders` — Google/GitHub buttons with divider |
 
 ## Routes
 
@@ -33,28 +33,22 @@ Authentication, registration, password reset, email verification, OAuth (Sociali
 ## Patterns
 
 ### Socialite Dual-Flow
-
 `SocialiteController::callback()` checks `Auth::check()` to branch:
-
 - **Guest**: finds/creates user via `SocialiteService::handleCallback()`, logs in, redirects to intended URL
 - **Authenticated**: links account via `SocialiteService::linkAccountToUser()`, redirects to `settings.profile`
 
 ### Disconnect Validation
-
 Cannot disconnect if it's the user's only login method. `SocialiteService::disconnectProvider()` throws `SocialiteException::cannotDisconnectOnlyMethod()` when `socialAccounts->count() === 1 && !$user->password`.
 
 Also prevents account takeover: linking a social ID already owned by another user throws `accountAlreadyLinked`.
 
 ### Rate Limiting
-
 `LoginRequest::ensureIsNotRateLimited()` — 5 attempts per `email|ip` key. Fires `Lockout` event, throws `AuthException::throttle($seconds)`. Cleared on success.
 
 ### Impersonation
-
 Uses `lab404/laravel-impersonate` + `filament-impersonate`. Session stores history at `impersonation.recent_history` (max 4 user IDs). `ReimpersonateController` lets admins re-impersonate from recent list (max 3 shown in UI, filters deleted users and self). Stop via `filament-impersonate.leave` route.
 
 ### Logout Action Handler
-
 `app.ts` registers a frontend action handler (`registerActionHandler('logout', ...)`) that shows a confirmation dialog and posts to `route('logout')`.
 
 ## ENV Variables
@@ -69,7 +63,7 @@ Redirect URIs default to `/auth/socialite/{provider}/callback`. Providers config
 ## Testing
 
 ```bash
-php artisan test --testsuite=Modules --filter=Auth  # PHPUnit
+php artisan test --testsuite=Modules --filter='^Modules\\Auth\\Tests'  # PHPUnit
 npx playwright test --project="@Auth*"                 # E2E
 ```
 

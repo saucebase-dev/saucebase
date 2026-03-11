@@ -16,12 +16,9 @@ class AnnouncementResource extends Resource
 {
     protected static ?string $model = Announcement::class;
 
-    protected static ?int $navigationSort = 1;
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-megaphone';
 
-    public static function getNavigationGroup(): ?string
-    {
-        return __('announcements::filament.navigation_group');
-    }
+    protected static ?int $navigationSort = 1;
 
     public static function form(Schema $schema): Schema
     {

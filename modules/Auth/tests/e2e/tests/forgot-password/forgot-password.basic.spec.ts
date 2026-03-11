@@ -1,6 +1,6 @@
-import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { ForgotPasswordPage } from '../../pages/ForgotPasswordPage';
+import { faker } from '@faker-js/faker';
 
 test.describe.parallel('Forgot Password Basics', () => {
     let forgotPasswordPage: ForgotPasswordPage;
@@ -12,9 +12,7 @@ test.describe.parallel('Forgot Password Basics', () => {
     });
 
     async function expectSuccessfulPasswordReset() {
-        await expect(forgotPasswordPage.page.getByRole('alert')).toHaveRole(
-            'alert',
-        );
+        await expect(forgotPasswordPage.page.getByRole('alert')).toHaveRole('alert');
     }
 
     test('resets password with valid email and redirects to login', async () => {

@@ -1,11 +1,15 @@
 {
-    "name": "Billing",
-    "alias": "billing",
-    "description": "Billing module",
-    "author": "Saucebase",
-    "version": "v1.0.0",
-    "keywords": ["billing"],
-    "priority": 0,
-    "providers": ["Modules\\Billing\\Providers\\BillingServiceProvider"],
-    "files": []
+  "name": "Billing",
+  "alias": "billing",
+  "description": "Billing module",
+  "author": "Saucebase",
+  "version": "v1.0.2",
+  "keywords": [
+    "billing"
+  ],
+  "priority": 0,
+  "providers": [
+    "Modules\\Billing\\Providers\\BillingServiceProvider"
+  ],
+  "files": []
 }

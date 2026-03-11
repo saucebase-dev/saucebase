@@ -1,11 +1,15 @@
 {
-    "name": "Auth",
-    "alias": "auth",
-    "description": "Authentication module for Saucebase",
-    "author": "Saucebase",
-    "version": "v1.0.0",
-    "keywords": ["auth"],
-    "priority": 0,
-    "providers": ["Modules\\Auth\\Providers\\AuthServiceProvider"],
-    "files": []
+  "name": "Auth",
+  "alias": "auth",
+  "description": "Authentication module for Saucebase",
+  "author": "Saucebase",
+  "version": "v1.1.1",
+  "keywords": [
+    "auth"
+  ],
+  "priority": 0,
+  "providers": [
+    "Modules\\Auth\\Providers\\AuthServiceProvider"
+  ],
+  "files": []
 }

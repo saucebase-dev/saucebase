@@ -1,13 +1,11 @@
-import { expect, test } from '@e2e/fixtures';
+import { test, expect } from '@e2e/fixtures';
 import { CheckoutPage } from '../../pages/CheckoutPage';
 
 test.describe.parallel('Checkout Basics', () => {
     test('redirects guest accessing checkout URL to register', async ({
         page,
     }) => {
-        await page.goto(
-            '/billing/checkout/00000000-0000-0000-0000-000000000000',
-        );
+        await page.goto('/billing/checkout/00000000-0000-0000-0000-000000000000');
         await expect(page).toHaveURL('/auth/register');
     });
 
@@ -32,11 +30,7 @@ test.describe.parallel('Checkout Basics', () => {
         await checkoutPage.expectProductName('Pro');
     });
 
-    test('displays all billing form fields', async ({
-        page,
-        loginAs,
-        credentials,
-    }) => {
+    test('displays all billing form fields', async ({ page, loginAs, credentials }) => {
         await loginAs(credentials.admin);
 
         await page.goto('/');
@@ -51,11 +45,7 @@ test.describe.parallel('Checkout Basics', () => {
         await checkoutPage.expectFormVisible();
     });
 
-    test('submits form and initiates Stripe redirect', async ({
-        page,
-        loginAs,
-        credentials,
-    }) => {
+    test('submits form and initiates Stripe redirect', async ({ page, loginAs, credentials }) => {
         await loginAs(credentials.admin);
 
         await page.goto('/');
@@ -70,10 +60,7 @@ test.describe.parallel('Checkout Basics', () => {
 
         // Intercept the Stripe redirect so the navigation completes in the test environment
         await page.route('https://checkout.stripe.com/**', (route) => {
-            route.fulfill({
-                status: 200,
-                body: '<html><body>Stripe</body></html>',
-            });
+            route.fulfill({ status: 200, body: '<html><body>Stripe</body></html>' });
         });
 
         await checkoutPage.mockSubmitWithStripeRedirect();

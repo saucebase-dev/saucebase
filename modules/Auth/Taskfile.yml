@@ -5,7 +5,7 @@ tasks:
     # ── Testing ───────────────────────────────────────────────────
     test:php:
         desc: Run PHPUnit tests for Auth module
-        cmd: php artisan test --testsuite=Modules --filter=Auth
+        cmd: php artisan test --testsuite=Modules --filter='^Modules\\Auth\\Tests'
 
     test:e2e:
         desc: Run E2E tests for Auth module

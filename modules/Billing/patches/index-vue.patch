@@ -1,29 +1,27 @@
 --- a/resources/js/pages/Index.vue
 +++ b/resources/js/pages/Index.vue
-@@ -9,12 +9,12 @@ import HeroSection from '@/pages/sections/HeroSection.vue';
+@@ -8,7 +8,14 @@
+ import HeroSection from '@/pages/sections/HeroSection.vue';
+ import Testimonial from '@/pages/sections/Testimonial.vue';
 
  import { Head } from '@inertiajs/vue3';
-
--// import ProductSection from '@modules/Billing/resources/js/components/ProductSection.vue';
--// import type { Product } from '@modules/Billing/resources/js/types';
++
 +import ProductSection from '@modules/Billing/resources/js/components/ProductSection.vue';
 +import type { Product } from '@modules/Billing/resources/js/types';
-
--// defineProps<{
--//     products?: Product[];
--// }>();
++
 +defineProps<{
 +    products?: Product[];
 +}>();
  </script>
 
  <template>
-@@ -44,7 +44,7 @@ import { Head } from '@inertiajs/vue3';
-         <FaqSection />
+@@ -40,6 +47,9 @@
+         <!-- Testimonial -->
+         <Testimonial />
 
-         <!-- Pricing Section -->
--        <!-- <ProductSection v-if="products?.length" :products="products" /> -->
++        <!-- Pricing Section -->
 +        <ProductSection v-if="products?.length" :products="products" />
-
++
          <!-- Footer -->
          <Footer />
+     </div>

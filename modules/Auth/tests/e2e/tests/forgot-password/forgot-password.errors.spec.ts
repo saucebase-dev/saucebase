@@ -1,4 +1,4 @@
-import { expect, test } from '@e2e/fixtures';
+import { test, expect } from '@e2e/fixtures';
 import { RegisterPage } from '../../pages/RegisterPage';
 
 test.describe.parallel('Register Error Handling', () => {
@@ -53,14 +53,11 @@ test.describe.parallel('Register Error Handling', () => {
     test('handles request timeout', async ({ credentials }) => {
         const user = credentials.user;
 
-        await registerPage.page.route(
-            registerPage.signupEndpoint,
-            async (route) => {
-                // Simulate a timeout by delaying beyond Playwright's default
-                await new Promise((resolve) => setTimeout(resolve, 35000));
-                await route.abort('timedout');
-            },
-        );
+        await registerPage.page.route(registerPage.signupEndpoint, async (route) => {
+            // Simulate a timeout by delaying beyond Playwright's default
+            await new Promise((resolve) => setTimeout(resolve, 35000));
+            await route.abort('timedout');
+        });
 
         await registerPage.register('Test User', user.email, user.password);
 

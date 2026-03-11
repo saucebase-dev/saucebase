@@ -40,8 +40,7 @@ export class CheckoutPage {
                 route.fulfill({
                     status: 409,
                     headers: {
-                        'X-Inertia-Location':
-                            'https://checkout.stripe.com/test',
+                        'X-Inertia-Location': 'https://checkout.stripe.com/test',
                     },
                     body: '',
                 });

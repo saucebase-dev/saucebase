@@ -1,4 +1,4 @@
-import { expect, test } from '@e2e/fixtures';
+import { test, expect } from '@e2e/fixtures';
 import { LoginPage } from '../../pages/LoginPage';
 
 test.describe.parallel('Logout Basics', () => {
@@ -10,10 +10,7 @@ test.describe.parallel('Logout Basics', () => {
         await loginPage.expectToBeVisible();
     });
 
-    test('logs out from user menu and redirects to login', async ({
-        page,
-        credentials,
-    }) => {
+    test('logs out from user menu and redirects to login', async ({ page, credentials }) => {
         const user = credentials.user;
 
         // Login first
@@ -26,9 +23,10 @@ test.describe.parallel('Logout Basics', () => {
         await page.waitForTimeout(300);
 
         // Click the 'Log out' menu item
-        page.on('dialog', (dialog) => dialog.accept());
+        page.on('dialog', dialog => dialog.accept());
 
         await page.getByRole('menuitem', { name: /log out/i }).click();
+
 
         // After logout we expect to be redirected to the home page
         await expect(page).toHaveURL('/');

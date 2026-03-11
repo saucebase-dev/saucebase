@@ -1,11 +1,15 @@
 {
-    "name": "Settings",
-    "alias": "settings",
-    "description": "Settings module",
-    "author": "Saucebase",
-    "version": "v1.0.0",
-    "keywords": ["settings"],
-    "priority": 0,
-    "providers": ["Modules\\Settings\\Providers\\SettingsServiceProvider"],
-    "files": []
+  "name": "Settings",
+  "alias": "settings",
+  "description": "Settings module",
+  "author": "Saucebase",
+  "version": "v1.0.2",
+  "keywords": [
+    "settings"
+  ],
+  "priority": 0,
+  "providers": [
+    "Modules\\Settings\\Providers\\SettingsServiceProvider"
+  ],
+  "files": []
 }

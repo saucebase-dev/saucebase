@@ -4,14 +4,14 @@ User profile management, avatar uploads, password changes, and application setti
 
 ## Key Files
 
-| Layer       | Files                                                                                                                                              |
-| ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Controllers | `ProfileController` (show, edit, updateInfo, updateAvatar, deleteAvatar), `PasswordController` (edit, update), `SettingsController` (index)        |
-| Requests    | `UpdateProfileInfoRequest` (name, email), `UpdateProfileAvatarRequest` (image, max 2MB), `UpdatePasswordRequest` (current_password, confirmed new) |
-| Filament    | `SettingsPlugin` (nav group), `GeneralSettings` page (placeholder)                                                                                 |
-| Pages       | `Index`, `Profile`, `Profile/Edit`, `Profile/ChangePassword`                                                                                       |
-| Layout      | Uses core `@/layouts/SettingsLayout.vue` (shared infrastructure for all settings pages)                                                            |
-| Components  | `PageHeader` (module-specific)                                                                                                                     |
+| Layer | Files |
+|-------|-------|
+| Controllers | `ProfileController` (show, edit, updateInfo, updateAvatar, deleteAvatar), `PasswordController` (edit, update), `SettingsController` (index) |
+| Requests | `UpdateProfileInfoRequest` (name, email), `UpdateProfileAvatarRequest` (image, max 2MB), `UpdatePasswordRequest` (current_password, confirmed new) |
+| Filament | `SettingsPlugin` (nav group), `GeneralSettings` page (placeholder) |
+| Pages | `Index`, `Profile`, `Profile/Edit`, `Profile/ChangePassword` |
+| Layout | Uses core `@/layouts/SettingsLayout.vue` (shared infrastructure for all settings pages) |
+| Components | `PageHeader` (module-specific) |
 
 **No models or migrations** — this module operates on the core `User` model.
 
@@ -33,9 +33,7 @@ PUT    /settings/profile/password    → settings.profile.password.update
 ## Patterns
 
 ### Avatar Management
-
 Uses Spatie Media Library with a single-file `avatars` collection on the User model. Fallback chain in `User::getAvatarAttribute()`:
-
 1. Media library upload (avatars collection)
 2. Social provider avatar URL (database `avatar` field)
 3. Default avatar (`images/default-avatar.jpg`)
@@ -43,25 +41,19 @@ Uses Spatie Media Library with a single-file `avatars` collection on the User mo
 Upload clears old collection before adding new: `clearMediaCollection('avatars')` then `addMediaFromRequest('avatar')->toMediaCollection('avatars')`.
 
 ### Responsive Layout
-
 Settings pages use the core `SettingsLayout` from `@/layouts/SettingsLayout.vue`. This is shared infrastructure — any module can use it for its own settings pages (see core CLAUDE.md for the pattern).
 
 ### Social Account Display
-
 Profile page shows connected providers with connect/disconnect buttons. Delegates entirely to Auth module:
-
 - Connect: links to `route('auth.socialite.redirect', provider.name)`
 - Disconnect: DELETE to `route('auth.socialite.disconnect', provider)`
 - Data: `$user->connected_providers` from Auth module's `Sociable` trait
 
 ### Password Change
-
 `PasswordController::update()` hashes new password, saves, sends `PasswordChangedNotification` (mail channel with timestamp and profile link), then redirects with toast.
 
 ### Navigation
-
 Configured in `routes/navigation.php` via Spatie Navigation. Three groups:
-
 - `user` — "Settings" link (order 10)
 - `settings` — "General" (10) and "Profile" (20) in sidebar
 - `secondary` — "Settings" with destructive badge
@@ -71,7 +63,7 @@ Other modules can add items to the `settings` group from their own `routes/navig
 ## Testing
 
 ```bash
-php artisan test --testsuite=Modules --filter=Settings  # PHPUnit
+php artisan test --testsuite=Modules --filter='^Modules\\Settings\\Tests'  # PHPUnit
 npx playwright test --project="@Settings*"                 # E2E
 ```
 

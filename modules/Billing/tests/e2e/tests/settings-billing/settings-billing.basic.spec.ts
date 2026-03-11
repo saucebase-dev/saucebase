@@ -1,4 +1,4 @@
-import { expect, test } from '@e2e/fixtures';
+import { test, expect } from '@e2e/fixtures';
 import { SettingsBillingPage } from '../../pages/SettingsBillingPage';
 
 test.describe.parallel('Settings Billing Basics', () => {
@@ -19,11 +19,7 @@ test.describe.parallel('Settings Billing Basics', () => {
         await billingPage.expectNoSubscription();
     });
 
-    test('shows active subscription details', async ({
-        page,
-        loginAs,
-        credentials,
-    }) => {
+    test('shows active subscription details', async ({ page, loginAs, credentials }) => {
         await loginAs(credentials.subscriber);
 
         const billingPage = new SettingsBillingPage(page);
@@ -32,11 +28,7 @@ test.describe.parallel('Settings Billing Basics', () => {
         await expect(billingPage.cancelButton).toBeVisible();
     });
 
-    test('opens and closes cancel dialog', async ({
-        page,
-        loginAs,
-        credentials,
-    }) => {
+    test('opens and closes cancel dialog', async ({ page, loginAs, credentials }) => {
         await loginAs(credentials.subscriber);
 
         const billingPage = new SettingsBillingPage(page);
@@ -47,11 +39,7 @@ test.describe.parallel('Settings Billing Basics', () => {
         await expect(billingPage.cancelDialogConfirm).not.toBeVisible();
     });
 
-    test('shows resume button for pending cancellation', async ({
-        page,
-        loginAs,
-        credentials,
-    }) => {
+    test('shows resume button for pending cancellation', async ({ page, loginAs, credentials }) => {
         await loginAs(credentials.cancelled);
 
         const billingPage = new SettingsBillingPage(page);

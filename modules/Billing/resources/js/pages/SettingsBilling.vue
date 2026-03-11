@@ -17,10 +17,10 @@ import {
     DialogTitle,
 } from '@/components/ui/dialog';
 import Separator from '@/components/ui/separator/Separator.vue';
-import SettingsLayout from '@/layouts/SettingsLayout.vue';
 import { router } from '@inertiajs/vue3';
 import { Loader2 } from 'lucide-vue-next';
 import { ref } from 'vue';
+import SettingsLayout from '@/layouts/SettingsLayout.vue';
 import type { Invoice, PaymentMethod, Subscription } from '../types';
 
 defineProps<{
@@ -117,11 +117,7 @@ function resumeSubscription() {
         </template>
 
         <!-- Has subscription -->
-        <Card
-            v-if="subscription"
-            data-testid="subscription-section"
-            class="max-w-3xl"
-        >
+        <Card v-if="subscription" data-testid="subscription-section" class="max-w-3xl">
             <CardHeader>
                 <CardTitle>{{ $t('Billing & Subscription') }}</CardTitle>
                 <CardDescription>
@@ -207,30 +203,48 @@ function resumeSubscription() {
                                         paymentMethod.details
                                     "
                                 >
-                                    {{ ucfirst(paymentMethod.details?.brand) }}
+                                    {{
+                                        ucfirst(
+                                            paymentMethod.details?.brand,
+                                        )
+                                    }}
                                     &bull;&bull;&bull;&bull;{{
                                         paymentMethod.details?.last4
                                     }}
                                     <span
-                                        v-if="paymentMethod.details?.expMonth"
+                                        v-if="
+                                            paymentMethod.details?.expMonth
+                                        "
                                         class="text-gray-500 dark:text-gray-400"
                                     >
                                         &middot;
                                         {{ $t('Expires') }}
                                         {{
-                                            pad(paymentMethod.details.expMonth)
-                                        }}/{{ paymentMethod.details.expYear }}
+                                            pad(
+                                                paymentMethod.details
+                                                    .expMonth,
+                                            )
+                                        }}/{{
+                                            paymentMethod.details.expYear
+                                        }}
                                     </span>
                                 </template>
                                 <template
                                     v-else-if="
-                                        paymentMethod.category === 'wallet' &&
+                                        paymentMethod.category ===
+                                            'wallet' &&
                                         paymentMethod.details
                                     "
                                 >
                                     {{ ucfirst(paymentMethod.type) }}
-                                    <span v-if="paymentMethod.details?.email">
-                                        {{ paymentMethod.details.email }}
+                                    <span
+                                        v-if="
+                                            paymentMethod.details?.email
+                                        "
+                                    >
+                                        {{
+                                            paymentMethod.details.email
+                                        }}
                                     </span>
                                 </template>
                                 <template
@@ -244,7 +258,9 @@ function resumeSubscription() {
                                         $t('Bank account')
                                     }}
                                     <template
-                                        v-if="paymentMethod.details?.last4"
+                                        v-if="
+                                            paymentMethod.details?.last4
+                                        "
                                     >
                                         &bull;&bull;&bull;&bull;{{
                                             paymentMethod.details.last4

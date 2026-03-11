@@ -1,6 +1,6 @@
-import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { RegisterPage } from '../../pages/RegisterPage';
+import { faker } from '@faker-js/faker';
 
 test.describe.parallel('Register Basics', () => {
     let registerPage: RegisterPage;
@@ -12,9 +12,7 @@ test.describe.parallel('Register Basics', () => {
     });
 
     async function expectSuccessfulRegistration() {
-        await expect(registerPage.page).toHaveURL(
-            registerPage.redirectEndpoint,
-        );
+        await expect(registerPage.page).toHaveURL(registerPage.redirectEndpoint);
     }
 
     function newUser() {
@@ -25,6 +23,7 @@ test.describe.parallel('Register Basics', () => {
         };
     }
 
+
     test('registers with valid details and redirects to dashboard', async () => {
         const user = newUser(); // Using the newUser function to generate user details
 
@@ -34,6 +33,7 @@ test.describe.parallel('Register Basics', () => {
     });
 
     test('toggles password visibility', async () => {
+
         await registerPage.passwordInput.fill('password123');
 
         await registerPage.expectPasswordHidden();

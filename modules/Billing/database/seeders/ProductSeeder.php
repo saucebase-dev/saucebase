@@ -23,26 +23,28 @@ class ProductSeeder extends Seeder
 
     private function createFreeProduct(): void
     {
-        $product = Product::create([
-            'sku' => 'free',
-            'slug' => 'free',
-            'name' => 'Free',
-            'description' => 'Get started with the basics',
-            'display_order' => 1,
-            'is_visible' => true,
-            'is_highlighted' => false,
-            'is_active' => true,
-            'features' => [
-                '1 project',
-                '500MB storage',
-                'Community support',
-            ],
-            'metadata' => [
-                'tagline' => 'For hobbyists',
-            ],
-        ]);
+        $product = Product::updateOrCreate(
+            ['slug' => 'free'],
+            [
+                'sku' => 'free',
+                'name' => 'Free',
+                'description' => 'Get started with the basics',
+                'display_order' => 1,
+                'is_visible' => true,
+                'is_highlighted' => false,
+                'is_active' => true,
+                'features' => [
+                    '1 project',
+                    '500MB storage',
+                    'Community support',
+                ],
+                'metadata' => [
+                    'tagline' => 'For hobbyists',
+                ],
+            ]
+        );
 
-        $product->prices()->createMany([
+        foreach ([
             [
                 'payment_provider_id' => $this->stripeProviderId,
                 'provider_price_id' => 'price_free_monthly',
@@ -63,35 +65,42 @@ class ProductSeeder extends Seeder
                 'interval_count' => 1,
                 'is_active' => true,
             ],
-        ]);
+        ] as $price) {
+            $product->prices()->updateOrCreate(
+                ['provider_price_id' => $price['provider_price_id']],
+                $price
+            );
+        }
     }
 
     private function createProProduct(): void
     {
-        $product = Product::create([
-            'sku' => 'pro',
-            'slug' => 'pro',
-            'name' => 'Pro',
-            'description' => 'Everything you need to work independently',
-            'display_order' => 3,
-            'is_visible' => true,
-            'is_highlighted' => true,
-            'is_active' => true,
-            'features' => [
-                'Unlimited projects',
-                '50GB storage',
-                'Priority email support',
-                'Advanced analytics',
-                'API access',
-                'Custom domains',
-            ],
-            'metadata' => [
-                'badge' => 'Most Popular',
-                'tagline' => 'For professionals',
-            ],
-        ]);
+        $product = Product::updateOrCreate(
+            ['slug' => 'pro'],
+            [
+                'sku' => 'pro',
+                'name' => 'Pro',
+                'description' => 'Everything you need to work independently',
+                'display_order' => 3,
+                'is_visible' => true,
+                'is_highlighted' => true,
+                'is_active' => true,
+                'features' => [
+                    'Unlimited projects',
+                    '50GB storage',
+                    'Priority email support',
+                    'Advanced analytics',
+                    'API access',
+                    'Custom domains',
+                ],
+                'metadata' => [
+                    'badge' => 'Most Popular',
+                    'tagline' => 'For professionals',
+                ],
+            ]
+        );
 
-        $product->prices()->createMany([
+        foreach ([
             [
                 'payment_provider_id' => $this->stripeProviderId,
                 'provider_price_id' => 'price_1SyadREx2sHJcHgwCt0ReZEJ',
@@ -127,35 +136,42 @@ class ProductSeeder extends Seeder
                 'interval_count' => null,
                 'is_active' => false,
             ],
-        ]);
+        ] as $price) {
+            $product->prices()->updateOrCreate(
+                ['provider_price_id' => $price['provider_price_id']],
+                $price
+            );
+        }
     }
 
     private function createTeamProduct(): void
     {
-        $product = Product::create([
-            'sku' => 'team',
-            'slug' => 'team',
-            'name' => 'Team',
-            'description' => 'Collaborate with your team, up to 25 members',
-            'display_order' => 4,
-            'is_visible' => true,
-            'is_highlighted' => false,
-            'is_active' => true,
-            'features' => [
-                'Everything in Pro',
-                'Up to 25 team members',
-                '200GB shared storage',
-                'Team roles & permissions',
-                'Priority support',
-                'Shared dashboards',
-                'Audit logs',
-            ],
-            'metadata' => [
-                'tagline' => 'For teams',
-            ],
-        ]);
+        $product = Product::updateOrCreate(
+            ['slug' => 'team'],
+            [
+                'sku' => 'team',
+                'name' => 'Team',
+                'description' => 'Collaborate with your team, up to 25 members',
+                'display_order' => 4,
+                'is_visible' => true,
+                'is_highlighted' => false,
+                'is_active' => true,
+                'features' => [
+                    'Everything in Pro',
+                    'Up to 25 team members',
+                    '200GB shared storage',
+                    'Team roles & permissions',
+                    'Priority support',
+                    'Shared dashboards',
+                    'Audit logs',
+                ],
+                'metadata' => [
+                    'tagline' => 'For teams',
+                ],
+            ]
+        );
 
-        $product->prices()->createMany([
+        foreach ([
             [
                 'payment_provider_id' => $this->stripeProviderId,
                 'provider_price_id' => 'price_1SyaL0Ex2sHJcHgwWaaTGLgo',
@@ -191,6 +207,11 @@ class ProductSeeder extends Seeder
                 'interval_count' => null,
                 'is_active' => false,
             ],
-        ]);
+        ] as $price) {
+            $product->prices()->updateOrCreate(
+                ['provider_price_id' => $price['provider_price_id']],
+                $price
+            );
+        }
     }
 }

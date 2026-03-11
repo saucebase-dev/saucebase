@@ -1,4 +1,4 @@
-import { expect, test } from '@e2e/fixtures';
+import { test, expect } from '@e2e/fixtures';
 import { LoginPage } from '../../pages/LoginPage';
 
 test.describe.parallel('Login Basics', () => {
@@ -14,9 +14,7 @@ test.describe.parallel('Login Basics', () => {
         await expect(loginPage.page).toHaveURL('/dashboard');
     }
 
-    test('logs in with valid credentials and redirects to dashboard', async ({
-        credentials,
-    }) => {
+    test('logs in with valid credentials and redirects to dashboard', async ({ credentials }) => {
         const user = credentials.admin;
         await loginPage.login(user.email, user.password);
         await expectSuccessfulLogin();

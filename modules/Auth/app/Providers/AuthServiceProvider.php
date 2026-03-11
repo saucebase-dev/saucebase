@@ -6,7 +6,7 @@ use App\Models\User;
 use App\Providers\ModuleServiceProvider;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
-use Lab404\Impersonate\Services\ImpersonateManager;
+use STS\FilamentImpersonate\ImpersonateManager;
 
 class AuthServiceProvider extends ModuleServiceProvider
 {

@@ -1,7 +1,7 @@
-import { faker } from '@faker-js/faker';
 import { test } from '@playwright/test';
 import { RegisterPage } from '../../pages/RegisterPage';
 import { VerifyEmailPage } from '../../pages/VerifyEmailPage';
+import { faker } from '@faker-js/faker';
 
 test.describe.parallel('Verify Email Basics', () => {
     let registerPage: RegisterPage;

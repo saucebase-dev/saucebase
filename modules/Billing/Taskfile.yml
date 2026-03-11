@@ -17,7 +17,7 @@ tasks:
     # ── Testing ───────────────────────────────────────────────────
     test:php:
         desc: Run PHPUnit tests for Billing module
-        cmd: php artisan test --testsuite=Modules --filter=Billing
+        cmd: php artisan test --testsuite=Modules --filter='^Modules\\Billing\\Tests'
 
     test:e2e:
         desc: Run E2E tests for Billing module

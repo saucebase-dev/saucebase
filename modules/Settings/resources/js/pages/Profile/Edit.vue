@@ -25,8 +25,8 @@ import { Form, router, usePage } from '@inertiajs/vue3';
 import { Camera, Loader2, Trash2 } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 
-import SettingsLayout from '@/layouts/SettingsLayout.vue';
 import PageHeader from '../../components/PageHeader.vue';
+import SettingsLayout from '@/layouts/SettingsLayout.vue';
 
 const props = defineProps<{
     user: User & {

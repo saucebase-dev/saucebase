@@ -2652,73 +2652,6 @@
             "time": "2025-12-17T00:37:48+00:00"
         },
         {
-            "name": "lab404/laravel-impersonate",
-            "version": "1.7.7",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/404labfr/laravel-impersonate.git",
-                "reference": "5033f3433a55ca8bb2cc3e4a018a39dd8a327a9f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/404labfr/laravel-impersonate/zipball/5033f3433a55ca8bb2cc3e4a018a39dd8a327a9f",
-                "reference": "5033f3433a55ca8bb2cc3e4a018a39dd8a327a9f",
-                "shasum": ""
-            },
-            "require": {
-                "laravel/framework": "^6.0 | ^7.0 | ^8.0 | ^9.0 | ^10.0 | ^11.0 | ^12.0",
-                "php": "^7.2 | ^8.0"
-            },
-            "require-dev": {
-                "mockery/mockery": "^1.3.3",
-                "orchestra/testbench": "^4.0 | ^5.0 | ^6.0 | ^7.0 | ^8.0 | ^9.0 | ^10.0",
-                "phpunit/phpunit": "^7.5 | ^8.0 | ^9.0 | ^10.0 | ^11.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Lab404\\Impersonate\\ImpersonateServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "files": [
-                    "src/helpers.php"
-                ],
-                "psr-4": {
-                    "Lab404\\Impersonate\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Marceau Casals",
-                    "email": "marceau@casals.fr"
-                }
-            ],
-            "description": "Laravel Impersonate is a plugin that allows to you to authenticate as your users.",
-            "keywords": [
-                "auth",
-                "impersonate",
-                "impersonation",
-                "laravel",
-                "laravel-package",
-                "laravel-plugin",
-                "package",
-                "plugin",
-                "user"
-            ],
-            "support": {
-                "issues": "https://github.com/404labfr/laravel-impersonate/issues",
-                "source": "https://github.com/404labfr/laravel-impersonate/tree/1.7.7"
-            },
-            "time": "2025-02-24T16:18:38+00:00"
-        },
-        {
             "name": "laravel/ai",
             "version": "v0.1.5",
             "source": {
@@ -6682,16 +6615,16 @@
         },
         {
             "name": "saucebase/announcements",
-            "version": "v0.1.3",
+            "version": "v0.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/saucebase-dev/announcements.git",
-                "reference": "448aae69ad5516265e174c99e0de5ffee316a3f3"
+                "reference": "eb2857a7bab4250769c97f47ad67a75f1010ebcc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/saucebase-dev/announcements/zipball/448aae69ad5516265e174c99e0de5ffee316a3f3",
-                "reference": "448aae69ad5516265e174c99e0de5ffee316a3f3",
+                "url": "https://api.github.com/repos/saucebase-dev/announcements/zipball/eb2857a7bab4250769c97f47ad67a75f1010ebcc",
+                "reference": "eb2857a7bab4250769c97f47ad67a75f1010ebcc",
                 "shasum": ""
             },
             "type": "saucebase-module",
@@ -6717,27 +6650,27 @@
             ],
             "support": {
                 "issues": "https://github.com/saucebase-dev/announcements/issues",
-                "source": "https://github.com/saucebase-dev/announcements/tree/v0.1.3"
+                "source": "https://github.com/saucebase-dev/announcements/tree/v0.1.7"
             },
-            "time": "2026-03-06T21:49:06+00:00"
+            "time": "2026-03-10T20:40:44+00:00"
         },
         {
             "name": "saucebase/auth",
-            "version": "v1.0.0",
+            "version": "v1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/saucebase-dev/auth.git",
-                "reference": "a47aae759404dc5f8254f30cc6fdaa389b5f771e"
+                "reference": "6f60a75b645371f00b21d925422e0fe302873edf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/saucebase-dev/auth/zipball/a47aae759404dc5f8254f30cc6fdaa389b5f771e",
-                "reference": "a47aae759404dc5f8254f30cc6fdaa389b5f771e",
+                "url": "https://api.github.com/repos/saucebase-dev/auth/zipball/6f60a75b645371f00b21d925422e0fe302873edf",
+                "reference": "6f60a75b645371f00b21d925422e0fe302873edf",
                 "shasum": ""
             },
             "require": {
                 "laravel/socialite": "^5.21",
-                "stechstudio/filament-impersonate": "^4.1"
+                "stechstudio/filament-impersonate": "^5.1"
             },
             "type": "saucebase-module",
             "extra": {
@@ -6762,22 +6695,22 @@
             ],
             "support": {
                 "issues": "https://github.com/saucebase-dev/auth/issues",
-                "source": "https://github.com/saucebase-dev/auth/tree/v1.0.0"
+                "source": "https://github.com/saucebase-dev/auth/tree/v1.1.1"
             },
-            "time": "2026-03-06T21:05:19+00:00"
+            "time": "2026-03-11T20:08:18+00:00"
         },
         {
             "name": "saucebase/billing",
-            "version": "v1.0.0",
+            "version": "v1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/saucebase-dev/billing.git",
-                "reference": "d30323d963adbda68133dee6c6fb9c7f65c6d4e9"
+                "reference": "a53970f7dee67e9beebecd9f3241d903aebf3f84"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/saucebase-dev/billing/zipball/d30323d963adbda68133dee6c6fb9c7f65c6d4e9",
-                "reference": "d30323d963adbda68133dee6c6fb9c7f65c6d4e9",
+                "url": "https://api.github.com/repos/saucebase-dev/billing/zipball/a53970f7dee67e9beebecd9f3241d903aebf3f84",
+                "reference": "a53970f7dee67e9beebecd9f3241d903aebf3f84",
                 "shasum": ""
             },
             "require": {
@@ -6810,22 +6743,22 @@
             "description": "Payment gateway and subscription management module for Saucebase",
             "support": {
                 "issues": "https://github.com/saucebase-dev/billing/issues",
-                "source": "https://github.com/saucebase-dev/billing/tree/v1.0.0"
+                "source": "https://github.com/saucebase-dev/billing/tree/v1.0.2"
             },
-            "time": "2026-03-06T20:54:26+00:00"
+            "time": "2026-03-11T17:28:28+00:00"
         },
         {
             "name": "saucebase/settings",
-            "version": "v1.0.0",
+            "version": "v1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/saucebase-dev/settings.git",
-                "reference": "dc8a6a5fab9c89698f134b671d9693a0f30c8d24"
+                "reference": "77f023d66fdb877b0c38b0cea2ab31c9c0ceb1c4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/saucebase-dev/settings/zipball/dc8a6a5fab9c89698f134b671d9693a0f30c8d24",
-                "reference": "dc8a6a5fab9c89698f134b671d9693a0f30c8d24",
+                "url": "https://api.github.com/repos/saucebase-dev/settings/zipball/77f023d66fdb877b0c38b0cea2ab31c9c0ceb1c4",
+                "reference": "77f023d66fdb877b0c38b0cea2ab31c9c0ceb1c4",
                 "shasum": ""
             },
             "type": "saucebase-module",
@@ -6851,9 +6784,9 @@
             ],
             "support": {
                 "issues": "https://github.com/saucebase-dev/settings/issues",
-                "source": "https://github.com/saucebase-dev/settings/tree/v1.0.0"
+                "source": "https://github.com/saucebase-dev/settings/tree/v1.0.2"
             },
-            "time": "2026-03-06T21:08:13+00:00"
+            "time": "2026-03-10T20:37:17+00:00"
         },
         {
             "name": "scrivo/highlight.php",
