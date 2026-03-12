@@ -7,6 +7,8 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Gate;
 use Modules\Billing\Console\ExpireCheckoutSessionsCommand;
 use Modules\Billing\Contracts\PaymentGatewayInterface;
+use Modules\Billing\Models\Subscription;
+use Modules\Billing\Policies\SubscriptionPolicy;
 use Modules\Billing\Services\BillingService;
 use Modules\Billing\Services\PaymentGatewayManager;
 
@@ -66,8 +68,8 @@ class BillingServiceProvider extends ModuleServiceProvider
     protected function registerPolicies(): void
     {
         Gate::policy(
-            \Modules\Billing\Models\Subscription::class,
-            \Modules\Billing\Policies\SubscriptionPolicy::class
+            Subscription::class,
+            SubscriptionPolicy::class
         );
     }
 }
