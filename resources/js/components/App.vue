@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import DynamicDialog from '@/components/DynamicDialog.vue';
 import ImpersonationAlert from '@/components/ImpersonationAlert.vue';
 import { Toaster } from '@/components/ui/sonner';
 import { toastActionRegistry } from '@/lib/toastActions';
@@ -103,5 +104,6 @@ watch(
     <ImpersonationAlert />
     <slot />
     <Toaster />
+    <DynamicDialog />
     <!-- Global components can be added here -->
 </template>
