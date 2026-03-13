@@ -1,3 +1,4 @@
+import type { Component } from 'vue';
 import { ref } from 'vue';
 
 export interface ConfirmOptions {
@@ -6,6 +7,8 @@ export interface ConfirmOptions {
     confirmLabel?: string;
     cancelLabel?: string;
     variant?: 'default' | 'destructive';
+    icon?: Component;
+    align?: 'center' | 'left';
 }
 
 const isOpen = ref(false);
