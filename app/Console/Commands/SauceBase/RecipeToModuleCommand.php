@@ -356,6 +356,10 @@ class RecipeToModuleCommand extends Command
         $key = strtolower($this->moduleName);
         $content = file_get_contents($taskfile);
 
+        if ($content === false) {
+            throw new RuntimeException("Unable to read Taskfile at path [{$taskfile}].");
+        }
+
         if (str_contains($content, "taskfile: ./modules/{$this->moduleName}/Taskfile.yml")) {
             return;
         }
