@@ -365,9 +365,22 @@ class RecipeToModuleCommand extends Command
         }
 
         $entry = "    {$key}:\n        taskfile: ./modules/{$this->moduleName}/Taskfile.yml\n        optional: true\n";
-        $marker = '    # ── END MODULES ──';
+        $markerPrefix = '    # ── END MODULES';
 
-        $updated = str_replace($marker, $entry.$marker, $content);
+        $markerPosition = strpos($content, $markerPrefix);
+
+        if ($markerPosition === false) {
+            return;
+        }
+
+        $before = substr($content, 0, $markerPosition);
+        $after = substr($content, $markerPosition);
+        $updated = $before.$entry.$after;
+
+        if ($updated === $content) {
+            return;
+        }
+
         file_put_contents($taskfile, $updated);
     }
 
