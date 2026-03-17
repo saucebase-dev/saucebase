@@ -4,6 +4,8 @@
 
 Saucebase is a modular Laravel SaaS starter kit (VILT stack). Modules are installed via Composer and owned directly in the repository (copy-and-own).
 
+**Core message:** The foundation is built. Focus on your product. See [`docs/CLAUDE.md`](../docs/CLAUDE.md) → _Saucebase Philosophy_ for tone and value-proposition guidance.
+
 **Stack:** Laravel 12, PHP 8.4+, Vue 3 Composition API, TypeScript 5.8, Inertia.js 2, Tailwind CSS 4, Vite 6.4, Filament 5 admin panel, Docker (Nginx, MySQL 8, Redis, Mailpit)
 
 **Quality tools:** PHPStan level 5 (Larastan), Laravel Pint, ESLint, Prettier, PHPUnit 12, Playwright
@@ -35,6 +37,10 @@ php artisan module:enable ModuleName
 php artisan module:disable ModuleName
 php artisan module:migrate ModuleName --seed
 # After enable/disable: rebuild with `npm run build` or restart `npm run dev`
+
+# TypeScript types (per-module, generated from PHP enums/DTOs)
+php artisan module:generate-types ModuleName   # single module
+php artisan module:generate-types              # all enabled modules
 ```
 
 ## Architecture
@@ -57,6 +63,8 @@ modules/<ModuleName>/
   resources/js/pages/     # Inertia pages
   resources/js/components/
   resources/js/app.ts     # Module lifecycle hooks (optional)
+  resources/js/types/
+    generated.d.ts        # Auto-generated from PHP enums/DTOs — do not edit manually
   resources/css/
   routes/web.php
   routes/api.php
@@ -64,8 +72,11 @@ modules/<ModuleName>/
   tests/Unit/
   tests/e2e/
   vite.config.js          # Module asset paths: { paths: ['css/app.css', 'js/app.ts'] }
+  Taskfile.yml            # Module tasks (test:php, test:e2e, types:generate)
   module.json
 ```
+
+**TypeScript type generation:** Each module generates its own `resources/js/types/generated.d.ts` from PHP classes annotated with `#[TypeScript]` (enums, Spatie Data objects). The core `config/typescript-transformer.php` only scans `app/`; module types are generated separately via `module:generate-types`. `tsconfig.json` includes `modules/**/resources/js/**/*.ts` so generated files are picked up automatically.
 
 **Module service provider pattern:**
 
