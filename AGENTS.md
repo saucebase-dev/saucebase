@@ -399,7 +399,6 @@ SSL certificates are generated with wildcard support (`*.localhost`) to enable m
 - `APP_HOST` - Application hostname (default: `localhost`)
 - `APP_URL` - Full URL, must match APP_HOST (default: `https://localhost`)
 - `APP_SLUG` - Project slug for storage/database keys (default: `saucebase`)
-- `VITE_LOCAL_STORAGE_KEY` - Frontend storage prefix (default: `${APP_SLUG}`)
 
 **HTTPS Configuration:**
 

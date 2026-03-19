@@ -202,7 +202,7 @@ Spatie Laravel Navigation, configured in `NavigationServiceProvider`.
 
 ### Environment Variables
 
-Saucebase-specific: `APP_HOST`, `APP_URL`, `APP_SLUG`, `VITE_LOCAL_STORAGE_KEY`
+Saucebase-specific: `APP_HOST`, `APP_URL`, `APP_SLUG`,
 
 SSL: Auto-enforced HTTPS in production/staging. Wildcard cert (`*.localhost`) for multi-tenancy support.
 
