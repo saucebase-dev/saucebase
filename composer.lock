@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b3b2d9686f23f31c1cb62cde888fa87a",
+    "content-hash": "4d9c76475bddc5ce74a29b770568102e",
     "packages": [
         {
             "name": "blade-ui-kit/blade-heroicons",
@@ -2528,16 +2528,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v12.55.1",
+            "version": "v13.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "6d9185a248d101b07eecaf8fd60b18129545fd33"
+                "reference": "5525d87797815c55f7a89d0dfc1dd89e9de98b63"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/6d9185a248d101b07eecaf8fd60b18129545fd33",
-                "reference": "6d9185a248d101b07eecaf8fd60b18129545fd33",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/5525d87797815c55f7a89d0dfc1dd89e9de98b63",
+                "reference": "5525d87797815c55f7a89d0dfc1dd89e9de98b63",
                 "shasum": ""
             },
             "require": {
@@ -2745,7 +2745,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2026-03-18T14:28:59+00:00"
+            "time": "2026-03-18T17:10:25+00:00"
         },
         {
             "name": "laravel/prompts",
@@ -6389,16 +6389,16 @@
         },
         {
             "name": "saucebase/auth",
-            "version": "v1.4.0",
+            "version": "v1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/saucebase-dev/auth.git",
-                "reference": "31c29a35997235709575ba4fab71c3a4d14d35e6"
+                "reference": "92c761972a69a8d609f682d05c4a703ecc9b764d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/saucebase-dev/auth/zipball/31c29a35997235709575ba4fab71c3a4d14d35e6",
-                "reference": "31c29a35997235709575ba4fab71c3a4d14d35e6",
+                "url": "https://api.github.com/repos/saucebase-dev/auth/zipball/92c761972a69a8d609f682d05c4a703ecc9b764d",
+                "reference": "92c761972a69a8d609f682d05c4a703ecc9b764d",
                 "shasum": ""
             },
             "require": {
@@ -6428,22 +6428,22 @@
             ],
             "support": {
                 "issues": "https://github.com/saucebase-dev/auth/issues",
-                "source": "https://github.com/saucebase-dev/auth/tree/v1.4.0"
+                "source": "https://github.com/saucebase-dev/auth/tree/v1.5.0"
             },
-            "time": "2026-03-18T19:58:11+00:00"
+            "time": "2026-03-19T16:54:56+00:00"
         },
         {
             "name": "saucebase/billing",
-            "version": "v1.3.0",
+            "version": "v1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/saucebase-dev/billing.git",
-                "reference": "09e2077033190aae5ad1e9ae907982154d02fde7"
+                "reference": "769fd02fe5c5ffde732af09a3a41df2e3ab0697c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/saucebase-dev/billing/zipball/09e2077033190aae5ad1e9ae907982154d02fde7",
-                "reference": "09e2077033190aae5ad1e9ae907982154d02fde7",
+                "url": "https://api.github.com/repos/saucebase-dev/billing/zipball/769fd02fe5c5ffde732af09a3a41df2e3ab0697c",
+                "reference": "769fd02fe5c5ffde732af09a3a41df2e3ab0697c",
                 "shasum": ""
             },
             "require": {
@@ -6476,22 +6476,82 @@
             "description": "Payment gateway and subscription management module for Saucebase",
             "support": {
                 "issues": "https://github.com/saucebase-dev/billing/issues",
-                "source": "https://github.com/saucebase-dev/billing/tree/v1.3.0"
+                "source": "https://github.com/saucebase-dev/billing/tree/v1.4.0"
             },
-            "time": "2026-03-18T20:02:53+00:00"
+            "time": "2026-03-20T20:14:24+00:00"
         },
         {
-            "name": "saucebase/roadmap",
-            "version": "v0.3.0",
+            "name": "saucebase/breadcrumbs",
+            "version": "v1.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/saucebase-dev/roadmap.git",
-                "reference": "8643f7911c66c70e76f0ce4e3752ba62c3d3bb2d"
+                "url": "https://github.com/saucebase-dev/breadcrumbs.git",
+                "reference": "6473b9801810051708e59159347fa0cc108a67d2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/saucebase-dev/roadmap/zipball/8643f7911c66c70e76f0ce4e3752ba62c3d3bb2d",
-                "reference": "8643f7911c66c70e76f0ce4e3752ba62c3d3bb2d",
+                "url": "https://api.github.com/repos/saucebase-dev/breadcrumbs/zipball/6473b9801810051708e59159347fa0cc108a67d2",
+                "reference": "6473b9801810051708e59159347fa0cc108a67d2",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": "^12.0|^13.0",
+                "php": "^8.2"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^9.0|^10.0",
+                "phpunit/phpunit": "^11.0|^12.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "Breadcrumbs": "Saucebase\\Breadcrumbs\\Breadcrumbs"
+                    },
+                    "providers": [
+                        "Saucebase\\Breadcrumbs\\BreadcrumbsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Saucebase\\Breadcrumbs\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Saucebase",
+                    "email": "hello@saucebase.dev"
+                }
+            ],
+            "description": "Minimal breadcrumbs package for Saucebase — a fork of diglactic/laravel-breadcrumbs without Blade rendering.",
+            "keywords": [
+                "breadcrumbs",
+                "laravel",
+                "saucebase"
+            ],
+            "support": {
+                "issues": "https://github.com/saucebase-dev/breadcrumbs/issues",
+                "source": "https://github.com/saucebase-dev/breadcrumbs/tree/v1.0.0"
+            },
+            "time": "2026-03-20T17:00:35+00:00"
+        },
+        {
+            "name": "saucebase/roadmap",
+            "version": "v0.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/saucebase-dev/roadmap.git",
+                "reference": "18303ea37e2f8f8e698130b1a14aa994a8a68b3a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/saucebase-dev/roadmap/zipball/18303ea37e2f8f8e698130b1a14aa994a8a68b3a",
+                "reference": "18303ea37e2f8f8e698130b1a14aa994a8a68b3a",
                 "shasum": ""
             },
             "type": "saucebase-module",
@@ -6517,22 +6577,22 @@
             ],
             "support": {
                 "issues": "https://github.com/saucebase-dev/roadmap/issues",
-                "source": "https://github.com/saucebase-dev/roadmap/tree/v0.3.0"
+                "source": "https://github.com/saucebase-dev/roadmap/tree/v0.3.1"
             },
-            "time": "2026-03-18T20:16:50+00:00"
+            "time": "2026-03-19T16:51:38+00:00"
         },
         {
             "name": "saucebase/settings",
-            "version": "v1.2.0",
+            "version": "v1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/saucebase-dev/settings.git",
-                "reference": "d2e4981aaec278afc145eb1d385187971b97f1d7"
+                "reference": "8b44c0e67c0314cf013bf0e5aace60bb3dc576c1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/saucebase-dev/settings/zipball/d2e4981aaec278afc145eb1d385187971b97f1d7",
-                "reference": "d2e4981aaec278afc145eb1d385187971b97f1d7",
+                "url": "https://api.github.com/repos/saucebase-dev/settings/zipball/8b44c0e67c0314cf013bf0e5aace60bb3dc576c1",
+                "reference": "8b44c0e67c0314cf013bf0e5aace60bb3dc576c1",
                 "shasum": ""
             },
             "type": "saucebase-module",
@@ -6558,9 +6618,9 @@
             ],
             "support": {
                 "issues": "https://github.com/saucebase-dev/settings/issues",
-                "source": "https://github.com/saucebase-dev/settings/tree/v1.2.0"
+                "source": "https://github.com/saucebase-dev/settings/tree/v1.3.0"
             },
-            "time": "2026-03-18T20:02:39+00:00"
+            "time": "2026-03-20T20:14:14+00:00"
         },
         {
             "name": "scrivo/highlight.php",
@@ -8368,23 +8428,23 @@
         },
         {
             "name": "symfony/finder",
-            "version": "v8.0.6",
+            "version": "v7.4.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
-                "reference": "441404f09a54de6d1bd6ad219e088cdf4c91f97c"
+                "reference": "8655bf1076b7a3a346cb11413ffdabff50c7ffcf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/finder/zipball/441404f09a54de6d1bd6ad219e088cdf4c91f97c",
-                "reference": "441404f09a54de6d1bd6ad219e088cdf4c91f97c",
+                "url": "https://api.github.com/repos/symfony/finder/zipball/8655bf1076b7a3a346cb11413ffdabff50c7ffcf",
+                "reference": "8655bf1076b7a3a346cb11413ffdabff50c7ffcf",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.4"
+                "php": ">=8.2"
             },
             "require-dev": {
-                "symfony/filesystem": "^7.4|^8.0"
+                "symfony/filesystem": "^6.4|^7.0|^8.0"
             },
             "type": "library",
             "autoload": {
@@ -8412,7 +8472,7 @@
             "description": "Finds files and directories via an intuitive fluent interface",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/finder/tree/v8.0.6"
+                "source": "https://github.com/symfony/finder/tree/v7.4.6"
             },
             "funding": [
                 {
@@ -8432,7 +8492,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-01-29T09:41:02+00:00"
+            "time": "2026-01-29T09:40:50+00:00"
         },
         {
             "name": "symfony/html-sanitizer",
