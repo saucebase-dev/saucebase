@@ -20,7 +20,7 @@ const groups: { label: string; icon: Component; items: string[] }[] = [
         icon: Monitor,
         items: [
             'Vue 3 Composition API',
-            'Inertia.js 2',
+            'Inertia.js 3',
             'Tailwind CSS 4',
             'TypeScript',
             'shadcn-vue',

@@ -32,7 +32,7 @@
         "@faker-js/faker": "^10.3.0",
         "@go-task/cli": "^3.48.0",
         "@iconify/json": "^2.2.443",
-        "@inertiajs/vue3": "^2.3.16",
+        "@inertiajs/vue3": "^3.0.0",
         "@playwright/test": "^1.58.2",
         "@saucebase/laravel-playwright": "^1.0",
         "@tailwindcss/forms": "^0.5.11",
@@ -64,6 +64,7 @@
         "vue-tsc": "^2.2.12"
     },
     "dependencies": {
+        "@inertiajs/vite": "^3.0.0",
         "@vue/server-renderer": "^3.5.22",
         "@vueuse/core": "^13.9.0",
         "class-variance-authority": "^0.7.1",

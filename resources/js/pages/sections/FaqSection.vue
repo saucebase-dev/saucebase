@@ -14,7 +14,7 @@ const faqs = [
     },
     {
         question: 'What tech stack does Saucebase use?',
-        answer: 'Saucebase uses the VILT stack: Vue 3 (Composition API), Inertia.js 2, Laravel 13, and Tailwind CSS 4. It also includes TypeScript, Filament 5 admin panel, PHPStan level 5, and Playwright for E2E testing.',
+        answer: 'Saucebase uses the VILT stack: Vue 3 (Composition API), Inertia.js 3, Laravel 13, and Tailwind CSS 4. It also includes TypeScript, Filament 5 admin panel, PHPStan level 5, and Playwright for E2E testing.',
     },
     {
         question: 'Can I customize the modules after installation?',
