@@ -34,6 +34,7 @@
     --font-sans: Outfit, sans-serif;
     --font-serif: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
     --font-mono: monospace;
+    --font-body: var(--font-sans);
     --radius: 1.225rem;
     --shadow-offset-x: 0px;
     --shadow-offset-y: 1px;
