@@ -140,7 +140,7 @@ const modules = [
 
                         <!-- Module cards -->
                         <div
-                            class="group mt-8 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3"
+                            class="group mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
                         >
                             <component
                                 :is="mod.href ? 'a' : 'div'"
