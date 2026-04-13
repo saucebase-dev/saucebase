@@ -22,7 +22,7 @@ import {
     Webhook,
     X,
 } from 'lucide-vue-next';
-import { ref } from 'vue';
+import { onUnmounted, ref } from 'vue';
 import { toast } from 'vue-sonner';
 
 const BG_GRAY_COLOR = 'bg-gray-500';
@@ -88,7 +88,7 @@ const modules = [
         badge: 'free',
         href: 'https://saucebase-dev.github.io/docs/modules/announcements',
         features: [
-            'Banners',
+            'Banner',
             'Scheduling',
             'Audience Targeting',
             'Dismissal',
@@ -99,17 +99,16 @@ const modules = [
         id: 'themes',
         title: 'Themes',
         description:
-            'Global visual editor for colors, typography, radius, and shadows. Bake a complete design theme into CSS variables without writing a single line of code.',
+            "Visual theme editor for designing your app's colors, fonts, radius, and shadows. Pick a built-in theme or build your own, then bake it into CSS - no runtime overhead.",
         icon: Palette,
-        bg: 'bg-rose-500',
+        bg: 'bg-purple-500',
         badge: 'new',
         href: 'https://saucebase-dev.github.io/docs/modules/themes',
         features: [
-            'Color Palette',
-            'Typography',
-            'Radius & Shadows',
-            'CSS Export',
-            'No Code',
+            '14 Built-in Themes',
+            'Visual Editor',
+            'Dark & Light Mode',
+            'JSON + Baked CSS',
         ],
     },
     {
@@ -199,10 +198,8 @@ const modStyle = (mod: { bg: string }) => ({
     '--mod-color': `var(--color-${mod.bg.slice(3)})`,
 });
 
-const stripeClasses =
-    '[--pattern-fg:var(--mod-color)]/19 bg-[color:var(--mod-color)]/7 bg-[image:repeating-linear-gradient(-45deg,_var(--pattern-fg)_0px,_var(--pattern-fg)_1.5px,_transparent_1.5px,_transparent_5px)] border border-[color:var(--mod-color)]/25';
-
 const copied = ref(false);
+let copyTimer: ReturnType<typeof setTimeout> | null = null;
 
 function copyCommand() {
     if (!selectedMod.value) return;
@@ -210,11 +207,14 @@ function copyCommand() {
         .writeText(installCommand(selectedMod.value))
         .then(() => {
             toast.success(trans('Copied to clipboard'));
+            if (copyTimer) clearTimeout(copyTimer);
             copied.value = true;
-            setTimeout(() => (copied.value = false), 2000);
+            copyTimer = setTimeout(() => (copied.value = false), 2000);
         })
         .catch(() => toast.error(trans('Failed to copy')));
 }
+
+onUnmounted(() => { if (copyTimer) clearTimeout(copyTimer); });
 
 const installCommand = (mod: Module) => {
     if (mod.badge === 'custom')
@@ -225,7 +225,9 @@ const installCommand = (mod: Module) => {
 
 <template>
     <Head>
-        <title>{{ $t('Saucebase | The best modular Laravel SaaS Starter Kit') }}</title>
+        <title>
+            {{ $t('Saucebase | The best modular Laravel SaaS Starter Kit') }}
+        </title>
         <meta
             name="description"
             :content="
@@ -235,19 +237,17 @@ const installCommand = (mod: Module) => {
             "
         />
     </Head>
-    <div class="bg-background relative isolate flex min-h-screen flex-col border border-dashed">
+    <div class="bg-background relative isolate flex min-h-screen flex-col">
         <Header />
 
-        <main class="mx-auto w-full px-6 py-16 lg:px-8 ">
-            <div class="py-16 ">
+        <main class="mx-auto w-full px-6 py-16 lg:px-8">
+            <div class="py-16">
                 <h1
                     class="text-primary text-center text-6xl font-bold tracking-tight [text-shadow:0_4px_25px_color-mix(in_oklch,var(--color-primary)_15%,var(--color-background))] sm:text-7xl"
                 >
                     {{ $t("Let's get started") }}
                 </h1>
-                <h2
-                    class="text-secondary mt-1 text-center text-3xl font-bold"
-                >
+                <h2 class="text-secondary mt-1 text-center text-3xl font-bold">
                     {{ $t('Your foundation is ready') }}
                 </h2>
                 <p
@@ -261,7 +261,7 @@ const installCommand = (mod: Module) => {
                 </p>
             </div>
             <div
-                class="relative -mt-25 p-25 font-mono "
+                class="relative -mt-25 overflow-hidden p-25 font-mono"
                 style="
                     mask-image:
                         linear-gradient(to bottom, #000 90%, transparent 100%),
@@ -281,19 +281,18 @@ const installCommand = (mod: Module) => {
                         data-card
                         class="group/card relative flex cursor-pointer flex-col pt-6 transition-opacity duration-200 hover:opacity-100!"
                         :class="mod.badge === 'coming-soon' ? 'opacity-50' : ''"
+                        :style="modStyle(mod)"
                         @click="selectedMod = mod"
                     >
                         <div class="relative flex-1">
                             <!-- Diagonal stripe accent (behind card) -->
                             <div
-                                class="absolute inset-x-2 top-3 bottom-0 w-full -translate-x-5 translate-y-2.5 rounded-xl transition-opacity duration-200"
-                                :class="[
-                                    stripeClasses,
+                                class="stripe absolute inset-x-2 top-3 bottom-0 w-full -translate-x-5 translate-y-2.5 rounded-xl transition-opacity duration-200"
+                                :class="
                                     mod.badge !== 'coming-soon'
                                         ? 'opacity-90 group-hover/card:opacity-90'
-                                        : 'opacity-80',
-                                ]"
-                                :style="modStyle(mod)"
+                                        : 'opacity-80'
+                                "
                             />
 
                             <!-- Card body -->
@@ -304,30 +303,44 @@ const installCommand = (mod: Module) => {
                                         ? 'border-dashed'
                                         : ''
                                 "
-                                   :style="modStyle(mod)"
                             >
-                                <!-- Soon badge — mirrors icon two-layer structure -->
-                                <div
-                                    class="absolute top-1.5 -right-1.5 z-10 transition-all group-hover/card:translate-x-1 group-hover/card:-translate-y-0.5"
+                                <!-- Badge (stripe background + chip) -->
+                                <template
+                                    v-if="
+                                        mod.badge === 'coming-soon' ||
+                                        mod.badge === 'new'
+                                    "
                                 >
                                     <div
-                                        v-if="mod.badge === 'coming-soon'"
-                                        class="bg-muted text-foreground flex items-center justify-center rounded-full border px-2.5 py-0.5 text-[10px] font-medium shadow-sm"
+                                        class="badge-stripe stripe absolute top-3 right-0.5 min-w-12 rounded-full px-2.5 py-0.5 text-[10px] font-medium opacity-50"
+                                        aria-hidden="true"
                                     >
-                                        {{ $t('Soon') }}
+                                        <span class="invisible">{{ $t('Soon') }}</span>
                                     </div>
                                     <div
-                                        v-if="mod.badge === 'new'"
-                                        class="flex items-center justify-center rounded-full border border-emerald-500 bg-emerald-100 px-2.5 py-0.5 text-[10px] font-medium text-emerald-600 shadow-sm"
+                                        class="absolute top-1.5 -right-1.5 z-10 transition-all group-hover/card:translate-x-1 group-hover/card:-translate-y-0.5"
                                     >
-                                        {{ $t('New') }}
+                                        <div
+                                            class="flex min-w-12 items-center justify-center rounded-full border px-2.5 py-0.5 text-[10px] font-medium shadow-sm"
+                                            :class="
+                                                mod.badge === 'new'
+                                                    ? 'border-emerald-500 bg-emerald-100 text-emerald-600'
+                                                    : 'bg-muted text-foreground'
+                                            "
+                                        >
+                                            {{
+                                                mod.badge === 'coming-soon'
+                                                    ? $t('Soon')
+                                                    : $t('New')
+                                            }}
+                                        </div>
                                     </div>
-                                </div>
+                                </template>
+
                                 <!-- Floating icon -->
                                 <div
-                                    class="absolute -top-4 left-1/2 z-10 -ml-4 flex size-14 shrink-0 items-center justify-center rounded-full shadow-[-2px_2px_0_0_color-mix(in_oklch,var(--mod-color)_85%,black)] transition-all duration-200 group-hover/card:translate-x-1.5 group-hover/card:-translate-y-1.5 group-hover/card:shadow-[-5px_5px_0_0_color-mix(in_oklch,var(--mod-color)_85%,black)]"
+                                    class="absolute -top-2 left-1/2 z-10 -ml-5 flex size-14 shrink-0 items-center justify-center rounded-full shadow-[-2px_2px_0_0_color-mix(in_oklch,var(--mod-color)_85%,black)] transition-all duration-200 group-hover/card:translate-x-1.5 group-hover/card:-translate-y-1.5 group-hover/card:shadow-[-5px_5px_0_0_color-mix(in_oklch,var(--mod-color)_85%,black)]"
                                     :class="mod.bg"
-                                    :style="modStyle(mod)"
                                 >
                                     <component
                                         :is="mod.icon"
@@ -340,29 +353,12 @@ const installCommand = (mod: Module) => {
                                         aria-hidden="true"
                                     />
                                 </div>
+
+                                <!-- Stripe ring around icon -->
                                 <div
-                                    class="absolute top-0 left-1/2 -ml-7 flex size-14 shrink-0 items-center justify-center rounded-full"
-                                    :class="stripeClasses"
-                                    :style="modStyle(mod)"
+                                    class="stripe absolute top-0 left-1/2 -ml-7 size-14 rounded-full"
                                 />
 
-                                <div
-                                    v-if="
-                                        mod.badge === 'coming-soon' ||
-                                        mod.badge === 'new'
-                                    "
-                                    class="absolute top-3 right-0.5 rounded-full px-2.5 py-0.5 text-[10px] font-medium"
-                                    :class="stripeClasses"
-                                    :style="{
-                                        '--mod-color':
-                                            'var(--color-foreground)',
-                                    }"
-                                    aria-hidden="true"
-                                >
-                                    <span class="invisible">
-                                        {{ $t('Soon') }}
-                                    </span>
-                                </div>
                                 <span
                                     class="text-foreground mt-4 text-center text-base leading-tight font-semibold"
                                 >
@@ -377,9 +373,10 @@ const installCommand = (mod: Module) => {
                         </div>
                     </div>
                 </div>
+
                 <!-- Light mode pattern -->
                 <div
-                    class="absolute inset-0 -z-1 -m-5 overflow-hidden dark:hidden rotate-[-5deg] skew-x-10"
+                    class="absolute inset-0 -z-1 -m-5 rotate-[-5deg] skew-x-10 overflow-hidden dark:hidden"
                     style="
                         background-size: 24px;
                         background-position: top left;
@@ -388,19 +385,19 @@ const installCommand = (mod: Module) => {
                 />
                 <!-- Dark mode pattern -->
                 <div
-                    class="absolute inset-0 -z-1 -m-5 hidden overflow-hidden dark:block rotate-[-5deg] skew-x-10"
+                    class="absolute inset-0 -z-1 -m-5 hidden rotate-[-5deg] skew-x-10 overflow-hidden dark:block"
                     style="
                         background-size: 24px;
                         background-position: top left;
                         background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 32 32%22 fill=%22none%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cg opacity=%22.5%22 fill=%22%23ffffff%22 fill-opacity=%22.15%22%3E%3Cpath fill-rule=%22evenodd%22 clip-rule=%22evenodd%22 d=%22M0 .5V6h.5V.5H6V0H0v.5ZM.5 32H0v-6h.5v5.5H6v.5H.5ZM32 0v6h-.5V.5H26V0h6Zm0 31.5V26h-.5v5.5H26v.5h6v-.5Z%22/%3E%3Cpath opacity=%22.6%22 d=%22M19 0v.5h-6V0zM19 31.5v.5h-6v-.5zM32 19h-.5v-6h.5zM.5 19H0v-6h.5z%22/%3E%3C/g%3E%3C/svg%3E');
                     "
                 />
+
                 <div class="mt-8 flex justify-center">
                     <div class="relative inline-flex">
-                        <!-- Stripe layer: same shape, shifted down-right -->
+                        <!-- Stripe layer behind docs button -->
                         <div
-                            class="absolute inset-0 translate-y-[12px] rounded-full"
-                            :class="stripeClasses"
+                            class="stripe absolute inset-0 translate-y-3 rounded-full"
                             :style="modStyle({ bg: 'bg-foreground' })"
                         />
                         <a
@@ -413,7 +410,6 @@ const installCommand = (mod: Module) => {
                     </div>
                 </div>
             </div>
-            <!-- CTA -->
         </main>
 
         <Footer />
@@ -448,7 +444,6 @@ const installCommand = (mod: Module) => {
                     class="pointer-events-auto relative w-full max-w-lg"
                     @click.stop
                 >
-
                     <!-- Modal card body -->
                     <div
                         class="bg-card border-border relative z-10 flex flex-col gap-3 rounded-xl border p-6 shadow-[0px_5px_0_0_color-mix(in_oklch,var(--color-white)_85%,black)] dark:shadow-[0px_5px_0_0_color-mix(in_oklch,var(--color-white)_20%,black)]"
@@ -458,6 +453,7 @@ const installCommand = (mod: Module) => {
                                 ? 'border-dashed'
                                 : ''
                         "
+                        :style="modStyle(selectedMod)"
                     >
                         <!-- Close button -->
                         <button
@@ -467,9 +463,8 @@ const installCommand = (mod: Module) => {
                             <X class="size-4" />
                         </button>
 
-                        <!-- Header: icon + title left, close button right -->
+                        <!-- Header: icon + title -->
                         <div class="flex items-center gap-3">
-                            <!-- Icon -->
                             <div
                                 class="flex size-11 shrink-0 items-center justify-center rounded-full"
                                 :class="selectedMod.bg"
@@ -503,9 +498,7 @@ const installCommand = (mod: Module) => {
                             >
                                 <Check
                                     class="size-3.5 shrink-0"
-                                    :style="{
-                                        color: `var(--color-${selectedMod.bg.slice(3)})`,
-                                    }"
+                                    style="color: var(--mod-color)"
                                     aria-hidden="true"
                                 />
                                 {{ $t(feature) }}
@@ -515,7 +508,7 @@ const installCommand = (mod: Module) => {
                         <!-- Install command (free + custom only) -->
                         <div
                             v-if="selectedMod.badge !== 'coming-soon'"
-                            class="flex flex-col gap-2 mt-2"
+                            class="mt-2 flex flex-col gap-2"
                         >
                             <div
                                 class="flex items-center gap-3 rounded-sm bg-gray-950 px-4 py-3 dark:bg-gray-900"
@@ -540,9 +533,13 @@ const installCommand = (mod: Module) => {
                             </div>
                             <p
                                 v-if="selectedMod.badge !== 'custom'"
-                                class="text-muted-foreground text-center text-sm py-2"
+                                class="text-muted-foreground pb-2 text-center text-sm"
                             >
-                                {{ $t('This module may require additional steps after installation.') }}
+                                {{
+                                    $t(
+                                        'This module may require additional steps after installation, check the docs',
+                                    )
+                                }}
                             </p>
                         </div>
 
@@ -555,14 +552,13 @@ const installCommand = (mod: Module) => {
                                 rel="noopener noreferrer"
                                 class="flex w-full items-center justify-center gap-2 rounded-full px-6 py-2.5 text-sm font-semibold text-white shadow-[0_5px_0_0_color-mix(in_oklch,var(--mod-color)_85%,black)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_7px_0_0_color-mix(in_oklch,var(--mod-color)_85%,black)]"
                                 :class="selectedMod.bg"
-                                :style="modStyle(selectedMod)"
                             >
                                 <BookOpen class="size-4" aria-hidden="true" />
                                 {{ $t('Read the Documentation') }}
                             </a>
                             <span
                                 v-else
-                                class="bg-muted/90 border border-muted-foreground/20 text-muted-foreground flex w-full items-center justify-center gap-2 rounded-full px-6 py-2.5 text-sm font-semibold"
+                                class="bg-muted/90 border-muted-foreground/20 text-muted-foreground flex w-full items-center justify-center gap-2 rounded-full border px-6 py-2.5 text-sm font-semibold"
                             >
                                 {{ $t('Coming Soon') }}
                             </span>
@@ -573,3 +569,23 @@ const installCommand = (mod: Module) => {
         </Transition>
     </Teleport>
 </template>
+
+<style scoped>
+.stripe {
+    --pattern-fg: color-mix(in oklch, var(--mod-color) 19%, transparent);
+    background-color: color-mix(in oklch, var(--mod-color) 7%, transparent);
+    background-image: repeating-linear-gradient(
+        -45deg,
+        var(--pattern-fg) 0px,
+        var(--pattern-fg) 1.5px,
+        transparent 1.5px,
+        transparent 5px
+    );
+    border: 1px solid color-mix(in oklch, var(--mod-color) 25%, transparent);
+}
+
+/* Badge stripe uses foreground color regardless of module color */
+.badge-stripe {
+    --mod-color: var(--color-foreground);
+}
+</style>
