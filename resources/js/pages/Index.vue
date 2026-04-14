@@ -25,7 +25,6 @@ import {
 import { onUnmounted, ref } from 'vue';
 import { toast } from 'vue-sonner';
 
-const BG_GRAY_COLOR = 'bg-gray-500';
 const BADGE_SOON = { label: 'SOON', class: 'bg-muted text-foreground' } as const;
 
 const modules = [
@@ -35,7 +34,7 @@ const modules = [
         description:
             'Complete authentication system with login, registration, magic link (passwordless), password reset, email verification, and OAuth integration (Google, GitHub).',
         icon: Lock,
-        bg: 'bg-violet-600',
+        color: '--color-violet-600',
         badge: null,
         href: 'https://saucebase-dev.github.io/docs/modules/auth',
         features: [
@@ -52,7 +51,7 @@ const modules = [
         description:
             'Account settings pages for managing profile info, avatar, password, and connected social accounts.',
         icon: Settings2,
-        bg: 'bg-sky-500',
+        color: '--color-sky-500',
         badge: null,
         href: 'https://saucebase-dev.github.io/docs/modules/settings',
         features: ['Profile Info', 'Avatar Upload', 'Password Change', 'Connected Accounts'],
@@ -63,7 +62,7 @@ const modules = [
         description:
             'Subscription management and payment processing via Stripe with checkout sessions, billing portal, invoices, and webhook processing.',
         icon: CreditCard,
-        bg: 'bg-green-600',
+        color: '--color-green-600',
         badge: null,
         href: 'https://saucebase-dev.github.io/docs/modules/billing',
         features: ['Checkout', 'Subscriptions', 'Billing Portal', 'Webhooks'],
@@ -74,7 +73,7 @@ const modules = [
         description:
             'Public roadmap with feature requests, voting, moderation, six statuses, and a Filament admin panel.',
         icon: Map,
-        bg: 'bg-amber-500',
+        color: '--color-amber-500',
         badge: null,
         href: 'https://saucebase-dev.github.io/docs/modules/roadmap',
         features: ['Feature Requests', 'Voting', 'Sorting', 'Admin Panel'],
@@ -85,7 +84,7 @@ const modules = [
         description:
             'Site-wide announcement banners with scheduling, audience targeting, and cookie-based dismissal, managed from the Filament admin panel.',
         icon: Megaphone,
-        bg: 'bg-indigo-500',
+        color: '--color-indigo-500',
         badge: null,
         href: 'https://saucebase-dev.github.io/docs/modules/announcements',
         features: [
@@ -102,7 +101,7 @@ const modules = [
         description:
             "Visual theme editor for designing your app's colors, fonts, radius, and shadows. Pick a built-in theme or build your own, then bake it into CSS - no runtime overhead.",
         icon: Palette,
-        bg: 'bg-purple-500',
+        color: '--color-purple-500',
         badge: {
             label: 'NEW',
             class: 'border-emerald-600 bg-emerald-600 text-background',
@@ -121,7 +120,7 @@ const modules = [
         description:
             'Build and install your own modules with a single Artisan command. Full ownership — the scaffolded code lives in your repo and is yours to modify freely.',
         icon: Lightbulb,
-        bg: BG_GRAY_COLOR,
+        color: '--secondary',
         badge: {
             label: 'FOCUS HERE',
             class: 'bg-destructive text-destructive-foreground border-destructive',
@@ -140,7 +139,7 @@ const modules = [
         description:
             'Full-featured blog with posts, categories, tags, and a Filament admin panel for content management.',
         icon: Newspaper,
-        bg: BG_GRAY_COLOR,
+        color: '--color-gray-500',
         badge: BADGE_SOON,
         href: null,
         features: [
@@ -156,7 +155,7 @@ const modules = [
         description:
             'Send reliable HTTP callbacks to external services when events occur in your app, with delivery logs and retry handling.',
         icon: Webhook,
-        bg: BG_GRAY_COLOR,
+        color: '--color-gray-500',
         badge: BADGE_SOON,
         href: null,
         features: ['Event Triggers', 'Delivery Logs', 'Retry Handling', 'Failure Alerts'],
@@ -167,7 +166,7 @@ const modules = [
         description:
             'Connect your app with third-party services like Slack, Zapier, and more through a unified integration layer.',
         icon: Blocks,
-        bg: BG_GRAY_COLOR,
+        color: '--color-gray-500',
         badge: BADGE_SOON,
         href: null,
         features: ['Slack', 'Zapier', 'Custom Connections', 'Unified Layer'],
@@ -178,7 +177,7 @@ const modules = [
         description:
             'In-app and email notifications with templates, user preferences, and delivery tracking for every channel.',
         icon: Bell,
-        bg: BG_GRAY_COLOR,
+        color: '--color-gray-500',
         badge: BADGE_SOON,
         href: null,
         features: ['In-App', 'Email', 'Templates', 'Preferences'],
@@ -189,7 +188,7 @@ const modules = [
         description:
             'Track pageviews, custom events, and user behavior with a privacy-friendly built-in dashboard — no third-party scripts.',
         icon: BarChart3,
-        bg: BG_GRAY_COLOR,
+        color: '--color-gray-500',
         badge: BADGE_SOON,
         href: null,
         features: ['Pageviews', 'Custom Events', 'Dashboard', 'Privacy First'],
@@ -199,11 +198,6 @@ const modules = [
 type Module = (typeof modules)[number];
 
 const selectedMod = ref<Module | null>(null);
-
-// Derive CSS var from bg class: 'bg-violet-600' → { '--mod-color': 'var(--color-violet-600)' }
-const modStyle = (mod: { bg: string }) => ({
-    '--mod-color': `var(--color-${mod.bg.slice(3)})`,
-});
 
 const copied = ref(false);
 let copyTimer: ReturnType<typeof setTimeout> | null = null;
@@ -290,10 +284,7 @@ const installCommand = (mod: Module) => {
                         data-card
                         class="relative cursor-pointer transition-opacity duration-200 hover:opacity-100!"
                         :class="!mod.href ? 'opacity-50' : ''"
-                        :style="[
-                            modStyle(mod),
-                            { '--card-delay': `${400 + index * 150}ms` },
-                        ]"
+                        :style="{ '--mod-color': `var(${mod.color})`, '--card-delay': `${400 + index * 150}ms` }"
                         @click="selectedMod = mod"
                     >
                         <!-- Diagonal stripe accent — stationary, fades in after card lands -->
@@ -350,10 +341,9 @@ const installCommand = (mod: Module) => {
                                     <!-- Floating icon -->
                                     <div
                                         class="bounce absolute -top-2 left-1/2 z-10 -ml-5 flex size-14 shrink-0 items-center justify-center rounded-full shadow-[-2px_2px_0_0_color-mix(in_oklch,var(--mod-color)_85%,black)] transition-all duration-200 group-hover/card:translate-x-1.5 group-hover/card:-translate-y-1.5 group-hover/card:shadow-[-5px_5px_0_0_color-mix(in_oklch,var(--mod-color)_85%,black)]"
-                                        :class="mod.bg"
                                         :style="{
-                                            animationDelay:
-                                                'calc(var(--card-delay) + 280ms)',
+                                            background: `var(${mod.color})`,
+                                            animationDelay: 'calc(var(--card-delay) + 280ms)',
                                         }"
                                     >
                                         <component
@@ -417,7 +407,7 @@ const installCommand = (mod: Module) => {
                         <!-- Stripe layer behind docs button -->
                         <div
                             class="stripe absolute inset-0 translate-y-3 rounded-full"
-                            :style="modStyle({ bg: 'bg-foreground' })"
+                            :style="{ '--mod-color': 'var(--foreground)' }"
                         />
                         <a
                             href="https://saucebase-dev.github.io/docs/"
@@ -466,7 +456,7 @@ const installCommand = (mod: Module) => {
                     <!-- Modal card body -->
                     <div
                         class="bg-card/90 border-border relative z-10 flex flex-col gap-3 rounded-xl border p-6 shadow-[0px_5px_0_0_color-mix(in_oklch,var(--color-white)_85%,black)] dark:shadow-[0px_5px_0_0_color-mix(in_oklch,var(--color-white)_20%,black)]"
-                        :style="modStyle(selectedMod)"
+                        :style="{ '--mod-color': `var(${selectedMod.color})` }"
                     >
                         <!-- Close button -->
                         <button
@@ -480,7 +470,7 @@ const installCommand = (mod: Module) => {
                         <div class="flex items-center gap-3">
                             <div
                                 class="flex size-11 shrink-0 items-center justify-center rounded-full"
-                                :class="selectedMod.bg"
+                                :style="{ background: `var(${selectedMod.color})` }"
                             >
                                 <component
                                     :is="selectedMod.icon"
@@ -564,7 +554,7 @@ const installCommand = (mod: Module) => {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 class="flex w-full items-center justify-center gap-2 rounded-full px-6 py-2.5 text-sm font-semibold text-white shadow-[0_5px_0_0_color-mix(in_oklch,var(--mod-color)_85%,black)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_7px_0_0_color-mix(in_oklch,var(--mod-color)_85%,black)]"
-                                :class="selectedMod.bg"
+                                :style="{ background: `var(${selectedMod.color})` }"
                             >
                                 <BookOpen class="size-4" aria-hidden="true" />
                                 {{ $t('Read the Documentation') }}
