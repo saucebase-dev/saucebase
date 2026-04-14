@@ -3,7 +3,10 @@ import type { Component } from 'vue';
 const top: Component[] = [];
 const bottom: Component[] = [];
 
-export function registerGlobalComponent(position: 'top' | 'bottom', component: Component): void {
+export function registerGlobalComponent(
+    position: 'top' | 'bottom',
+    component: Component,
+): void {
     (position === 'top' ? top : bottom).push(component);
 }
 

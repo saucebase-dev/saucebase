@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import Sonner from '@/components/ui/sonner/Sonner.vue';
+import type { Toast } from '@/types';
 import { router, usePage } from '@inertiajs/vue3';
 import { watch } from 'vue';
 import { toast } from 'vue-sonner';
-import type { Toast } from '@/types';
 
 import 'vue-sonner/style.css';
 
