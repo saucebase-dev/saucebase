@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "beada6dcf5e577adf557e6f71110da38",
+    "content-hash": "63406a8990da4f1f697ceafa30ed6754",
     "packages": [
         {
             "name": "blade-ui-kit/blade-heroicons",
@@ -6624,6 +6624,47 @@
                 "source": "https://github.com/saucebase-dev/breadcrumbs/tree/v1.0.0"
             },
             "time": "2026-03-20T17:00:35+00:00"
+        },
+        {
+            "name": "saucebase/demo",
+            "version": "v0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/saucebase-dev/demo.git",
+                "reference": "e6d9deacd349279d8e73075afb4111cfff77557a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/saucebase-dev/demo/zipball/e6d9deacd349279d8e73075afb4111cfff77557a",
+                "reference": "e6d9deacd349279d8e73075afb4111cfff77557a",
+                "shasum": ""
+            },
+            "type": "saucebase-module",
+            "extra": {
+                "laravel": {
+                    "aliases": [],
+                    "providers": []
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Modules\\Demo\\": "app/",
+                    "Modules\\Demo\\Database\\Seeders\\": "database/seeders/",
+                    "Modules\\Demo\\Database\\Factories\\": "database/factories/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Saucebase",
+                    "email": "hello@saucebase.dev"
+                }
+            ],
+            "support": {
+                "issues": "https://github.com/saucebase-dev/demo/issues",
+                "source": "https://github.com/saucebase-dev/demo/tree/v0.1.0"
+            },
+            "time": "2026-04-14T20:14:37+00:00"
         },
         {
             "name": "saucebase/roadmap",
