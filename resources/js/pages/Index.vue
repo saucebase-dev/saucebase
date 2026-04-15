@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import Footer from '@/components/Footer.vue';
-import Header from '@/components/Header.vue';
+import SiteLayout from '@/layouts/SiteLayout.vue';
 import { ModuleCard, ModuleModal, modules } from '@/components/ui/saucebase';
-import { Head } from '@inertiajs/vue3';
 import { BookOpen } from 'lucide-vue-next';
 import { ref } from 'vue';
 
@@ -12,25 +10,13 @@ const selectedMod = ref<Module | null>(null);
 </script>
 
 <template>
-    <Head>
-        <title>
-            {{ $t('Saucebase | The best modular Laravel SaaS Starter Kit') }}
-        </title>
-        <meta
-            name="description"
-            :content="
-                $t(
-                    'Free, open-source Laravel SaaS starter kit. Ships with auth, billing, admin panel, and a modular copy-and-own architecture.',
-                )
-            "
-        />
-    </Head>
-    <div class="bg-background relative isolate flex min-h-screen flex-col">
-        <Header />
-
+    <SiteLayout
+        :title="$t('Saucebase | The best modular Laravel SaaS Starter Kit')"
+        :description="$t('Free, open-source Laravel SaaS starter kit. Ships with auth, billing, admin panel, and a modular copy-and-own architecture.')"
+    >
         <main class="mx-auto w-full px-6 py-16 lg:px-8">
             <div
-                class="relative -mt-15 overflow-hidden p-25"
+                class="relative -mt-15 overflow-hidden p-25 pb-35"
                 style="
                     mask-image:
                         linear-gradient(to bottom, #000 90%, transparent 100%),
@@ -109,9 +95,7 @@ const selectedMod = ref<Module | null>(null);
                 </div>
             </div>
         </main>
-
-        <Footer />
-    </div>
+    </SiteLayout>
 
     <ModuleModal :selected-mod="selectedMod" @close="selectedMod = null" />
 </template>
