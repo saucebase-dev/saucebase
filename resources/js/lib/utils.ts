@@ -3,8 +3,6 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { twMerge } from 'tailwind-merge';
 import { DefineComponent } from 'vue';
 
-const BASE_PATH = '../../..';
-
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
@@ -18,10 +16,10 @@ export function cn(...inputs: ClassValue[]) {
 export const resolveModularPageComponent = (name: string) => {
     if (name.includes('::')) {
         const [moduleName, componentPath] = name.split('::', 2);
-        const moduleComponentPath = `${BASE_PATH}/modules/${moduleName}/resources/js/pages/${componentPath}.vue`;
+        const moduleComponentPath = `../../../modules/${moduleName}/resources/js/pages/${componentPath}.vue`;
 
         const moduleGlobs = import.meta.glob<DefineComponent>(
-            `${BASE_PATH}/modules/*/resources/js/**/*.vue`,
+            '../../../modules/*/resources/js/**/*.vue',
         );
 
         return resolvePageComponent(moduleComponentPath, moduleGlobs);
@@ -33,7 +31,7 @@ export const resolveModularPageComponent = (name: string) => {
     );
 };
 
-const langGlobs = import.meta.glob(`${BASE_PATH}/lang/*.json`, {
+const langGlobs = import.meta.glob('../../../lang/*.json', {
     eager: true,
 }) as Record<string, { default: any }>;
 
@@ -46,8 +44,8 @@ const langGlobs = import.meta.glob(`${BASE_PATH}/lang/*.json`, {
  * PHP translations take precedence over JSON translations.
  */
 const resolveLang = (lang: string): Record<string, any> => {
-    const jsonData = langGlobs[`${BASE_PATH}/lang/${lang}.json`]?.default ?? {};
-    const phpData = langGlobs[`${BASE_PATH}/lang/php_${lang}.json`]?.default ?? {};
+    const jsonData = langGlobs[`../../../lang/${lang}.json`]?.default ?? {};
+    const phpData = langGlobs[`../../../lang/php_${lang}.json`]?.default ?? {};
     return { ...jsonData, ...phpData };
 };
 
