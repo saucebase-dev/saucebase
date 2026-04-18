@@ -55,12 +55,12 @@ return [
     // in the given language.
     // This option allows correctly combine two translation approaches:
     // Laravel translation keys (PHP) and translatable strings (JSON).
-    'exclude-translation-keys' => false,
+    'exclude-translation-keys' => true,
 
     // Indicates whether you need to put untranslated strings
     // at the top of a translation file.
     // The criterion of whether a string is untranslated is
     // if its key and value are equivalent.
     // If sorting is enabled, untranslated and translated strings are sorted separately.
-    'put-untranslated-strings-at-the-top' => false,
+    'put-untranslated-strings-at-the-top' => true,
 ];
