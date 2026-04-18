@@ -62,5 +62,5 @@ return [
     // The criterion of whether a string is untranslated is
     // if its key and value are equivalent.
     // If sorting is enabled, untranslated and translated strings are sorted separately.
-    'put-untranslated-strings-at-the-top' => true,
+    'put-untranslated-strings-at-the-top' => false,
 ];
