@@ -44,7 +44,8 @@
     <a href="https://github.com/saucebase-dev/billing">Billing</a> |
     <a href="https://github.com/saucebase-dev/announcements">Announcements</a> |
     <a href="https://github.com/saucebase-dev/roadmap">Roadmap</a> |
-    <a href="https://github.com/saucebase-dev/themes">Themes</a>
+    <a href="https://github.com/saucebase-dev/themes">Themes</a> |
+    <a href="https://github.com/saucebase-dev/blog">Blog</a>
   </p>
   <p>
     Each module is a standalone Laravel package with its own routes, controllers, views, assets, and tests.
