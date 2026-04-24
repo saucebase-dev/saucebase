@@ -4,7 +4,7 @@ version: '3'
 includes:
     # ── BEGIN MODULES ────────────────────────────────────────────────
     auth:
-        taskfile: ./modules/Auth/Taskfile.yml
+        taskfile: ./modules/auth/Taskfile.yml
         optional: true
     billing:
         taskfile: ./modules/Billing/Taskfile.yml

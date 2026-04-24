@@ -1,7 +1,7 @@
 {
-    "name": "saucebase/{module-}",
+    "name": "{COMPOSER_VENDOR}/{module-}",
     "description": "",
-    "type": "saucebase-module",
+    "type": "{COMPOSER_TYPE}",
     "license": "proprietary",
     "version": "1.0.0",
     "authors": [
