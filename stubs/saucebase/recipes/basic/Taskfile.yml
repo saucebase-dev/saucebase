@@ -16,4 +16,4 @@ tasks:
 
     types:generate:
         desc: Generate TypeScript types from PHP DTOs and enums
-        cmd: php artisan module:generate-types {Module}
+        cmd: php artisan module:generate-types {module}

@@ -1,5 +1,5 @@
 {
-    "name": "saucebase/{module_}",
+    "name": "saucebase/{module-}",
     "description": "",
     "type": "saucebase-module",
     "license": "proprietary",
