@@ -6,11 +6,11 @@ includes:
     auth:
         taskfile: ./modules/auth/Taskfile.yml
         optional: true
+    settings:
+        taskfile: ./modules/settings/Taskfile.yml
+        optional: true
     billing:
         taskfile: ./modules/Billing/Taskfile.yml
-        optional: true
-    settings:
-        taskfile: ./modules/Settings/Taskfile.yml
         optional: true
     announcements:
         taskfile: ./modules/Announcements/Taskfile.yml
