@@ -10,22 +10,22 @@ includes:
         taskfile: ./modules/settings/Taskfile.yml
         optional: true
     billing:
-        taskfile: ./modules/Billing/Taskfile.yml
+        taskfile: ./modules/billing/Taskfile.yml
         optional: true
     announcements:
-        taskfile: ./modules/Announcements/Taskfile.yml
+        taskfile: ./modules/announcements/Taskfile.yml
         optional: true
     roadmap:
-        taskfile: ./modules/Roadmap/Taskfile.yml
+        taskfile: ./modules/roadmap/Taskfile.yml
         optional: true
     themes:
-        taskfile: ./modules/Themes/Taskfile.yml
+        taskfile: ./modules/themes/Taskfile.yml
         optional: true
     demo:
-        taskfile: ./modules/Demo/Taskfile.yml
+        taskfile: ./modules/demo/Taskfile.yml
         optional: true
     blog:
-        taskfile: ./modules/Blog/Taskfile.yml
+        taskfile: ./modules/blog/Taskfile.yml
         optional: true
     # ── END MODULES ──────────────────────────────────────────────────
 
@@ -100,7 +100,7 @@ tasks:
         prompt: This will erase ALL data. Are you sure?
         cmds:
             - docker compose exec app php artisan migrate:fresh --seed
-            - docker compose exec app php artisan module:migrate-refresh --all --seed
+            - docker compose exec app php artisan modules:seed
 
     # ── Translation ───────────────────────────────────────────────
 
