@@ -3,8 +3,10 @@
 namespace App\Providers;
 
 use App\Http\Middleware\SecureHeaders;
+use Illuminate\Foundation\Console\AboutCommand;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
+use InterNACHI\Modular\Support\ModuleRegistry;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -25,6 +27,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureSecureUrls();
+        $this->addCommandAboutInfo();
     }
 
     protected function configureSecureUrls(): void
@@ -53,5 +56,15 @@ class AppServiceProvider extends ServiceProvider
         if ($enforceHttps) {
             $this->app['router']->pushMiddlewareToGroup('web', SecureHeaders::class);
         }
+    }
+
+    protected function addCommandAboutInfo(): void
+    {
+        AboutCommand::add(
+            'Modules',
+            app(ModuleRegistry::class)->modules()->mapWithKeys(fn ($module) => [
+                $module->name => fn () => module_path($module->name),
+            ])->toArray(),
+        );
     }
 }
