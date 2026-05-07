@@ -16,7 +16,7 @@ abstract class ModuleServiceProvider extends ServiceProvider
 
     final protected function moduleName(): string
     {
-        return app(ModuleRegistry::class)->moduleForClass(static::class)->name;
+        return app(ModuleRegistry::class)->moduleForClass(static::class)?->name ?? '';
     }
 
     /**
