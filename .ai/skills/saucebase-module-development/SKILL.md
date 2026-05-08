@@ -50,7 +50,7 @@ Choose **Basic Recipe** when prompted.
 Run these after every scaffold, in order:
 
 ```bash
-composer dump-autoload && php artisan package:discover
+composer require saucebase/<module-name>
 npm run build   # or restart `npm run dev`
 ```
 
