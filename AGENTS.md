@@ -244,7 +244,7 @@ php artisan view:cache             # Compile views
 
 ### Modular Structure
 
-Saucebase uses **nwidart/laravel-modules** for module management. Modules are self-contained feature packs that can be installed, enabled, or disabled independently.
+Saucebase uses **internachi/modular** for module management. Modules are self-contained feature packs installed via Composer — a module is active when required, inactive when removed. There is no enable/disable toggle.
 
 ```
 modules/
@@ -985,13 +985,13 @@ Saucebase is a modular Laravel SaaS starter kit (VILT stack). All features are e
 
 ### Module Creation
 
-Use `php artisan saucebase:recipe {ModuleName}` to scaffold a new module from stubs. After scaffolding: `composer dump-autoload` → `php artisan module:enable ModuleName` → rebuild assets.
+Use `php artisan saucebase:recipe {ModuleName}` to scaffold a new module from stubs. After scaffolding, rebuild assets.
 
 ### Module System
 
-Modules are managed by `nwidart/laravel-modules`. Enable state is tracked in `modules_statuses.json`.
+Modules are managed by `internachi/modular`. A module is active when installed via `composer require`; `composer remove` deactivates it. There is no enable/disable toggle and no `modules_statuses.json`.
 
-**Module discovery:** `module-loader.js` auto-collects assets, translations, and Playwright configs from enabled modules. Never bypass it.
+**Module discovery:** `module-loader.js` auto-collects assets, translations, and Playwright configs from installed modules. Never bypass it.
 
 **Inertia page resolution:**
 

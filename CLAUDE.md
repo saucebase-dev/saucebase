@@ -33,7 +33,6 @@ npm run dev              # Vite dev server with HMR
 
 # Modules
 php artisan saucebase:recipe ModuleName     # Scaffold a new module from stubs
-# After scaffolding: composer dump-autoload && php artisan package:discover
 php artisan modules:list                    # List all discovered modules
 php artisan modules:cache                   # Cache module discovery (production)
 php artisan modules:clear                   # Clear module cache
@@ -283,7 +282,7 @@ Saucebase is a modular Laravel SaaS starter kit (VILT stack). All features are e
 
 ### Module Creation
 
-Use `php artisan saucebase:recipe {ModuleName}` to scaffold a new module from stubs. After scaffolding: `composer dump-autoload && php artisan package:discover` → rebuild assets.
+Use `php artisan saucebase:recipe {ModuleName}` to scaffold a new module from stubs. After scaffolding, rebuild assets.
 
 ### Module System
 
