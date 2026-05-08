@@ -76,81 +76,43 @@ php artisan saucebase:install --no-interaction  # CI/CD mode
 
 #### Installation Steps
 
-To install a module, follow these steps in order:
-
 ```bash
-# 1. Install the module via Composer
+# Install and activate the module
 composer require saucebase/auth
 
-# For development-only modules, use --dev flag
-# composer require --dev saucebase/module-name
+# Run migrations
+php artisan migrate
 
-# 2. Regenerate autoload files
-composer dump-autoload
+# Seed module data (if the module has seeders)
+php artisan modules:seed --module=auth
 
-# 3. Enable the module
-docker compose exec app php artisan module:enable Auth
-
-# 4. Run migrations and seeders
-docker compose exec app php artisan module:migrate Auth --seed
-
-# 5. Build frontend assets to include module resources
+# Build frontend assets
 npm run build
 ```
 
-**What each command does:**
-
-1. `composer require` - Downloads the module package and adds it to composer.json
-2. `composer dump-autoload` - Regenerates Composer's autoload files to include new module classes
-3. `module:enable` - Marks the module as enabled in `modules_statuses.json`
-4. `module:migrate --seed` - Runs database migrations and seeds module data
-5. `npm run build` - Rebuilds frontend assets to include module JavaScript/CSS
-
-**Alternative for local development (without Docker):**
+**Inside Docker, run artisan commands in the container:**
 
 ```bash
 composer require saucebase/auth
-composer dump-autoload
-php artisan module:enable Auth
-php artisan module:migrate Auth --seed
+docker compose exec app php artisan migrate
+docker compose exec app php artisan modules:seed --module=auth
 npm run build
 ```
-
-#### Managing Installed Modules
-
-```bash
-# Enable/disable modules
-php artisan module:enable Auth
-php artisan module:disable Auth
-
-# Run module-specific operations
-php artisan module:migrate Auth         # Run module migrations
-php artisan module:migrate-refresh Auth # Refresh module migrations
-php artisan module:seed Auth            # Seed module data
-php artisan module:list                 # List all modules
-
-# Inside Docker
-docker compose exec app php artisan module:list
-```
-
-**Important:** After enabling/disabling modules, rebuild frontend assets with `npm run build` or restart `npm run dev`.
 
 #### Example: Installing Auth Module
 
 ```bash
-# Install the package
+# Install and activate
 composer require saucebase/auth
-composer dump-autoload
 
-# Enable and migrate
-docker compose exec app php artisan module:enable Auth
-docker compose exec app php artisan module:migrate Auth --seed
+# Run migrations and seed
+php artisan migrate
+php artisan modules:seed --module=auth
 
 # Build assets
 npm run build
 
-# Configure OAuth (optional)
-# Add to .env:
+# Configure OAuth (optional) — add to .env:
 # GOOGLE_CLIENT_ID=your-client-id
 # GOOGLE_CLIENT_SECRET=your-client-secret
 # GITHUB_CLIENT_ID=your-client-id
@@ -244,7 +206,7 @@ php artisan view:cache             # Compile views
 
 ### Modular Structure
 
-Saucebase uses **nwidart/laravel-modules** for module management. Modules are self-contained feature packs that can be installed, enabled, or disabled independently.
+Saucebase uses **internachi/modular** for module management. Modules are self-contained feature packs installed via Composer — a module is active when required, inactive when removed. There is no enable/disable toggle.
 
 ```
 modules/
@@ -280,9 +242,8 @@ modules/
 
 **Module Discovery:**
 
-- Modules are tracked in `modules_statuses.json` (format: `{"ModuleName": true}`)
-- Only enabled modules are loaded and built
-- The `module-loader.js` automatically discovers and collects enabled module assets, translations, and Playwright configs
+- A module is active when installed via `composer require`; `composer remove` deactivates it — no enable/disable toggle
+- The `module-loader.js` automatically discovers and collects installed module assets, translations, and Playwright configs
 
 ### Frontend Architecture
 
@@ -294,7 +255,7 @@ The frontend uses a custom module resolution system that allows pages to be load
 // In routes: render module pages like this
 return inertia('Auth::Login', ['data' => $data]);
 
-// Resolves to: modules/Auth/resources/js/pages/Login.vue
+// Resolves to: modules/auth/resources/js/pages/Login.vue
 ```
 
 **Key Frontend Files:**
@@ -886,8 +847,8 @@ Pages can be rendered from core or modules:
 return inertia('Dashboard');  // resources/js/pages/Dashboard.vue
 
 // Module pages (namespace syntax)
-return inertia('Auth::Login');  // modules/Auth/resources/js/pages/Login.vue
-return inertia('Settings::Index');  // modules/Settings/resources/js/pages/Index.vue
+return inertia('Auth::Login');  // modules/auth/resources/js/pages/Login.vue
+return inertia('Settings::Index');  // modules/settings/resources/js/pages/Index.vue
 ```
 
 ### Translations
@@ -925,7 +886,7 @@ Mailpit available at `http://localhost:8025` for viewing sent emails during deve
 
 ### Module Not Found Errors
 
-1. Check `modules_statuses.json` - ensure module is enabled (`true`)
+1. Verify module is installed: `php artisan modules:list`
 2. Run `composer dump-autoload`
 3. Clear caches: `php artisan optimize:clear`
 4. Rebuild frontend: `npm run build` or restart `npm run dev`
@@ -985,20 +946,20 @@ Saucebase is a modular Laravel SaaS starter kit (VILT stack). All features are e
 
 ### Module Creation
 
-Use `php artisan saucebase:recipe {ModuleName}` to scaffold a new module from stubs. After scaffolding: `composer dump-autoload` → `php artisan module:enable ModuleName` → rebuild assets.
+Use `php artisan saucebase:recipe {ModuleName}` to scaffold a new module from stubs. After scaffolding, rebuild assets.
 
 ### Module System
 
-Modules are managed by `nwidart/laravel-modules`. Enable state is tracked in `modules_statuses.json`.
+Modules are managed by `internachi/modular`. A module is active when installed via `composer require`; `composer remove` deactivates it. There is no enable/disable toggle and no `modules_statuses.json`.
 
-**Module discovery:** `module-loader.js` auto-collects assets, translations, and Playwright configs from enabled modules. Never bypass it.
+**Module discovery:** `module-loader.js` auto-collects assets, translations, and Playwright configs from installed modules. Never bypass it.
 
 **Inertia page resolution:**
 
 <code-snippet name="Inertia rendering" lang="php">
 return inertia('Dashboard');           // resources/js/pages/Dashboard.vue
-return inertia('Auth::Login');         // modules/Auth/resources/js/pages/Login.vue
-return inertia('Roadmap::Index');      // modules/Roadmap/resources/js/pages/Index.vue
+return inertia('Auth::Login');         // modules/auth/resources/js/pages/Login.vue
+return inertia('Roadmap::Index');      // modules/roadmap/resources/js/pages/Index.vue
 </code-snippet>
 
 **SSR control** — opt in per response, not globally:
@@ -1145,7 +1106,7 @@ This project has domain-specific skills available. You MUST activate the relevan
 - `inertia-vue-development` — Develops Inertia.js v3 Vue client-side applications. Activates when creating Vue pages, forms, or navigation; using <Link>, <Form>, useForm, useHttp, setLayoutProps, or router; working with deferred props, prefetching, optimistic updates, instant visits, or polling; or when user mentions Vue with Inertia, Vue pages, Vue forms, or Vue navigation.
 - `tailwindcss-development` — Always invoke when the user's message includes 'tailwind' in any form. Also invoke for: building responsive grid layouts (multi-column card grids, product grids), flex/grid page structures (dashboards with sidebars, fixed topbars, mobile-toggle navs), styling UI components (cards, tables, navbars, pricing sections, forms, inputs, badges), adding dark mode variants, fixing spacing or typography, and Tailwind v3/v4 work. The core use case: writing or fixing Tailwind utility classes in HTML templates (Blade, JSX, Vue). Skip for backend PHP logic, database queries, API routes, JavaScript with no HTML/CSS component, CSS file audits, build tool configuration, and vanilla CSS.
 - `saucebase-filament-development` — Guides Filament resource development inside Saucebase modules. Activate when creating Filament resources, tables, forms, infolists, or pages inside a module, adding actions/filters/bulk actions, registering navigation groups, or testing Filament resources.
-- `saucebase-module-development` — Guides Saucebase module creation and development. Activate when scaffolding a new module, adding controllers/pages/migrations to a module, working with module service providers, Filament module plugins, or when user mentions saucebase:recipe, module:enable, or asks about module structure.
+- `saucebase-module-development` — Guides Saucebase module creation and development. Activate when scaffolding a new module, adding controllers/pages/migrations to a module, working with module service providers, Filament module plugins, or when user mentions saucebase:recipe, modules:list, or asks about module structure.
 
 ## Conventions
 
