@@ -51,17 +51,29 @@ class StackCommandTest extends TestCase
 
     public function test_dev_mode_writes_frontend_json(): void
     {
-        $this->seedFakeSourceDir('vue');
+        $this->seedFakeStubs('vue');
 
         $this->artisan('saucebase:stack vue --dev')
             ->assertSuccessful();
 
         $data = json_decode(file_get_contents($this->tmpDir.'/frontend.json'), true);
         $this->assertSame('vue', $data['framework']);
+        $this->assertTrue($data['dev']);
+    }
+
+    public function test_dev_mode_writes_app_and_ssr_shims(): void
+    {
+        $this->seedFakeStubs('vue');
+
+        $this->artisan('saucebase:stack vue --dev')->assertSuccessful();
+
+        $this->assertStringContainsString("import './vue/app'", file_get_contents($this->tmpDir.'/resources/js/app.ts'));
+        $this->assertStringContainsString("import './vue/ssr'", file_get_contents($this->tmpDir.'/resources/js/ssr.ts'));
     }
 
     public function test_dev_mode_does_not_copy_source_files(): void
     {
+        $this->seedFakeStubs('vue');
         $this->seedFakeSourceDir('vue');
 
         $this->artisan('saucebase:stack vue --dev')
@@ -70,10 +82,23 @@ class StackCommandTest extends TestCase
         $this->assertFileDoesNotExist($this->tmpDir.'/resources/js/pages/Index.vue');
     }
 
+    public function test_dev_mode_copies_config_files_to_root(): void
+    {
+        $this->seedFakeStubs('vue');
+
+        $this->artisan('saucebase:stack vue --dev')->assertSuccessful();
+
+        $this->assertFileExists($this->tmpDir.'/vite.config.js');
+        $this->assertFileExists($this->tmpDir.'/tsconfig.json');
+        $this->assertFileExists($this->tmpDir.'/package.json');
+        $this->assertFileExists($this->tmpDir.'/eslint.config.js');
+        $this->assertFileExists($this->tmpDir.'/components.json');
+    }
+
     public function test_dev_mode_allows_switching_frameworks(): void
     {
-        $this->seedFakeSourceDir('vue');
-        $this->seedFakeSourceDir('react');
+        $this->seedFakeStubs('vue');
+        $this->seedFakeStubs('react');
 
         $this->artisan('saucebase:stack vue --dev')->assertSuccessful();
         $this->artisan('saucebase:stack react --dev')->assertSuccessful();
@@ -84,6 +109,7 @@ class StackCommandTest extends TestCase
 
     public function test_dev_mode_does_not_remove_source_dirs(): void
     {
+        $this->seedFakeStubs('vue');
         $this->seedFakeSourceDir('vue');
         $this->seedFakeSourceDir('react');
 
@@ -95,11 +121,11 @@ class StackCommandTest extends TestCase
 
     public function test_dev_mode_does_not_rewrite_paths_in_config_files(): void
     {
-        $this->seedFakeSourceDir('vue', withConfigFiles: true);
+        $this->seedFakeStubs('vue');
 
         $this->artisan('saucebase:stack vue --dev')->assertSuccessful();
 
-        $viteConfig = file_get_contents($this->tmpDir.'/vite.config.ts');
+        $viteConfig = file_get_contents($this->tmpDir.'/vite.config.js');
         $this->assertStringContainsString('resources/js/vue/', $viteConfig);
     }
 
@@ -123,7 +149,8 @@ class StackCommandTest extends TestCase
 
     public function test_install_mode_copies_source_files_flat(): void
     {
-        $this->seedFakeSourceDir('vue', withConfigFiles: true);
+        $this->seedFakeStubs('vue');
+        $this->seedFakeSourceDir('vue');
 
         $this->artisan('saucebase:stack vue')->assertSuccessful();
 
@@ -132,19 +159,21 @@ class StackCommandTest extends TestCase
 
     public function test_install_mode_rewrites_paths_in_config_files(): void
     {
-        $this->seedFakeSourceDir('vue', withConfigFiles: true);
+        $this->seedFakeStubs('vue');
+        $this->seedFakeSourceDir('vue');
 
         $this->artisan('saucebase:stack vue')->assertSuccessful();
 
-        $viteConfig = file_get_contents($this->tmpDir.'/vite.config.ts');
+        $viteConfig = file_get_contents($this->tmpDir.'/vite.config.js');
         $this->assertStringNotContainsString('resources/js/vue/', $viteConfig);
         $this->assertStringContainsString('resources/js/', $viteConfig);
     }
 
     public function test_install_mode_removes_both_framework_subdirs(): void
     {
-        $this->seedFakeSourceDir('vue', withConfigFiles: true);
-        $this->seedFakeSourceDir('react', withConfigFiles: true);
+        $this->seedFakeStubs('vue');
+        $this->seedFakeSourceDir('vue');
+        $this->seedFakeSourceDir('react');
 
         $this->artisan('saucebase:stack vue')->assertSuccessful();
 
@@ -152,31 +181,48 @@ class StackCommandTest extends TestCase
         $this->assertDirectoryDoesNotExist($this->tmpDir.'/resources/js/react');
     }
 
+    public function test_install_mode_removes_stubs_directory(): void
+    {
+        $this->seedFakeStubs('vue');
+        $this->seedFakeSourceDir('vue');
+
+        $this->artisan('saucebase:stack vue')->assertSuccessful();
+
+        $this->assertDirectoryDoesNotExist($this->tmpDir.'/stubs');
+    }
+
     public function test_install_mode_writes_framework_to_frontend_json(): void
     {
-        $this->seedFakeSourceDir('vue', withConfigFiles: true);
+        $this->seedFakeStubs('vue');
+        $this->seedFakeSourceDir('vue');
 
         $this->artisan('saucebase:stack vue')->assertSuccessful();
 
         $data = json_decode(file_get_contents($this->tmpDir.'/frontend.json'), true);
         $this->assertSame('vue', $data['framework']);
+        $this->assertArrayNotHasKey('dev', $data);
     }
 
     // --- Helpers ---
 
-    private function seedFakeSourceDir(string $framework, bool $withConfigFiles = false): void
+    private function seedFakeStubs(string $framework): void
+    {
+        $stubDir = $this->tmpDir."/stubs/saucebase/stack/{$framework}";
+        $this->files->ensureDirectoryExists($stubDir);
+
+        file_put_contents($stubDir.'/vite.config.js', "input: ['resources/js/{$framework}/app.ts']");
+        file_put_contents($stubDir.'/tsconfig.json', "{\"paths\": {\"@/*\": [\"resources/js/{$framework}/*\"]}}");
+        file_put_contents($stubDir.'/package.json', '{}');
+        file_put_contents($stubDir.'/eslint.config.js', '// eslint');
+        file_put_contents($stubDir.'/components.json', '{}');
+    }
+
+    private function seedFakeSourceDir(string $framework): void
     {
         $jsRoot = $this->tmpDir."/resources/js/{$framework}";
         $this->files->ensureDirectoryExists($jsRoot.'/pages');
 
         $ext = $framework === 'react' ? 'tsx' : 'vue';
         file_put_contents($jsRoot."/pages/Index.{$ext}", '<!-- fake -->');
-
-        if ($withConfigFiles) {
-            file_put_contents($jsRoot.'/vite.config.ts', "input: ['resources/js/{$framework}/app.ts']");
-            file_put_contents($jsRoot.'/tsconfig.json', "{\"paths\": {\"@/*\": [\"resources/js/{$framework}/*\"]}}");
-            file_put_contents($jsRoot.'/package.json', '{}');
-            file_put_contents($jsRoot.'/eslint.config.js', '// eslint');
-        }
     }
 }

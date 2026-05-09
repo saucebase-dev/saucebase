@@ -18,10 +18,10 @@ export const resolveModularPageComponent = (name: string) => {
         const [moduleName, componentPath] = name.split('::', 2);
 
         const moduleFolderName = moduleName.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
-        const moduleComponentPath = `../../../modules/${moduleFolderName}/resources/js/pages/${componentPath}.vue`;
+        const moduleComponentPath = `../../../../modules/${moduleFolderName}/resources/js/pages/${componentPath}.vue`;
 
         const moduleGlobs = import.meta.glob<DefineComponent>(
-            '../../../modules/*/resources/js/**/*.vue',
+            '../../../../modules/*/resources/js/**/*.vue',
         );
 
         return resolvePageComponent(moduleComponentPath, moduleGlobs);
@@ -33,7 +33,7 @@ export const resolveModularPageComponent = (name: string) => {
     );
 };
 
-const langGlobs = import.meta.glob('../../../lang/*.json', {
+const langGlobs = import.meta.glob('../../../../lang/*.json', {
     eager: true,
 }) as Record<string, { default: any }>;
 
@@ -46,8 +46,8 @@ const langGlobs = import.meta.glob('../../../lang/*.json', {
  * PHP translations take precedence over JSON translations.
  */
 const resolveLang = (lang: string): Record<string, any> => {
-    const jsonData = langGlobs[`../../../lang/${lang}.json`]?.default ?? {};
-    const phpData = langGlobs[`../../../lang/php_${lang}.json`]?.default ?? {};
+    const jsonData = langGlobs[`../../../../lang/${lang}.json`]?.default ?? {};
+    const phpData = langGlobs[`../../../../lang/php_${lang}.json`]?.default ?? {};
     return { ...jsonData, ...phpData };
 };
 

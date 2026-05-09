@@ -13,7 +13,7 @@ class StackCommand extends Command
 
     protected $description = 'Select the frontend framework stack (vue or react) for this Saucebase installation';
 
-    private const CONFIG_FILES = ['package.json', 'vite.config.ts', 'tsconfig.json', 'eslint.config.js'];
+    private const CONFIG_FILES = ['package.json', 'vite.config.js', 'tsconfig.json', 'eslint.config.js', 'components.json'];
 
     private const SUPPORTED = ['vue', 'react'];
 
@@ -70,6 +70,7 @@ class StackCommand extends Command
         $this->copyConfigFiles($framework, rewrite: true);
         $this->files->deleteDirectory($this->jsRoot.'/vue');
         $this->files->deleteDirectory($this->jsRoot.'/react');
+        $this->files->deleteDirectory($this->basePath.'/stubs');
         $this->deployModuleFiles($framework);
         $this->writeFrontendJson($framework);
 
@@ -81,7 +82,9 @@ class StackCommand extends Command
     private function runDevMode(string $framework): int
     {
         $this->copyConfigFiles($framework, rewrite: false);
-        $this->writeFrontendJson($framework);
+        $this->files->put($this->jsRoot.'/app.ts', "import './{$framework}/app';\n");
+        $this->files->put($this->jsRoot.'/ssr.ts', "import './{$framework}/ssr';\n");
+        $this->writeFrontendJson($framework, dev: true);
 
         $this->info("Framework set to {$framework} (dev mode). Run: npm install && npm run dev");
 
@@ -107,7 +110,7 @@ class StackCommand extends Command
 
     private function copyConfigFiles(string $framework, bool $rewrite): void
     {
-        $sourceDir = $this->jsRoot."/{$framework}";
+        $sourceDir = $this->basePath."/stubs/saucebase/stack/{$framework}";
 
         foreach (self::CONFIG_FILES as $filename) {
             $source = $sourceDir.'/'.$filename;
@@ -183,11 +186,17 @@ class StackCommand extends Command
         return $data['framework'] ?? null;
     }
 
-    private function writeFrontendJson(string $framework): void
+    private function writeFrontendJson(string $framework, bool $dev = false): void
     {
+        $data = ['framework' => $framework];
+
+        if ($dev) {
+            $data['dev'] = true;
+        }
+
         $this->files->put(
             $this->basePath.'/frontend.json',
-            json_encode(['framework' => $framework], JSON_PRETTY_PRINT).PHP_EOL
+            json_encode($data, JSON_PRETTY_PRINT).PHP_EOL
         );
     }
 }
