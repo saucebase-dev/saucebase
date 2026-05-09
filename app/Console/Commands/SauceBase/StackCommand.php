@@ -66,6 +66,7 @@ class StackCommand extends Command
 
         $this->info("Setting up {$framework}...");
 
+        $this->restoreTrackedFiles();
         $this->copySourceFiles($framework);
         $this->copyConfigFiles($framework, rewrite: true);
         $this->files->deleteDirectory($this->jsRoot.'/vue');
@@ -85,6 +86,7 @@ class StackCommand extends Command
         $this->files->put($this->jsRoot.'/app.ts', "import './{$framework}/app';\n");
         $this->files->put($this->jsRoot.'/ssr.ts', "import './{$framework}/ssr';\n");
         $this->writeFrontendJson($framework, dev: true);
+        $this->skipGeneratedFiles();
 
         $this->info("Framework set to {$framework} (dev mode). Run: npm install && npm run dev");
 
@@ -184,6 +186,27 @@ class StackCommand extends Command
         $data = json_decode($this->files->get($path), true);
 
         return $data['framework'] ?? null;
+    }
+
+    private function skipGeneratedFiles(): void
+    {
+        exec('git update-index --skip-worktree '.implode(' ', $this->generatedFiles()).' 2>/dev/null');
+    }
+
+    private function restoreTrackedFiles(): void
+    {
+        exec('git update-index --no-skip-worktree '.implode(' ', $this->generatedFiles()).' 2>/dev/null');
+    }
+
+    /** @return string[] */
+    private function generatedFiles(): array
+    {
+        return [
+            ...array_map(fn (string $f) => $this->basePath.'/'.$f, self::CONFIG_FILES),
+            $this->jsRoot.'/app.ts',
+            $this->jsRoot.'/ssr.ts',
+            $this->basePath.'/frontend.json',
+        ];
     }
 
     private function writeFrontendJson(string $framework, bool $dev = false): void

@@ -1,3 +1,4 @@
+import { existsSync, readFileSync } from 'fs';
 import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath, pathToFileURL } from 'url';
@@ -15,6 +16,16 @@ import { fileURLToPath, pathToFileURL } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const MODULES_PATH = 'modules';
+
+function getModuleJsRoot(modulePath) {
+    const frontendJson = path.join(__dirname, 'frontend.json');
+    const { framework } = JSON.parse(readFileSync(frontendJson, 'utf8'));
+
+    if (!framework) return path.join(modulePath, 'resources', 'js');
+
+    const fwSubdir = path.join(modulePath, 'resources', 'js', framework);
+    return existsSync(fwSubdir) ? fwSubdir : path.join(modulePath, 'resources', 'js');
+}
 
 export async function loadEnabledModuleNames(baseDir) {
     const modulesDir = path.join(baseDir, MODULES_PATH);
@@ -73,11 +84,8 @@ async function importModuleFile(filePath, moduleName, displayName) {
 function extractModuleAssetPaths(moduleConfig, moduleName) {
     // Support both named exports and default exports: moduleConfig may be the
     // namespace object ({ default, ... }) or the default export itself.
-    const config =
-        moduleConfig && moduleConfig.default
-            ? moduleConfig.default
-            : moduleConfig;
-    const modulePaths = config && config.paths;
+    const config = moduleConfig?.default ?? moduleConfig;
+    const modulePaths = config?.paths;
 
     if (!modulePaths) {
         return [];
@@ -88,10 +96,16 @@ function extractModuleAssetPaths(moduleConfig, moduleName) {
         return [];
     }
 
-    // Use posix join so generated paths use forward slashes consistently.
-    return modulePaths.map((assetPath) =>
-        path.posix.join(MODULES_PATH, moduleName, 'resources', assetPath),
-    );
+    const moduleDir = path.join(__dirname, MODULES_PATH, moduleName);
+    const jsRoot = getModuleJsRoot(moduleDir);
+
+    return modulePaths.map((assetPath) => {
+        if (assetPath.startsWith('js/')) {
+            const absPath = path.join(jsRoot, assetPath.slice(3));
+            return path.relative(__dirname, absPath).split(path.sep).join('/');
+        }
+        return path.posix.join(MODULES_PATH, moduleName, 'resources', assetPath);
+    });
 }
 
 /**
