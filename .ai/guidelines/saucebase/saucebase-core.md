@@ -8,7 +8,7 @@ Use `php artisan saucebase:recipe {modulename}` to scaffold a new module from st
 
 ### Module System
 
-Modules are managed by `internachi/modular`. Module folder names are always lowercase (`modules/auth/`, `modules/billing/`). PHP namespaces remain TitleCase (`Modules\Auth\...`) per PSR-4. There is no `modules_statuses.json` — presence in `composer.json` determines active state.
+Modules are managed by `internachi/modular`. Module folder names are always lowercase (`modules/auth/`, `modules/billing/`). PHP namespaces remain TitleCase (`Modules\Auth\...`) per PSR-4.
 
 **Module discovery:** `module-loader.js` auto-collects assets, translations, and Playwright configs from installed modules. Never bypass it.
 
