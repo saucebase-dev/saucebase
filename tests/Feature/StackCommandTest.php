@@ -107,6 +107,31 @@ class StackCommandTest extends TestCase
         $this->assertSame('react', $data['framework']);
     }
 
+    public function test_dev_mode_copies_view_files_from_stubs(): void
+    {
+        $this->seedFakeStubs('vue');
+        $this->seedFakeViewStub('vue', 'app.ts');
+
+        $this->artisan('saucebase:stack vue --dev')->assertSuccessful();
+
+        $blade = file_get_contents($this->tmpDir.'/resources/views/app.blade.php');
+        $this->assertStringContainsString('app.ts', $blade);
+    }
+
+    public function test_dev_mode_updates_view_when_switching_frameworks(): void
+    {
+        $this->seedFakeStubs('vue');
+        $this->seedFakeStubs('react');
+        $this->seedFakeViewStub('vue', 'app.ts');
+        $this->seedFakeViewStub('react', 'app.tsx');
+
+        $this->artisan('saucebase:stack vue --dev')->assertSuccessful();
+        $this->assertStringContainsString('app.ts', file_get_contents($this->tmpDir.'/resources/views/app.blade.php'));
+
+        $this->artisan('saucebase:stack react --dev')->assertSuccessful();
+        $this->assertStringContainsString('app.tsx', file_get_contents($this->tmpDir.'/resources/views/app.blade.php'));
+    }
+
     public function test_dev_mode_does_not_remove_source_dirs(): void
     {
         $this->seedFakeStubs('vue');
@@ -205,6 +230,13 @@ class StackCommandTest extends TestCase
     }
 
     // --- Helpers ---
+
+    private function seedFakeViewStub(string $framework, string $entry): void
+    {
+        $viewDir = $this->tmpDir."/stubs/saucebase/stack/{$framework}/views";
+        $this->files->ensureDirectoryExists($viewDir);
+        file_put_contents($viewDir.'/app.blade.php', "@vite(['{$entry}'])");
+    }
 
     private function seedFakeStubs(string $framework): void
     {

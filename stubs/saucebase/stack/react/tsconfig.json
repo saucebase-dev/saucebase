@@ -1,0 +1,32 @@
+{
+    "compilerOptions": {
+        "allowJs": true,
+        "module": "ESNext",
+        "moduleResolution": "bundler",
+        "jsx": "react-jsx",
+        "strict": true,
+        "isolatedModules": true,
+        "target": "ESNext",
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "noEmit": true,
+        "skipLibCheck": true,
+        "paths": {
+            "@/*": ["./resources/js/react/*"],
+            "@modules/*": ["./modules/*"],
+            "@e2e/*": ["./tests/e2e/*"],
+            "ziggy-js": ["./vendor/tightenco/ziggy"]
+        }
+    },
+    "include": [
+        "resources/js/*.ts",
+        "resources/js/react/**/*.ts",
+        "resources/js/react/**/*.tsx",
+        "modules/**/resources/js/**/*.ts",
+        "modules/**/resources/js/**/*.tsx",
+        "types/**/*.ts",
+        "tests/e2e/**/*.ts",
+        "modules/**/tests/e2e/**/*.ts",
+        "playwright.config.ts"
+    ]
+}

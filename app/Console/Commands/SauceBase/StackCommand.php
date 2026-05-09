@@ -15,6 +15,8 @@ class StackCommand extends Command
 
     private const CONFIG_FILES = ['package.json', 'vite.config.js', 'tsconfig.json', 'eslint.config.js', 'components.json'];
 
+    private const VIEW_FILES = ['app.blade.php'];
+
     private const SUPPORTED = ['vue', 'react'];
 
     private string $basePath;
@@ -69,12 +71,12 @@ class StackCommand extends Command
         $this->restoreTrackedFiles();
         $this->copySourceFiles($framework);
         $this->copyConfigFiles($framework, rewrite: true);
+        $this->copyViewFiles($framework);
         $this->files->deleteDirectory($this->jsRoot.'/vue');
         $this->files->deleteDirectory($this->jsRoot.'/react');
         $this->files->deleteDirectory($this->basePath.'/stubs');
         $this->deployModuleFiles($framework);
         $this->writeFrontendJson($framework);
-
         $this->info("Framework set to {$framework}. Run: npm install && npm run dev");
 
         return self::SUCCESS;
@@ -82,11 +84,14 @@ class StackCommand extends Command
 
     private function runDevMode(string $framework): int
     {
+        $this->restoreTrackedFiles();
         $this->copyConfigFiles($framework, rewrite: false);
-        $this->files->put($this->jsRoot.'/app.ts', "import './{$framework}/app';\n");
-        $this->files->put($this->jsRoot.'/ssr.ts', "import './{$framework}/ssr';\n");
+        $this->copyViewFiles($framework);
+        $ext = $this->appExtension($framework);
+        $this->files->put($this->jsRoot."/app.{$ext}", "import './{$framework}/app';\n");
+        $this->files->put($this->jsRoot."/ssr.{$ext}", "import './{$framework}/ssr';\n");
         $this->writeFrontendJson($framework, dev: true);
-        $this->skipGeneratedFiles();
+        $this->skipGeneratedFiles($framework);
 
         $this->info("Framework set to {$framework} (dev mode). Run: npm install && npm run dev");
 
@@ -188,23 +193,49 @@ class StackCommand extends Command
         return $data['framework'] ?? null;
     }
 
-    private function skipGeneratedFiles(): void
+    private function skipGeneratedFiles(string $framework): void
     {
-        exec('git update-index --skip-worktree '.implode(' ', $this->generatedFiles()).' 2>/dev/null');
+        exec('git update-index --skip-worktree '.implode(' ', $this->generatedFiles($framework)).' 2>/dev/null');
     }
 
     private function restoreTrackedFiles(): void
     {
-        exec('git update-index --no-skip-worktree '.implode(' ', $this->generatedFiles()).' 2>/dev/null');
+        $framework = $this->getSelectedFramework() ?? 'vue';
+        exec('git update-index --no-skip-worktree '.implode(' ', $this->generatedFiles($framework)).' 2>/dev/null');
+    }
+
+    private function appExtension(string $framework): string
+    {
+        return $framework === 'react' ? 'tsx' : 'ts';
+    }
+
+    private function copyViewFiles(string $framework): void
+    {
+        $sourceDir = $this->basePath."/stubs/saucebase/stack/{$framework}/views";
+
+        foreach (self::VIEW_FILES as $filename) {
+            $source = $sourceDir.'/'.$filename;
+            $destination = $this->basePath.'/resources/views/'.$filename;
+
+            if (! $this->files->exists($source)) {
+                continue;
+            }
+
+            $this->files->ensureDirectoryExists(dirname($destination));
+            $this->files->put($destination, $this->files->get($source));
+        }
     }
 
     /** @return string[] */
-    private function generatedFiles(): array
+    private function generatedFiles(string $framework = 'vue'): array
     {
+        $ext = $this->appExtension($framework);
+
         return [
             ...array_map(fn (string $f) => $this->basePath.'/'.$f, self::CONFIG_FILES),
-            $this->jsRoot.'/app.ts',
-            $this->jsRoot.'/ssr.ts',
+            ...array_map(fn (string $f) => $this->basePath.'/resources/views/'.$f, self::VIEW_FILES),
+            $this->jsRoot."/app.{$ext}",
+            $this->jsRoot."/ssr.{$ext}",
             $this->basePath.'/frontend.json',
         ];
     }

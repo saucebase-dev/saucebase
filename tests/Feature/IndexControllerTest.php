@@ -19,7 +19,6 @@ class IndexControllerTest extends TestCase
 
     protected function tearDown(): void
     {
-        // Restore frontend.json to null state after each test
         file_put_contents($this->frontendJson, json_encode(['framework' => null], JSON_PRETTY_PRINT).PHP_EOL);
         parent::tearDown();
     }
@@ -55,8 +54,8 @@ class IndexControllerTest extends TestCase
         $response = $this->get('/');
 
         $response->assertStatus(200);
-        // The setup view is not rendered — Inertia took over
-        $response->assertViewMissing('setup');
+        $response->assertViewIs('app');
+        $response->assertDontSeeText('Choose your frontend framework');
     }
 
     public function test_setup_page_shows_vue_and_react_commands(): void
