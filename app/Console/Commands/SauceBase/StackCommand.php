@@ -133,8 +133,8 @@ class StackCommand extends Command
     private function rewritePaths(string $content, string $framework): string
     {
         return str_replace(
-            "resources/js/{$framework}/",
-            'resources/js/',
+            ["resources/js/{$framework}/", "resources/js/{$framework}'"],
+            ['resources/js/', "resources/js'"],
             $content
         );
     }

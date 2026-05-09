@@ -12,7 +12,7 @@ import {
     executeModuleSetups,
 } from './lib/moduleSetup';
 
-import '../../css/app.css';
+import '@css/app.css';
 
 /**
  * Used as a wrapper to global components

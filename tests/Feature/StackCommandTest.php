@@ -166,6 +166,7 @@ class StackCommandTest extends TestCase
 
         $viteConfig = file_get_contents($this->tmpDir.'/vite.config.js');
         $this->assertStringNotContainsString('resources/js/vue/', $viteConfig);
+        $this->assertStringNotContainsString("resources/js/vue'", $viteConfig);
         $this->assertStringContainsString('resources/js/', $viteConfig);
     }
 
@@ -210,7 +211,7 @@ class StackCommandTest extends TestCase
         $stubDir = $this->tmpDir."/stubs/saucebase/stack/{$framework}";
         $this->files->ensureDirectoryExists($stubDir);
 
-        file_put_contents($stubDir.'/vite.config.js', "input: ['resources/js/{$framework}/app.ts']");
+        file_put_contents($stubDir.'/vite.config.js', "input: ['resources/js/{$framework}/app.ts'], alias: { '@': 'resources/js/{$framework}' }");
         file_put_contents($stubDir.'/tsconfig.json', "{\"paths\": {\"@/*\": [\"resources/js/{$framework}/*\"]}}");
         file_put_contents($stubDir.'/package.json', '{}');
         file_put_contents($stubDir.'/eslint.config.js', '// eslint');
