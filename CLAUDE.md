@@ -238,6 +238,10 @@ Trigger: any change to stack versions, module structure, service providers, nami
 
 Run `/code-review` to launch the code review agent (`feature-dev:code-reviewer`). Do not run it automatically.
 
+## Working Style
+
+**Ask before assuming.** When context is missing — a file path, a git repo URL, an install workflow, a third-party service — stop and ask rather than searching the entire codebase or inferring from adjacent projects. State clearly what you need and why, then wait for the answer.
+
 ## Implementation Philosophy
 
 - **Minimum viable implementation** — simplest solution that solves the problem
