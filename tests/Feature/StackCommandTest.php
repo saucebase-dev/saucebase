@@ -229,6 +229,43 @@ class StackCommandTest extends TestCase
         $this->assertArrayNotHasKey('dev', $data);
     }
 
+    // --- Reset ---
+
+    public function test_reset_does_nothing_when_no_framework_selected(): void
+    {
+        $this->files->delete($this->tmpDir.'/frontend.json');
+
+        $this->artisan('saucebase:stack --reset')
+            ->assertSuccessful()
+            ->expectsOutputToContain('nothing to reset');
+    }
+
+    public function test_reset_succeeds_when_framework_is_set(): void
+    {
+        $this->seedFakeStubs('vue');
+        $this->artisan('saucebase:stack vue --dev')->assertSuccessful();
+
+        $this->artisan('saucebase:stack --reset')
+            ->assertSuccessful()
+            ->expectsOutputToContain('Reset complete');
+    }
+
+    public function test_reset_allows_selecting_framework_again_after_reset(): void
+    {
+        $this->seedFakeStubs('vue');
+        $this->artisan('saucebase:stack vue --dev')->assertSuccessful();
+        $this->artisan('saucebase:stack --reset')->assertSuccessful();
+
+        // Write a fresh frontend.json with null framework (simulating git restore)
+        file_put_contents($this->tmpDir.'/frontend.json', json_encode(['framework' => null]));
+
+        $this->artisan('saucebase:stack vue --dev')
+            ->assertSuccessful();
+
+        $data = json_decode(file_get_contents($this->tmpDir.'/frontend.json'), true);
+        $this->assertSame('vue', $data['framework']);
+    }
+
     // --- Helpers ---
 
     private function seedFakeViewStub(string $framework, string $entry): void

@@ -10,10 +10,7 @@ export interface ModuleSetup {
  * Uses Vite's import.meta.glob to eagerly load module app.ts files
  */
 export function discoverModuleSetups() {
-    return {
-        ...import.meta.glob<ModuleSetup>('/modules/*/resources/js/vue/app.ts', { eager: true }),
-        ...import.meta.glob<ModuleSetup>('/modules/*/resources/js/app.ts', { eager: true }),
-    };
+    return import.meta.glob<ModuleSetup>('/modules/*/resources/js/app.ts', { eager: true });
 }
 
 /**

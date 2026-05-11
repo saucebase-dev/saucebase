@@ -26,6 +26,7 @@ export default defineConfigWithVueTs(
             'tailwind.config.js',
             'resources/js/components/ui/*',
             'modules/*/resources/js/components/ui/*',
+            'stubs/saucebase/stack/*/resources/js/**/*',
         ],
     },
     {

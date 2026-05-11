@@ -8,8 +8,9 @@ use Illuminate\Filesystem\Filesystem;
 class StackCommand extends Command
 {
     protected $signature = 'saucebase:stack
-                            {stack : The frontend stack to install (vue or react)}
-                            {--dev : Contributor dev mode — copy config files only, keep both source dirs}';
+                            {stack? : The frontend stack to install (vue or react)}
+                            {--dev : Contributor dev mode — copy config files only, keep both source dirs}
+                            {--reset : Reset to clean state with no framework selected}';
 
     protected $description = 'Select the frontend framework stack (vue or react) for this Saucebase installation';
 
@@ -35,7 +36,11 @@ class StackCommand extends Command
 
     public function handle(): int
     {
-        $framework = strtolower($this->argument('stack'));
+        if ($this->option('reset')) {
+            return $this->runReset();
+        }
+
+        $framework = strtolower($this->argument('stack') ?? '');
 
         if (! in_array($framework, self::SUPPORTED)) {
             $this->error("Invalid framework '{$framework}'. Supported: ".implode(', ', self::SUPPORTED).'.');
@@ -175,8 +180,6 @@ class StackCommand extends Command
                 $this->files->copy($file->getPathname(), $destination);
             }
 
-            $this->files->deleteDirectory($jsRoot.'/vue');
-            $this->files->deleteDirectory($jsRoot.'/react');
         }
     }
 
@@ -196,6 +199,36 @@ class StackCommand extends Command
     private function skipGeneratedFiles(string $framework): void
     {
         exec('git update-index --skip-worktree '.implode(' ', $this->generatedFiles($framework)).' 2>/dev/null');
+    }
+
+    private function runReset(): int
+    {
+        $framework = $this->getSelectedFramework();
+
+        if ($framework === null) {
+            $this->info('No framework selected — nothing to reset.');
+
+            return self::SUCCESS;
+        }
+
+        $this->info("Resetting framework '{$framework}'...");
+
+        $this->restoreTrackedFiles();
+
+        $ext = $this->appExtension($framework);
+        $filesToRestore = [
+            ...array_map(fn (string $f) => $this->basePath.'/'.$f, self::CONFIG_FILES),
+            ...array_map(fn (string $f) => $this->basePath.'/resources/views/'.$f, self::VIEW_FILES),
+            $this->jsRoot."/app.{$ext}",
+            $this->jsRoot."/ssr.{$ext}",
+            $this->basePath.'/frontend.json',
+        ];
+
+        exec('git checkout -- '.implode(' ', $filesToRestore).' 2>/dev/null');
+
+        $this->info('Reset complete. Run: npm install to restore base dependencies.');
+
+        return self::SUCCESS;
     }
 
     private function restoreTrackedFiles(): void

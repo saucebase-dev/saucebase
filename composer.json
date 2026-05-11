@@ -42,7 +42,8 @@
         "phpunit/phpunit": "^12.3",
         "saucebase/laravel-playwright": "^1.0",
         "saucebase/module-installer": "^3.1",
-        "symfony/filesystem": "^7.3"
+        "symfony/filesystem": "^7.3",
+        "saucebase/auth": "*"
     },
     "suggest": {
         "saucebase/announcements": "Site-wide announcement banners with scheduling, audience targeting, and cookie-based dismissal",
@@ -129,7 +130,7 @@
         "sort-packages": true,
         "allow-plugins": {
             "php-http/discovery": true,
-            "saucebase/module-installer": true
+            "saucebase/module-installer": false
         }
     },
     "minimum-stability": "stable",

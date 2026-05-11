@@ -30,6 +30,7 @@ export default tseslint.config(
             'tailwind.config.js',
             'resources/js/components/ui/*',
             'modules/*/resources/js/components/ui/*',
+            'stubs/saucebase/stack/*/resources/js/**/*',
         ],
     },
     prettier,

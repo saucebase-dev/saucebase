@@ -3,26 +3,23 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { twMerge } from 'tailwind-merge';
 import { DefineComponent } from 'vue';
 
+declare const __SAUCEBASE_DEV__: boolean;
+declare const __SAUCEBASE_FRAMEWORK__: string;
+
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
 
-/**
- * Resolve a Vue component, supporting modular namespaces.
- *
- * @param name The name of the component to resolve. Can include module namespace like 'ModuleName::ComponentPath'.
- * @returns A Promise that resolves to the Vue component.
- */
 export const resolveModularPageComponent = (name: string) => {
     if (name.includes('::')) {
         const [moduleName, componentPath] = name.split('::', 2);
-
         const moduleFolderName = moduleName.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
-        const moduleComponentPath = `/modules/${moduleFolderName}/resources/js/pages/${componentPath}.vue`;
 
-        const moduleGlobs = import.meta.glob<DefineComponent>(
-            '/modules/*/resources/js/**/*.vue',
-        );
+        const moduleGlobs = import.meta.glob<DefineComponent>('/modules/*/resources/js/**/pages/**/*.vue');
+
+        const moduleComponentPath = __SAUCEBASE_DEV__
+            ? `/modules/${moduleFolderName}/resources/js/${__SAUCEBASE_FRAMEWORK__}/pages/${componentPath}.vue`
+            : `/modules/${moduleFolderName}/resources/js/pages/${componentPath}.vue`;
 
         return resolvePageComponent(moduleComponentPath, moduleGlobs);
     }

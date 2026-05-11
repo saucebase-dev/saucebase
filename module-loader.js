@@ -1,4 +1,3 @@
-import { existsSync, readFileSync } from 'fs';
 import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath, pathToFileURL } from 'url';
@@ -6,26 +5,16 @@ import { fileURLToPath, pathToFileURL } from 'url';
 /**
  * Module Asset Loader
  *
- * Automatically discovers and collects asset paths from Laravel modules.
- * Integrates with the main Vite configuration to include module assets in the build process.
+ * Automatically discovers enabled modules and collects their lang paths,
+ * Playwright configs, and other metadata for the main Vite configuration.
  *
- * @fileoverview This loader scans the modules directory and imports vite.config.js files
- * to collect asset paths. All directories containing a vite.config.js are treated as modules.
+ * @fileoverview Modules are identified by the presence of a vite.config.js file.
+ * Module CSS and JS assets are imported directly in each module's app.ts entry point.
  */
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const MODULES_PATH = 'modules';
-
-function getModuleJsRoot(modulePath) {
-    const frontendJson = path.join(__dirname, 'frontend.json');
-    const { framework } = JSON.parse(readFileSync(frontendJson, 'utf8'));
-
-    if (!framework) return path.join(modulePath, 'resources', 'js');
-
-    const fwSubdir = path.join(modulePath, 'resources', 'js', framework);
-    return existsSync(fwSubdir) ? fwSubdir : path.join(modulePath, 'resources', 'js');
-}
 
 export async function loadEnabledModuleNames(baseDir) {
     const modulesDir = path.join(baseDir, MODULES_PATH);
@@ -79,74 +68,6 @@ async function importModuleFile(filePath, moduleName, displayName) {
         );
         return null;
     }
-}
-
-function extractModuleAssetPaths(moduleConfig, moduleName) {
-    // Support both named exports and default exports: moduleConfig may be the
-    // namespace object ({ default, ... }) or the default export itself.
-    const config = moduleConfig?.default ?? moduleConfig;
-    const modulePaths = config?.paths;
-
-    if (!modulePaths) {
-        return [];
-    }
-
-    if (!Array.isArray(modulePaths)) {
-        console.warn(`Module ${moduleName}: 'paths' export must be an array`);
-        return [];
-    }
-
-    const moduleDir = path.join(__dirname, MODULES_PATH, moduleName);
-    const jsRoot = getModuleJsRoot(moduleDir);
-
-    return modulePaths.map((assetPath) => {
-        if (assetPath.startsWith('js/')) {
-            const absPath = path.join(jsRoot, assetPath.slice(3));
-            return path.relative(__dirname, absPath).split(path.sep).join('/');
-        }
-        return path.posix.join(MODULES_PATH, moduleName, 'resources', assetPath);
-    });
-}
-
-/**
- * Collects asset paths from enabled modules
- *
- * Scans the modules directory for enabled modules and imports their vite.config.js
- * files to collect asset paths that should be included in the main build.
- *
- * @param {string[]} paths - Initial array of asset paths to extend
- *
- * @returns {Promise<string[]>} Array of all asset paths including discovered module assets
- *
- * @example
- * const initialPaths = ['resources/js/app.ts'];
- * const allPaths = await collectModuleAssetsPaths(initialPaths, 'modules');
- * // Returns: ['resources/js/app.ts', 'modules/auth/resources/css/app.css', ...]
- */
-export async function collectModuleAssetsPaths(paths = []) {
-    const modulesDir = path.join(__dirname, MODULES_PATH);
-    const enabledModules = await loadEnabledModuleNames(__dirname);
-    const configFile = 'vite.config.js';
-
-    for (const moduleName of enabledModules) {
-        const moduleConfig = await importModuleFile(
-            path.join(modulesDir, moduleName, configFile),
-            moduleName,
-            configFile,
-        );
-
-        if (!moduleConfig) {
-            continue;
-        }
-
-        const moduleAssetPaths = extractModuleAssetPaths(
-            moduleConfig,
-            moduleName,
-        );
-        paths.push(...moduleAssetPaths);
-    }
-
-    return paths;
 }
 
 /**

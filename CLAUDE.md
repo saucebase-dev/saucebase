@@ -132,7 +132,9 @@ export default {
 - `resources/js/lib/utils.ts` — `resolveModularPageComponent()` for module page resolution
 - `resources/js/lib/moduleSetup.ts` — Module lifecycle management
 
-**Vite aliases:** `@` = `resources/js`, `@modules` = `modules/`, `ziggy-js` = vendor path
+**Multi-framework:** Frontend code lives under `resources/js/{framework}/` (e.g. `vue/`, `react/`). Any change to shared frontend infrastructure — Vite config, module resolution (`utils.ts`), module lifecycle (`moduleSetup.ts`), or build tooling — must be reviewed and applied consistently across all framework directories. Never fix something in `vue/` without checking if `react/` (and any future framework) needs the same fix.
+
+**Vite aliases:** `@` = `resources/js/{framework}`, `@modules` = `modules/`, `@css` = `resources/css`, `ziggy-js` = vendor path
 
 **TypeScript path aliases** (`tsconfig.json`): `@` = `resources/js`, `@modules` = `modules/`, `@e2e` = `tests/e2e`. Always use these aliases — never use relative `../../..` paths. Module E2E tests import core helpers as `@e2e/helpers/ssr`, not `../../../../tests/e2e/helpers/ssr`.
 

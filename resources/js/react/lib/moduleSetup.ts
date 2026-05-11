@@ -4,10 +4,7 @@ export interface ModuleSetup {
 }
 
 export function discoverModuleSetups() {
-    return {
-        ...import.meta.glob<ModuleSetup>('/modules/*/resources/js/react/app.ts', { eager: true }),
-        ...import.meta.glob<ModuleSetup>('/modules/*/resources/js/app.ts', { eager: true }),
-    };
+    return import.meta.glob<ModuleSetup>('/modules/*/resources/js/app.ts', { eager: true });
 }
 
 export async function executeModuleSetups(moduleSetups: Record<string, ModuleSetup>): Promise<void> {
