@@ -250,6 +250,35 @@ class StackCommandTest extends TestCase
             ->expectsOutputToContain('Reset complete');
     }
 
+    public function test_reset_succeeds_with_both_entry_point_extensions_present(): void
+    {
+        $this->seedFakeStubs('react');
+        $this->artisan('saucebase:stack react --dev')->assertSuccessful();
+
+        // Simulate both .ts and .tsx entry points being present (multi-framework branch state)
+        file_put_contents($this->tmpDir.'/resources/js/app.ts', "import './vue/app';\n");
+        file_put_contents($this->tmpDir.'/resources/js/app.tsx', "import './react/app';\n");
+        file_put_contents($this->tmpDir.'/resources/js/ssr.ts', "import './vue/ssr';\n");
+        file_put_contents($this->tmpDir.'/resources/js/ssr.tsx', "import './react/ssr';\n");
+
+        $this->artisan('saucebase:stack --reset')
+            ->assertSuccessful()
+            ->expectsOutputToContain('Reset complete');
+    }
+
+    public function test_reset_succeeds_with_package_lock_json_present(): void
+    {
+        $this->seedFakeStubs('vue');
+        $this->artisan('saucebase:stack vue --dev')->assertSuccessful();
+
+        // Simulate npm install having run (dirtying package-lock.json)
+        file_put_contents($this->tmpDir.'/package-lock.json', '{"lockfileVersion":3}');
+
+        $this->artisan('saucebase:stack --reset')
+            ->assertSuccessful()
+            ->expectsOutputToContain('Reset complete');
+    }
+
     public function test_reset_allows_selecting_framework_again_after_reset(): void
     {
         $this->seedFakeStubs('vue');

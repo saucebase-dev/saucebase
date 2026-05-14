@@ -61,6 +61,9 @@
         "vue-tsc": "^2.2.12"
     },
     "dependencies": {
+        "@fontsource-variable/jetbrains-mono": "^5.2.8",
+        "@fontsource-variable/outfit": "^5.2.8",
+        "@fontsource-variable/source-serif-4": "^5.2.9",
         "@inertiajs/vite": "^3.0.0",
         "@vue/server-renderer": "^3.5.22",
         "@vueuse/core": "^13.9.0",

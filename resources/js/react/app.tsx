@@ -1,3 +1,5 @@
+import App from '@/components/App';
+import { I18nProvider } from '@/i18n';
 import { createInertiaApp } from '@inertiajs/react';
 import { createRoot } from 'react-dom/client';
 import { discoverModuleSetups, executeModuleSetups } from './lib/moduleSetup';
@@ -10,10 +12,23 @@ const moduleSetups = discoverModuleSetups();
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
     resolve: resolveModularPageComponent,
-    setup({ el, App, props }) {
+    setup({ el, App: InertiaApp, props }) {
+        const locale = (props.initialPage.props?.locale as string) || 'en';
+
         executeModuleSetups(moduleSetups).then(() => {
-            createRoot(el).render(<App {...props} />);
+            createRoot(el).render(
+                <I18nProvider initialLocale={locale}>
+                    <App>
+                        <InertiaApp {...props} />
+                    </App>
+                </I18nProvider>,
+            );
         });
     },
-    progress: { color: '#4B5563' },
+    progress: {
+        color:
+            getComputedStyle(document.documentElement)
+                .getPropertyValue('--primary')
+                .trim() || '#4B5563',
+    },
 });

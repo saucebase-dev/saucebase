@@ -4,6 +4,7 @@ import react from '@vitejs/plugin-react';
 import fs from 'fs';
 import laravel from 'laravel-vite-plugin';
 import path from 'path';
+import Icons from 'unplugin-icons/vite';
 import { defineConfig } from 'vite';
 import { collectModuleLangPaths } from './module-loader.js';
 
@@ -40,13 +41,18 @@ async function createConfig() {
             tailwindcss(),
             laravel({
                 input: [
-                    'resources/js/react/app.tsx',
+                    'resources/js/app.tsx',
                     'resources/css/filament/admin/theme.css',
                 ],
                 refresh: true,
             }),
             inertia(),
             react(),
+            Icons({
+                compiler: 'jsx',
+                jsx: 'react',
+                autoInstall: true,
+            }),
         ],
         build: {
             rollupOptions: {

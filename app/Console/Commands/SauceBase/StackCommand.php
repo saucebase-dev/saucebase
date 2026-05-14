@@ -179,7 +179,6 @@ class StackCommand extends Command
                 $this->files->ensureDirectoryExists(dirname($destination));
                 $this->files->copy($file->getPathname(), $destination);
             }
-
         }
     }
 
@@ -222,6 +221,7 @@ class StackCommand extends Command
             $this->jsRoot."/app.{$ext}",
             $this->jsRoot."/ssr.{$ext}",
             $this->basePath.'/frontend.json',
+            $this->basePath.'/package-lock.json',
         ];
 
         exec('git checkout -- '.implode(' ', $filesToRestore).' 2>/dev/null');
