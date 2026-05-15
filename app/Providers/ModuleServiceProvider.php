@@ -73,7 +73,7 @@ abstract class ModuleServiceProvider extends ServiceProvider
      */
     protected function replaceConfig(string $path, string $key): void
     {
-        $this->app['config']->set($key, require module_path($this->moduleName(), $path));
+        $this->app->make('config')->set($key, require module_path($this->moduleName(), $path));
     }
 
     /**
