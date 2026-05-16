@@ -10,7 +10,7 @@ import {
 import { useLocalization } from '@/hooks/useLocalization';
 import { useT } from '@/i18n';
 import { Globe } from 'lucide-react';
-import type { SVGProps } from 'react';
+import type { JSX, SVGProps } from 'react';
 import IconBR from '~icons/circle-flags/br';
 import IconEN from '~icons/circle-flags/en';
 
@@ -48,9 +48,9 @@ export default function LanguageSelector({
                 <DropdownMenuTrigger asChild>
                     <button className={triggerClass} aria-label={t('Language Selector')}>
                         {CurrentIcon ? (
-                            <CurrentIcon className="size-4.5" />
+                            <CurrentIcon className="size-4.5 rounded-full" />
                         ) : (
-                            <Globe className="size-4.5" />
+                            <Globe className="size-4.5 rounded-full" />
                         )}
                     </button>
                 </DropdownMenuTrigger>
@@ -61,7 +61,7 @@ export default function LanguageSelector({
                             onClick={() => setLanguage(code)}
                             className={language === code ? 'bg-accent text-accent-foreground' : ''}
                         >
-                            {Icon ? <Icon className="size-4" /> : <Globe className="size-4" />}
+                            {Icon ? <Icon className="size-4 rounded-full" /> : <Globe className="size-4 rounded-full" />}
                             {name}
                         </DropdownMenuItem>
                     ))}
@@ -73,7 +73,7 @@ export default function LanguageSelector({
     return (
         <DropdownMenuSub>
             <DropdownMenuSubTrigger data-testid="language-selector-trigger" className="[&>svg]:text-muted-foreground [&>svg]:mr-2">
-                <Globe className="size-3.5" />
+                <Globe className="size-3.5 rounded-full" />
                 {t('Language')}
             </DropdownMenuSubTrigger>
             <DropdownMenuSubContent>
@@ -83,7 +83,7 @@ export default function LanguageSelector({
                         onClick={() => setLanguage(code)}
                         className={language === code ? 'bg-accent' : ''}
                     >
-                        {Icon ? <Icon className="h-4 w-4" /> : <Globe className="h-4 w-4" />}
+                        {Icon ? <Icon className="h-4 w-4 rounded-full" /> : <Globe className="h-4 w-4 rounded-full" />}
                         {name}
                     </DropdownMenuItem>
                 ))}
