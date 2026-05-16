@@ -1,5 +1,4 @@
 import type { Toast } from '@/types';
-import { getGlobalComponents } from '@/lib/globalComponents';
 import { router } from '@inertiajs/react';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
@@ -38,16 +37,11 @@ export default function App({ children }: AppProps) {
         });
     }, []);
 
-    const topComponents = getGlobalComponents('top');
-    const bottomComponents = getGlobalComponents('bottom');
-
     return (
         <>
-            {topComponents.map((C, i) => <C key={i} />)}
             <Toaster />
             <DynamicDialog />
             {children}
-            {bottomComponents.map((C, i) => <C key={i} />)}
         </>
     );
 }

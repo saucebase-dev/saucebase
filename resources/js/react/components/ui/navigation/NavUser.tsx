@@ -15,6 +15,7 @@ import {
     useSidebar,
 } from '@/components/ui/sidebar';
 import { useT } from '@/i18n';
+import { handleAction } from '@/lib/navigation';
 import type { User } from '@/types';
 import type { MenuItem } from '@/types/navigation';
 import { Link } from '@inertiajs/react';
@@ -97,11 +98,23 @@ export default function NavUser({ user, items }: NavUserProps) {
                                 <DropdownMenuSeparator />
                                 <DropdownMenuGroup>
                                     {items.map((item) => (
-                                        <DropdownMenuItem key={item.id ?? item.title} asChild>
-                                            <Link href={item.url ?? '#'}>
-                                                <NavIcon icon={item.icon} />
-                                                <span>{t(item.title)}</span>
-                                            </Link>
+                                        <DropdownMenuItem
+                                            key={item.id ?? item.title}
+                                            asChild={!item.action}
+                                            data-testid={item.action ? `nav-action-${item.action}` : undefined}
+                                            onClick={item.action ? (e) => handleAction(item.action!, e as unknown as MouseEvent) : undefined}
+                                        >
+                                            {item.action ? (
+                                                <>
+                                                    <NavIcon icon={item.icon} />
+                                                    <span>{t(item.title)}</span>
+                                                </>
+                                            ) : (
+                                                <Link href={item.url ?? '#'}>
+                                                    <NavIcon icon={item.icon} />
+                                                    <span>{t(item.title)}</span>
+                                                </Link>
+                                            )}
                                         </DropdownMenuItem>
                                     ))}
                                 </DropdownMenuGroup>

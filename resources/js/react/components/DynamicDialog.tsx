@@ -37,7 +37,7 @@ export default function DynamicDialog() {
 
     return (
         <AlertDialog open={isOpen}>
-            <AlertDialogContent className="overflow-hidden p-0 sm:max-w-sm z-auto">
+            <AlertDialogContent className="overflow-hidden p-0 sm:max-w-sm">
                 <div data-testid="confirm-dialog">
                     <div className={cn('bg-background p-6', Icon ? contentClass : '')}>
                         {Icon && (
