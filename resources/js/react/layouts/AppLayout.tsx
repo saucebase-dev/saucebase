@@ -12,7 +12,7 @@ import { useSidebarState } from '@/hooks/useSidebarState';
 import { useT } from '@/i18n';
 import type { Breadcrumb as BreadcrumbType } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
-import type { ReactNode } from 'react';
+import { Fragment, type ReactNode } from 'react';
 import AppSidebar from './AppSidebar';
 
 interface AppLayoutProps {
@@ -46,8 +46,8 @@ export default function AppLayout({ title, breadcrumbs, children }: AppLayoutPro
                                 <BreadcrumbList>
                                     {displayBreadcrumbs.length > 0
                                         ? displayBreadcrumbs.map((crumb, index) => (
-                                              <>
-                                                  <BreadcrumbItem key={index}>
+                                              <Fragment key={index}>
+                                                  <BreadcrumbItem>
                                                       {crumb.url ? (
                                                           <BreadcrumbLink href={crumb.url}>
                                                               {t(
@@ -65,9 +65,9 @@ export default function AppLayout({ title, breadcrumbs, children }: AppLayoutPro
                                                       )}
                                                   </BreadcrumbItem>
                                                   {index < displayBreadcrumbs.length - 1 && (
-                                                      <BreadcrumbSeparator key={`sep-${index}`} />
+                                                      <BreadcrumbSeparator />
                                                   )}
-                                              </>
+                                              </Fragment>
                                           ))
                                         : title && (
                                               <BreadcrumbItem>

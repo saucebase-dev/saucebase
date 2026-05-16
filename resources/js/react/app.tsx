@@ -1,11 +1,14 @@
 import App from '@/components/App';
 import { I18nProvider } from '@/i18n';
 import { getGlobalComponents } from '@/lib/globalComponents';
+import { initializeTheme } from '@/hooks/useTheme';
 import { createInertiaApp } from '@inertiajs/react';
 import { createRoot } from 'react-dom/client';
 import { discoverModuleSetups, executeModuleSetups } from './lib/moduleSetup';
 import { resolveModularPageComponent } from './lib/utils';
 import '@css/app.css';
+
+initializeTheme();
 
 const appName = import.meta.env.VITE_APP_NAME || 'Saucebase';
 const moduleSetups = discoverModuleSetups();

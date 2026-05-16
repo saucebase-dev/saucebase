@@ -76,7 +76,7 @@ export default function TenantSwitcher() {
     return (
         <SidebarMenu>
             <SidebarMenuItem>
-                <SidebarMenuButton size="lg" asChild>
+                <SidebarMenuButton data-testid="tenant-switcher" size="lg" asChild>
                     <Link href="/dashboard">
                         <div className="text-sidebar-primary-foreground flex size-8 items-center justify-center rounded-lg p-0">
                             <AppLogo size="sm" />

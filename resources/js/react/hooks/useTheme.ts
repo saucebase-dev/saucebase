@@ -2,31 +2,41 @@ import { useCallback, useEffect, useState } from 'react';
 
 export type Theme = 'light' | 'dark' | 'auto';
 
-function applyTheme(theme: Theme) {
+const STORAGE_KEY = 'appearance';
+
+function setCookie(value: Theme): void {
+    document.cookie = `appearance=${value};path=/;max-age=${365 * 24 * 60 * 60};SameSite=Lax`;
+}
+
+function applyTheme(theme: Theme): void {
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     const isDark = theme === 'dark' || (theme === 'auto' && prefersDark);
     document.documentElement.classList.toggle('dark', isDark);
+    document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';
+}
+
+export function initializeTheme(): void {
+    const stored = (localStorage.getItem(STORAGE_KEY) as Theme) || 'auto';
+    applyTheme(stored);
+
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+        const current = (localStorage.getItem(STORAGE_KEY) as Theme) || 'auto';
+        if (current === 'auto') applyTheme('auto');
+    });
 }
 
 export function useTheme() {
-    const [theme, setThemeState] = useState<Theme>(() => {
-        return (localStorage.getItem('color-mode') as Theme) || 'auto';
-    });
+    const [theme, setThemeState] = useState<Theme>(
+        () => (localStorage.getItem(STORAGE_KEY) as Theme) || 'auto',
+    );
 
     useEffect(() => {
         applyTheme(theme);
     }, [theme]);
 
-    useEffect(() => {
-        if (theme !== 'auto') return;
-        const mq = window.matchMedia('(prefers-color-scheme: dark)');
-        const handler = () => applyTheme('auto');
-        mq.addEventListener('change', handler);
-        return () => mq.removeEventListener('change', handler);
-    }, [theme]);
-
     const setTheme = useCallback((next: Theme, triggerEl?: HTMLElement) => {
-        localStorage.setItem('color-mode', next);
+        localStorage.setItem(STORAGE_KEY, next);
+        setCookie(next);
 
         if (!document.startViewTransition || window.matchMedia('(prefers-reduced-motion: reduce)').matches || !triggerEl) {
             setThemeState(next);

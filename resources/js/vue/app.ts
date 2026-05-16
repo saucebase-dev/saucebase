@@ -40,7 +40,7 @@ createInertiaApp({
         // Execute module setup functions and collect afterMount callbacks
         executeModuleSetups(app, moduleSetups).then(async (afterMountCallbacks) => {
             // Initialize global theme persistence after mount for proper Vue reactivity
-            useColorMode();
+            useColorMode({ storageKey: 'appearance' });
 
             // Wait for translations to be applied before mounting to avoid
             // a flash of untranslated keys on first render (issue: laravel-vue-i18n#189)

@@ -1,3 +1,4 @@
+import TenantSwitcher from '@/components/TenantSwitcher';
 import NavGroup from '@/components/ui/navigation/NavGroup';
 import NavUser from '@/components/ui/navigation/NavUser';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader } from '@/components/ui/sidebar';
@@ -15,7 +16,9 @@ export default function AppSidebar() {
 
     return (
         <Sidebar variant="inset" collapsible="icon" className="bg-transparent">
-            <SidebarHeader />
+            <SidebarHeader>
+                <TenantSwitcher />
+            </SidebarHeader>
             <SidebarContent>
                 <NavGroup items={items} />
                 <NavGroup items={secondaryItems} className="mt-auto" />

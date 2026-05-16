@@ -72,7 +72,7 @@ export default function LanguageSelector({
 
     return (
         <DropdownMenuSub>
-            <DropdownMenuSubTrigger className="[&>svg]:text-muted-foreground [&>svg]:mr-2">
+            <DropdownMenuSubTrigger data-testid="language-selector-trigger" className="[&>svg]:text-muted-foreground [&>svg]:mr-2">
                 <Globe className="size-3.5" />
                 {t('Language')}
             </DropdownMenuSubTrigger>

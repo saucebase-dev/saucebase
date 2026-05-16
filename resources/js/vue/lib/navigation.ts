@@ -1,3 +1,4 @@
+import { setCookie } from '@/lib/utils';
 import { useColorMode } from '@vueuse/core';
 import type { Component } from 'vue';
 
@@ -21,8 +22,10 @@ const actionRegistry: Record<string, ActionHandler> = {
     'ui.theme.toggle': (event: MouseEvent) => {
         event.preventDefault();
 
-        const colorMode = useColorMode();
-        colorMode.value = colorMode.value === 'dark' ? 'light' : 'dark';
+        const colorMode = useColorMode({ storageKey: 'appearance' });
+        const next = colorMode.value === 'dark' ? 'light' : 'dark';
+        colorMode.value = next;
+        setCookie('appearance', next);
     },
 
     /**

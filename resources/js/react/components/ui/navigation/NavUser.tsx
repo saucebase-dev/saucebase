@@ -1,3 +1,5 @@
+import LanguageSelector from '@/components/LanguageSelector';
+import ThemeSelector from '@/components/ThemeSelector';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
     DropdownMenu,
@@ -92,6 +94,12 @@ export default function NavUser({ user, items }: NavUserProps) {
                                 </DropdownMenuItem>
                             </>
                         )}
+
+                        <DropdownMenuSeparator />
+                        <DropdownMenuGroup>
+                            <LanguageSelector mode="submenu" />
+                            <ThemeSelector mode="submenu" />
+                        </DropdownMenuGroup>
 
                         {items.length > 0 && (
                             <>

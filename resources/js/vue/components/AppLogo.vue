@@ -2,7 +2,7 @@
 import { useColorMode } from '@vueuse/core';
 import { computed } from 'vue';
 
-const colorMode = useColorMode();
+const colorMode = useColorMode({ storageKey: 'appearance' });
 
 const primaryFill = computed(() =>
     colorMode.value === 'dark'
