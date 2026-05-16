@@ -24,6 +24,13 @@ function setState(next: Partial<DialogState>) {
     subscribers.forEach((cb) => cb(state));
 }
 
+export function confirm(opts: ConfirmOptions): Promise<boolean> {
+    setState({ options: opts, isOpen: true });
+    return new Promise<boolean>((resolve) => {
+        resolveCallback = resolve;
+    });
+}
+
 export function useDialog() {
     const [localState, setLocalState] = useState<DialogState>(state);
 
