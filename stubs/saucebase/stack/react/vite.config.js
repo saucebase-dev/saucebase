@@ -6,19 +6,16 @@ import laravel from 'laravel-vite-plugin';
 import path from 'path';
 import Icons from 'unplugin-icons/vite';
 import { defineConfig } from 'vite';
-import { collectModuleLangPaths } from './module-loader.js';
 
 function getModulePrefix(filePath) {
     const match = filePath?.match(/\/modules\/([^/]+)\//);
     return match ? match[1] : null;
 }
 
-async function createConfig() {
+function createConfig() {
     const sslKeyPath = 'docker/ssl/app.key.pem';
     const sslCertPath = 'docker/ssl/app.pem';
     const hasSSL = fs.existsSync(sslKeyPath) && fs.existsSync(sslCertPath);
-
-    const moduleLangPaths = await collectModuleLangPaths();
 
     const frontendJson = fs.existsSync('frontend.json')
         ? JSON.parse(fs.readFileSync('frontend.json', 'utf-8'))

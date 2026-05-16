@@ -18,10 +18,23 @@ const langGlobs = import.meta.glob<{ default: Translations }>('/lang/*.json', {
     eager: true,
 });
 
+const moduleLangGlobs = import.meta.glob<{ default: Translations }>('/modules/*/lang/*.json', {
+    eager: true,
+});
+
 function loadTranslations(lang: string): Translations {
     const jsonData = langGlobs[`/lang/${lang}.json`]?.default ?? {};
     const phpData = langGlobs[`/lang/php_${lang}.json`]?.default ?? {};
-    return { ...jsonData, ...phpData };
+
+    const moduleData: Translations = {};
+    for (const [filePath, mod] of Object.entries(moduleLangGlobs)) {
+        const match = filePath.match(/\/modules\/[^/]+\/lang\/(php_)?(.+)\.json$/);
+        if (match && match[2] === lang) {
+            Object.assign(moduleData, mod.default ?? {});
+        }
+    }
+
+    return { ...jsonData, ...phpData, ...moduleData };
 }
 
 interface I18nProviderProps {
