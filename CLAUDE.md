@@ -44,6 +44,10 @@ composer remove saucebase/auth              # Removes module
 # TypeScript types (per-module, generated from PHP enums/DTOs)
 php artisan module:generate-types ModuleName   # single module
 php artisan module:generate-types              # all enabled modules
+
+# Framework selection (contributor dev workflow) — see Architecture > Frontend for gotchas
+php artisan saucebase:stack {vue|react} --dev    # Switch active framework in dev mode (keeps both dirs)
+php artisan saucebase:stack {vue|react} --reset  # Reset to clean state (removes frontend.json)
 ```
 
 ## Architecture
@@ -65,11 +69,24 @@ modules/<modulename>/
   database/migrations/
   database/seeders/
   lang/
-  resources/js/pages/     # Inertia pages
-  resources/js/components/
-  resources/js/app.ts     # Module lifecycle hooks (optional)
-  resources/js/types/
-    generated.d.ts        # Auto-generated from PHP enums/DTOs — do not edit manually
+  resources/js/
+    app.ts                # Generated re-export → ./{framework}/app — do not edit directly
+    vue/
+      app.ts              # Vue implementation: setup(), afterMount()
+      components/
+      composables/
+      layouts/
+      pages/              # Inertia pages (.vue files)
+      types/
+    react/
+      app.tsx             # React implementation: setup(), afterMount()
+      components/
+      hooks/
+      layouts/
+      pages/              # Inertia pages (.tsx files)
+      types/
+    types/
+      generated.d.ts      # Auto-generated from PHP enums/DTOs — do not edit manually
   resources/css/
   routes/web.php
   routes/api.php
@@ -80,6 +97,8 @@ modules/<modulename>/
   Taskfile.yml            # Module tasks (test:php, test:e2e, types:generate)
   composer.json           # Module manifest — declares autoload, providers, and dependencies
 ```
+
+**Every module must provide both `vue/` and `react/` implementations.** The root `resources/js/app.ts` is always a generated re-export — never the real implementation.
 
 **Two distinct module contexts — understand which one applies:**
 
@@ -108,17 +127,19 @@ class AuthServiceProvider extends ModuleServiceProvider
 
 No `$name` or `$nameLower` needed — InterNACHI derives the module name from the registry via `ModuleRegistry::moduleForClass()`.
 
-**Module lifecycle hooks** (`modules/<modulename>/resources/js/app.ts`):
+**Module lifecycle hooks** — implemented in `vue/app.ts` or `react/app.tsx`, not the root `app.ts`:
 
 ```typescript
+// modules/<modulename>/resources/js/vue/app.ts  (or react/app.tsx)
 export default {
     setup(app) {
-        /* Before Vue mount — register plugins, components */
+        /* Before mount — register plugins, icons, global components */
     },
     afterMount(app) {
         /* After mount — services needing DOM */
     },
 };
+// modules/<modulename>/resources/js/app.ts — generated, re-exports the above
 ```
 
 **Asset discovery:** `module-loader.js` auto-collects assets, translations, and Playwright configs from installed modules. Don't bypass it.
@@ -132,7 +153,30 @@ export default {
 - `resources/js/lib/utils.ts` — `resolveModularPageComponent()` for module page resolution
 - `resources/js/lib/moduleSetup.ts` — Module lifecycle management
 
-**Multi-framework:** Frontend code lives under `resources/js/{framework}/` (e.g. `vue/`, `react/`). Any change to shared frontend infrastructure — Vite config, module resolution (`utils.ts`), module lifecycle (`moduleSetup.ts`), or build tooling — must be reviewed and applied consistently across all framework directories. Never fix something in `vue/` without checking if `react/` (and any future framework) needs the same fix.
+**Multi-framework architecture:**
+
+`frontend.json` at project root controls the active framework:
+```json
+{ "framework": "vue|react", "dev": true }
+```
+- `"dev": true` — contributor mode: both `vue/` and `react/` dirs kept, thin entry point passthroughs generated at `resources/js/app.{ts|tsx}`
+- `"dev"` absent / install mode — selected framework flattened to `resources/js/`, other dir deleted (end-user setup, one-time)
+
+**`saucebase:stack` — three modes:**
+- `--dev` — contributor workflow: copies config files, creates entry passthroughs, keeps both framework dirs intact
+- _(no flag)_ — end-user install: flattens one framework to `resources/js/`, deletes the other and `stubs/`. Throws if `frontend.json` already exists — one-time only
+- `--reset` — restores git-tracked files, removes `frontend.json`
+
+**Dev mode gotchas — AI agents must know these:**
+1. **Generated files** — these appear in `git status` but are passthroughs, not the real implementation:
+   - `resources/js/app.ts` / `app.tsx`
+   - `resources/js/ssr.ts` / `ssr.tsx`
+   - `modules/*/resources/js/app.ts`
+   - Never commit them unless the change is intentional (e.g. adding a real import). Editing them directly has no effect — edit the framework subdir instead.
+2. **Real edits go in `resources/js/vue/` or `resources/js/react/`** — never in the root entry points.
+3. **Config files** (`package.json`, `vite.config.js`, `tsconfig.json`, `eslint.config.js`, `components.json`, `resources/views/app.blade.php`) appear modified too — these can be committed when intentionally changed.
+4. **Can't run `--dev` twice** — use `--reset` first if switching frameworks.
+5. **Cross-framework consistency** — any change to shared infrastructure (Vite config, module resolution, module lifecycle) must be applied to both `vue/` and `react/`. Never fix something in one without checking the other.
 
 **Vite aliases:** `@` = `resources/js/{framework}`, `@modules` = `modules/`, `@css` = `resources/css`, `ziggy-js` = vendor path
 

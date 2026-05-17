@@ -10,7 +10,8 @@ class StackCommand extends Command
     protected $signature = 'saucebase:stack
                             {stack? : The frontend stack to install (vue or react)}
                             {--dev : Contributor dev mode — copy config files only, keep both source dirs}
-                            {--reset : Reset to clean state with no framework selected}';
+                            {--reset : Reset to clean state with no framework selected}
+                            {--no-skip-worktree : Do not mark generated files as skip-worktree in git}';
 
     protected $description = 'Select the frontend framework stack (vue or react) for this Saucebase installation';
 
@@ -53,6 +54,10 @@ class StackCommand extends Command
             : $this->runInstallMode($framework);
     }
 
+    // -------------------------------------------------------------------------
+    // Modes
+    // -------------------------------------------------------------------------
+
     private function runInstallMode(string $framework): int
     {
         $current = $this->getSelectedFramework();
@@ -73,7 +78,6 @@ class StackCommand extends Command
 
         $this->info("Setting up {$framework}...");
 
-        $this->restoreTrackedFiles();
         $this->copySourceFiles($framework);
         $this->copyConfigFiles($framework, rewrite: true);
         $this->copyViewFiles($framework);
@@ -89,12 +93,24 @@ class StackCommand extends Command
 
     private function runDevMode(string $framework): int
     {
-        $this->restoreTrackedFiles();
+        $current = $this->getSelectedFramework();
+
+        if ($current !== null) {
+            $this->error("Framework already set to \"{$current}\". Run `php artisan saucebase:stack --reset` first.");
+
+            return self::FAILURE;
+        }
+
         $this->copyConfigFiles($framework, rewrite: false);
         $this->copyViewFiles($framework);
+
         $ext = $this->appExtension($framework);
         $this->files->put($this->jsRoot."/app.{$ext}", "import './{$framework}/app';\n");
         $this->files->put($this->jsRoot."/ssr.{$ext}", "import './{$framework}/ssr';\n");
+
+        // module entry points must be written before skipGeneratedFiles so their paths are discovered
+        $this->updateModuleEntryPoints($framework);
+
         $this->writeFrontendJson($framework, dev: true);
         $this->skipGeneratedFiles($framework);
 
@@ -102,6 +118,42 @@ class StackCommand extends Command
 
         return self::SUCCESS;
     }
+
+    private function runReset(): int
+    {
+        $framework = $this->getSelectedFramework();
+
+        if ($framework === null) {
+            $this->info('No framework selected — nothing to reset.');
+
+            return self::SUCCESS;
+        }
+
+        $this->info("Resetting framework '{$framework}'...");
+
+        $this->restoreTrackedFiles($framework);
+
+        foreach ($this->generatedFiles($framework) as $file) {
+            exec("git -C {$this->basePath} checkout -- {$file} 2>&1", $output, $exitCode);
+
+            if ($exitCode !== 0) {
+                $abs = $this->basePath.'/'.$file;
+                if ($this->files->exists($abs)) {
+                    $this->files->delete($abs);
+                } else {
+                    $this->warn("Could not restore {$file}.");
+                }
+            }
+        }
+
+        $this->info('Reset complete. Run: npm install to restore base dependencies.');
+
+        return self::SUCCESS;
+    }
+
+    // -------------------------------------------------------------------------
+    // File operations
+    // -------------------------------------------------------------------------
 
     private function copySourceFiles(string $framework): void
     {
@@ -142,13 +194,21 @@ class StackCommand extends Command
         }
     }
 
-    private function rewritePaths(string $content, string $framework): string
+    private function copyViewFiles(string $framework): void
     {
-        return str_replace(
-            ["resources/js/{$framework}/", "resources/js/{$framework}'"],
-            ['resources/js/', "resources/js'"],
-            $content
-        );
+        $sourceDir = $this->basePath."/stubs/saucebase/stack/{$framework}/views";
+
+        foreach (self::VIEW_FILES as $filename) {
+            $source = $sourceDir.'/'.$filename;
+            $destination = $this->basePath.'/resources/views/'.$filename;
+
+            if (! $this->files->exists($source)) {
+                continue;
+            }
+
+            $this->files->ensureDirectoryExists(dirname($destination));
+            $this->files->put($destination, $this->files->get($source));
+        }
     }
 
     private function deployModuleFiles(string $framework): void
@@ -182,6 +242,55 @@ class StackCommand extends Command
         }
     }
 
+    private function updateModuleEntryPoints(string $framework): void
+    {
+        $moduleDirs = glob($this->basePath.'/modules/*/', GLOB_ONLYDIR);
+
+        if (! $moduleDirs) {
+            return;
+        }
+
+        foreach ($moduleDirs as $moduleDir) {
+            $jsRoot = $moduleDir.'resources/js';
+
+            if (! $this->files->isDirectory($jsRoot.'/'.$framework)) {
+                continue;
+            }
+
+            $this->files->put($jsRoot.'/app.ts', "export * from './{$framework}/app';\n");
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // Git helpers
+    // -------------------------------------------------------------------------
+
+    private function skipGeneratedFiles(string $framework): void
+    {
+        if ($this->option('no-skip-worktree')) {
+            return;
+        }
+
+        foreach ($this->generatedFiles($framework) as $file) {
+            exec("git -C {$this->basePath} update-index --skip-worktree {$file} 2>&1", $output, $exitCode);
+
+            if ($exitCode !== 0) {
+                $this->warn("Could not skip-worktree {$file} (not in git index).");
+            }
+        }
+    }
+
+    private function restoreTrackedFiles(string $framework): void
+    {
+        foreach ($this->generatedFiles($framework) as $file) {
+            exec("git -C {$this->basePath} update-index --no-skip-worktree {$file} 2>/dev/null");
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // State & utilities
+    // -------------------------------------------------------------------------
+
     private function getSelectedFramework(): ?string
     {
         $path = $this->basePath.'/frontend.json';
@@ -193,84 +302,6 @@ class StackCommand extends Command
         $data = json_decode($this->files->get($path), true);
 
         return $data['framework'] ?? null;
-    }
-
-    private function skipGeneratedFiles(string $framework): void
-    {
-        exec('git update-index --skip-worktree '.implode(' ', $this->generatedFiles($framework)).' 2>/dev/null');
-    }
-
-    private function runReset(): int
-    {
-        $framework = $this->getSelectedFramework();
-
-        if ($framework === null) {
-            $this->info('No framework selected — nothing to reset.');
-
-            return self::SUCCESS;
-        }
-
-        $this->info("Resetting framework '{$framework}'...");
-
-        $this->restoreTrackedFiles();
-
-        $ext = $this->appExtension($framework);
-        $filesToRestore = [
-            ...array_map(fn (string $f) => $this->basePath.'/'.$f, self::CONFIG_FILES),
-            ...array_map(fn (string $f) => $this->basePath.'/resources/views/'.$f, self::VIEW_FILES),
-            $this->jsRoot."/app.{$ext}",
-            $this->jsRoot."/ssr.{$ext}",
-            $this->basePath.'/frontend.json',
-            $this->basePath.'/package-lock.json',
-        ];
-
-        exec('git checkout -- '.implode(' ', $filesToRestore).' 2>/dev/null');
-
-        $this->info('Reset complete. Run: npm install to restore base dependencies.');
-
-        return self::SUCCESS;
-    }
-
-    private function restoreTrackedFiles(): void
-    {
-        $framework = $this->getSelectedFramework() ?? 'vue';
-        exec('git update-index --no-skip-worktree '.implode(' ', $this->generatedFiles($framework)).' 2>/dev/null');
-    }
-
-    private function appExtension(string $framework): string
-    {
-        return $framework === 'react' ? 'tsx' : 'ts';
-    }
-
-    private function copyViewFiles(string $framework): void
-    {
-        $sourceDir = $this->basePath."/stubs/saucebase/stack/{$framework}/views";
-
-        foreach (self::VIEW_FILES as $filename) {
-            $source = $sourceDir.'/'.$filename;
-            $destination = $this->basePath.'/resources/views/'.$filename;
-
-            if (! $this->files->exists($source)) {
-                continue;
-            }
-
-            $this->files->ensureDirectoryExists(dirname($destination));
-            $this->files->put($destination, $this->files->get($source));
-        }
-    }
-
-    /** @return string[] */
-    private function generatedFiles(string $framework = 'vue'): array
-    {
-        $ext = $this->appExtension($framework);
-
-        return [
-            ...array_map(fn (string $f) => $this->basePath.'/'.$f, self::CONFIG_FILES),
-            ...array_map(fn (string $f) => $this->basePath.'/resources/views/'.$f, self::VIEW_FILES),
-            $this->jsRoot."/app.{$ext}",
-            $this->jsRoot."/ssr.{$ext}",
-            $this->basePath.'/frontend.json',
-        ];
     }
 
     private function writeFrontendJson(string $framework, bool $dev = false): void
@@ -285,5 +316,39 @@ class StackCommand extends Command
             $this->basePath.'/frontend.json',
             json_encode($data, JSON_PRETTY_PRINT).PHP_EOL
         );
+    }
+
+    private function rewritePaths(string $content, string $framework): string
+    {
+        return str_replace(
+            ["resources/js/{$framework}/", "resources/js/{$framework}'"],
+            ['resources/js/', "resources/js'"],
+            $content
+        );
+    }
+
+    private function appExtension(string $framework): string
+    {
+        return $framework === 'react' ? 'tsx' : 'ts';
+    }
+
+    /** @return string[] Repo-relative paths for all files written by this command. */
+    private function generatedFiles(string $framework): array
+    {
+        $ext = $this->appExtension($framework);
+
+        $files = [
+            ...self::CONFIG_FILES,
+            ...array_map(fn (string $f) => "resources/views/{$f}", self::VIEW_FILES),
+            "resources/js/app.{$ext}",
+            "resources/js/ssr.{$ext}",
+            'frontend.json',
+        ];
+
+        foreach (glob($this->basePath.'/modules/*/resources/js/app.ts') ?? [] as $path) {
+            $files[] = str_replace($this->basePath.'/', '', $path);
+        }
+
+        return $files;
     }
 }

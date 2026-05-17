@@ -19,11 +19,24 @@ class StackCommandTest extends TestCase
         $this->files = new Filesystem;
         $this->tmpDir = sys_get_temp_dir().'/saucebase-fw-test-'.uniqid();
         $this->files->makeDirectory($this->tmpDir.'/resources/js', 0755, true);
+        $this->files->makeDirectory($this->tmpDir.'/resources/views', 0755, true);
 
-        // Write a null frontend.json in the temp dir
-        file_put_contents($this->tmpDir.'/frontend.json', json_encode(['framework' => null]));
+        // Seed initial tracked files so git checkout works in reset tests
+        file_put_contents($this->tmpDir.'/frontend.json', json_encode(['framework' => null]).PHP_EOL);
+        file_put_contents($this->tmpDir.'/package.json', '{}');
+        file_put_contents($this->tmpDir.'/vite.config.js', '// vite');
+        file_put_contents($this->tmpDir.'/tsconfig.json', '{}');
+        file_put_contents($this->tmpDir.'/eslint.config.js', '// eslint');
+        file_put_contents($this->tmpDir.'/components.json', '{}');
+        file_put_contents($this->tmpDir.'/resources/views/app.blade.php', '<!-- blade -->');
 
-        // Bind the command to use the temp dir so no real project files are touched
+        // Init a real git repo so git update-index and git checkout work
+        exec("git -C {$this->tmpDir} init -q 2>/dev/null");
+        exec("git -C {$this->tmpDir} config user.email 'test@test.com' 2>/dev/null");
+        exec("git -C {$this->tmpDir} config user.name 'Test' 2>/dev/null");
+        exec("git -C {$this->tmpDir} add -A 2>/dev/null");
+        exec("git -C {$this->tmpDir} commit -q -m 'initial' 2>/dev/null");
+
         $tmpDir = $this->tmpDir;
         app()->bind(StackCommand::class, fn () => new StackCommand(
             new Filesystem,
@@ -38,7 +51,9 @@ class StackCommandTest extends TestCase
         parent::tearDown();
     }
 
-    // --- Validation ---
+    // -------------------------------------------------------------------------
+    // Validation
+    // -------------------------------------------------------------------------
 
     public function test_rejects_invalid_framework(): void
     {
@@ -47,14 +62,15 @@ class StackCommandTest extends TestCase
             ->expectsOutputToContain('Invalid framework');
     }
 
-    // --- Dev mode ---
+    // -------------------------------------------------------------------------
+    // Dev mode
+    // -------------------------------------------------------------------------
 
     public function test_dev_mode_writes_frontend_json(): void
     {
         $this->seedFakeStubs('vue');
 
-        $this->artisan('saucebase:stack vue --dev')
-            ->assertSuccessful();
+        $this->artisan('saucebase:stack vue --dev')->assertSuccessful();
 
         $data = json_decode(file_get_contents($this->tmpDir.'/frontend.json'), true);
         $this->assertSame('vue', $data['framework']);
@@ -71,13 +87,22 @@ class StackCommandTest extends TestCase
         $this->assertStringContainsString("import './vue/ssr'", file_get_contents($this->tmpDir.'/resources/js/ssr.ts'));
     }
 
+    public function test_dev_mode_react_writes_tsx_entry_points(): void
+    {
+        $this->seedFakeStubs('react');
+
+        $this->artisan('saucebase:stack react --dev')->assertSuccessful();
+
+        $this->assertStringContainsString("import './react/app'", file_get_contents($this->tmpDir.'/resources/js/app.tsx'));
+        $this->assertStringContainsString("import './react/ssr'", file_get_contents($this->tmpDir.'/resources/js/ssr.tsx'));
+    }
+
     public function test_dev_mode_does_not_copy_source_files(): void
     {
         $this->seedFakeStubs('vue');
         $this->seedFakeSourceDir('vue');
 
-        $this->artisan('saucebase:stack vue --dev')
-            ->assertSuccessful();
+        $this->artisan('saucebase:stack vue --dev')->assertSuccessful();
 
         $this->assertFileDoesNotExist($this->tmpDir.'/resources/js/pages/Index.vue');
     }
@@ -95,18 +120,6 @@ class StackCommandTest extends TestCase
         $this->assertFileExists($this->tmpDir.'/components.json');
     }
 
-    public function test_dev_mode_allows_switching_frameworks(): void
-    {
-        $this->seedFakeStubs('vue');
-        $this->seedFakeStubs('react');
-
-        $this->artisan('saucebase:stack vue --dev')->assertSuccessful();
-        $this->artisan('saucebase:stack react --dev')->assertSuccessful();
-
-        $data = json_decode(file_get_contents($this->tmpDir.'/frontend.json'), true);
-        $this->assertSame('react', $data['framework']);
-    }
-
     public function test_dev_mode_copies_view_files_from_stubs(): void
     {
         $this->seedFakeStubs('vue');
@@ -116,20 +129,6 @@ class StackCommandTest extends TestCase
 
         $blade = file_get_contents($this->tmpDir.'/resources/views/app.blade.php');
         $this->assertStringContainsString('app.ts', $blade);
-    }
-
-    public function test_dev_mode_updates_view_when_switching_frameworks(): void
-    {
-        $this->seedFakeStubs('vue');
-        $this->seedFakeStubs('react');
-        $this->seedFakeViewStub('vue', 'app.ts');
-        $this->seedFakeViewStub('react', 'app.tsx');
-
-        $this->artisan('saucebase:stack vue --dev')->assertSuccessful();
-        $this->assertStringContainsString('app.ts', file_get_contents($this->tmpDir.'/resources/views/app.blade.php'));
-
-        $this->artisan('saucebase:stack react --dev')->assertSuccessful();
-        $this->assertStringContainsString('app.tsx', file_get_contents($this->tmpDir.'/resources/views/app.blade.php'));
     }
 
     public function test_dev_mode_does_not_remove_source_dirs(): void
@@ -154,7 +153,135 @@ class StackCommandTest extends TestCase
         $this->assertStringContainsString('resources/js/vue/', $viteConfig);
     }
 
-    // --- Install mode ---
+    public function test_dev_mode_writes_module_entry_point(): void
+    {
+        $this->seedFakeStubs('vue');
+        $this->seedFakeModule('testmodule', 'vue');
+
+        $this->artisan('saucebase:stack vue --dev')->assertSuccessful();
+
+        $entryPoint = file_get_contents($this->tmpDir.'/modules/testmodule/resources/js/app.ts');
+        $this->assertStringContainsString("from './vue/app'", $entryPoint);
+    }
+
+    public function test_dev_mode_skips_module_without_framework_dir(): void
+    {
+        $this->seedFakeStubs('vue');
+        // module exists but only has react/, not vue/
+        $this->seedFakeModule('reactonly', 'react');
+
+        $this->artisan('saucebase:stack vue --dev')
+            ->assertSuccessful();
+
+        // app.ts should NOT be written for a module missing the target framework dir
+        $this->assertFileDoesNotExist($this->tmpDir.'/modules/reactonly/resources/js/app.ts');
+    }
+
+    // -------------------------------------------------------------------------
+    // Dev mode guard
+    // -------------------------------------------------------------------------
+
+    public function test_dev_mode_guards_against_running_twice(): void
+    {
+        $this->seedFakeStubs('vue');
+
+        $this->artisan('saucebase:stack vue --dev')->assertSuccessful();
+
+        $this->artisan('saucebase:stack react --dev')
+            ->assertFailed()
+            ->expectsOutputToContain('already set to "vue"');
+    }
+
+    public function test_dev_mode_same_framework_twice_also_fails(): void
+    {
+        $this->seedFakeStubs('vue');
+
+        $this->artisan('saucebase:stack vue --dev')->assertSuccessful();
+
+        $this->artisan('saucebase:stack vue --dev')
+            ->assertFailed()
+            ->expectsOutputToContain('already set to "vue"');
+    }
+
+    // -------------------------------------------------------------------------
+    // --no-skip-worktree
+    // -------------------------------------------------------------------------
+
+    public function test_no_skip_worktree_option_is_accepted(): void
+    {
+        $this->seedFakeStubs('vue');
+
+        // should succeed without errors even with the flag
+        $this->artisan('saucebase:stack vue --dev --no-skip-worktree')
+            ->assertSuccessful();
+
+        $data = json_decode(file_get_contents($this->tmpDir.'/frontend.json'), true);
+        $this->assertSame('vue', $data['framework']);
+    }
+
+    // -------------------------------------------------------------------------
+    // Warnings
+    // -------------------------------------------------------------------------
+
+    public function test_dev_mode_warns_for_untracked_entry_points(): void
+    {
+        $this->seedFakeStubs('react');
+
+        // app.tsx and ssr.tsx are created by the command but not in git — warn for each
+        $this->artisan('saucebase:stack react --dev')
+            ->assertSuccessful()
+            ->expectsOutputToContain('Could not skip-worktree resources/js/app.tsx')
+            ->expectsOutputToContain('Could not skip-worktree resources/js/ssr.tsx');
+    }
+
+    public function test_dev_mode_warns_for_untracked_module_entry_points(): void
+    {
+        $this->seedFakeStubs('vue');
+        $this->seedFakeModule('testmodule', 'vue');
+        // module entry point not committed — should warn
+
+        $this->artisan('saucebase:stack vue --dev')
+            ->assertSuccessful()
+            ->expectsOutputToContain('Could not skip-worktree modules/testmodule/resources/js/app.ts');
+    }
+
+    public function test_dev_mode_no_warnings_for_tracked_config_files(): void
+    {
+        $this->seedFakeStubs('vue');
+
+        // config files are committed in setUp — should not warn
+        $this->artisan('saucebase:stack vue --dev')
+            ->assertSuccessful()
+            ->doesntExpectOutputToContain('Could not skip-worktree package.json')
+            ->doesntExpectOutputToContain('Could not skip-worktree vite.config.js')
+            ->doesntExpectOutputToContain('Could not skip-worktree frontend.json');
+    }
+
+    public function test_reset_warns_when_file_cannot_be_restored(): void
+    {
+        $this->seedFakeStubs('vue');
+        $this->artisan('saucebase:stack vue --dev')->assertSuccessful();
+
+        // Manually delete the entry point before reset so git checkout fails AND file is gone
+        unlink($this->tmpDir.'/resources/js/app.ts');
+
+        $this->artisan('saucebase:stack --reset')
+            ->assertSuccessful()
+            ->expectsOutputToContain('Could not restore resources/js/app.ts');
+    }
+
+    public function test_no_skip_worktree_suppresses_all_warnings(): void
+    {
+        $this->seedFakeStubs('react');
+
+        $this->artisan('saucebase:stack react --dev --no-skip-worktree')
+            ->assertSuccessful()
+            ->doesntExpectOutputToContain('Could not skip-worktree');
+    }
+
+    // -------------------------------------------------------------------------
+    // Install mode
+    // -------------------------------------------------------------------------
 
     public function test_install_mode_guards_when_framework_already_set(): void
     {
@@ -229,7 +356,9 @@ class StackCommandTest extends TestCase
         $this->assertArrayNotHasKey('dev', $data);
     }
 
-    // --- Reset ---
+    // -------------------------------------------------------------------------
+    // Reset
+    // -------------------------------------------------------------------------
 
     public function test_reset_does_nothing_when_no_framework_selected(): void
     {
@@ -240,62 +369,65 @@ class StackCommandTest extends TestCase
             ->expectsOutputToContain('nothing to reset');
     }
 
-    public function test_reset_succeeds_when_framework_is_set(): void
+    public function test_reset_restores_config_files_via_git_checkout(): void
     {
         $this->seedFakeStubs('vue');
         $this->artisan('saucebase:stack vue --dev')->assertSuccessful();
 
-        $this->artisan('saucebase:stack --reset')
-            ->assertSuccessful()
-            ->expectsOutputToContain('Reset complete');
+        // config files were overwritten with stub content
+        $this->assertStringContainsString('resources/js/vue/', file_get_contents($this->tmpDir.'/vite.config.js'));
+
+        $this->artisan('saucebase:stack --reset')->assertSuccessful();
+
+        // git checkout restored originals
+        $this->assertEquals('// vite', file_get_contents($this->tmpDir.'/vite.config.js'));
+        $data = json_decode(file_get_contents($this->tmpDir.'/frontend.json'), true);
+        $this->assertNull($data['framework']);
     }
 
-    public function test_reset_succeeds_with_both_entry_point_extensions_present(): void
-    {
-        $this->seedFakeStubs('react');
-        $this->artisan('saucebase:stack react --dev')->assertSuccessful();
-
-        // Simulate both .ts and .tsx entry points being present (multi-framework branch state)
-        file_put_contents($this->tmpDir.'/resources/js/app.ts', "import './vue/app';\n");
-        file_put_contents($this->tmpDir.'/resources/js/app.tsx', "import './react/app';\n");
-        file_put_contents($this->tmpDir.'/resources/js/ssr.ts', "import './vue/ssr';\n");
-        file_put_contents($this->tmpDir.'/resources/js/ssr.tsx', "import './react/ssr';\n");
-
-        $this->artisan('saucebase:stack --reset')
-            ->assertSuccessful()
-            ->expectsOutputToContain('Reset complete');
-    }
-
-    public function test_reset_succeeds_with_package_lock_json_present(): void
+    public function test_reset_deletes_generated_entry_points(): void
     {
         $this->seedFakeStubs('vue');
         $this->artisan('saucebase:stack vue --dev')->assertSuccessful();
 
-        // Simulate npm install having run (dirtying package-lock.json)
-        file_put_contents($this->tmpDir.'/package-lock.json', '{"lockfileVersion":3}');
+        $this->assertFileExists($this->tmpDir.'/resources/js/app.ts');
+        $this->assertFileExists($this->tmpDir.'/resources/js/ssr.ts');
 
-        $this->artisan('saucebase:stack --reset')
-            ->assertSuccessful()
-            ->expectsOutputToContain('Reset complete');
+        $this->artisan('saucebase:stack --reset')->assertSuccessful();
+
+        $this->assertFileDoesNotExist($this->tmpDir.'/resources/js/app.ts');
+        $this->assertFileDoesNotExist($this->tmpDir.'/resources/js/ssr.ts');
     }
 
-    public function test_reset_allows_selecting_framework_again_after_reset(): void
+    public function test_reset_deletes_module_entry_points(): void
+    {
+        $this->seedFakeStubs('vue');
+        $this->seedFakeModule('testmodule', 'vue');
+
+        $this->artisan('saucebase:stack vue --dev')->assertSuccessful();
+        $this->assertFileExists($this->tmpDir.'/modules/testmodule/resources/js/app.ts');
+
+        $this->artisan('saucebase:stack --reset')->assertSuccessful();
+
+        $this->assertFileDoesNotExist($this->tmpDir.'/modules/testmodule/resources/js/app.ts');
+    }
+
+    public function test_reset_allows_selecting_framework_again(): void
     {
         $this->seedFakeStubs('vue');
         $this->artisan('saucebase:stack vue --dev')->assertSuccessful();
         $this->artisan('saucebase:stack --reset')->assertSuccessful();
 
-        // Write a fresh frontend.json with null framework (simulating git restore)
-        file_put_contents($this->tmpDir.'/frontend.json', json_encode(['framework' => null]));
-
-        $this->artisan('saucebase:stack vue --dev')
-            ->assertSuccessful();
+        $this->seedFakeStubs('react');
+        $this->artisan('saucebase:stack react --dev')->assertSuccessful();
 
         $data = json_decode(file_get_contents($this->tmpDir.'/frontend.json'), true);
-        $this->assertSame('vue', $data['framework']);
+        $this->assertSame('react', $data['framework']);
     }
 
-    // --- Helpers ---
+    // -------------------------------------------------------------------------
+    // Helpers
+    // -------------------------------------------------------------------------
 
     private function seedFakeViewStub(string $framework, string $entry): void
     {
@@ -314,6 +446,7 @@ class StackCommandTest extends TestCase
         file_put_contents($stubDir.'/package.json', '{}');
         file_put_contents($stubDir.'/eslint.config.js', '// eslint');
         file_put_contents($stubDir.'/components.json', '{}');
+        $this->seedFakeViewStub($framework, $framework === 'react' ? 'app.tsx' : 'app.ts');
     }
 
     private function seedFakeSourceDir(string $framework): void
@@ -323,5 +456,12 @@ class StackCommandTest extends TestCase
 
         $ext = $framework === 'react' ? 'tsx' : 'vue';
         file_put_contents($jsRoot."/pages/Index.{$ext}", '<!-- fake -->');
+    }
+
+    private function seedFakeModule(string $name, string $framework): void
+    {
+        $fwDir = $this->tmpDir."/modules/{$name}/resources/js/{$framework}";
+        $this->files->ensureDirectoryExists($fwDir);
+        file_put_contents($fwDir.'/app.'.($framework === 'react' ? 'tsx' : 'ts'), "export default {};\n");
     }
 }
