@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AppSidebar from '@/components/AppSidebar.vue';
 import PageTransition from '@/components/PageTransition.vue';
-import ThemeSelector from '@/components/ThemeSelector.vue';
+
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -102,9 +102,6 @@ const displayBreadcrumbs = computed(() => {
                             </BreadcrumbItem>
                         </BreadcrumbList>
                     </Breadcrumb>
-                </div>
-                <div class="ml-auto pr-4">
-                    <ThemeSelector mode="standalone" />
                 </div>
             </header>
 

@@ -143,9 +143,9 @@ const recentActivity = ref([
             <!-- Info Alert -->
             <Alert class="border-accent-foreground text-foreground">
                 <IconInfo />
-                <AlertTitle class="text-lg">{{
-                    $t('Welcome to Saucebase!')
-                }}</AlertTitle>
+                <AlertTitle class="text-lg">
+                    {{ $t('Welcome to Saucebase!') }}
+                </AlertTitle>
                 <AlertDescription>
                     {{
                         $t(
