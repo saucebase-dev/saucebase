@@ -950,7 +950,7 @@ Use `php artisan saucebase:recipe {modulename}` to scaffold a new module from st
 
 ### Module System
 
-Modules are managed by `internachi/modular`. Module folder names are always lowercase (`modules/auth/`, `modules/billing/`). PHP namespaces remain TitleCase (`Modules\Auth\...`) per PSR-4. 
+Modules are managed by `internachi/modular`. Module folder names are always lowercase (`modules/auth/`, `modules/billing/`). PHP namespaces remain TitleCase (`Modules\Auth\...`) per PSR-4.
 
 **Module discovery:** `module-loader.js` auto-collects assets, translations, and Playwright configs from installed modules. Never bypass it.
 
@@ -1079,7 +1079,6 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - laravel/framework (LARAVEL) - v13
 - laravel/prompts (PROMPTS) - v0
 - laravel/sanctum (SANCTUM) - v4
-- laravel/socialite (SOCIALITE) - v5
 - livewire/livewire (LIVEWIRE) - v4
 - tightenco/ziggy (ZIGGY) - v2
 - larastan/larastan (LARASTAN) - v3
