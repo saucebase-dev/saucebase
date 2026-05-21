@@ -69,6 +69,7 @@ class RecipeToModuleCommand extends Command
         }
 
         $this->generate();
+        $this->writeModuleEntryPoint();
         $this->registerInTaskfile();
 
         info("Starter {$this->moduleName} module generated successfully.");
@@ -303,6 +304,31 @@ class RecipeToModuleCommand extends Command
     private function titleCase(string $value): string
     {
         return ucwords(str_replace('_', ' ', Str::snake($value)));
+    }
+
+    protected function writeModuleEntryPoint(): void
+    {
+        $frontendJson = base_path('frontend.json');
+
+        if (! file_exists($frontendJson)) {
+            return;
+        }
+
+        $data = json_decode((string) file_get_contents($frontendJson), true);
+        $framework = $data['framework'] ?? null;
+        $isDev = ($data['dev'] ?? false) === true;
+
+        if ($framework === null) {
+            return;
+        }
+
+        $entryPoint = $this->moduleConfigPath.$this->moduleFolder.'/resources/js/app.ts';
+        file_put_contents($entryPoint, "export * from './{$framework}/app';\n");
+
+        if ($isDev) {
+            $rel = "modules/{$this->moduleFolder}/resources/js/app.ts";
+            exec('git -C '.escapeshellarg(base_path())." update-index --skip-worktree {$rel} 2>&1");
+        }
     }
 
     protected function registerInTaskfile(): void

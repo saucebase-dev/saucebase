@@ -83,8 +83,9 @@ class StackCommand extends Command
         $this->copyViewFiles($framework);
         $this->files->deleteDirectory($this->jsRoot.'/vue');
         $this->files->deleteDirectory($this->jsRoot.'/react');
-        $this->files->deleteDirectory($this->basePath.'/stubs');
+        $this->files->deleteDirectory($this->basePath.'/stubs/saucebase/stack');
         $this->deployModuleFiles($framework);
+        $this->flattenRecipeStubs($framework);
         $this->writeFrontendJson($framework);
         $this->info("Framework set to {$framework}. Run: npm install && npm run dev");
 
@@ -239,6 +240,41 @@ class StackCommand extends Command
                 $this->files->ensureDirectoryExists(dirname($destination));
                 $this->files->copy($file->getPathname(), $destination);
             }
+        }
+    }
+
+    private function flattenRecipeStubs(string $framework): void
+    {
+        $other = $framework === 'vue' ? 'react' : 'vue';
+        $recipeDirs = glob($this->basePath.'/stubs/saucebase/recipes/*/', GLOB_ONLYDIR);
+
+        if (! $recipeDirs) {
+            return;
+        }
+
+        foreach ($recipeDirs as $recipeDir) {
+            $jsRoot = $recipeDir.'resources/js';
+
+            if (! $this->files->isDirectory($jsRoot)) {
+                continue;
+            }
+
+            $fwPath = $jsRoot.'/'.$framework;
+
+            if (! $this->files->isDirectory($fwPath)) {
+                $this->warn('Recipe '.basename($recipeDir)." does not support {$framework} — skipping.");
+
+                continue;
+            }
+
+            foreach ($this->files->allFiles($fwPath) as $file) {
+                $destination = $jsRoot.'/'.$file->getRelativePathname();
+                $this->files->ensureDirectoryExists(dirname($destination));
+                $this->files->copy($file->getPathname(), $destination);
+            }
+
+            $this->files->deleteDirectory($fwPath);
+            $this->files->deleteDirectory($jsRoot.'/'.$other);
         }
     }
 
