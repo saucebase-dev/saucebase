@@ -14,13 +14,13 @@ import { useT } from '@/i18n';
 import AppLayout from '@/layouts/AppLayout';
 import {
     ArrowRight,
-    ArrowTrendingDown,
-    ArrowTrendingUp,
-    BarChart,
+    BarChart2,
     CreditCard,
     Info,
     Rocket,
     Sparkles,
+    TrendingDown,
+    TrendingUp,
     Users,
 } from 'lucide-react';
 import { useState } from 'react';
@@ -53,14 +53,14 @@ type Activity = {
 const initialStats: Stat[] = [
     { label: 'Total Revenue', value: '$45,231.89', icon: CreditCard, change: '+20.1%', changeLabel: 'from last month', positive: true },
     { label: 'Subscriptions', value: '+2,350', icon: Users, change: '+180.1%', changeLabel: 'from last month', positive: true },
-    { label: 'Sales', value: '+12,234', icon: BarChart, change: '+19%', changeLabel: 'from last month', positive: true },
+    { label: 'Sales', value: '+12,234', icon: BarChart2, change: '+19%', changeLabel: 'from last month', positive: true },
     { label: 'Active Now', value: '+573', icon: Sparkles, change: '+201', changeLabel: 'since last hour', positive: true },
 ];
 
 const initialFeatures: Feature[] = [
     { title: 'Feature One', description: 'Powerful feature that helps you accomplish tasks efficiently', icon: Sparkles, status: 'active' },
     { title: 'Feature Two', description: 'Another amazing capability to enhance your workflow', icon: Rocket, status: 'beta' },
-    { title: 'Feature Three', description: 'Coming soon to make your experience even better', icon: BarChart, status: 'planned' },
+    { title: 'Feature Three', description: 'Coming soon to make your experience even better', icon: BarChart2, status: 'planned' },
 ];
 
 const initialActivity: Activity[] = [
@@ -104,7 +104,7 @@ export default function Index() {
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
                     {stats.map((stat) => {
                         const Icon = stat.icon;
-                        const TrendIcon = stat.positive ? ArrowTrendingUp : ArrowTrendingDown;
+                        const TrendIcon = stat.positive ? TrendingUp : TrendingDown;
                         return (
                             <Card key={stat.label}>
                                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
