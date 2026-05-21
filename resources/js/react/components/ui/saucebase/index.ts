@@ -1,5 +1,3 @@
-import './modules.css';
-
 import {
     BarChart3,
     Bell,

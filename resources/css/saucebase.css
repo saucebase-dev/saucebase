@@ -40,7 +40,7 @@
     --mod-color: var(--color-foreground);
 }
 
-@keyframes bounce {
+@keyframes sb-bounce {
     0% {
         transform: translate(0, 0);
     }
@@ -59,7 +59,7 @@
 }
 
 .bounce {
-    animation: bounce 0.7s ease-in-out backwards;
+    animation: sb-bounce 0.7s ease-in-out backwards;
 }
 
 @keyframes stripe-appear {

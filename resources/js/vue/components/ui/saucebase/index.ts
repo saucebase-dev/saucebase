@@ -1,5 +1,4 @@
 import { trans } from 'laravel-vue-i18n';
-import './modules.css';
 
 import {
     BarChart3,
