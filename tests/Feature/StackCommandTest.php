@@ -334,14 +334,49 @@ class StackCommandTest extends TestCase
         $this->assertDirectoryDoesNotExist($this->tmpDir.'/resources/js/react');
     }
 
-    public function test_install_mode_removes_stubs_directory(): void
+    public function test_install_mode_removes_stack_stubs_directory(): void
     {
         $this->seedFakeStubs('vue');
         $this->seedFakeSourceDir('vue');
 
         $this->artisan('saucebase:stack vue')->assertSuccessful();
 
-        $this->assertDirectoryDoesNotExist($this->tmpDir.'/stubs');
+        $this->assertDirectoryDoesNotExist($this->tmpDir.'/stubs/saucebase/stack');
+    }
+
+    public function test_install_mode_rewrites_cross_module_framework_imports(): void
+    {
+        $this->seedFakeStubs('vue');
+        $this->seedFakeSourceDir('vue');
+
+        $consumerDir = $this->tmpDir.'/modules/consumer/resources/js/vue/pages';
+        $this->files->ensureDirectoryExists($consumerDir);
+        file_put_contents(
+            $consumerDir.'/Index.vue',
+            "import Foo from '@modules/other/resources/js/vue/components/Foo.vue';\n"
+        );
+
+        $this->artisan('saucebase:stack vue')->assertSuccessful();
+
+        $content = file_get_contents($this->tmpDir.'/modules/consumer/resources/js/pages/Index.vue');
+        $this->assertStringNotContainsString('/vue/', $content);
+        $this->assertStringContainsString('@modules/other/resources/js/components/Foo.vue', $content);
+    }
+
+    public function test_install_mode_removes_framework_subdirs_from_modules(): void
+    {
+        $this->seedFakeStubs('vue');
+        $this->seedFakeSourceDir('vue');
+        $this->seedFakeModule('testmodule', 'vue');
+
+        $reactDir = $this->tmpDir.'/modules/testmodule/resources/js/react';
+        $this->files->ensureDirectoryExists($reactDir);
+        file_put_contents($reactDir.'/app.tsx', "export default {};\n");
+
+        $this->artisan('saucebase:stack vue')->assertSuccessful();
+
+        $this->assertDirectoryDoesNotExist($this->tmpDir.'/modules/testmodule/resources/js/vue');
+        $this->assertDirectoryDoesNotExist($this->tmpDir.'/modules/testmodule/resources/js/react');
     }
 
     public function test_install_mode_writes_framework_to_frontend_json(): void
@@ -399,7 +434,7 @@ class StackCommandTest extends TestCase
         $this->assertFileDoesNotExist($this->tmpDir.'/resources/js/ssr.ts');
     }
 
-    public function test_reset_deletes_module_entry_points(): void
+    public function test_reset_preserves_module_entry_points(): void
     {
         $this->seedFakeStubs('vue');
         $this->seedFakeModule('testmodule', 'vue');
@@ -409,7 +444,8 @@ class StackCommandTest extends TestCase
 
         $this->artisan('saucebase:stack --reset')->assertSuccessful();
 
-        $this->assertFileDoesNotExist($this->tmpDir.'/modules/testmodule/resources/js/app.ts');
+        // Module app.ts is tracked in the module's own repo — reset must not delete it.
+        $this->assertFileExists($this->tmpDir.'/modules/testmodule/resources/js/app.ts');
     }
 
     public function test_reset_allows_selecting_framework_again(): void

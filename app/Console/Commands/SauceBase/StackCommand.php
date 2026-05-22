@@ -85,6 +85,7 @@ class StackCommand extends Command
         $this->files->deleteDirectory($this->jsRoot.'/react');
         $this->files->deleteDirectory($this->basePath.'/stubs/saucebase/stack');
         $this->deployModuleFiles($framework);
+        $this->rewriteCrossModuleImports($framework);
         $this->flattenRecipeStubs($framework);
         $this->writeFrontendJson($framework);
         $this->info("Framework set to {$framework}. Run: npm install && npm run dev");
@@ -138,6 +139,12 @@ class StackCommand extends Command
             exec("git -C {$this->basePath} checkout -- {$file} 2>&1", $output, $exitCode);
 
             if ($exitCode !== 0) {
+                // Module files are tracked in their own repos — skip-worktree was already
+                // cleared above; don't delete or warn, the content is already correct.
+                if (str_starts_with($file, 'modules/')) {
+                    continue;
+                }
+
                 $abs = $this->basePath.'/'.$file;
                 if ($this->files->exists($abs)) {
                     $this->files->delete($abs);
@@ -214,6 +221,7 @@ class StackCommand extends Command
 
     private function deployModuleFiles(string $framework): void
     {
+        $others = array_diff(self::SUPPORTED, [$framework]);
         $moduleDirs = glob($this->basePath.'/modules/*/', GLOB_ONLYDIR);
 
         if (! $moduleDirs) {
@@ -240,12 +248,53 @@ class StackCommand extends Command
                 $this->files->ensureDirectoryExists(dirname($destination));
                 $this->files->copy($file->getPathname(), $destination);
             }
+
+            $this->files->deleteDirectory($fwPath);
+            foreach ($others as $other) {
+                $this->files->deleteDirectory($jsRoot.'/'.$other);
+            }
+        }
+    }
+
+    private function rewriteCrossModuleImports(string $framework): void
+    {
+        $moduleDirs = glob($this->basePath.'/modules/*/', GLOB_ONLYDIR);
+
+        if (! $moduleDirs) {
+            return;
+        }
+
+        $extensions = ['vue', 'ts', 'tsx', 'js'];
+
+        foreach ($moduleDirs as $moduleDir) {
+            $jsRoot = $moduleDir.'resources/js';
+
+            if (! $this->files->isDirectory($jsRoot)) {
+                continue;
+            }
+
+            foreach ($this->files->allFiles($jsRoot) as $file) {
+                if (! in_array($file->getExtension(), $extensions)) {
+                    continue;
+                }
+
+                $content = $this->files->get($file->getPathname());
+                $rewritten = preg_replace(
+                    '#(@modules/[^/]+/resources/js/)'.preg_quote($framework, '#').'/#',
+                    '$1',
+                    $content
+                );
+
+                if ($rewritten !== $content) {
+                    $this->files->put($file->getPathname(), $rewritten);
+                }
+            }
         }
     }
 
     private function flattenRecipeStubs(string $framework): void
     {
-        $other = $framework === 'vue' ? 'react' : 'vue';
+        $others = array_diff(self::SUPPORTED, [$framework]);
         $recipeDirs = glob($this->basePath.'/stubs/saucebase/recipes/*/', GLOB_ONLYDIR);
 
         if (! $recipeDirs) {
@@ -274,7 +323,9 @@ class StackCommand extends Command
             }
 
             $this->files->deleteDirectory($fwPath);
-            $this->files->deleteDirectory($jsRoot.'/'.$other);
+            foreach ($others as $other) {
+                $this->files->deleteDirectory($jsRoot.'/'.$other);
+            }
         }
     }
 
