@@ -83,4 +83,32 @@ test.describe('Theme persistence', () => {
 
         await expect(page.locator('html')).toHaveClass(/dark/);
     });
+
+    test('dark mode toggle writes to appearance localStorage key, not vueuse-dark', async ({ page, credentials, loginAs }) => {
+        await loginAs(credentials.user);
+        await page.goto('/dashboard');
+
+        await page.getByTestId('user-menu-trigger').click();
+        await page.getByTestId('theme-selector-trigger').click();
+        await page.getByRole('menuitem', { name: 'Dark' }).click();
+
+        const stored = await page.evaluate(() => localStorage.getItem('appearance'));
+        expect(stored).toBe('dark');
+
+        const wrongKey = await page.evaluate(() => localStorage.getItem('vueuse-dark'));
+        expect(wrongKey).toBeNull();
+    });
+
+    test('dark mode toggle writes appearance cookie for server-side persistence', async ({ page, credentials, loginAs }) => {
+        await loginAs(credentials.user);
+        await page.goto('/dashboard');
+
+        await page.getByTestId('user-menu-trigger').click();
+        await page.getByTestId('theme-selector-trigger').click();
+        await page.getByRole('menuitem', { name: 'Dark' }).click();
+
+        const cookies = await page.context().cookies();
+        const appearanceCookie = cookies.find((c) => c.name === 'appearance');
+        expect(appearanceCookie?.value).toBe('dark');
+    });
 });
