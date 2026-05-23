@@ -173,6 +173,7 @@ function handleInlineClick(
             <DropdownMenuItem
                 v-for="theme in visibleThemes"
                 :key="theme.code"
+                :data-testid="`color-mode-${theme.code}`"
                 @click="switchTheme(theme.code)"
                 :class="{
                     'bg-accent text-accent-foreground':
@@ -201,6 +202,7 @@ function handleInlineClick(
             <DropdownMenuItem
                 v-for="theme in visibleThemes"
                 :key="theme.code"
+                :data-testid="`color-mode-${theme.code}`"
                 @click="switchTheme(theme.code)"
                 :class="{ 'bg-accent': colorMode === theme.code }"
             >

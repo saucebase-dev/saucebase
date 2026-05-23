@@ -90,7 +90,8 @@ test.describe('Theme persistence', () => {
 
         await page.getByTestId('user-menu-trigger').click();
         await page.getByTestId('theme-selector-trigger').click();
-        await page.getByRole('menuitem', { name: 'Dark' }).click();
+        await page.getByTestId('color-mode-dark').click();
+        await page.waitForFunction(() => localStorage.getItem('appearance') === 'dark');
 
         const stored = await page.evaluate(() => localStorage.getItem('appearance'));
         expect(stored).toBe('dark');
@@ -105,7 +106,8 @@ test.describe('Theme persistence', () => {
 
         await page.getByTestId('user-menu-trigger').click();
         await page.getByTestId('theme-selector-trigger').click();
-        await page.getByRole('menuitem', { name: 'Dark' }).click();
+        await page.getByTestId('color-mode-dark').click();
+        await page.waitForFunction(() => document.cookie.includes('appearance=dark'));
 
         const cookies = await page.context().cookies();
         const appearanceCookie = cookies.find((c) => c.name === 'appearance');
