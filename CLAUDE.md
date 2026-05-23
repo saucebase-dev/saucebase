@@ -280,6 +280,39 @@ When any architectural decision, convention, or reference documented here change
 
 Trigger: any change to stack versions, module structure, service providers, naming conventions, environment variables, or workflow commands.
 
+### Testing CI Workflow Changes with act
+
+When any file under `.github/workflows/` or `.github/actions/` is modified, validate with `act` before finishing. Always pass `-P ubuntu-latest=catthehacker/ubuntu:act-22.04` — do not use `--container-architecture linux/amd64` (breaks Node on Apple Silicon).
+
+**Core workflow** (`test.yml` or `setup-laravel/action.yml` changed):
+
+```bash
+# Test phpunit job for each framework
+act workflow_dispatch --job phpunit --matrix framework:vue \
+  --workflows .github/workflows/test.yml \
+  -P ubuntu-latest=catthehacker/ubuntu:act-22.04
+
+act workflow_dispatch --job phpunit --matrix framework:react \
+  --workflows .github/workflows/test.yml \
+  -P ubuntu-latest=catthehacker/ubuntu:act-22.04
+```
+
+**Module workflow** (`test-module.yml` changed):
+
+```bash
+# Use Auth as the test module (supports both frameworks)
+act workflow_call \
+  --workflows .github/workflows/test-module.yml \
+  -P ubuntu-latest=catthehacker/ubuntu:act-22.04 \
+  --input module=auth \
+  --input frameworks='["vue"]' \
+  --job phpunit
+```
+
+**Known act limitation:** SQLite env vars appended to `.env` do not persist between Docker exec steps in act, causing migrations to fail. This is a pre-existing act issue — not a regression. Validate all steps up to and including migrations; a failure only there is acceptable. Real GitHub CI runs migrations correctly.
+
+If both core and module workflows changed, run both sets of commands.
+
 ### Code Review (on demand)
 
 Run `/code-review` to launch the code review agent (`feature-dev:code-reviewer`). Do not run it automatically.

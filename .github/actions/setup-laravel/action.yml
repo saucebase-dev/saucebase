@@ -22,6 +22,10 @@ inputs:
         description: 'Skip PHP setup (caller already set up PHP before this action)'
         required: false
         default: 'false'
+    framework:
+        description: 'Frontend framework to activate (vue or react). Skipped when empty.'
+        required: false
+        default: ''
 
 runs:
     using: 'composite'
@@ -59,10 +63,16 @@ runs:
           working-directory: ${{ inputs.working-directory }}
           run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
+        - name: Select framework
+          if: inputs.framework != ''
+          shell: bash
+          working-directory: ${{ inputs.working-directory }}
+          run: php artisan saucebase:stack ${{ inputs.framework }} --dev --no-skip-worktree
+
         - name: Install Node dependencies
           shell: bash
           working-directory: ${{ inputs.working-directory }}
-          run: npm ci
+          run: npm install
 
         - name: Directory Permissions
           shell: bash

@@ -13,12 +13,21 @@ on:
                 type: string
                 default: ''
                 description: 'Space-separated Composer packages, e.g. saucebase/auth'
+            frameworks:
+                required: false
+                type: string
+                default: '["vue"]'
+                description: 'JSON array of frameworks to test, e.g. ["vue","react"]'
 
 jobs:
     phpunit:
         runs-on: ubuntu-latest
         timeout-minutes: 20
         if: inputs.module != ''
+        strategy:
+            matrix:
+                framework: ${{ fromJSON(inputs.frameworks) }}
+        name: PHPUnit ${{ inputs.module }} (${{ matrix.framework }})
 
         steps:
             - name: Checkout module
@@ -97,6 +106,7 @@ jobs:
                   working-directory: saucebase
                   skip-composer: 'true'
                   skip-php: 'true'
+                  framework: ${{ matrix.framework }}
 
             - name: Run PHPUnit tests
               working-directory: saucebase
@@ -110,7 +120,7 @@ jobs:
             - name: Upload environment artifact
               uses: actions/upload-artifact@v4
               with:
-                  name: saucebase-env-${{ inputs.module }}
+                  name: saucebase-env-${{ inputs.module }}-${{ matrix.framework }}
                   path: saucebase-env.tar.gz
                   retention-days: 1
 
@@ -119,12 +129,16 @@ jobs:
         timeout-minutes: 30
         needs: phpunit
         if: inputs.module != ''
+        strategy:
+            matrix:
+                framework: ${{ fromJSON(inputs.frameworks) }}
+        name: E2E ${{ inputs.module }} (${{ matrix.framework }})
 
         steps:
             - name: Download environment artifact
               uses: actions/download-artifact@v4
               with:
-                  name: saucebase-env-${{ inputs.module }}
+                  name: saucebase-env-${{ inputs.module }}-${{ matrix.framework }}
 
             - name: Extract environment
               run: tar -xzf saucebase-env.tar.gz
@@ -174,6 +188,6 @@ jobs:
               if: failure()
               uses: actions/upload-artifact@v4
               with:
-                  name: playwright-report-${{ inputs.module }}
+                  name: playwright-report-${{ inputs.module }}-${{ matrix.framework }}
                   path: saucebase/playwright-report/
                   retention-days: 7
