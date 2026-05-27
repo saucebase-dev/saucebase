@@ -1,5 +1,5 @@
-import { ButtonGroup } from '@/components/ui/button-group';
 import { Button } from '@/components/ui/button';
+import { ButtonGroup } from '@/components/ui/button-group';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -9,9 +9,9 @@ import {
     DropdownMenuSubTrigger,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { useTheme, type Theme } from '@/hooks/useTheme';
 import { useT } from '@/i18n';
-import { type Theme, useTheme } from '@/hooks/useTheme';
-import { Moon, Sun, MonitorCheck } from 'lucide-react';
+import { MonitorCheck, Moon, Sun } from 'lucide-react';
 import { useRef, type ReactNode } from 'react';
 
 const themes = [
@@ -42,12 +42,19 @@ export default function ThemeSelector({
     const { theme, setTheme } = useTheme();
     const triggerRef = useRef<HTMLButtonElement>(null);
 
-    const visibleThemes = hideDevice ? themes.filter((th) => th.code !== 'auto') : [...themes];
+    const visibleThemes = hideDevice
+        ? themes.filter((th) => th.code !== 'auto')
+        : [...themes];
     const currentTheme = themes.find((th) => th.code === theme) ?? themes[0];
     const CurrentIcon = currentTheme.Icon;
 
     function switchTheme(code: Theme, el?: HTMLElement) {
-        setTheme(code, disableAnimation ? undefined : el ?? triggerRef.current ?? undefined);
+        setTheme(
+            code,
+            disableAnimation
+                ? undefined
+                : (el ?? triggerRef.current ?? undefined),
+        );
     }
 
     if (inline) {
@@ -75,7 +82,11 @@ export default function ThemeSelector({
         return (
             <DropdownMenu modal={false}>
                 <DropdownMenuTrigger asChild>
-                    <button ref={triggerRef} className={triggerClass} aria-label={t('Toggle theme')}>
+                    <button
+                        ref={triggerRef}
+                        className={triggerClass}
+                        aria-label={t('Toggle theme')}
+                    >
                         <CurrentIcon className="size-5" />
                     </button>
                 </DropdownMenuTrigger>
@@ -83,8 +94,17 @@ export default function ThemeSelector({
                     {visibleThemes.map(({ code, name, Icon }) => (
                         <DropdownMenuItem
                             key={code}
-                            onClick={(e) => switchTheme(code, e.currentTarget as HTMLElement)}
-                            className={theme === code ? 'bg-accent text-accent-foreground' : ''}
+                            onClick={(e) =>
+                                switchTheme(
+                                    code,
+                                    e.currentTarget as HTMLElement,
+                                )
+                            }
+                            className={
+                                theme === code
+                                    ? 'bg-accent text-accent-foreground'
+                                    : ''
+                            }
                         >
                             <Icon className="size-4" />
                             {t(name)}
@@ -97,7 +117,10 @@ export default function ThemeSelector({
 
     return (
         <DropdownMenuSub>
-            <DropdownMenuSubTrigger data-testid="theme-selector-trigger" className="[&>svg]:text-muted-foreground [&>svg]:mr-2">
+            <DropdownMenuSubTrigger
+                data-testid="theme-selector-trigger"
+                className="[&>svg]:text-muted-foreground [&>svg]:mr-2"
+            >
                 <CurrentIcon className="size-4" />
                 {t('Theme')}
             </DropdownMenuSubTrigger>
@@ -105,7 +128,9 @@ export default function ThemeSelector({
                 {visibleThemes.map(({ code, name, Icon }) => (
                     <DropdownMenuItem
                         key={code}
-                        onClick={(e) => switchTheme(code, e.currentTarget as HTMLElement)}
+                        onClick={(e) =>
+                            switchTheme(code, e.currentTarget as HTMLElement)
+                        }
                         className={theme === code ? 'bg-accent' : ''}
                     >
                         <Icon className="size-4" />

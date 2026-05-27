@@ -16,13 +16,13 @@ import { Link } from '@inertiajs/react';
 import {
     ArrowRight,
     BarChart,
-    TrendingDown,
-    TrendingUp,
     Cog,
     CreditCard,
     Info,
     Rocket,
     Sparkles,
+    TrendingDown,
+    TrendingUp,
     Users,
 } from 'lucide-react';
 
@@ -66,7 +66,8 @@ const stats = [
 const features = [
     {
         title: 'Feature One',
-        description: 'Powerful feature that helps you accomplish tasks efficiently',
+        description:
+            'Powerful feature that helps you accomplish tasks efficiently',
         icon: Sparkles,
         status: 'active',
     },
@@ -86,9 +87,24 @@ const features = [
 
 const recentActivity = [
     { id: 1, action: 'Item created', time: '2 minutes ago', user: 'John Doe' },
-    { id: 2, action: 'Settings updated', time: '1 hour ago', user: 'Jane Smith' },
-    { id: 3, action: 'New user registered', time: '3 hours ago', user: 'Renan Roble' },
-    { id: 4, action: 'Item updated', time: '30 seconds ago', user: 'Alice Johnson' },
+    {
+        id: 2,
+        action: 'Settings updated',
+        time: '1 hour ago',
+        user: 'Jane Smith',
+    },
+    {
+        id: 3,
+        action: 'New user registered',
+        time: '3 hours ago',
+        user: 'Renan Roble',
+    },
+    {
+        id: 4,
+        action: 'Item updated',
+        time: '30 seconds ago',
+        user: 'Alice Johnson',
+    },
 ];
 
 export default function Dashboard() {
@@ -99,7 +115,9 @@ export default function Dashboard() {
             <div className="flex flex-1 flex-col gap-6 p-6 pt-2">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                        <h1 className="text-3xl font-bold tracking-tight">{t(title)}</h1>
+                        <h1 className="text-3xl font-bold tracking-tight">
+                            {t(title)}
+                        </h1>
                         <p className="text-muted-foreground mt-1">
                             {t('Manage and monitor your module activities')}
                         </p>
@@ -122,9 +140,13 @@ export default function Dashboard() {
 
                 <Alert className="border-accent-foreground text-foreground">
                     <Info />
-                    <AlertTitle className="text-lg">{t('Welcome to Saucebase!')}</AlertTitle>
+                    <AlertTitle className="text-lg">
+                        {t('Welcome to Saucebase!')}
+                    </AlertTitle>
                     <AlertDescription>
-                        {t('This is a sample dashboard with fake data. Customize it to fit your needs.')}
+                        {t(
+                            'This is a sample dashboard with fake data. Customize it to fit your needs.',
+                        )}
                     </AlertDescription>
                 </Alert>
 
@@ -138,7 +160,9 @@ export default function Dashboard() {
                                 <stat.icon className="text-muted-foreground size-6" />
                             </CardHeader>
                             <CardContent>
-                                <div className="text-3xl font-bold">{stat.value}</div>
+                                <div className="text-3xl font-bold">
+                                    {stat.value}
+                                </div>
                                 <p className="text-muted-foreground flex items-center gap-1 text-xs">
                                     {stat.positive ? (
                                         <TrendingUp className="size-5 text-green-600 dark:text-green-500" />
@@ -164,9 +188,13 @@ export default function Dashboard() {
                 <Card className="bg-primary text-primary-foreground border-primary relative overflow-hidden">
                     <Rocket className="pointer-events-none absolute -right-8 -bottom-12 size-72 text-white opacity-10" />
                     <CardHeader className="relative z-10">
-                        <CardTitle className="text-xl">{t('Get Started')}</CardTitle>
+                        <CardTitle className="text-xl">
+                            {t('Get Started')}
+                        </CardTitle>
                         <CardDescription className="text-primary-foreground/80">
-                            {t('Ready to build something amazing? Start by customizing this template.')}
+                            {t(
+                                'Ready to build something amazing? Start by customizing this template.',
+                            )}
                         </CardDescription>
                     </CardHeader>
                     <CardFooter className="relative z-10 flex gap-2">
@@ -189,7 +217,9 @@ export default function Dashboard() {
                             <CardHeader>
                                 <CardTitle>{t('Features')}</CardTitle>
                                 <CardDescription>
-                                    {t('Explore the capabilities of this module')}
+                                    {t(
+                                        'Explore the capabilities of this module',
+                                    )}
                                 </CardDescription>
                             </CardHeader>
                             <CardContent className="space-y-4">
@@ -208,7 +238,8 @@ export default function Dashboard() {
                                                 </h3>
                                                 <Badge
                                                     variant={
-                                                        feature.status === 'active'
+                                                        feature.status ===
+                                                        'active'
                                                             ? 'default'
                                                             : 'secondary'
                                                     }
@@ -236,7 +267,9 @@ export default function Dashboard() {
                         <Card className="h-full">
                             <CardHeader>
                                 <CardTitle>{t('Recent Activity')}</CardTitle>
-                                <CardDescription>{t('Latest updates and changes')}</CardDescription>
+                                <CardDescription>
+                                    {t('Latest updates and changes')}
+                                </CardDescription>
                             </CardHeader>
                             <CardContent>
                                 <div className="space-y-4">
@@ -251,11 +284,13 @@ export default function Dashboard() {
                                                         {t(activity.action)}
                                                     </p>
                                                     <p className="text-muted-foreground text-xs">
-                                                        {activity.user} • {activity.time}
+                                                        {activity.user} •{' '}
+                                                        {activity.time}
                                                     </p>
                                                 </div>
                                             </div>
-                                            {index < recentActivity.length - 1 && (
+                                            {index <
+                                                recentActivity.length - 1 && (
                                                 <Separator className="my-4" />
                                             )}
                                         </div>

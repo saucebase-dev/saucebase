@@ -1,7 +1,12 @@
 import TenantSwitcher from '@/components/TenantSwitcher';
 import NavGroup from '@/components/ui/navigation/NavGroup';
 import NavUser from '@/components/ui/navigation/NavUser';
-import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader } from '@/components/ui/sidebar';
+import {
+    Sidebar,
+    SidebarContent,
+    SidebarFooter,
+    SidebarHeader,
+} from '@/components/ui/sidebar';
 import type { User } from '@/types';
 import type { Navigation } from '@/types/navigation';
 import { usePage } from '@inertiajs/react';

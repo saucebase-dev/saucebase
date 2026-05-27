@@ -7,7 +7,10 @@ interface SettingsLayoutProps {
     children: ReactNode;
 }
 
-export default function SettingsLayout({ title, children }: SettingsLayoutProps) {
+export default function SettingsLayout({
+    title,
+    children,
+}: SettingsLayoutProps) {
     return (
         <>
             <Head title={title} />

@@ -39,14 +39,18 @@ export default function LanguageSelector({
         Icon: iconMap[code] ?? null,
     }));
 
-    const currentLanguage = languages.find((l) => l.code === language) ?? languages[0];
+    const currentLanguage =
+        languages.find((l) => l.code === language) ?? languages[0];
     const CurrentIcon = currentLanguage?.Icon ?? null;
 
     if (mode === 'standalone') {
         return (
             <DropdownMenu modal={false}>
                 <DropdownMenuTrigger asChild>
-                    <button className={triggerClass} aria-label={t('Language Selector')}>
+                    <button
+                        className={triggerClass}
+                        aria-label={t('Language Selector')}
+                    >
                         {CurrentIcon ? (
                             <CurrentIcon className="size-4.5 rounded-full" />
                         ) : (
@@ -59,9 +63,17 @@ export default function LanguageSelector({
                         <DropdownMenuItem
                             key={code}
                             onClick={() => setLanguage(code)}
-                            className={language === code ? 'bg-accent text-accent-foreground' : ''}
+                            className={
+                                language === code
+                                    ? 'bg-accent text-accent-foreground'
+                                    : ''
+                            }
                         >
-                            {Icon ? <Icon className="size-4 rounded-full" /> : <Globe className="size-4 rounded-full" />}
+                            {Icon ? (
+                                <Icon className="size-4 rounded-full" />
+                            ) : (
+                                <Globe className="size-4 rounded-full" />
+                            )}
                             {name}
                         </DropdownMenuItem>
                     ))}
@@ -72,7 +84,10 @@ export default function LanguageSelector({
 
     return (
         <DropdownMenuSub>
-            <DropdownMenuSubTrigger data-testid="language-selector-trigger" className="[&>svg]:text-muted-foreground [&>svg]:mr-2">
+            <DropdownMenuSubTrigger
+                data-testid="language-selector-trigger"
+                className="[&>svg]:text-muted-foreground [&>svg]:mr-2"
+            >
                 <Globe className="size-3.5 rounded-full" />
                 {t('Language')}
             </DropdownMenuSubTrigger>
@@ -83,7 +98,11 @@ export default function LanguageSelector({
                         onClick={() => setLanguage(code)}
                         className={language === code ? 'bg-accent' : ''}
                     >
-                        {Icon ? <Icon className="h-4 w-4 rounded-full" /> : <Globe className="h-4 w-4 rounded-full" />}
+                        {Icon ? (
+                            <Icon className="h-4 w-4 rounded-full" />
+                        ) : (
+                            <Globe className="h-4 w-4 rounded-full" />
+                        )}
                         {name}
                     </DropdownMenuItem>
                 ))}

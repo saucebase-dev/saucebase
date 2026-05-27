@@ -1,6 +1,6 @@
+import type { Toast } from '@/types';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
-import type { Toast } from '@/types';
 
 export function useToastListener(toastProp: Toast | undefined) {
     useEffect(() => {

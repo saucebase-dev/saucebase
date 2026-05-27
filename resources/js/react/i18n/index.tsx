@@ -1,4 +1,10 @@
-import { createContext, useCallback, useContext, useMemo, useState } from 'react';
+import {
+    createContext,
+    useCallback,
+    useContext,
+    useMemo,
+    useState,
+} from 'react';
 
 type Translations = Record<string, string>;
 
@@ -18,9 +24,12 @@ const langGlobs = import.meta.glob<{ default: Translations }>('/lang/*.json', {
     eager: true,
 });
 
-const moduleLangGlobs = import.meta.glob<{ default: Translations }>('/modules/*/lang/*.json', {
-    eager: true,
-});
+const moduleLangGlobs = import.meta.glob<{ default: Translations }>(
+    '/modules/*/lang/*.json',
+    {
+        eager: true,
+    },
+);
 
 function loadTranslations(lang: string): Translations {
     const jsonData = langGlobs[`/lang/${lang}.json`]?.default ?? {};
@@ -28,7 +37,9 @@ function loadTranslations(lang: string): Translations {
 
     const moduleData: Translations = {};
     for (const [filePath, mod] of Object.entries(moduleLangGlobs)) {
-        const match = filePath.match(/\/modules\/[^/]+\/lang\/(php_)?(.+)\.json$/);
+        const match = filePath.match(
+            /\/modules\/[^/]+\/lang\/(php_)?(.+)\.json$/,
+        );
         if (match && match[2] === lang) {
             Object.assign(moduleData, mod.default ?? {});
         }
@@ -42,7 +53,10 @@ interface I18nProviderProps {
     initialLocale?: string;
 }
 
-export function I18nProvider({ children, initialLocale = 'en' }: I18nProviderProps) {
+export function I18nProvider({
+    children,
+    initialLocale = 'en',
+}: I18nProviderProps) {
     const [locale, setLocale] = useState(initialLocale);
     const [translations, setTranslations] = useState<Translations>(() =>
         loadTranslations(initialLocale),
@@ -54,12 +68,20 @@ export function I18nProvider({ children, initialLocale = 'en' }: I18nProviderPro
     }, []);
 
     const t = useCallback(
-        (key: string, replacements?: Record<string, string | number>): string => {
+        (
+            key: string,
+            replacements?: Record<string, string | number>,
+        ): string => {
             let value = translations[key] ?? key;
 
             if (replacements) {
-                for (const [placeholder, replacement] of Object.entries(replacements)) {
-                    value = value.replace(new RegExp(`:${placeholder}`, 'g'), String(replacement));
+                for (const [placeholder, replacement] of Object.entries(
+                    replacements,
+                )) {
+                    value = value.replace(
+                        new RegExp(`:${placeholder}`, 'g'),
+                        String(replacement),
+                    );
                 }
             }
 
@@ -73,7 +95,9 @@ export function I18nProvider({ children, initialLocale = 'en' }: I18nProviderPro
         [t, locale, handleSetLocale],
     );
 
-    return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;
+    return (
+        <I18nContext.Provider value={value}>{children}</I18nContext.Provider>
+    );
 }
 
 export function useT() {

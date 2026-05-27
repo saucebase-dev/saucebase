@@ -10,33 +10,48 @@ export const inputGroupAddonVariants = cva(
     {
         variants: {
             align: {
-                'inline-start': 'order-first pl-3 has-[>button]:ml-[-0.45rem] has-[>kbd]:ml-[-0.35rem]',
-                'inline-end': 'order-last pr-3 has-[>button]:mr-[-0.45rem] has-[>kbd]:mr-[-0.35rem]',
-                'block-start': 'order-first w-full justify-start px-3 pt-3 [.border-b]:pb-3 group-has-[>input]/input-group:pt-2.5',
-                'block-end': 'order-last w-full justify-start px-3 pb-3 [.border-t]:pt-3 group-has-[>input]/input-group:pb-2.5',
+                'inline-start':
+                    'order-first pl-3 has-[>button]:ml-[-0.45rem] has-[>kbd]:ml-[-0.35rem]',
+                'inline-end':
+                    'order-last pr-3 has-[>button]:mr-[-0.45rem] has-[>kbd]:mr-[-0.35rem]',
+                'block-start':
+                    'order-first w-full justify-start px-3 pt-3 [.border-b]:pb-3 group-has-[>input]/input-group:pt-2.5',
+                'block-end':
+                    'order-last w-full justify-start px-3 pb-3 [.border-t]:pt-3 group-has-[>input]/input-group:pb-2.5',
             },
         },
         defaultVariants: { align: 'inline-start' },
     },
 );
 
-export type InputGroupAddonVariants = VariantProps<typeof inputGroupAddonVariants>;
+export type InputGroupAddonVariants = VariantProps<
+    typeof inputGroupAddonVariants
+>;
 
-export const inputGroupButtonVariants = cva('text-sm shadow-none flex gap-2 items-center', {
-    variants: {
-        size: {
-            xs: "h-6 gap-1 px-2 rounded-[calc(var(--radius)-5px)] [&>svg:not([class*='size-'])]:size-3.5 has-[>svg]:px-2",
-            sm: 'h-8 px-2.5 gap-1.5 rounded-md has-[>svg]:px-2.5',
-            'icon-xs': 'size-6 rounded-[calc(var(--radius)-5px)] p-0 has-[>svg]:p-0',
-            'icon-sm': 'size-8 p-0 has-[>svg]:p-0',
+export const inputGroupButtonVariants = cva(
+    'text-sm shadow-none flex gap-2 items-center',
+    {
+        variants: {
+            size: {
+                xs: "h-6 gap-1 px-2 rounded-[calc(var(--radius)-5px)] [&>svg:not([class*='size-'])]:size-3.5 has-[>svg]:px-2",
+                sm: 'h-8 px-2.5 gap-1.5 rounded-md has-[>svg]:px-2.5',
+                'icon-xs':
+                    'size-6 rounded-[calc(var(--radius)-5px)] p-0 has-[>svg]:p-0',
+                'icon-sm': 'size-8 p-0 has-[>svg]:p-0',
+            },
         },
+        defaultVariants: { size: 'xs' },
     },
-    defaultVariants: { size: 'xs' },
-});
+);
 
-export type InputGroupButtonVariants = VariantProps<typeof inputGroupButtonVariants>;
+export type InputGroupButtonVariants = VariantProps<
+    typeof inputGroupButtonVariants
+>;
 
-export function InputGroup({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
+export function InputGroup({
+    className,
+    ...props
+}: HTMLAttributes<HTMLDivElement>) {
     return (
         <div
             data-slot="input-group"
@@ -61,11 +76,18 @@ interface InputGroupAddonProps extends HTMLAttributes<HTMLDivElement> {
     align?: InputGroupAddonVariants['align'];
 }
 
-export function InputGroupAddon({ className, align = 'inline-start', onClick, ...props }: InputGroupAddonProps) {
+export function InputGroupAddon({
+    className,
+    align = 'inline-start',
+    onClick,
+    ...props
+}: InputGroupAddonProps) {
     function handleClick(e: React.MouseEvent<HTMLDivElement>) {
         const target = e.target as HTMLElement;
         if (target.closest('button')) return;
-        const input = (e.currentTarget as HTMLElement).parentElement?.querySelector('input');
+        const input = (
+            e.currentTarget as HTMLElement
+        ).parentElement?.querySelector('input');
         input?.focus();
         onClick?.(e);
     }
@@ -86,7 +108,12 @@ interface InputGroupButtonProps extends ButtonProps {
     size?: InputGroupButtonVariants['size'];
 }
 
-export function InputGroupButton({ className, size = 'xs', variant = 'ghost', ...props }: InputGroupButtonProps) {
+export function InputGroupButton({
+    className,
+    size = 'xs',
+    variant = 'ghost',
+    ...props
+}: InputGroupButtonProps) {
     return (
         <Button
             data-size={size}
@@ -97,7 +124,10 @@ export function InputGroupButton({ className, size = 'xs', variant = 'ghost', ..
     );
 }
 
-export function InputGroupInput({ className, ...props }: ComponentPropsWithoutRef<typeof Input>) {
+export function InputGroupInput({
+    className,
+    ...props
+}: ComponentPropsWithoutRef<typeof Input>) {
     return (
         <Input
             data-slot="input-group-control"
@@ -110,7 +140,10 @@ export function InputGroupInput({ className, ...props }: ComponentPropsWithoutRe
     );
 }
 
-export function InputGroupText({ className, ...props }: HTMLAttributes<HTMLSpanElement>) {
+export function InputGroupText({
+    className,
+    ...props
+}: HTMLAttributes<HTMLSpanElement>) {
     return (
         <span
             className={cn(
@@ -122,7 +155,10 @@ export function InputGroupText({ className, ...props }: HTMLAttributes<HTMLSpanE
     );
 }
 
-export function InputGroupTextarea({ className, ...props }: ComponentPropsWithoutRef<typeof Textarea>) {
+export function InputGroupTextarea({
+    className,
+    ...props
+}: ComponentPropsWithoutRef<typeof Textarea>) {
     return (
         <Textarea
             data-slot="input-group-control"

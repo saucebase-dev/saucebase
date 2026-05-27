@@ -36,7 +36,9 @@ export function useDialog() {
 
     useEffect(() => {
         subscribers.add(setLocalState);
-        return () => { subscribers.delete(setLocalState); };
+        return () => {
+            subscribers.delete(setLocalState);
+        };
     }, []);
 
     const confirm = useCallback((opts: ConfirmOptions): Promise<boolean> => {
@@ -52,5 +54,10 @@ export function useDialog() {
         resolveCallback = null;
     }, []);
 
-    return { confirm, isOpen: localState.isOpen, options: localState.options, resolve };
+    return {
+        confirm,
+        isOpen: localState.isOpen,
+        options: localState.options,
+        resolve,
+    };
 }

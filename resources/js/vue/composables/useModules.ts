@@ -23,8 +23,12 @@ export function useModules() {
         has(name: string): boolean {
             const modules = page.props.modules ?? {};
             const lower = name.toLowerCase();
-            return Object.keys(modules).some((k) => k.toLowerCase() === lower)
-                || Object.values(modules).some((v) => (v as string).toLowerCase() === lower);
+            return (
+                Object.keys(modules).some((k) => k.toLowerCase() === lower) ||
+                Object.values(modules).some(
+                    (v) => (v as string).toLowerCase() === lower,
+                )
+            );
         },
 
         /**

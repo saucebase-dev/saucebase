@@ -8,8 +8,8 @@ import {
     AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { buttonVariants } from '@/components/ui/button';
-import { useT } from '@/i18n';
 import { useDialog } from '@/hooks/useDialog';
+import { useT } from '@/i18n';
 import { cn } from '@/lib/utils';
 
 export default function DynamicDialog() {
@@ -19,9 +19,10 @@ export default function DynamicDialog() {
     const isCentered = !options.align || options.align === 'center';
     const Icon = options.icon;
 
-    const iconContainerClass = options.variant === 'destructive'
-        ? 'bg-destructive/10 text-destructive'
-        : 'bg-primary/10 text-primary';
+    const iconContainerClass =
+        options.variant === 'destructive'
+            ? 'bg-destructive/10 text-destructive'
+            : 'bg-primary/10 text-primary';
 
     const iconClass = cn(
         'flex size-14 items-center justify-center rounded-xl',
@@ -39,7 +40,12 @@ export default function DynamicDialog() {
         <AlertDialog open={isOpen}>
             <AlertDialogContent className="overflow-hidden p-0 sm:max-w-sm">
                 <div data-testid="confirm-dialog">
-                    <div className={cn('bg-background p-6', Icon ? contentClass : '')}>
+                    <div
+                        className={cn(
+                            'bg-background p-6',
+                            Icon ? contentClass : '',
+                        )}
+                    >
                         {Icon && (
                             <div className={iconClass}>
                                 <Icon className="size-7" />
@@ -48,7 +54,9 @@ export default function DynamicDialog() {
                         <AlertDialogHeader className={headerClass}>
                             <AlertDialogTitle>{options.title}</AlertDialogTitle>
                             {options.description && (
-                                <AlertDialogDescription>{options.description}</AlertDialogDescription>
+                                <AlertDialogDescription>
+                                    {options.description}
+                                </AlertDialogDescription>
                             )}
                         </AlertDialogHeader>
                     </div>
@@ -62,7 +70,12 @@ export default function DynamicDialog() {
                                 {options.cancelLabel ?? t('Cancel')}
                             </AlertDialogCancel>
                             <AlertDialogAction
-                                className={cn(buttonVariants({ variant: options.variant ?? 'default' }), 'w-full')}
+                                className={cn(
+                                    buttonVariants({
+                                        variant: options.variant ?? 'default',
+                                    }),
+                                    'w-full',
+                                )}
                                 data-testid="confirm-dialog-confirm"
                                 onClick={() => resolve(true)}
                             >

@@ -11,13 +11,33 @@ export default function Footer() {
                 <div className="text-muted-foreground flex w-full flex-col items-center justify-between gap-4 text-sm md:flex-row">
                     <div className="flex flex-col items-center gap-y-1 md:flex-row md:items-center md:gap-x-6 md:gap-y-0">
                         <span>© {new Date().getFullYear()} Saucebase</span>
-                        <a href="https://github.com/saucebase-dev/saucebase" className="hover:text-foreground">{t('GitHub')}</a>
-                        <a href="https://saucebase-dev.github.io/docs/" className="hover:text-foreground">{t('Documentation')}</a>
+                        <a
+                            href="https://github.com/saucebase-dev/saucebase"
+                            className="hover:text-foreground"
+                        >
+                            {t('GitHub')}
+                        </a>
+                        <a
+                            href="https://saucebase-dev.github.io/docs/"
+                            className="hover:text-foreground"
+                        >
+                            {t('Documentation')}
+                        </a>
                         {route().has('privacy') && (
-                            <Link href={route('privacy')} className="hover:text-foreground">{t('Privacy')}</Link>
+                            <Link
+                                href={route('privacy')}
+                                className="hover:text-foreground"
+                            >
+                                {t('Privacy')}
+                            </Link>
                         )}
                         {route().has('terms') && (
-                            <Link href={route('terms')} className="hover:text-foreground">{t('Terms')}</Link>
+                            <Link
+                                href={route('terms')}
+                                className="hover:text-foreground"
+                            >
+                                {t('Terms')}
+                            </Link>
                         )}
                     </div>
                     <div className="flex items-center gap-1">

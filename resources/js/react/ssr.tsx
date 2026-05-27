@@ -13,7 +13,13 @@ createServer((page) =>
         render: ReactDOMServer.renderToString,
         title: (title) => `${title} - ${appName}`,
         resolve: resolveModularPageComponent,
-        setup({ App: InertiaApp, props }: { App: React.ComponentType<any>; props: Record<string, any> }) {
+        setup({
+            App: InertiaApp,
+            props,
+        }: {
+            App: React.ComponentType<any>;
+            props: Record<string, any>;
+        }) {
             const locale = (page.props?.locale as string) || 'en';
 
             return (

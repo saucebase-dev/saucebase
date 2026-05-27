@@ -17,9 +17,13 @@ export function setCookie(name: string, value: string, days = 365): void {
 export const resolveModularPageComponent = (name: string) => {
     if (name.includes('::')) {
         const [moduleName, componentPath] = name.split('::', 2);
-        const moduleFolderName = moduleName.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+        const moduleFolderName = moduleName
+            .replace(/([a-z])([A-Z])/g, '$1-$2')
+            .toLowerCase();
 
-        const moduleGlobs = import.meta.glob<DefineComponent>('/modules/*/resources/js/**/pages/**/*.vue');
+        const moduleGlobs = import.meta.glob<DefineComponent>(
+            '/modules/*/resources/js/**/pages/**/*.vue',
+        );
 
         const moduleComponentPath = __SAUCEBASE_DEV__
             ? `/modules/${moduleFolderName}/resources/js/${__SAUCEBASE_FRAMEWORK__}/pages/${componentPath}.vue`

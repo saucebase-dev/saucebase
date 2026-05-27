@@ -1,4 +1,10 @@
-import { CircleCheckIcon, InfoIcon, Loader2Icon, OctagonXIcon, TriangleAlertIcon } from 'lucide-react';
+import {
+    CircleCheckIcon,
+    InfoIcon,
+    Loader2Icon,
+    OctagonXIcon,
+    TriangleAlertIcon,
+} from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Toaster as Sonner, type ToasterProps } from 'sonner';
 
@@ -11,7 +17,9 @@ function useDarkMode() {
         const observer = new MutationObserver(() => {
             setIsDark(document.documentElement.classList.contains('dark'));
         });
-        observer.observe(document.documentElement, { attributeFilter: ['class'] });
+        observer.observe(document.documentElement, {
+            attributeFilter: ['class'],
+        });
         return () => observer.disconnect();
     }, []);
 

@@ -1,12 +1,12 @@
 import App from '@/components/App';
+import { initializeTheme } from '@/hooks/useTheme';
 import { I18nProvider } from '@/i18n';
 import { getGlobalComponents } from '@/lib/globalComponents';
-import { initializeTheme } from '@/hooks/useTheme';
+import '@css/app.css';
 import { createInertiaApp } from '@inertiajs/react';
 import { createRoot } from 'react-dom/client';
 import { discoverModuleSetups, executeModuleSetups } from './lib/moduleSetup';
 import { resolveModularPageComponent } from './lib/utils';
-import '@css/app.css';
 
 initializeTheme();
 
@@ -26,9 +26,15 @@ createInertiaApp({
                         <InertiaApp {...props}>
                             {({ Component, props: pageProps, key }) => (
                                 <>
-                                    {getGlobalComponents('top').map((C, i) => <C key={i} />)}
+                                    {getGlobalComponents('top').map((TopComponent, i) => (
+                                        <TopComponent key={i} />
+                                    ))}
                                     <Component key={key} {...pageProps} />
-                                    {getGlobalComponents('bottom').map((C, i) => <C key={i} />)}
+                                    {getGlobalComponents('bottom').map(
+                                        (BottomComponent, i) => (
+                                            <BottomComponent key={i} />
+                                        ),
+                                    )}
                                 </>
                             )}
                         </InertiaApp>

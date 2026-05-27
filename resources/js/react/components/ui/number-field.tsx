@@ -1,6 +1,13 @@
 import { cn } from '@/lib/utils';
 import { Minus, Plus } from 'lucide-react';
-import { createContext, useCallback, useContext, useId, type HTMLAttributes, type ReactNode } from 'react';
+import {
+    createContext,
+    useCallback,
+    useContext,
+    useId,
+    type HTMLAttributes,
+    type ReactNode,
+} from 'react';
 
 interface NumberFieldContextValue {
     value: number;
@@ -16,7 +23,10 @@ const NumberFieldContext = createContext<NumberFieldContextValue | null>(null);
 
 function useNumberField() {
     const ctx = useContext(NumberFieldContext);
-    if (!ctx) throw new Error('NumberField components must be used within <NumberField>');
+    if (!ctx)
+        throw new Error(
+            'NumberField components must be used within <NumberField>',
+        );
     return ctx;
 }
 
@@ -47,14 +57,27 @@ export function NumberField({
     const controlled = value !== undefined;
     const currentValue = controlled ? value : defaultValue;
 
-    const onChange = useCallback((next: number) => {
-        const clamped = min !== undefined ? Math.max(min, next) : next;
-        const final = max !== undefined ? Math.min(max, clamped) : clamped;
-        onValueChange?.(final);
-    }, [min, max, onValueChange]);
+    const onChange = useCallback(
+        (next: number) => {
+            const clamped = min !== undefined ? Math.max(min, next) : next;
+            const final = max !== undefined ? Math.min(max, clamped) : clamped;
+            onValueChange?.(final);
+        },
+        [min, max, onValueChange],
+    );
 
     return (
-        <NumberFieldContext.Provider value={{ value: currentValue, min, max, step, disabled, onChange, inputId }}>
+        <NumberFieldContext.Provider
+            value={{
+                value: currentValue,
+                min,
+                max,
+                step,
+                disabled,
+                onChange,
+                inputId,
+            }}
+        >
             <div className={cn('grid gap-1.5', className)} {...props}>
                 {children}
             </div>
@@ -62,7 +85,10 @@ export function NumberField({
     );
 }
 
-export function NumberFieldContent({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
+export function NumberFieldContent({
+    className,
+    ...props
+}: HTMLAttributes<HTMLDivElement>) {
     return (
         <div
             className={cn(
@@ -74,8 +100,12 @@ export function NumberFieldContent({ className, ...props }: HTMLAttributes<HTMLD
     );
 }
 
-export function NumberFieldInput({ className, ...props }: HTMLAttributes<HTMLInputElement>) {
-    const { value, min, max, step, disabled, onChange, inputId } = useNumberField();
+export function NumberFieldInput({
+    className,
+    ...props
+}: HTMLAttributes<HTMLInputElement>) {
+    const { value, min, max, step, disabled, onChange, inputId } =
+        useNumberField();
     return (
         <input
             id={inputId}
@@ -96,7 +126,11 @@ export function NumberFieldInput({ className, ...props }: HTMLAttributes<HTMLInp
     );
 }
 
-export function NumberFieldDecrement({ className, children, ...props }: HTMLAttributes<HTMLButtonElement>) {
+export function NumberFieldDecrement({
+    className,
+    children,
+    ...props
+}: HTMLAttributes<HTMLButtonElement>) {
     const { value, min, step, disabled, onChange } = useNumberField();
     return (
         <button
@@ -115,7 +149,11 @@ export function NumberFieldDecrement({ className, children, ...props }: HTMLAttr
     );
 }
 
-export function NumberFieldIncrement({ className, children, ...props }: HTMLAttributes<HTMLButtonElement>) {
+export function NumberFieldIncrement({
+    className,
+    children,
+    ...props
+}: HTMLAttributes<HTMLButtonElement>) {
     const { value, max, step, disabled, onChange } = useNumberField();
     return (
         <button

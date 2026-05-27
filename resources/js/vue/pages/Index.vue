@@ -12,11 +12,15 @@ const selectedMod = ref<Module | null>(null);
 <template>
     <SiteLayout
         :title="$t('Saucebase | The best modular Laravel SaaS Starter Kit')"
-        :description="$t('Free, open-source Laravel SaaS starter kit. Ships with auth, billing, admin panel, and a modular copy-and-own architecture.')"
+        :description="
+            $t(
+                'Free, open-source Laravel SaaS starter kit. Ships with auth, billing, admin panel, and a modular copy-and-own architecture.',
+            )
+        "
     >
-        <main class="mx-auto w-full ">
+        <main class="mx-auto w-full">
             <div
-                class="px-6 md:px-16 lg:px-8 relative overflow-hidden mask-t-from-95% mask-b-from-95% md:mask-r-from-95% md:mask-l-from-95%"
+                class="relative overflow-hidden mask-t-from-95% mask-b-from-95% px-6 md:mask-r-from-95% md:mask-l-from-95% md:px-16 lg:px-8"
             >
                 <div class="mt-6 pt-24 pb-12">
                     <h1
@@ -39,7 +43,7 @@ const selectedMod = ref<Module | null>(null);
                 </div>
                 <!-- Module cards — grid is transformed as one unit for correct alignment -->
                 <div
-                    class="relative z-10 mx-auto grid max-w-6xl grid-cols-1 gap-8 gap-y-2 px-6 pt-8 pb-16 sm:px-10 lg:px-20 font-mono has-[[data-card]:hover]:*:data-card:opacity-40 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                    class="relative z-10 mx-auto grid max-w-6xl grid-cols-1 gap-8 gap-y-2 px-6 pt-8 pb-16 font-mono has-[[data-card]:hover]:*:data-card:opacity-40 sm:grid-cols-2 sm:px-10 lg:grid-cols-3 lg:px-20 xl:grid-cols-4"
                 >
                     <ModuleCard
                         v-for="(mod, index) in modules"

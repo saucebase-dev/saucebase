@@ -24,7 +24,11 @@ interface ButtonGroupProps extends HTMLAttributes<HTMLDivElement> {
     orientation?: ButtonGroupVariants['orientation'];
 }
 
-export function ButtonGroup({ className, orientation, ...props }: ButtonGroupProps) {
+export function ButtonGroup({
+    className,
+    orientation,
+    ...props
+}: ButtonGroupProps) {
     return (
         <div
             role="group"
@@ -36,7 +40,10 @@ export function ButtonGroup({ className, orientation, ...props }: ButtonGroupPro
     );
 }
 
-export function ButtonGroupSeparator({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
+export function ButtonGroupSeparator({
+    className,
+    ...props
+}: HTMLAttributes<HTMLDivElement>) {
     return (
         <Separator
             data-slot="button-group-separator"
@@ -47,7 +54,10 @@ export function ButtonGroupSeparator({ className, ...props }: HTMLAttributes<HTM
     );
 }
 
-export function ButtonGroupText({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
+export function ButtonGroupText({
+    className,
+    ...props
+}: HTMLAttributes<HTMLDivElement>) {
     return (
         <div
             role="group"

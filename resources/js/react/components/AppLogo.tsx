@@ -50,15 +50,28 @@ export default function AppLogo({
         const observer = new MutationObserver(() => {
             setIsDark(document.documentElement.classList.contains('dark'));
         });
-        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+        observer.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ['class'],
+        });
         return () => observer.disconnect();
     }, []);
 
-    const primaryFill = isDark ? 'url(#logo-dark-bottom-grad)' : 'url(#logo-primary-grad)';
-    const secondaryFill = isDark ? 'url(#logo-dark-top-grad)' : 'url(#logo-secondary-grad)';
+    const primaryFill = isDark
+        ? 'url(#logo-dark-bottom-grad)'
+        : 'url(#logo-primary-grad)';
+    const secondaryFill = isDark
+        ? 'url(#logo-dark-top-grad)'
+        : 'url(#logo-secondary-grad)';
 
     return (
-        <div className={centered ? 'flex flex-col items-center gap-1' : 'flex items-center gap-1'}>
+        <div
+            className={
+                centered
+                    ? 'flex flex-col items-center gap-1'
+                    : 'flex items-center gap-1'
+            }
+        >
             <div className={`relative ${sizeClasses[size]}`}>
                 <svg
                     className="h-full w-full"
@@ -69,21 +82,99 @@ export default function AppLogo({
                     style={{ fillRule: 'evenodd', clipRule: 'evenodd' }}
                 >
                     <defs>
-                        <linearGradient id="logo-secondary-grad" x1="0" y1="0" x2="1" y2="0" gradientUnits="userSpaceOnUse" gradientTransform="matrix(376.07,135.39,-135.39,376.07,231.46,875.253)">
-                            <stop offset="0" style={{ stopColor: 'color-mix(in oklch, var(--secondary) 96%, black)' }} />
-                            <stop offset="1" style={{ stopColor: 'color-mix(in oklch, var(--secondary) 98%, white)' }} />
+                        <linearGradient
+                            id="logo-secondary-grad"
+                            x1="0"
+                            y1="0"
+                            x2="1"
+                            y2="0"
+                            gradientUnits="userSpaceOnUse"
+                            gradientTransform="matrix(376.07,135.39,-135.39,376.07,231.46,875.253)"
+                        >
+                            <stop
+                                offset="0"
+                                style={{
+                                    stopColor:
+                                        'color-mix(in oklch, var(--secondary) 96%, black)',
+                                }}
+                            />
+                            <stop
+                                offset="1"
+                                style={{
+                                    stopColor:
+                                        'color-mix(in oklch, var(--secondary) 98%, white)',
+                                }}
+                            />
                         </linearGradient>
-                        <linearGradient id="logo-primary-grad" x1="0" y1="0" x2="1" y2="0" gradientUnits="userSpaceOnUse" gradientTransform="matrix(-481.156,-26.6311,26.6311,-481.156,753.144,1025.92)">
-                            <stop offset="0" style={{ stopColor: 'color-mix(in oklch, var(--primary) 96%, black)' }} />
-                            <stop offset="1" style={{ stopColor: 'color-mix(in oklch, var(--primary) 98%, white)' }} />
+                        <linearGradient
+                            id="logo-primary-grad"
+                            x1="0"
+                            y1="0"
+                            x2="1"
+                            y2="0"
+                            gradientUnits="userSpaceOnUse"
+                            gradientTransform="matrix(-481.156,-26.6311,26.6311,-481.156,753.144,1025.92)"
+                        >
+                            <stop
+                                offset="0"
+                                style={{
+                                    stopColor:
+                                        'color-mix(in oklch, var(--primary) 96%, black)',
+                                }}
+                            />
+                            <stop
+                                offset="1"
+                                style={{
+                                    stopColor:
+                                        'color-mix(in oklch, var(--primary) 98%, white)',
+                                }}
+                            />
                         </linearGradient>
-                        <linearGradient id="logo-dark-top-grad" gradientUnits="objectBoundingBox" x1="0.5" y1="0" x2="0.5" y2="1">
-                            <stop offset="0" style={{ stopColor: 'color-mix(in oklch, var(--primary) 45%, white)' }} />
-                            <stop offset="1" style={{ stopColor: 'color-mix(in oklch, var(--primary) 65%, white)' }} />
+                        <linearGradient
+                            id="logo-dark-top-grad"
+                            gradientUnits="objectBoundingBox"
+                            x1="0.5"
+                            y1="0"
+                            x2="0.5"
+                            y2="1"
+                        >
+                            <stop
+                                offset="0"
+                                style={{
+                                    stopColor:
+                                        'color-mix(in oklch, var(--primary) 45%, white)',
+                                }}
+                            />
+                            <stop
+                                offset="1"
+                                style={{
+                                    stopColor:
+                                        'color-mix(in oklch, var(--primary) 65%, white)',
+                                }}
+                            />
                         </linearGradient>
-                        <linearGradient id="logo-dark-bottom-grad" gradientUnits="objectBoundingBox" x1="0.5" y1="0" x2="0.5" y2="1">
-                            <stop offset="0" style={{ stopColor: 'color-mix(in oklch, var(--primary) 88%, white)' }} />
-                            <stop offset="1" style={{ stopColor: 'color-mix(in oklch, var(--primary) 75%, black)' }} />
+                        <linearGradient
+                            id="logo-dark-bottom-grad"
+                            gradientUnits="objectBoundingBox"
+                            x1="0.5"
+                            y1="0"
+                            x2="0.5"
+                            y2="1"
+                        >
+                            <stop
+                                offset="0"
+                                style={{
+                                    stopColor:
+                                        'color-mix(in oklch, var(--primary) 88%, white)',
+                                }}
+                            />
+                            <stop
+                                offset="1"
+                                style={{
+                                    stopColor:
+                                        'color-mix(in oklch, var(--primary) 75%, black)',
+                                }}
+                            />
                         </linearGradient>
                     </defs>
                     <g transform="matrix(1,0,0,1,-923,-1301)">
@@ -92,13 +183,21 @@ export default function AppLogo({
                                 <g transform="matrix(-1.01323,-1.01323,1.01323,-1.01323,789.359,3040.11)">
                                     <path
                                         d="M796.834,683.998L796.834,1297.69C796.834,1340.02 762.461,1374.4 720.123,1374.4L683.357,1374.4C471.667,1374.4 299.801,1202.53 299.801,990.842C299.801,779.152 471.667,607.287 683.357,607.287L720.123,607.287C762.461,607.287 796.834,641.66 796.834,683.998Z"
-                                        fill={variant === 'light' ? 'rgba(255,255,255,0.7)' : primaryFill}
+                                        fill={
+                                            variant === 'light'
+                                                ? 'rgba(255,255,255,0.7)'
+                                                : primaryFill
+                                        }
                                     />
                                 </g>
                                 <g transform="matrix(1.01323,1.01323,-1.01323,1.01323,1557.32,-541.47)">
                                     <path
                                         d="M796.834,683.998L796.834,1297.69C796.834,1340.02 762.461,1374.4 720.123,1374.4L683.357,1374.4C471.667,1374.4 299.801,1202.53 299.801,990.842C299.801,779.152 471.667,607.287 683.357,607.287L720.123,607.287C762.461,607.287 796.834,641.66 796.834,683.998Z"
-                                        fill={variant === 'light' ? 'white' : secondaryFill}
+                                        fill={
+                                            variant === 'light'
+                                                ? 'white'
+                                                : secondaryFill
+                                        }
                                     />
                                 </g>
                             </g>
@@ -108,13 +207,27 @@ export default function AppLogo({
             </div>
 
             {showText && (
-                <div className={centered ? 'flex flex-col items-center text-center' : 'flex flex-col'}>
-                    <h1 className={`${textSizeClasses[size]} ${variant === 'light' ? 'leading-none font-bold text-white' : 'leading-none font-bold text-gray-900 dark:text-white'}`}>
-                        <span className="text-secondary dark:text-muted-foreground">sauce</span>
-                        <span className="text-primary dark:text-foreground">base</span>
+                <div
+                    className={
+                        centered
+                            ? 'flex flex-col items-center text-center'
+                            : 'flex flex-col'
+                    }
+                >
+                    <h1
+                        className={`${textSizeClasses[size]} ${variant === 'light' ? 'leading-none font-bold text-white' : 'leading-none font-bold text-gray-900 dark:text-white'}`}
+                    >
+                        <span className="text-secondary dark:text-muted-foreground">
+                            sauce
+                        </span>
+                        <span className="text-primary dark:text-foreground">
+                            base
+                        </span>
                     </h1>
                     {showSubtitle && (
-                        <p className={`${subtitleSizeClasses[subtitleSize ?? size]} leading-tight ${variant === 'light' ? 'text-white/80' : 'text-muted-foreground'}`}>
+                        <p
+                            className={`${subtitleSizeClasses[subtitleSize ?? size]} leading-tight ${variant === 'light' ? 'text-white/80' : 'text-muted-foreground'}`}
+                        >
                             the recipe that works
                         </p>
                     )}

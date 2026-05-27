@@ -1,5 +1,5 @@
-import { useT } from '@/i18n';
 import { useModules } from '@/hooks/useModules';
+import { useT } from '@/i18n';
 import type { MenuItem } from '@/types/navigation';
 import { Link, usePage } from '@inertiajs/react';
 import { ArrowRight, ExternalLink, Menu, X } from 'lucide-react';
@@ -18,7 +18,8 @@ export default function Header() {
     const headerRef = useRef<HTMLElement>(null);
     const lastScrollY = useRef(0);
 
-    const landingNav = ((page.props.navigation as Record<string, unknown>)?.landing ?? []) as MenuItem[];
+    const landingNav = ((page.props.navigation as Record<string, unknown>)
+        ?.landing ?? []) as MenuItem[];
     const auth = page.props.auth as { user?: unknown } | undefined;
 
     useEffect(() => {
@@ -52,7 +53,10 @@ export default function Header() {
             <nav className="mx-auto max-w-7xl px-6 py-3">
                 <div className="flex items-center justify-between">
                     {/* Logo */}
-                    <Link href="/" className="flex shrink-0 items-center transition-opacity hover:opacity-80">
+                    <Link
+                        href="/"
+                        className="flex shrink-0 items-center transition-opacity hover:opacity-80"
+                    >
                         <AppLogo size="md" showText />
                     </Link>
 
@@ -66,7 +70,9 @@ export default function Header() {
                                 className="after:bg-primary text-muted-foreground hover:text-foreground relative px-4 py-2 text-sm font-semibold transition-all duration-300 after:absolute after:bottom-0 after:left-1/2 after:h-0.5 after:w-0 after:-translate-x-1/2 after:rounded-xl after:transition-all after:duration-300 hover:after:w-3/4"
                             >
                                 {t(item.title)}
-                                {item.newPage && <ExternalLink className="-mt-1 ml-1 inline-block size-3.5" />}
+                                {item.newPage && (
+                                    <ExternalLink className="-mt-1 ml-1 inline-block size-3.5" />
+                                )}
                             </a>
                         ))}
                     </div>
@@ -79,21 +85,33 @@ export default function Header() {
                         </div>
                         {has('auth') && !auth?.user && (
                             <>
-                                <Link href={route('login')} className="text-muted-foreground hover:bg-accent hover:text-accent-foreground rounded-xl px-4 py-2 text-sm font-medium transition-all duration-200">
+                                <Link
+                                    href={route('login')}
+                                    className="text-muted-foreground hover:bg-accent hover:text-accent-foreground rounded-xl px-4 py-2 text-sm font-medium transition-all duration-200"
+                                >
                                     {t('Sign In')}
                                 </Link>
-                                <Link href={route('register')} className="bg-primary text-primary-foreground hover:bg-primary/90 focus:ring-primary inline-flex items-center justify-center rounded-xl px-5 py-2.5 text-sm font-semibold transition-all duration-200 focus:ring-2 focus:ring-offset-2 focus:outline-none">
+                                <Link
+                                    href={route('register')}
+                                    className="bg-primary text-primary-foreground hover:bg-primary/90 focus:ring-primary inline-flex items-center justify-center rounded-xl px-5 py-2.5 text-sm font-semibold transition-all duration-200 focus:ring-2 focus:ring-offset-2 focus:outline-none"
+                                >
                                     {t('Get Started')}
                                 </Link>
                             </>
                         )}
                         {route().has('dashboard') && auth?.user && (
-                            <Link href={route('dashboard')} className="bg-primary text-primary-foreground hover:bg-primary/90 focus:ring-primary inline-flex items-center justify-center rounded-xl px-5 py-2.5 text-sm font-semibold transition-all duration-200">
+                            <Link
+                                href={route('dashboard')}
+                                className="bg-primary text-primary-foreground hover:bg-primary/90 focus:ring-primary inline-flex items-center justify-center rounded-xl px-5 py-2.5 text-sm font-semibold transition-all duration-200"
+                            >
                                 {t('Dashboard')}
                             </Link>
                         )}
                         {route().has('logout') && auth?.user && (
-                            <Link href={route('logout')} className="text-muted-foreground hover:bg-accent hover:text-accent-foreground rounded-xl px-4 py-2 text-sm font-medium transition-all duration-200">
+                            <Link
+                                href={route('logout')}
+                                className="text-muted-foreground hover:bg-accent hover:text-accent-foreground rounded-xl px-4 py-2 text-sm font-medium transition-all duration-200"
+                            >
                                 {t('Logout')}
                             </Link>
                         )}
@@ -105,11 +123,19 @@ export default function Header() {
                         <ThemeSelector mode="standalone" />
                         <button
                             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                            aria-label={mobileMenuOpen ? t('Close mobile menu') : t('Open mobile menu')}
+                            aria-label={
+                                mobileMenuOpen
+                                    ? t('Close mobile menu')
+                                    : t('Open mobile menu')
+                            }
                             aria-expanded={mobileMenuOpen}
                             className="text-muted-foreground hover:bg-accent hover:text-accent-foreground rounded-xl p-2 transition-colors duration-200"
                         >
-                            {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+                            {mobileMenuOpen ? (
+                                <X className="h-6 w-6" />
+                            ) : (
+                                <Menu className="h-6 w-6" />
+                            )}
                         </button>
                     </div>
                 </div>
@@ -136,14 +162,18 @@ export default function Header() {
                                         <Link
                                             href={route('login')}
                                             className="border-border text-foreground hover:bg-accent flex-1 rounded-xl border px-4 py-2.5 text-center text-sm font-medium transition-all duration-200"
-                                            onClick={() => setMobileMenuOpen(false)}
+                                            onClick={() =>
+                                                setMobileMenuOpen(false)
+                                            }
                                         >
                                             {t('Sign In')}
                                         </Link>
                                         <Link
                                             href={route('register')}
                                             className="bg-primary text-primary-foreground hover:bg-primary/90 flex flex-1 items-center justify-center gap-1.5 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all duration-200"
-                                            onClick={() => setMobileMenuOpen(false)}
+                                            onClick={() =>
+                                                setMobileMenuOpen(false)
+                                            }
                                         >
                                             {t('Get Started')}
                                             <ArrowRight className="h-3.5 w-3.5" />

@@ -5,7 +5,8 @@ export function useModules() {
 
     return {
         has(name: string): boolean {
-            const modules = (page.props.modules as Record<string, string>) ?? {};
+            const modules =
+                (page.props.modules as Record<string, string>) ?? {};
             const lower = name.toLowerCase();
             return (
                 Object.keys(modules).some((k) => k.toLowerCase() === lower) ||
@@ -14,7 +15,9 @@ export function useModules() {
         },
 
         all(): string[] {
-            return Object.values((page.props.modules as Record<string, string>) ?? {});
+            return Object.values(
+                (page.props.modules as Record<string, string>) ?? {},
+            );
         },
     };
 }

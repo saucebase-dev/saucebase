@@ -8,7 +8,12 @@ interface ModuleCardProps {
     onSelect: (module: Module) => void;
 }
 
-export function ModuleCard({ module, index, moduleClass, onSelect }: ModuleCardProps) {
+export function ModuleCard({
+    module,
+    index,
+    moduleClass,
+    onSelect,
+}: ModuleCardProps) {
     const t = useT();
     const cardDelay = `${400 + index * 150}ms`;
     const Icon = module.icon;
@@ -16,8 +21,13 @@ export function ModuleCard({ module, index, moduleClass, onSelect }: ModuleCardP
     return (
         <div
             data-card
-            className={`select-none relative cursor-pointer transition-opacity duration-200 hover:opacity-100! ${!module.href ? 'opacity-50' : ''} ${moduleClass ?? ''}`}
-            style={{ '--mod-color': `var(${module.color})`, '--card-delay': cardDelay } as React.CSSProperties}
+            className={`relative cursor-pointer transition-opacity duration-200 select-none hover:opacity-100! ${!module.href ? 'opacity-50' : ''} ${moduleClass ?? ''}`}
+            style={
+                {
+                    '--mod-color': `var(${module.color})`,
+                    '--card-delay': cardDelay,
+                } as React.CSSProperties
+            }
             onClick={() => onSelect(module)}
         >
             {/* Diagonal stripe accent */}
@@ -42,13 +52,19 @@ export function ModuleCard({ module, index, moduleClass, onSelect }: ModuleCardP
                                     className="badge-stripe stripe absolute top-3 right-0.5 min-w-10 rounded-full px-1.5 py-0.5 text-[9px] font-bold opacity-50"
                                     aria-hidden="true"
                                 >
-                                    <span className="invisible">{t(module.badge.label)}</span>
+                                    <span className="invisible">
+                                        {t(module.badge.label)}
+                                    </span>
                                 </div>
                                 <div
                                     className="bounce absolute top-1.5 -right-1.5 z-10 transition-all group-hover/card:translate-x-1 group-hover/card:-translate-y-0.5"
-                                    style={{ animationDelay: `calc(${cardDelay} + 280ms)` }}
+                                    style={{
+                                        animationDelay: `calc(${cardDelay} + 280ms)`,
+                                    }}
                                 >
-                                    <div className={`flex min-w-10 items-center justify-center rounded-full border px-1.5 py-0.5 text-[9px] font-bold shadow-sm ${module.badge.class}`}>
+                                    <div
+                                        className={`flex min-w-10 items-center justify-center rounded-full border px-1.5 py-0.5 text-[9px] font-bold shadow-sm ${module.badge.class}`}
+                                    >
                                         {t(module.badge.label)}
                                     </div>
                                 </div>
@@ -58,12 +74,20 @@ export function ModuleCard({ module, index, moduleClass, onSelect }: ModuleCardP
                         {/* Floating icon */}
                         <div
                             className="bounce absolute -top-2 left-1/2 z-10 -ml-5 flex size-14 shrink-0 items-center justify-center rounded-full shadow-[-2px_2px_0_0_color-mix(in_oklch,var(--mod-color)_85%,black)] transition-all duration-200 group-hover/card:translate-x-1.5 group-hover/card:-translate-y-1.5 group-hover/card:shadow-[-5px_5px_0_0_color-mix(in_oklch,var(--mod-color)_85%,black)]"
-                            style={{ background: `var(${module.color})`, animationDelay: `calc(${cardDelay} + 280ms)` }}
+                            style={{
+                                background: `var(${module.color})`,
+                                animationDelay: `calc(${cardDelay} + 280ms)`,
+                            }}
                         >
-                            <Icon className="absolute size-7 text-black/10 transition-all duration-200 group-hover/card:text-black/30 group-hover/card:blur-[1.5px]" aria-hidden="true" />
+                            <Icon
+                                className="absolute size-7 text-black/10 transition-all duration-200 group-hover/card:text-black/30 group-hover/card:blur-[1.5px]"
+                                aria-hidden="true"
+                            />
                             <Icon
                                 className="bounce absolute size-7 translate-x-0.5 -translate-y-0.5 text-white transition-transform duration-200 group-hover/card:translate-x-1 group-hover/card:-translate-y-1.5"
-                                style={{ animationDelay: `calc(${cardDelay} + 280ms)` }}
+                                style={{
+                                    animationDelay: `calc(${cardDelay} + 280ms)`,
+                                }}
                                 aria-hidden="true"
                             />
                         </div>

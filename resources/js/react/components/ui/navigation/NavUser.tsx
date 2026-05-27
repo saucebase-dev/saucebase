@@ -50,14 +50,21 @@ export default function NavUser({ user, items }: NavUserProps) {
                             className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
                         >
                             <Avatar className="h-8 w-8 rounded-lg">
-                                <AvatarImage src={user.avatar} alt={user.name} />
+                                <AvatarImage
+                                    src={user.avatar}
+                                    alt={user.name}
+                                />
                                 <AvatarFallback className="rounded-lg">
                                     {userInitials}
                                 </AvatarFallback>
                             </Avatar>
                             <div className="grid flex-1 text-left text-sm leading-tight">
-                                <span className="truncate font-medium">{user.name}</span>
-                                <span className="truncate text-xs">{user.email}</span>
+                                <span className="truncate font-medium">
+                                    {user.name}
+                                </span>
+                                <span className="truncate text-xs">
+                                    {user.email}
+                                </span>
                             </div>
                             <ChevronsUpDown className="ml-auto size-4" />
                         </SidebarMenuButton>
@@ -71,14 +78,21 @@ export default function NavUser({ user, items }: NavUserProps) {
                         <DropdownMenuLabel className="p-0 font-normal">
                             <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                                 <Avatar className="h-8 w-8 rounded-lg">
-                                    <AvatarImage src={user.avatar} alt={user.name} />
+                                    <AvatarImage
+                                        src={user.avatar}
+                                        alt={user.name}
+                                    />
                                     <AvatarFallback className="rounded-lg">
                                         {userInitials}
                                     </AvatarFallback>
                                 </Avatar>
                                 <div className="grid flex-1 text-left text-sm leading-tight">
-                                    <span className="truncate font-semibold">{user.name}</span>
-                                    <span className="truncate text-xs">{user.email}</span>
+                                    <span className="truncate font-semibold">
+                                        {user.name}
+                                    </span>
+                                    <span className="truncate text-xs">
+                                        {user.email}
+                                    </span>
                                 </div>
                             </div>
                         </DropdownMenuLabel>
@@ -109,8 +123,20 @@ export default function NavUser({ user, items }: NavUserProps) {
                                         <DropdownMenuItem
                                             key={item.id ?? item.title}
                                             asChild={!item.action}
-                                            data-testid={item.action ? `nav-action-${item.action}` : undefined}
-                                            onClick={item.action ? (e) => handleAction(item.action!, e as unknown as MouseEvent) : undefined}
+                                            data-testid={
+                                                item.action
+                                                    ? `nav-action-${item.action}`
+                                                    : undefined
+                                            }
+                                            onClick={
+                                                item.action
+                                                    ? (e) =>
+                                                          handleAction(
+                                                              item.action!,
+                                                              e as unknown as MouseEvent,
+                                                          )
+                                                    : undefined
+                                            }
                                         >
                                             {item.action ? (
                                                 <>

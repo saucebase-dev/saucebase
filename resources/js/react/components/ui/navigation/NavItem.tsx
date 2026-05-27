@@ -26,7 +26,9 @@ interface NavItemProps {
 
 function getBadgeConfig(item: MenuItem): MenuBadge | null {
     if (!item.badge) return null;
-    return item.badge === true ? { content: undefined } : (item.badge as MenuBadge);
+    return item.badge === true
+        ? { content: undefined }
+        : (item.badge as MenuBadge);
 }
 
 function isItemActive(item: MenuItem): boolean {
@@ -42,8 +44,13 @@ function isItemActive(item: MenuItem): boolean {
 function NavBadge({ badge }: { badge: MenuBadge | null }) {
     if (!badge) return null;
     return (
-        <Badge variant={badge.variant} className={`ml-auto ${badge.class ?? ''}`}>
-            {badge.content ?? <span className="size-1.5 rounded-xl bg-current" />}
+        <Badge
+            variant={badge.variant}
+            className={`ml-auto ${badge.class ?? ''}`}
+        >
+            {badge.content ?? (
+                <span className="size-1.5 rounded-xl bg-current" />
+            )}
         </Badge>
     );
 }
@@ -71,10 +78,17 @@ export default function NavItem({ item }: NavItemProps) {
     if (item.children?.length) {
         const isActive = isItemActive(item);
         return (
-            <Collapsible asChild defaultOpen={isActive} className="group/collapsible">
+            <Collapsible
+                asChild
+                defaultOpen={isActive}
+                className="group/collapsible"
+            >
                 <SidebarMenuItem>
                     <CollapsibleTrigger asChild>
-                        <SidebarMenuButton tooltip={t(item.title)} className={item.class}>
+                        <SidebarMenuButton
+                            tooltip={t(item.title)}
+                            className={item.class}
+                        >
                             <NavLinkContent item={item} />
                             <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
                         </SidebarMenuButton>
@@ -82,20 +96,35 @@ export default function NavItem({ item }: NavItemProps) {
                     <CollapsibleContent>
                         <SidebarMenuSub>
                             {item.children.map((child) => (
-                                <SidebarMenuSubItem key={child.id ?? child.title}>
+                                <SidebarMenuSubItem
+                                    key={child.id ?? child.title}
+                                >
                                     <SidebarMenuSubButton
                                         asChild
                                         isActive={
                                             child.active !== undefined
                                                 ? child.active
-                                                : !!(child.route && route().current(child.route))
+                                                : !!(
+                                                      child.route &&
+                                                      route().current(
+                                                          child.route,
+                                                      )
+                                                  )
                                         }
                                     >
                                         {child.external ? (
                                             <a
                                                 href={child.url ?? '#'}
-                                                target={child.newPage ? '_blank' : undefined}
-                                                rel={child.newPage ? 'noopener noreferrer' : undefined}
+                                                target={
+                                                    child.newPage
+                                                        ? '_blank'
+                                                        : undefined
+                                                }
+                                                rel={
+                                                    child.newPage
+                                                        ? 'noopener noreferrer'
+                                                        : undefined
+                                                }
                                                 className={child.class}
                                             >
                                                 <NavLinkContent item={child} />
@@ -103,7 +132,11 @@ export default function NavItem({ item }: NavItemProps) {
                                         ) : (
                                             <Link
                                                 href={child.url ?? '#'}
-                                                target={child.newPage ? '_blank' : undefined}
+                                                target={
+                                                    child.newPage
+                                                        ? '_blank'
+                                                        : undefined
+                                                }
                                                 className={child.class}
                                             >
                                                 <NavLinkContent item={child} />
@@ -125,7 +158,9 @@ export default function NavItem({ item }: NavItemProps) {
                 <SidebarMenuButton
                     tooltip={t(item.title)}
                     className={item.class}
-                    onClick={(e) => handleAction(item.action!, e as unknown as MouseEvent)}
+                    onClick={(e) =>
+                        handleAction(item.action!, e as unknown as MouseEvent)
+                    }
                 >
                     <NavLinkContent item={item} />
                 </SidebarMenuButton>
@@ -137,7 +172,11 @@ export default function NavItem({ item }: NavItemProps) {
 
     return (
         <SidebarMenuItem>
-            <SidebarMenuButton asChild isActive={isActive} tooltip={t(item.title)}>
+            <SidebarMenuButton
+                asChild
+                isActive={isActive}
+                tooltip={t(item.title)}
+            >
                 {item.external ? (
                     <a
                         href={item.url ?? '#'}

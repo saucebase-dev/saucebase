@@ -7,7 +7,11 @@ import {
     BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { Separator } from '@/components/ui/separator';
-import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import {
+    SidebarInset,
+    SidebarProvider,
+    SidebarTrigger,
+} from '@/components/ui/sidebar';
 import { useSidebarState } from '@/hooks/useSidebarState';
 import { useT } from '@/i18n';
 import type { Breadcrumb as BreadcrumbType } from '@/types';
@@ -21,13 +25,18 @@ interface AppLayoutProps {
     children: ReactNode;
 }
 
-export default function AppLayout({ title, breadcrumbs, children }: AppLayoutProps) {
+export default function AppLayout({
+    title,
+    breadcrumbs,
+    children,
+}: AppLayoutProps) {
     const t = useT();
     const { isOpen, setIsOpen } = useSidebarState();
     const page = usePage();
 
-    const displayBreadcrumbs =
-        breadcrumbs?.length ? breadcrumbs : (page.props.breadcrumbs as BreadcrumbType[] ?? []);
+    const displayBreadcrumbs = breadcrumbs?.length
+        ? breadcrumbs
+        : ((page.props.breadcrumbs as BreadcrumbType[]) ?? []);
 
     return (
         <SidebarProvider open={isOpen} onOpenChange={setIsOpen}>
@@ -45,33 +54,47 @@ export default function AppLayout({ title, breadcrumbs, children }: AppLayoutPro
                             <Breadcrumb>
                                 <BreadcrumbList>
                                     {displayBreadcrumbs.length > 0
-                                        ? displayBreadcrumbs.map((crumb, index) => (
-                                              <Fragment key={index}>
-                                                  <BreadcrumbItem>
-                                                      {crumb.url ? (
-                                                          <BreadcrumbLink href={crumb.url}>
-                                                              {t(
-                                                                  crumb.attributes?.label ??
-                                                                      crumb.title,
-                                                              )}
-                                                          </BreadcrumbLink>
-                                                      ) : (
-                                                          <BreadcrumbPage>
-                                                              {t(
-                                                                  crumb.attributes?.label ??
-                                                                      crumb.title,
-                                                              )}
-                                                          </BreadcrumbPage>
+                                        ? displayBreadcrumbs.map(
+                                              (crumb, index) => (
+                                                  <Fragment key={index}>
+                                                      <BreadcrumbItem>
+                                                          {crumb.url ? (
+                                                              <BreadcrumbLink
+                                                                  href={
+                                                                      crumb.url
+                                                                  }
+                                                              >
+                                                                  {t(
+                                                                      crumb
+                                                                          .attributes
+                                                                          ?.label ??
+                                                                          crumb.title,
+                                                                  )}
+                                                              </BreadcrumbLink>
+                                                          ) : (
+                                                              <BreadcrumbPage>
+                                                                  {t(
+                                                                      crumb
+                                                                          .attributes
+                                                                          ?.label ??
+                                                                          crumb.title,
+                                                                  )}
+                                                              </BreadcrumbPage>
+                                                          )}
+                                                      </BreadcrumbItem>
+                                                      {index <
+                                                          displayBreadcrumbs.length -
+                                                              1 && (
+                                                          <BreadcrumbSeparator />
                                                       )}
-                                                  </BreadcrumbItem>
-                                                  {index < displayBreadcrumbs.length - 1 && (
-                                                      <BreadcrumbSeparator />
-                                                  )}
-                                              </Fragment>
-                                          ))
+                                                  </Fragment>
+                                              ),
+                                          )
                                         : title && (
                                               <BreadcrumbItem>
-                                                  <BreadcrumbPage>{t(title)}</BreadcrumbPage>
+                                                  <BreadcrumbPage>
+                                                      {t(title)}
+                                                  </BreadcrumbPage>
                                               </BreadcrumbItem>
                                           )}
                                 </BreadcrumbList>

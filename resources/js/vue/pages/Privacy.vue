@@ -5,7 +5,11 @@ import SiteLayout from '@/layouts/SiteLayout.vue';
 <template>
     <SiteLayout
         :title="$t('Privacy Policy')"
-        :description="$t('Learn how Saucebase collects, uses, and protects your personal information.')"
+        :description="
+            $t(
+                'Learn how Saucebase collects, uses, and protects your personal information.',
+            )
+        "
     >
         <main class="mx-auto w-full max-w-3xl flex-1 px-6 py-16">
             <h1 class="mb-2 text-4xl font-bold text-gray-900 dark:text-white">

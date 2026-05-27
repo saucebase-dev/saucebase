@@ -37,7 +37,9 @@ export default function Error({ status }: ErrorProps) {
                         <h2 className="mt-4 text-2xl font-semibold text-gray-700 dark:text-gray-300">
                             {title}
                         </h2>
-                        <p className="mt-2 text-gray-600 dark:text-gray-400">{description}</p>
+                        <p className="mt-2 text-gray-600 dark:text-gray-400">
+                            {description}
+                        </p>
                     </div>
                     <div className="space-y-4">
                         <Button asChild>

@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import type { Module } from './index';
 
-const props = defineProps<{ module: Module; index: number, moduleClass?: string }>();
+defineProps<{ module: Module; index: number; moduleClass?: string }>();
 const emit = defineEmits<{ select: [module: Module] }>();
 </script>
 
 <template>
     <div
         data-card
-        class="select-none relative cursor-pointer transition-opacity duration-200 hover:opacity-100!"
+        class="relative cursor-pointer transition-opacity duration-200 select-none hover:opacity-100!"
         :class="[!module.href ? 'opacity-50' : '', moduleClass]"
         :style="{
             '--mod-color': `var(${module.color})`,

@@ -1,8 +1,8 @@
 import type { Toast } from '@/types';
 import { router } from '@inertiajs/react';
+import type { ReactNode } from 'react';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
-import type { ReactNode } from 'react';
 import DynamicDialog from './DynamicDialog';
 import { Toaster } from './ui/sonner';
 
@@ -16,12 +16,23 @@ function fireToast(toastProp: Toast) {
     };
 
     switch (toastProp.type) {
-        case 'success': toast.success(toastProp.message, options); break;
-        case 'error':   toast.error(toastProp.message, options);   break;
-        case 'info':    toast.info(toastProp.message, options);    break;
-        case 'warning': toast.warning(toastProp.message, options); break;
-        case 'loading': toast.loading(toastProp.message, options); break;
-        default:        toast(toastProp.message, options);
+        case 'success':
+            toast.success(toastProp.message, options);
+            break;
+        case 'error':
+            toast.error(toastProp.message, options);
+            break;
+        case 'info':
+            toast.info(toastProp.message, options);
+            break;
+        case 'warning':
+            toast.warning(toastProp.message, options);
+            break;
+        case 'loading':
+            toast.loading(toastProp.message, options);
+            break;
+        default:
+            toast(toastProp.message, options);
     }
 }
 
@@ -32,7 +43,9 @@ interface AppProps {
 export default function App({ children }: AppProps) {
     useEffect(() => {
         return router.on('navigate', (event) => {
-            const toastProp = event.detail.page.props.toast as Toast | undefined;
+            const toastProp = event.detail.page.props.toast as
+                | Toast
+                | undefined;
             if (toastProp) fireToast(toastProp);
         });
     }, []);

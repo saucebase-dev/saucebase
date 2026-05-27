@@ -44,7 +44,11 @@ export function Field({ className, orientation, ...props }: FieldProps) {
     );
 }
 
-export function FieldLabel({ className, children, ...props }: HTMLAttributes<HTMLLabelElement> & { children?: ReactNode }) {
+export function FieldLabel({
+    className,
+    children,
+    ...props
+}: HTMLAttributes<HTMLLabelElement> & { children?: ReactNode }) {
     return (
         <Label
             data-slot="field-label"
@@ -61,7 +65,10 @@ export function FieldLabel({ className, children, ...props }: HTMLAttributes<HTM
     );
 }
 
-export function FieldTitle({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
+export function FieldTitle({
+    className,
+    ...props
+}: HTMLAttributes<HTMLDivElement>) {
     return (
         <div
             data-slot="field-label"
@@ -78,7 +85,12 @@ interface FieldErrorProps extends HTMLAttributes<HTMLDivElement> {
     errors?: Array<{ message?: string } | undefined>;
 }
 
-export function FieldError({ className, children, errors, ...props }: FieldErrorProps) {
+export function FieldError({
+    className,
+    children,
+    errors,
+    ...props
+}: FieldErrorProps) {
     const content = (() => {
         if (children) return null;
         if (!errors || errors.length === 0) return null;
@@ -95,20 +107,26 @@ export function FieldError({ className, children, errors, ...props }: FieldError
             className={cn('text-destructive text-sm font-normal', className)}
             {...props}
         >
-            {children ?? (
-                typeof content === 'string' ? content : (
+            {children ??
+                (typeof content === 'string' ? (
+                    content
+                ) : (
                     <ul className="ml-4 flex list-disc flex-col gap-1">
-                        {(content as Array<{ message?: string } | undefined>)?.map((error, i) => (
+                        {(
+                            content as Array<{ message?: string } | undefined>
+                        )?.map((error, i) => (
                             <li key={i}>{error?.message}</li>
                         ))}
                     </ul>
-                )
-            )}
+                ))}
         </div>
     );
 }
 
-export function FieldDescription({ className, ...props }: HTMLAttributes<HTMLParagraphElement>) {
+export function FieldDescription({
+    className,
+    ...props
+}: HTMLAttributes<HTMLParagraphElement>) {
     return (
         <p
             data-slot="field-description"
@@ -123,17 +141,26 @@ export function FieldDescription({ className, ...props }: HTMLAttributes<HTMLPar
     );
 }
 
-export function FieldContent({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
+export function FieldContent({
+    className,
+    ...props
+}: HTMLAttributes<HTMLDivElement>) {
     return (
         <div
             data-slot="field-content"
-            className={cn('group/field-content flex flex-1 flex-col gap-1.5 leading-snug', className)}
+            className={cn(
+                'group/field-content flex flex-1 flex-col gap-1.5 leading-snug',
+                className,
+            )}
             {...props}
         />
     );
 }
 
-export function FieldGroup({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
+export function FieldGroup({
+    className,
+    ...props
+}: HTMLAttributes<HTMLDivElement>) {
     return (
         <div
             data-slot="field-group"
@@ -150,7 +177,11 @@ interface FieldSeparatorProps extends HTMLAttributes<HTMLDivElement> {
     children?: ReactNode;
 }
 
-export function FieldSeparator({ className, children, ...props }: FieldSeparatorProps) {
+export function FieldSeparator({
+    className,
+    children,
+    ...props
+}: FieldSeparatorProps) {
     return (
         <div
             data-slot="field-separator"
@@ -174,7 +205,10 @@ export function FieldSeparator({ className, children, ...props }: FieldSeparator
     );
 }
 
-export function FieldSet({ className, ...props }: HTMLAttributes<HTMLFieldSetElement>) {
+export function FieldSet({
+    className,
+    ...props
+}: HTMLAttributes<HTMLFieldSetElement>) {
     return (
         <fieldset
             data-slot="field-set"
@@ -192,7 +226,11 @@ interface FieldLegendProps extends HTMLAttributes<HTMLLegendElement> {
     variant?: 'legend' | 'label';
 }
 
-export function FieldLegend({ className, variant, ...props }: FieldLegendProps) {
+export function FieldLegend({
+    className,
+    variant,
+    ...props
+}: FieldLegendProps) {
     return (
         <legend
             data-slot="field-legend"
