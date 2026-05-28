@@ -120,15 +120,15 @@
             <div class="pb-4 text-center">
                 <h1 class="text-center text-5xl font-bold md:text-6xl"
                     style="color: var(--primary); text-shadow: 0 4px 25px color-mix(in oklch, var(--primary) 15%, var(--background))">
-                    The kitchen is set
+                    The fundation is ready
                 </h1>
                 <h2 class="mt-1 text-center text-5xl font-bold md:text-6xl"
                     style="color: var(--secondary)">
-                    Pick your flavor
+                    Pick your side
                 </h2>
                 <p class="mt-3 text-center text-xl tracking-normal md:text-2xl"
                     style="color: var(--muted-foreground)">
-                    The base handles everything else
+                    Saucebase handles everything else
                 </p>
             </div>
 
