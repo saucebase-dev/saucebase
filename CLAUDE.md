@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-Saucebase is a modular Laravel SaaS starter kit (VILT stack). Modules are installed via Composer and owned directly in the repository (copy-and-own).
+Saucebase is a modular Laravel SaaS starter kit. Modules are installed via Composer and owned directly in the repository (copy-and-own).
 
 **Core message:** The foundation is built. Focus on your product. See [`docs/CLAUDE.md`](../docs/CLAUDE.md) → _Saucebase Philosophy_ for tone and value-proposition guidance.
 
@@ -94,7 +94,13 @@ Uses `internachi/modular`. Modules are Composer packages installed into `modules
 - _(no flag)_ — end-user install: flattens one framework, deletes the other. Throws if `frontend.json` already exists
 - `--reset` — restores git-tracked files, removes `frontend.json`
 
-**Dev mode gotchas — AI agents must know these:**
+**End-user install (no `"dev"` key in `frontend.json`):**
+- Framework files are flattened directly into `resources/js/` — no `vue/` or `react/` subdirectories exist.
+- Write new pages to `resources/js/pages/`, components to `resources/js/components/`, etc.
+- Same applies to modules: `modules/auth/resources/js/pages/` (flat), not `modules/auth/resources/js/vue/pages/`.
+- `resources/js/app.ts` is the real entry point — edit it directly if needed.
+
+**Dev mode gotchas — contributor/core-team context only (`"dev": true` in `frontend.json`):**
 1. **Generated files** appear in `git status` but are passthroughs — never edit them directly:
    - `resources/js/app.ts` / `app.tsx`, `resources/js/ssr.ts` / `ssr.tsx`, `modules/*/resources/js/app.ts`
 2. **Real edits go in `resources/js/vue/` or `resources/js/react/`** — never the root entry points.

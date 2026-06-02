@@ -4,12 +4,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Saucebase is a modular Laravel SaaS starter kit built on the VILT stack (Vue 3, Inertia.js, Laravel 13, Tailwind CSS 4). It follows a **copy-and-own philosophy** where modules are installed directly into the repository rather than being maintained as external packages. This is a Docker-first setup with hot reload, TypeScript, and built-in best practices.
+Saucebase is a modular Laravel SaaS starter kit built on Laravel 13, Inertia.js, and Tailwind CSS 4 — with your choice of Vue 3 or React as the frontend framework. It follows a **copy-and-own philosophy** where modules are installed directly into the repository rather than being maintained as external packages. This is a Docker-first setup with hot reload, TypeScript, and built-in best practices.
 
 **Key Technologies:**
 
 - Backend: Laravel 13, PHP 8.4+, Filament 5 admin panel
-- Frontend: Vue 3 Composition API, TypeScript 5.8, Inertia.js 3.0, Tailwind CSS 4
+- Frontend: Vue 3 or React, TypeScript 5.8, Inertia.js 3.0, Tailwind CSS 4
 - Build: Vite 6.4 with HMR, SSR support
 - Testing: PHPUnit (backend), Playwright (E2E)
 - Code Quality: PHPStan level 9, Laravel Pint, ESLint, Prettier
@@ -942,7 +942,7 @@ docker compose logs mysql
 
 ## Saucebase
 
-Saucebase is a modular Laravel SaaS starter kit (VILT stack). All features are encapsulated as **modules** under `modules/<modulename>/` (always lowercase). Modules are copy-and-own: once installed they live in the repo and can be edited freely.
+Saucebase is a modular Laravel SaaS starter kit. All features are encapsulated as **modules** under `modules/<modulename>/` (always lowercase). Modules are copy-and-own: once installed they live in the repo and can be edited freely.
 
 ### Module Creation
 

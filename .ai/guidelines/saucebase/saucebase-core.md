@@ -1,6 +1,6 @@
 ## Saucebase
 
-Saucebase is a modular Laravel SaaS starter kit (VILT stack). All features are encapsulated as **modules** under `modules/<modulename>/` (always lowercase). Modules are copy-and-own: once installed they live in the repo and can be edited freely.
+Saucebase is a modular Laravel SaaS starter kit. All features are encapsulated as **modules** under `modules/<modulename>/` (always lowercase). Modules are copy-and-own: once installed they live in the repo and can be edited freely.
 
 ### Module Creation
 
