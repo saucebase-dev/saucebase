@@ -326,6 +326,11 @@ class StackCommand extends Command
             foreach ($others as $other) {
                 $this->files->deleteDirectory($jsRoot.'/'.$other);
             }
+
+            // Vue's flat entry is app.ts; React's is app.tsx. Remove the stale proxy.
+            if ($framework !== 'vue' && $this->files->exists($jsRoot.'/app.ts')) {
+                $this->files->delete($jsRoot.'/app.ts');
+            }
         }
     }
 

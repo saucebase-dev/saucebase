@@ -58,6 +58,21 @@ class RecipeToModuleCommand extends Command
             return true;
         }
 
+        $frontendJson = base_path('frontend.json');
+        $frontendData = file_exists($frontendJson)
+            ? (json_decode((string) file_get_contents($frontendJson), true) ?? [])
+            : [];
+
+        $framework = $frontendData['framework'] ?? null;
+
+        if ($framework === null) {
+            error('No frontend framework selected. Run `php artisan saucebase:stack vue` or `php artisan saucebase:stack react` first.');
+
+            return true;
+        }
+
+        $isDev = ($frontendData['dev'] ?? false) === true;
+
         $this->template = $this->getTemplate();
         $this->templatePath = base_path($this->template);
         $this->tempFolder = base_path('saucebase-temp');
@@ -69,7 +84,7 @@ class RecipeToModuleCommand extends Command
         }
 
         $this->generate();
-        $this->writeModuleEntryPoint();
+        $this->writeModuleEntryPoint($framework, $isDev);
         $this->registerInTaskfile();
 
         info("Starter {$this->moduleName} module generated successfully.");
@@ -306,28 +321,27 @@ class RecipeToModuleCommand extends Command
         return ucwords(str_replace('_', ' ', Str::snake($value)));
     }
 
-    protected function writeModuleEntryPoint(): void
+    protected function writeModuleEntryPoint(string $framework, bool $isDev): void
     {
-        $frontendJson = base_path('frontend.json');
-
-        if (! file_exists($frontendJson)) {
-            return;
-        }
-
-        $data = json_decode((string) file_get_contents($frontendJson), true);
-        $framework = $data['framework'] ?? null;
-        $isDev = ($data['dev'] ?? false) === true;
-
-        if ($framework === null) {
-            return;
-        }
-
         $entryPoint = $this->moduleConfigPath.$this->moduleFolder.'/resources/js/app.ts';
+
+        if (! $isDev) {
+            // Install mode: for React, remove the stale app.ts proxy — app.tsx is the real entry.
+            if ($framework === 'react' && file_exists($entryPoint)) {
+                $this->fs->remove($entryPoint);
+            }
+
+            return;
+        }
+
+        // Dev mode: both subdirs exist, write the proxy.
         file_put_contents($entryPoint, "export * from './{$framework}/app';\n");
 
-        if ($isDev) {
-            $rel = "modules/{$this->moduleFolder}/resources/js/app.ts";
-            exec('git -C '.escapeshellarg(base_path())." update-index --skip-worktree {$rel} 2>&1");
+        $rel = "modules/{$this->moduleFolder}/resources/js/app.ts";
+        exec('git -C '.escapeshellarg(base_path())." update-index --skip-worktree {$rel} 2>&1", $output, $exitCode);
+
+        if ($exitCode !== 0 && isset($this->output)) {
+            $this->warn("Could not skip-worktree {$rel} (not in git index).");
         }
     }
 

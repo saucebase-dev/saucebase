@@ -3,6 +3,7 @@
 namespace Tests\Unit\Console\Commands;
 
 use App\Console\Commands\SauceBase\RecipeToModuleCommand;
+use Illuminate\Filesystem\Filesystem;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
@@ -11,6 +12,8 @@ class TestableRecipeToModuleCommand extends RecipeToModuleCommand
     public string $moduleName = '';
 
     public string $moduleFolder = '';
+
+    public string $moduleConfigPath = '';
 
     public string $composerVendor = '';
 
@@ -25,16 +28,47 @@ class TestableRecipeToModuleCommand extends RecipeToModuleCommand
     {
         return parent::placeholders($name);
     }
+
+    public function writeModuleEntryPoint(string $framework, bool $isDev): void
+    {
+        parent::writeModuleEntryPoint($framework, $isDev);
+    }
 }
 
 class RecipeToModuleCommandTest extends TestCase
 {
     private TestableRecipeToModuleCommand $command;
 
+    private Filesystem $files;
+
+    private string $tmpDir;
+
+    private string $originalBasePath;
+
     protected function setUp(): void
     {
         parent::setUp();
         $this->command = new TestableRecipeToModuleCommand;
+
+        $this->files = new Filesystem;
+        $this->tmpDir = sys_get_temp_dir().'/saucebase-recipe-test-'.uniqid();
+        $jsRoot = $this->tmpDir.'/modules/test-module/resources/js';
+        $this->files->makeDirectory($jsRoot, 0755, true);
+        file_put_contents($jsRoot.'/app.ts', "export * from './vue/app';\n");
+
+        exec("git -C {$this->tmpDir} init -q 2>/dev/null");
+        exec("git -C {$this->tmpDir} config user.email 'test@test.com' 2>/dev/null");
+        exec("git -C {$this->tmpDir} config user.name 'Test' 2>/dev/null");
+
+        $this->originalBasePath = base_path();
+        app()->setBasePath($this->tmpDir);
+    }
+
+    protected function tearDown(): void
+    {
+        app()->setBasePath($this->originalBasePath);
+        $this->files->deleteDirectory($this->tmpDir);
+        parent::tearDown();
     }
 
     // ── Name normalization ────────────────────────────────────────────────────
@@ -153,5 +187,80 @@ class RecipeToModuleCommandTest extends TestCase
         $this->assertSame('auth', $map['{module-}']);
         $this->assertSame('auth', $map['{module_}']);
         $this->assertSame('Auth', $map['___Module___']);
+    }
+
+    // ── Helpers ───────────────────────────────────────────────────────────────
+
+    private function writeFrontendJson(array $data): void
+    {
+        file_put_contents($this->tmpDir.'/frontend.json', json_encode($data));
+    }
+
+    private function makeCommand(): TestableRecipeToModuleCommand
+    {
+        $cmd = new TestableRecipeToModuleCommand;
+        $cmd->moduleConfigPath = $this->tmpDir.'/modules/';
+        $cmd->moduleFolder = 'test-module';
+
+        return $cmd;
+    }
+
+    private function jsRoot(): string
+    {
+        return $this->tmpDir.'/modules/test-module/resources/js';
+    }
+
+    // ── Frontend framework: early exit ────────────────────────────────────────
+
+    public function test_aborts_when_no_framework_is_selected(): void
+    {
+        $this->writeFrontendJson(['framework' => null]);
+
+        $this->artisan('saucebase:recipe', ['module' => 'TestExit'])
+            ->expectsOutputToContain('No frontend framework selected');
+
+        $this->assertDirectoryDoesNotExist($this->tmpDir.'/modules/test-exit');
+    }
+
+    // ── writeModuleEntryPoint: install mode ───────────────────────────────────
+
+    public function test_install_mode_vue_keeps_app_ts(): void
+    {
+        $this->makeCommand()->writeModuleEntryPoint('vue', false);
+
+        $this->assertFileExists($this->jsRoot().'/app.ts');
+    }
+
+    public function test_install_mode_react_removes_stale_app_ts(): void
+    {
+        $this->makeCommand()->writeModuleEntryPoint('react', false);
+
+        $this->assertFileDoesNotExist($this->jsRoot().'/app.ts');
+    }
+
+    // ── writeModuleEntryPoint: dev mode ───────────────────────────────────────
+
+    public function test_dev_mode_react_writes_proxy(): void
+    {
+        $this->files->makeDirectory($this->jsRoot().'/react', 0755, true);
+
+        $this->makeCommand()->writeModuleEntryPoint('react', true);
+
+        $this->assertStringContainsString(
+            "export * from './react/app'",
+            (string) file_get_contents($this->jsRoot().'/app.ts')
+        );
+    }
+
+    public function test_dev_mode_vue_writes_proxy(): void
+    {
+        $this->files->makeDirectory($this->jsRoot().'/vue', 0755, true);
+
+        $this->makeCommand()->writeModuleEntryPoint('vue', true);
+
+        $this->assertStringContainsString(
+            "export * from './vue/app'",
+            (string) file_get_contents($this->jsRoot().'/app.ts')
+        );
     }
 }

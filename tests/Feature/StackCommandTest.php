@@ -391,6 +391,30 @@ class StackCommandTest extends TestCase
         $this->assertArrayNotHasKey('dev', $data);
     }
 
+    public function test_install_mode_react_removes_stale_recipe_proxy(): void
+    {
+        $this->seedFakeStubs('react');
+        $this->seedFakeSourceDir('react');
+        $this->seedFakeRecipeStubs();
+
+        $this->artisan('saucebase:stack react')->assertSuccessful();
+
+        $this->assertFileDoesNotExist($this->tmpDir.'/stubs/saucebase/recipes/basic/resources/js/app.ts');
+    }
+
+    public function test_install_mode_vue_keeps_recipe_proxy(): void
+    {
+        $this->seedFakeStubs('vue');
+        $this->seedFakeSourceDir('vue');
+        $this->seedFakeRecipeStubs();
+
+        $this->artisan('saucebase:stack vue')->assertSuccessful();
+
+        $this->assertFileExists($this->tmpDir.'/stubs/saucebase/recipes/basic/resources/js/app.ts');
+        // Confirm flattenRecipeStubs() actually ran (it deletes subdirs).
+        $this->assertDirectoryDoesNotExist($this->tmpDir.'/stubs/saucebase/recipes/basic/resources/js/vue');
+    }
+
     // -------------------------------------------------------------------------
     // Reset
     // -------------------------------------------------------------------------
@@ -499,5 +523,15 @@ class StackCommandTest extends TestCase
         $fwDir = $this->tmpDir."/modules/{$name}/resources/js/{$framework}";
         $this->files->ensureDirectoryExists($fwDir);
         file_put_contents($fwDir.'/app.'.($framework === 'react' ? 'tsx' : 'ts'), "export default {};\n");
+    }
+
+    private function seedFakeRecipeStubs(): void
+    {
+        $jsRoot = $this->tmpDir.'/stubs/saucebase/recipes/basic/resources/js';
+        $this->files->ensureDirectoryExists($jsRoot.'/vue');
+        $this->files->ensureDirectoryExists($jsRoot.'/react');
+        file_put_contents($jsRoot.'/app.ts', "export * from './vue/app';\n");
+        file_put_contents($jsRoot.'/vue/app.ts', "export function setup() {}\n");
+        file_put_contents($jsRoot.'/react/app.tsx', "export function setup() {}\n");
     }
 }
