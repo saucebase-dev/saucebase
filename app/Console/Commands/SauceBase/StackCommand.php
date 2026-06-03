@@ -17,6 +17,8 @@ class StackCommand extends Command
 
     private const CONFIG_FILES = ['package.json', 'vite.config.js', 'tsconfig.json', 'eslint.config.js', 'components.json'];
 
+    private const LOCKFILE = 'package-lock.json';
+
     private const VIEW_FILES = ['app.blade.php'];
 
     private const SUPPORTED = ['vue', 'react'];
@@ -80,6 +82,7 @@ class StackCommand extends Command
 
         $this->copySourceFiles($framework);
         $this->copyConfigFiles($framework, rewrite: true);
+        $this->copyLockFile($framework);
         $this->copyViewFiles($framework);
         $this->files->deleteDirectory($this->jsRoot.'/vue');
         $this->files->deleteDirectory($this->jsRoot.'/react');
@@ -104,6 +107,7 @@ class StackCommand extends Command
         }
 
         $this->copyConfigFiles($framework, rewrite: false);
+        $this->copyLockFile($framework);
         $this->copyViewFiles($framework);
 
         $ext = $this->appExtension($framework);
@@ -154,6 +158,11 @@ class StackCommand extends Command
             }
         }
 
+        $lockfile = $this->basePath.'/'.self::LOCKFILE;
+        if ($this->files->exists($lockfile)) {
+            $this->files->delete($lockfile);
+        }
+
         $this->info('Reset complete. Run: npm install to restore base dependencies.');
 
         return self::SUCCESS;
@@ -199,6 +208,16 @@ class StackCommand extends Command
             }
 
             $this->files->put($destination, $content);
+        }
+    }
+
+    private function copyLockFile(string $framework): void
+    {
+        $source = $this->basePath."/stubs/saucebase/stack/{$framework}/".self::LOCKFILE;
+        $destination = $this->basePath.'/'.self::LOCKFILE;
+
+        if ($this->files->exists($source)) {
+            $this->files->copy($source, $destination);
         }
     }
 
