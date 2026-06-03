@@ -69,7 +69,7 @@ runs:
           run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
         - name: Select framework
-          if: inputs.framework != '' && inputs.skip-build != 'true'
+          if: inputs.framework != ''
           shell: bash
           working-directory: ${{ inputs.working-directory }}
           run: php artisan saucebase:stack ${{ inputs.framework }} --dev --no-skip-worktree
