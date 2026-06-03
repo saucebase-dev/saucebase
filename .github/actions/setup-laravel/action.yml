@@ -22,6 +22,10 @@ inputs:
         description: 'Skip PHP setup (caller already set up PHP before this action)'
         required: false
         default: 'false'
+    skip-build:
+        description: 'Skip Node.js setup, npm install, and frontend build (barefoot PHP-only runs)'
+        required: false
+        default: 'false'
     framework:
         description: 'Frontend framework to activate (vue or react). Skipped when empty.'
         required: false
@@ -39,7 +43,8 @@ runs:
               coverage: none
 
         - name: Setup Node.js
-          uses: actions/setup-node@v4
+          if: inputs.skip-build != 'true'
+          uses: actions/setup-node@v5
           with:
               node-version: ${{ inputs.node-version }}
               cache: 'npm'
@@ -64,12 +69,13 @@ runs:
           run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
         - name: Select framework
-          if: inputs.framework != ''
+          if: inputs.framework != '' && inputs.skip-build != 'true'
           shell: bash
           working-directory: ${{ inputs.working-directory }}
           run: php artisan saucebase:stack ${{ inputs.framework }} --dev --no-skip-worktree
 
         - name: Install Node dependencies
+          if: inputs.skip-build != 'true'
           shell: bash
           working-directory: ${{ inputs.working-directory }}
           run: npm ci
@@ -97,6 +103,7 @@ runs:
           run: php artisan migrate --force --seed
 
         - name: Build frontend assets
+          if: inputs.skip-build != 'true'
           shell: bash
           working-directory: ${{ inputs.working-directory }}
           run: npm run build
