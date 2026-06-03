@@ -102,6 +102,14 @@ runs:
           working-directory: ${{ inputs.working-directory }}
           run: php artisan migrate --force --seed
 
+        - name: Create stub Vite manifest
+          if: inputs.skip-build == 'true'
+          shell: bash
+          working-directory: ${{ inputs.working-directory }}
+          run: |
+              mkdir -p public/build
+              echo '{"resources/js/app.ts":{"file":"assets/app.js","src":"resources/js/app.ts","isEntry":true}}' > public/build/manifest.json
+
         - name: Build frontend assets
           if: inputs.skip-build != 'true'
           shell: bash
