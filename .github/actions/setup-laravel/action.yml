@@ -43,7 +43,7 @@ runs:
           with:
               node-version: ${{ inputs.node-version }}
               cache: 'npm'
-              cache-dependency-path: ${{ inputs.working-directory }}/package-lock.json
+              cache-dependency-path: ${{ inputs.working-directory }}/stubs/saucebase/stack/${{ inputs.framework != '' && inputs.framework || 'vue' }}/package-lock.json
 
         - name: Copy .env
           shell: bash
@@ -72,7 +72,7 @@ runs:
         - name: Install Node dependencies
           shell: bash
           working-directory: ${{ inputs.working-directory }}
-          run: npm install
+          run: npm ci
 
         - name: Directory Permissions
           shell: bash

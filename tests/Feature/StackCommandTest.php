@@ -120,6 +120,15 @@ class StackCommandTest extends TestCase
         $this->assertFileExists($this->tmpDir.'/components.json');
     }
 
+    public function test_dev_mode_copies_package_lock_to_root(): void
+    {
+        $this->seedFakeStubs('vue');
+
+        $this->artisan('saucebase:stack vue --dev')->assertSuccessful();
+
+        $this->assertFileExists($this->tmpDir.'/package-lock.json');
+    }
+
     public function test_dev_mode_copies_view_files_from_stubs(): void
     {
         $this->seedFakeStubs('vue');
@@ -379,6 +388,16 @@ class StackCommandTest extends TestCase
         $this->assertDirectoryDoesNotExist($this->tmpDir.'/modules/testmodule/resources/js/react');
     }
 
+    public function test_install_mode_copies_package_lock_to_root(): void
+    {
+        $this->seedFakeStubs('vue');
+        $this->seedFakeSourceDir('vue');
+
+        $this->artisan('saucebase:stack vue')->assertSuccessful();
+
+        $this->assertFileExists($this->tmpDir.'/package-lock.json');
+    }
+
     public function test_install_mode_writes_framework_to_frontend_json(): void
     {
         $this->seedFakeStubs('vue');
@@ -472,6 +491,17 @@ class StackCommandTest extends TestCase
         $this->assertFileExists($this->tmpDir.'/modules/testmodule/resources/js/app.ts');
     }
 
+    public function test_reset_deletes_package_lock(): void
+    {
+        $this->seedFakeStubs('vue');
+        $this->artisan('saucebase:stack vue --dev')->assertSuccessful();
+        $this->assertFileExists($this->tmpDir.'/package-lock.json');
+
+        $this->artisan('saucebase:stack --reset')->assertSuccessful();
+
+        $this->assertFileDoesNotExist($this->tmpDir.'/package-lock.json');
+    }
+
     public function test_reset_allows_selecting_framework_again(): void
     {
         $this->seedFakeStubs('vue');
@@ -504,6 +534,7 @@ class StackCommandTest extends TestCase
         file_put_contents($stubDir.'/vite.config.js', "input: ['resources/js/{$framework}/app.ts'], alias: { '@': 'resources/js/{$framework}' }");
         file_put_contents($stubDir.'/tsconfig.json', "{\"paths\": {\"@/*\": [\"resources/js/{$framework}/*\"]}}");
         file_put_contents($stubDir.'/package.json', '{}');
+        file_put_contents($stubDir.'/package-lock.json', '{}');
         file_put_contents($stubDir.'/eslint.config.js', '// eslint');
         file_put_contents($stubDir.'/components.json', '{}');
         $this->seedFakeViewStub($framework, $framework === 'react' ? 'app.tsx' : 'app.ts');
