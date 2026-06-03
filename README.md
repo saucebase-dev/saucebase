@@ -1,64 +1,78 @@
+![Saucebase](.github/assets/banner.jpg 'Saucebase')
+
+<p align="center">
+  <br/>
+  <a href="https://saucebase-dev.github.io/docs/">Saucebase</a> is a modular Laravel SaaS starter kit for the modern web &mdash;
+  <br/>
+  own your code, ship faster.
+  <br/><br/>
+</p>
+
 <div align="center">
-  <a href="https://saucebase-dev.github.io/docs/">
-    <img src="public/images/logo.svg" alt="Saucebase" width="200" />
-  </a>
 
-  <h1>Saucebase</h1>
+[![Tests](https://github.com/saucebase-dev/saucebase/actions/workflows/test.yml/badge.svg)](https://github.com/saucebase-dev/saucebase/actions/workflows/test.yml)
+[![Laravel](https://img.shields.io/badge/Laravel-13.0-FF2D20?logo=laravel&logoColor=white)](https://laravel.com)
+[![TypeScript](https://img.shields.io/badge/TypeScript-6.0-3178C6?logo=typescript&logoColor=white)](https://typescriptlang.org)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-4.3-06B6D4?logo=tailwind-css&logoColor=white)](https://tailwindcss.com)
+[![Inertia.js](https://img.shields.io/badge/Inertia.js-3.0-9553E9)](https://inertiajs.com)
+[![Filament](https://img.shields.io/badge/Filament-5.0-10B981)](https://filamentphp.com)
+[![Playwright](https://img.shields.io/badge/Playwright-1.60-000000?logo=playwright&logoColor=white)](https://playwright.dev)
 
-  <p>An enterprise-grade, modular Laravel SaaS starter kit. Own your code, ship faster.</p>
+Works with:<br/>
+[![Vue 3.5](https://img.shields.io/badge/Vue-3.5-4FC08D?logo=vue.js&logoColor=white)](https://vuejs.org) [![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)](https://react.dev)
 
-  <p>
-    <a href="https://github.com/saucebase-dev/saucebase/actions/workflows/test.yml"><img src="https://github.com/saucebase-dev/saucebase/actions/workflows/test.yml/badge.svg" alt="Tests" /></a>
-    <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License" /></a>
-    <a href="https://php.net"><img src="https://img.shields.io/badge/PHP-8.4%2B-777BB4?logo=php&logoColor=white" alt="PHP Version" /></a>
-    <a href="https://laravel.com"><img src="https://img.shields.io/badge/Laravel-13.0-FF2D20?logo=laravel&logoColor=white" alt="Laravel" /></a>
-    <a href="https://vuejs.org"><img src="https://img.shields.io/badge/Vue.js-3.4-4FC08D?logo=vue.js&logoColor=white" alt="Vue.js" /></a>
-    <a href="https://typescriptlang.org"><img src="https://img.shields.io/badge/TypeScript-5.9-3178C6?logo=typescript&logoColor=white" alt="TypeScript" /></a>
-    <a href="https://vitejs.dev"><img src="https://img.shields.io/badge/Vite-8.0-646CFF?logo=vite&logoColor=white" alt="Vite" /></a>
-    <a href="https://tailwindcss.com"><img src="https://img.shields.io/badge/Tailwind%20CSS-4.2-06B6D4?logo=tailwind-css&logoColor=white" alt="Tailwind CSS" /></a>
-    <a href="https://nodejs.org"><img src="https://img.shields.io/badge/Node.js-22.0%2B-339933?logo=node.js&logoColor=white" alt="Node.js" /></a>
-    <a href="https://inertiajs.com"><img src="https://img.shields.io/badge/Inertia.js-3.0-9553E9?logo=inertia&logoColor=white" alt="Inertia.js" /></a>
-    <a href="https://filamentphp.com"><img src="https://img.shields.io/badge/Filament-5.0-10B981?logo=filament&logoColor=white" alt="Filament" /></a>
-    <a href="https://playwright.dev"><img src="https://img.shields.io/badge/Playwright-1.58-000000?logo=playwright&logoColor=white" alt="Playwright" /></a>
-    <a href="https://phpstan.org"><img src="https://img.shields.io/badge/PHPStan-level%205-brightgreen.svg?style=flat" alt="PHPStan" /></a>
-  </p>
-
-  <img src="public/images/screenshots/preview.gif" alt="Saucebase preview" width="700" />
-
-  <p>
-    Built on the VILT stack (Vue 3, Inertia.js, Laravel 13, Tailwind CSS 4) with TypeScript, SSR support,
-    and a copy-and-own module system inspired by shadcn/ui. Install only what you need, customize everything,
-    no vendor lock-in.
-  </p>
-
-  <p>
-    <a href="https://demo.saucebase.dev/">Online Demo</a> |
-    <a href="https://saucebase-dev.github.io/docs/">Documentation</a>
-  </p>
-
-  <h2>Modules</h2>
-
-  <p>
-    <a href="https://github.com/saucebase-dev/auth">Auth</a> |
-    <a href="https://github.com/saucebase-dev/settings">Settings</a> |
-    <a href="https://github.com/saucebase-dev/billing">Billing</a> |
-    <a href="https://github.com/saucebase-dev/announcements">Announcements</a> |
-    <a href="https://github.com/saucebase-dev/roadmap">Roadmap</a> |
-    <a href="https://github.com/saucebase-dev/themes">Themes</a> |
-    <a href="https://github.com/saucebase-dev/blog">Blog</a>
-  </p>
-  <p>
-    Each module is a standalone Laravel package with its own routes, controllers, views, assets, and tests.
-    Copy the module's files into your app to own it 100% — no composer dependencies, no vendor:publish overrides.
-    Modules can depend on each other (e.g. Billing depends on Auth) but are otherwise decoupled for maximum flexibility.
-  </p>
 </div>
 
-## Licenses
+## Install
 
-Saucebase is licensed under the [MIT License](LICENSE).
+The **recommended** way to install Saucebase is by running the command below:
 
-Third-party dependency licenses:
+```bash
+laravel new my-app --using=saucebase/saucebase
+```
 
-- [PHP / Composer dependencies](THIRD_PARTY_LICENSES.md)
-- [JavaScript / npm dependencies](THIRD_PARTY_PACKAGE_LICENSES.md)
+The setup screen will guide you through choosing a frontend framework and installing your first modules.
+
+Looking for help? Start with our [Getting Started](https://saucebase-dev.github.io/docs/) guide.
+
+Want to see it live? [Try the online demo](https://demo.saucebase.dev/).
+
+## Documentation
+
+Visit our [official documentation](https://saucebase-dev.github.io/docs/).
+
+## Support
+
+Having trouble? Get help in the official [Saucebase Discord](https://discord.gg/CuhSFA7qY).
+
+## Contributing
+
+**New contributors welcome!** Check out our [Contributors Guide](CONTRIBUTING.md) for help getting started.
+
+## Modules
+
+| Module | Version | Description |
+| ------ | ------- | ----------- |
+| [auth](https://github.com/saucebase-dev/auth) | [![auth version](https://img.shields.io/packagist/v/saucebase/auth.svg?label=%20)](https://github.com/saucebase-dev/auth) | Authentication, social login, email verification, and admin impersonation |
+| [settings](https://github.com/saucebase-dev/settings) | [![settings version](https://img.shields.io/packagist/v/saucebase/settings.svg?label=%20)](https://github.com/saucebase-dev/settings) | User profile management, avatar uploads, and password changes |
+| [billing](https://github.com/saucebase-dev/billing) | [![billing version](https://img.shields.io/packagist/v/saucebase/billing.svg?label=%20)](https://github.com/saucebase-dev/billing) | Subscriptions, checkout sessions, and payment processing |
+| [announcements](https://github.com/saucebase-dev/announcements) | [![announcements version](https://img.shields.io/packagist/v/saucebase/announcements.svg?label=%20)](https://github.com/saucebase-dev/announcements) | Site-wide announcement banners with scheduling and dismissal support |
+| [roadmap](https://github.com/saucebase-dev/roadmap) | [![roadmap version](https://img.shields.io/packagist/v/saucebase/roadmap.svg?label=%20)](https://github.com/saucebase-dev/roadmap) | Feature requests, voting, and public product roadmap |
+| [themes](https://github.com/saucebase-dev/themes) | [![themes version](https://img.shields.io/packagist/v/saucebase/themes.svg?label=%20)](https://github.com/saucebase-dev/themes) | Visual theme editor for designing and baking your app's look and feel |
+| [blog](https://github.com/saucebase-dev/blog) | [![blog version](https://img.shields.io/packagist/v/saucebase/blog.svg?label=%20)](https://github.com/saucebase-dev/blog) | Public blog with categories, cover images, scheduling, and SEO |
+
+Several official packages are maintained outside of this repo:
+
+| Package | Repository |
+| ------- | ---------- |
+| [saucebase/breadcrumbs](https://github.com/saucebase-dev/breadcrumbs) | [saucebase-dev/breadcrumbs](https://github.com/saucebase-dev/breadcrumbs) |
+| [saucebase/laravel-playwright](https://github.com/saucebase-dev/laravel-playwright) | [saucebase-dev/laravel-playwright](https://github.com/saucebase-dev/laravel-playwright) |
+
+## Links
+
+- [License (MIT)](LICENSE)
+- [Contributing](CONTRIBUTING.md)
+- [Documentation](https://saucebase-dev.github.io/docs/)
+- [Demo](https://demo.saucebase.dev/)
+- [Third-party PHP / Composer licenses](THIRD_PARTY_LICENSES.md)
+- [Third-party JavaScript / npm licenses](THIRD_PARTY_PACKAGE_LICENSES.md)

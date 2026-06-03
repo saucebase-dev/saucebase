@@ -72,13 +72,23 @@ class InertiaSSRTest extends TestCase
         // Verify SSR starts enabled in config (required for SSR server to run)
         $this->assertTrue(config('inertia.ssr.enabled'), 'SSR should be enabled in config at boot');
 
-        $response = $this->get('/');
+        // Set a framework so IndexController takes the Inertia path (not the setup page)
+        $frontendJson = base_path('frontend.json');
+        $originalJson = file_get_contents($frontendJson);
 
-        $response->assertOk();
+        try {
+            file_put_contents($frontendJson, json_encode(['framework' => 'vue']));
 
-        // After middleware disables it and controller enables it with ->withSSR(),
-        // SSR should be enabled
-        $this->assertTrue(config('inertia.ssr.enabled'), 'SSR should be enabled after ->withSSR()');
+            $response = $this->get('/');
+
+            $response->assertOk();
+
+            // After middleware disables it and controller enables it with ->withSSR(),
+            // SSR should be enabled
+            $this->assertTrue(config('inertia.ssr.enabled'), 'SSR should be enabled after ->withSSR()');
+        } finally {
+            file_put_contents($frontendJson, $originalJson);
+        }
     }
 
     public function test_without_ssr_macro_disables_ssr(): void

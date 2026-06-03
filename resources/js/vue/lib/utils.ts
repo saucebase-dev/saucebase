@@ -1,0 +1,73 @@
+import { type ClassValue, clsx } from 'clsx';
+import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+import { twMerge } from 'tailwind-merge';
+import { DefineComponent } from 'vue';
+
+declare const __SAUCEBASE_DEV__: boolean;
+declare const __SAUCEBASE_FRAMEWORK__: string;
+
+export function cn(...inputs: ClassValue[]) {
+    return twMerge(clsx(inputs));
+}
+
+export function setCookie(name: string, value: string, days = 365): void {
+    document.cookie = `${name}=${value};path=/;max-age=${days * 24 * 60 * 60};SameSite=Lax`;
+}
+
+export const resolveModularPageComponent = (name: string) => {
+    if (name.includes('::')) {
+        const [moduleName, componentPath] = name.split('::', 2);
+        const moduleFolderName = moduleName
+            .replace(/([a-z])([A-Z])/g, '$1-$2')
+            .toLowerCase();
+
+        const moduleGlobs = import.meta.glob<DefineComponent>(
+            '/modules/*/resources/js/**/pages/**/*.vue',
+        );
+
+        const moduleComponentPath = __SAUCEBASE_DEV__
+            ? `/modules/${moduleFolderName}/resources/js/${__SAUCEBASE_FRAMEWORK__}/pages/${componentPath}.vue`
+            : `/modules/${moduleFolderName}/resources/js/pages/${componentPath}.vue`;
+
+        return resolvePageComponent(moduleComponentPath, moduleGlobs);
+    }
+
+    return resolvePageComponent(
+        `../pages/${name}.vue`,
+        import.meta.glob<DefineComponent>('../pages/**/*.vue'),
+    );
+};
+
+const langGlobs = import.meta.glob('/lang/*.json', {
+    eager: true,
+}) as Record<string, { default: any }>;
+
+/**
+ * Resolve and merge JSON + PHP language files for i18n.
+ *
+ * Always merges `php_{lang}.json` into `{lang}.json` directly, rather than
+ * relying on laravel-vue-i18n's hasPhpTranslations detection (which can fail
+ * in newer Vite versions where process.env is not available in browser bundles).
+ * PHP translations take precedence over JSON translations.
+ */
+const resolveLang = (lang: string): Record<string, any> => {
+    const jsonData = langGlobs[`/lang/${lang}.json`]?.default ?? {};
+    const phpData = langGlobs[`/lang/php_${lang}.json`]?.default ?? {};
+    return { ...jsonData, ...phpData };
+};
+
+/**
+ * Resolve and load a language JSON file for i18n.
+ *
+ * @param lang The language code to resolve (e.g., 'en', 'fr').
+ * @returns  The language JSON object.
+ */
+export const resolveLanguage = (lang: string) => resolveLang(lang);
+
+/**
+ * Resolve and load a language JSON file for i18n SSR.
+ *
+ * @param lang The language code to resolve (e.g., 'en', 'fr').
+ * @returns  The language JSON object.
+ */
+export const resolveLanguageForSsr = (lang: string) => resolveLang(lang);

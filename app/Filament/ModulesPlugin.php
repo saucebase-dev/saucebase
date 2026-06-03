@@ -4,7 +4,8 @@ namespace App\Filament;
 
 use Filament\Contracts\Plugin;
 use Filament\Panel;
-use Nwidart\Modules\Facades\Module;
+use Illuminate\Support\Str;
+use InterNACHI\Modular\Support\ModuleRegistry;
 
 class ModulesPlugin implements Plugin
 {
@@ -65,16 +66,20 @@ class ModulesPlugin implements Plugin
 
     protected function getModulePlugins(): array
     {
-        $modules = Module::allEnabled();
+        $modules = app(ModuleRegistry::class)->modules();
 
-        return collect($modules)
+        return $modules
             ->map(function ($module) {
-                $moduleName = $module->getStudlyName();
+                $moduleName = Str::studly($module->name);
                 $pluginClass = "Modules\\{$moduleName}\\Filament\\{$moduleName}Plugin";
 
                 return class_exists($pluginClass) ? $pluginClass : null;
             })
             ->filter()
+            ->sortBy(fn (string $class) => method_exists($class, 'getNavigationGroupSort')
+                ? $class::getNavigationGroupSort()
+                : PHP_INT_MAX
+            )
             ->toArray();
     }
 }
