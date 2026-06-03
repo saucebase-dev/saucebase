@@ -31,12 +31,12 @@ jobs:
 
         steps:
             - name: Checkout module
-              uses: actions/checkout@v4
+              uses: actions/checkout@v5
               with:
                   path: module-src
 
             - name: Clone Saucebase
-              uses: actions/checkout@v4
+              uses: actions/checkout@v5
               with:
                   repository: saucebase-dev/saucebase
                   ref: main
@@ -151,7 +151,7 @@ jobs:
                   coverage: none
 
             - name: Setup Node.js
-              uses: actions/setup-node@v4
+              uses: actions/setup-node@v5
               with:
                   node-version: '22'
                   cache: npm
