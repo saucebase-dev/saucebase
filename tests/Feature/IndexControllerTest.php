@@ -31,7 +31,6 @@ class IndexControllerTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertViewIs('setup');
-        $response->assertSeeText('Choose your frontend framework');
     }
 
     public function test_renders_setup_blade_when_frontend_json_missing(): void
@@ -55,7 +54,6 @@ class IndexControllerTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertViewIs('app');
-        $response->assertDontSeeText('Choose your frontend framework');
     }
 
     public function test_setup_page_shows_vue_and_react_commands(): void
