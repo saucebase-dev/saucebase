@@ -350,7 +350,7 @@ class InstallCommand extends Command
         $this->newLine();
         $this->line('Next steps:');
         $this->line('  1. Ensure <fg=yellow>APP_URL</> is set correctly in <fg=yellow>.env</>');
-        $this->line('  2. Run: <fg=yellow>npm install && npm run dev</>');
+        $this->line('  2. Run: <fg=yellow>npm install && composer dev</>');
         $this->line('  3. Open your app in the browser');
         $this->newLine();
         $this->line('Learn more: <fg=cyan>https://github.com/saucebase-dev/saucebase</>');

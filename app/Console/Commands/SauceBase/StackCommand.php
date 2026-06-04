@@ -92,7 +92,7 @@ class StackCommand extends Command
         $this->rewriteCrossModuleImports($framework);
         $this->flattenRecipeStubs($framework);
         $this->writeFrontendJson($framework);
-        $this->info("Framework set to {$framework}. Run: npm install && npm run dev");
+        $this->info("Framework set to {$framework}. Run: npm install && composer dev");
 
         return self::SUCCESS;
     }
