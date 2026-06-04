@@ -11,7 +11,7 @@
 <div align="center">
 
 [![Tests](https://github.com/saucebase-dev/saucebase/actions/workflows/test.yml/badge.svg)](https://github.com/saucebase-dev/saucebase/actions/workflows/test.yml)
-[![Laravel](https://img.shields.io/badge/Laravel-13.0-FF2D20?logo=laravel&logoColor=white)](https://laravel.com)
+[![Laravel](https://img.shields.io/badge/Laravel-13-FF2D20?logo=laravel&logoColor=white)](https://laravel.com)
 [![TypeScript](https://img.shields.io/badge/TypeScript-6.0-3178C6?logo=typescript&logoColor=white)](https://typescriptlang.org)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-4.3-06B6D4?logo=tailwind-css&logoColor=white)](https://tailwindcss.com)
 [![Inertia.js](https://img.shields.io/badge/Inertia.js-3.0-9553E9)](https://inertiajs.com)
