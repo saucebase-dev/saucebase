@@ -38,11 +38,9 @@ class StackCommandTest extends TestCase
         exec("git -C {$this->tmpDir} commit -q -m 'initial' 2>/dev/null");
 
         $tmpDir = $this->tmpDir;
-        app()->bind(StackCommand::class, fn () => new StackCommand(
-            new Filesystem,
-            $tmpDir,
-            $tmpDir.'/resources/js',
-        ));
+        app()->bind(StackCommand::class, fn () => new class(new Filesystem, $tmpDir, $tmpDir.'/resources/js') extends StackCommand {
+            protected function runNpmInstall(): void {}
+        });
     }
 
     protected function tearDown(): void
@@ -95,6 +93,33 @@ class StackCommandTest extends TestCase
 
         $this->assertStringContainsString("import './react/app'", file_get_contents($this->tmpDir.'/resources/js/app.tsx'));
         $this->assertStringContainsString("import './react/ssr'", file_get_contents($this->tmpDir.'/resources/js/ssr.tsx'));
+    }
+
+    public function test_dev_mode_runs_npm_install(): void
+    {
+        $this->seedFakeStubs('vue');
+        $spy = (object) ['called' => false];
+
+        $tmpDir = $this->tmpDir;
+        app()->bind(StackCommand::class, function () use ($tmpDir, $spy) {
+            return new class(new Filesystem, $tmpDir, $tmpDir.'/resources/js', $spy) extends StackCommand {
+                private object $spy;
+
+                public function __construct(Filesystem $files, string $basePath, string $jsRoot, object $spy)
+                {
+                    parent::__construct($files, $basePath, $jsRoot);
+                    $this->spy = $spy;
+                }
+
+                protected function runNpmInstall(): void
+                {
+                    $this->spy->called = true;
+                }
+            };
+        });
+
+        $this->artisan('saucebase:stack vue --dev')->assertSuccessful();
+        $this->assertTrue($spy->called);
     }
 
     public function test_dev_mode_does_not_copy_source_files(): void

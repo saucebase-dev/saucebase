@@ -4,6 +4,7 @@ namespace App\Console\Commands\SauceBase;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
+use Symfony\Component\Process\Process;
 
 class StackCommand extends Command
 {
@@ -119,8 +120,9 @@ class StackCommand extends Command
 
         $this->writeFrontendJson($framework, dev: true);
         $this->skipGeneratedFiles($framework);
+        $this->runNpmInstall();
 
-        $this->info("Framework set to {$framework} (dev mode). Run: npm install && npm run dev");
+        $this->info("Framework set to {$framework} (dev mode). Run: composer dev");
 
         return self::SUCCESS;
     }
@@ -395,6 +397,22 @@ class StackCommand extends Command
     {
         foreach ($this->generatedFiles($framework) as $file) {
             exec("git -C {$this->basePath} update-index --no-skip-worktree {$file} 2>/dev/null");
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // Node helpers
+    // -------------------------------------------------------------------------
+
+    protected function runNpmInstall(): void
+    {
+        $this->info('Running npm install...');
+        $process = new Process(['npm', 'install'], $this->basePath);
+        $process->setTimeout(300);
+        $process->run(fn ($_type, $buffer) => $this->output->write($buffer));
+
+        if (! $process->isSuccessful()) {
+            $this->warn('npm install failed. Run manually: npm install');
         }
     }
 
