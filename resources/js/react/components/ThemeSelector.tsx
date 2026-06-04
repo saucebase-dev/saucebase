@@ -94,6 +94,7 @@ export default function ThemeSelector({
                     {visibleThemes.map(({ code, name, Icon }) => (
                         <DropdownMenuItem
                             key={code}
+                            data-testid={`color-mode-${code}`}
                             onClick={(e) =>
                                 switchTheme(
                                     code,
@@ -128,6 +129,7 @@ export default function ThemeSelector({
                 {visibleThemes.map(({ code, name, Icon }) => (
                     <DropdownMenuItem
                         key={code}
+                        data-testid={`color-mode-${code}`}
                         onClick={(e) =>
                             switchTheme(code, e.currentTarget as HTMLElement)
                         }
