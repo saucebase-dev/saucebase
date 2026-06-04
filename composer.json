@@ -18,7 +18,7 @@
         "inertiajs/inertia-laravel": "^3.1",
         "internachi/modular": "^3.0.2",
         "laravel/ai": "^0.4.5",
-        "laravel/framework": "^13.13",
+        "laravel/framework": "^13.14",
         "laravel/sanctum": "^4.3.2",
         "laravel/tinker": "^3.0.2",
         "openplain/filament-shadcn-theme": "^1.1",
@@ -42,7 +42,7 @@
         "nunomaduro/collision": "^8.9.4",
         "phpunit/phpunit": "^12.5.29",
         "saucebase/laravel-playwright": "^1.1",
-        "saucebase/module-installer": "^2.1",
+        "saucebase/module-installer": "^2.1.1",
         "symfony/filesystem": "^7.4.11"
     },
     "suggest": {
