@@ -21,14 +21,8 @@ class InstallCommandTest extends TestCase
     public function test_fetch_package_frameworks_reads_saucebase_extra_field(): void
     {
         Http::fake([
-            'packagist.org/packages/saucebase/auth.json' => Http::response([
-                'package' => [
-                    'versions' => [
-                        'v2.1.0' => [
-                            'extra' => ['saucebase' => ['frameworks' => ['vue', 'react']]],
-                        ],
-                    ],
-                ],
+            'raw.githubusercontent.com/saucebase-dev/auth/main/composer.json' => Http::response([
+                'extra' => ['saucebase' => ['frameworks' => ['vue', 'react']]],
             ]),
         ]);
 
@@ -39,14 +33,8 @@ class InstallCommandTest extends TestCase
     public function test_fetch_package_frameworks_defaults_to_vue_when_field_missing(): void
     {
         Http::fake([
-            'packagist.org/packages/saucebase/billing.json' => Http::response([
-                'package' => [
-                    'versions' => [
-                        'v1.0.0' => [
-                            'extra' => ['laravel' => ['providers' => []]],
-                        ],
-                    ],
-                ],
+            'raw.githubusercontent.com/saucebase-dev/billing/main/composer.json' => Http::response([
+                'extra' => ['laravel' => ['providers' => []]],
             ]),
         ]);
 
@@ -57,32 +45,43 @@ class InstallCommandTest extends TestCase
     public function test_fetch_package_frameworks_defaults_to_vue_on_api_failure(): void
     {
         Http::fake([
-            'packagist.org/packages/saucebase/auth.json' => Http::response([], 500),
+            'raw.githubusercontent.com/saucebase-dev/auth/main/composer.json' => Http::response([], 500),
         ]);
 
         $cmd = new TestableInstallCommand;
         $this->assertSame(['vue'], $cmd->exposedFetchPackageFrameworks('saucebase/auth'));
     }
 
-    public function test_fetch_package_frameworks_skips_dev_versions(): void
+    public function test_fetch_package_frameworks_reads_local_composer_json(): void
+    {
+        // No Http::fake() — Http::preventStrayRequests() will throw if HTTP is called
+        $modulesDir = base_path('modules/auth');
+        @mkdir($modulesDir, 0755, true);
+        file_put_contents($modulesDir.'/composer.json', json_encode([
+            'extra' => ['saucebase' => ['frameworks' => ['vue', 'react']]],
+        ]));
+
+        try {
+            $cmd = new TestableInstallCommand;
+            $this->assertSame(['vue', 'react'], $cmd->exposedFetchPackageFrameworks('saucebase/auth'));
+        } finally {
+            unlink($modulesDir.'/composer.json');
+            @rmdir($modulesDir);
+        }
+    }
+
+    public function test_fetch_package_frameworks_falls_back_to_github_when_no_local_file(): void
     {
         Http::fake([
-            'packagist.org/packages/saucebase/auth.json' => Http::response([
-                'package' => [
-                    'versions' => [
-                        'dev-main' => [
-                            'extra' => ['saucebase' => ['frameworks' => ['react']]],
-                        ],
-                        'v1.0.0' => [
-                            'extra' => ['saucebase' => ['frameworks' => ['vue', 'react']]],
-                        ],
-                    ],
-                ],
+            'raw.githubusercontent.com/saucebase-dev/billing/main/composer.json' => Http::response([
+                'extra' => ['saucebase' => ['frameworks' => ['vue', 'react']]],
             ]),
         ]);
 
+        // No modules/billing/composer.json on disk → must fall back to GitHub
         $cmd = new TestableInstallCommand;
-        $this->assertSame(['vue', 'react'], $cmd->exposedFetchPackageFrameworks('saucebase/auth'));
+        $this->assertSame(['vue', 'react'], $cmd->exposedFetchPackageFrameworks('saucebase/billing'));
+        Http::assertSent(fn ($req) => str_contains($req->url(), 'saucebase-dev/billing'));
     }
 
     // -------------------------------------------------------------------------
@@ -126,11 +125,10 @@ class InstallCommandTest extends TestCase
     public function test_filter_defaults_missing_field_to_vue_only(): void
     {
         $cmd = new TestableInstallCommand;
-        // No fixtures — fetchPackageFrameworks will return ['vue'] by default when no HTTP match
 
         Http::fake([
-            'packagist.org/packages/saucebase/billing.json' => Http::response([
-                'package' => ['versions' => ['v1.0.0' => ['extra' => []]]],
+            'raw.githubusercontent.com/saucebase-dev/billing/main/composer.json' => Http::response([
+                'extra' => [],
             ]),
         ]);
 
@@ -236,14 +234,8 @@ class InstallCommandTest extends TestCase
                     'saucebase/auth' => ['abandoned' => false],
                 ],
             ]),
-            'packagist.org/packages/saucebase/auth.json' => Http::response([
-                'package' => [
-                    'versions' => [
-                        'v2.1.0' => [
-                            'extra' => ['saucebase' => ['frameworks' => ['vue', 'react']]],
-                        ],
-                    ],
-                ],
+            'raw.githubusercontent.com/saucebase-dev/auth/main/composer.json' => Http::response([
+                'extra' => ['saucebase' => ['frameworks' => ['vue', 'react']]],
             ]),
         ]);
     }
