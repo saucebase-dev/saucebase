@@ -156,6 +156,7 @@
         {
             "type": "path",
             "url": "modules/*",
+            "canonical": false,
             "options": {
                 "symlink": true
             }
