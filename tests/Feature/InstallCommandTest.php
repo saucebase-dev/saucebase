@@ -189,6 +189,8 @@ class InstallCommandTest extends TestCase
             {
                 public object $spy;
 
+                protected function isCI(): bool { return false; }
+
                 protected function ensureEnvFile(): bool { return true; }
 
                 protected function generateApplicationKey(): void {}
