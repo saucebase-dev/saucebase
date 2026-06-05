@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "542dbad0d361bce288a5c7551c888375",
+    "content-hash": "11a932655bfc1d7349504ba876f51dc5",
     "packages": [
         {
             "name": "blade-ui-kit/blade-heroicons",
@@ -3009,16 +3009,16 @@
         },
         {
             "name": "justinrainbow/json-schema",
-            "version": "6.8.2",
+            "version": "6.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jsonrainbow/json-schema.git",
-                "reference": "2c89ebb95ca9cedc9347f780333f7b25792dcb76"
+                "reference": "bd1bda2ebfc8bff418565941771ea8f03c557886"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jsonrainbow/json-schema/zipball/2c89ebb95ca9cedc9347f780333f7b25792dcb76",
-                "reference": "2c89ebb95ca9cedc9347f780333f7b25792dcb76",
+                "url": "https://api.github.com/repos/jsonrainbow/json-schema/zipball/bd1bda2ebfc8bff418565941771ea8f03c557886",
+                "reference": "bd1bda2ebfc8bff418565941771ea8f03c557886",
                 "shasum": ""
             },
             "require": {
@@ -3028,7 +3028,7 @@
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "3.3.0",
-                "json-schema/json-schema-test-suite": "dev-main",
+                "json-schema/json-schema-test-suite": "^23.2",
                 "marc-mabe/php-enum-phpstan": "^2.0",
                 "phpspec/prophecy": "^1.19",
                 "phpstan/phpstan": "^1.12",
@@ -3078,9 +3078,9 @@
             ],
             "support": {
                 "issues": "https://github.com/jsonrainbow/json-schema/issues",
-                "source": "https://github.com/jsonrainbow/json-schema/tree/6.8.2"
+                "source": "https://github.com/jsonrainbow/json-schema/tree/6.9.0"
             },
-            "time": "2026-05-05T05:39:01+00:00"
+            "time": "2026-06-05T14:05:24+00:00"
         },
         {
             "name": "kirschbaum-development/eloquent-power-joins",
@@ -12743,11 +12743,11 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.2.1",
+            "version": "2.2.2",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/dea9c8f2d25cc849391042b71e429c1a4bf82660",
-                "reference": "dea9c8f2d25cc849391042b71e429c1a4bf82660",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/e5cc34d491a90e79c216d824f60fe21fd4d93bd6",
+                "reference": "e5cc34d491a90e79c216d824f60fe21fd4d93bd6",
                 "shasum": ""
             },
             "require": {
@@ -12803,7 +12803,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-05-28T14:44:12+00:00"
+            "time": "2026-06-05T09:00:01+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -13306,16 +13306,16 @@
         },
         {
             "name": "saucebase/module-installer",
-            "version": "v2.1.1",
+            "version": "v2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/saucebase-dev/module-installer.git",
-                "reference": "3f009d8865a8e5420fa54b8fe1bb37f5037b9a02"
+                "reference": "15f38a781ee837ade784c63bcaf01d71717aecc5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/saucebase-dev/module-installer/zipball/3f009d8865a8e5420fa54b8fe1bb37f5037b9a02",
-                "reference": "3f009d8865a8e5420fa54b8fe1bb37f5037b9a02",
+                "url": "https://api.github.com/repos/saucebase-dev/module-installer/zipball/15f38a781ee837ade784c63bcaf01d71717aecc5",
+                "reference": "15f38a781ee837ade784c63bcaf01d71717aecc5",
                 "shasum": ""
             },
             "require": {
@@ -13351,9 +13351,9 @@
             "description": "Custom Composer installer for Sauce Base modules (type: saucebase-module). Installs to modules/<name> (lowercase) with configurable base dir.",
             "support": {
                 "issues": "https://github.com/saucebase-dev/module-installer/issues",
-                "source": "https://github.com/saucebase-dev/module-installer/tree/v2.1.1"
+                "source": "https://github.com/saucebase-dev/module-installer/tree/v2.2.0"
             },
-            "time": "2026-06-04T20:33:48+00:00"
+            "time": "2026-06-05T20:33:44+00:00"
         },
         {
             "name": "sebastian/cli-parser",
