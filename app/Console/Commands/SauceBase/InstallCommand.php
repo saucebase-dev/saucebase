@@ -133,20 +133,22 @@ class InstallCommand extends Command
             return $this->moduleFrameworks[$package];
         }
 
-        $response = Http::timeout(5)->get("https://packagist.org/packages/{$package}.json");
+        $name = Str::after($package, '/');
+        $localManifest = base_path("modules/{$name}/composer.json");
 
-        if (! $response->ok()) {
-            return $this->moduleFrameworks[$package] = ['vue'];
+        if (file_exists($localManifest)) {
+            $local = json_decode((string) file_get_contents($localManifest), true);
+            $frameworks = data_get($local, 'extra.saucebase.frameworks');
+
+            if (is_array($frameworks) && ! empty($frameworks)) {
+                return $this->moduleFrameworks[$package] = $frameworks;
+            }
         }
 
-        $versions = $response->json('package.versions', []);
+        $response = Http::timeout(5)->get("https://raw.githubusercontent.com/saucebase-dev/{$name}/main/composer.json");
 
-        foreach ($versions as $versionKey => $versionData) {
-            if (str_starts_with((string) $versionKey, 'dev-')) {
-                continue;
-            }
-
-            $frameworks = data_get($versionData, 'extra.saucebase.frameworks');
+        if ($response->ok()) {
+            $frameworks = data_get($response->json(), 'extra.saucebase.frameworks');
 
             if (is_array($frameworks) && ! empty($frameworks)) {
                 return $this->moduleFrameworks[$package] = $frameworks;
