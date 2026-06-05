@@ -256,8 +256,8 @@
 
     <script>
         const commands = {
-            vue: 'php artisan saucebase:stack vue',
-            react: 'php artisan saucebase:stack react',
+            vue: 'php artisan saucebase:install vue',
+            react: 'php artisan saucebase:install react',
         };
         let currentCommand = '';
         let typingTimer = null;
