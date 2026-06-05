@@ -62,7 +62,7 @@ class IndexControllerTest extends TestCase
 
         $response = $this->get('/');
 
-        $response->assertSeeText('saucebase:stack vue');
-        $response->assertSeeText('saucebase:stack react');
+        $response->assertSeeText('saucebase:install vue');
+        $response->assertSeeText('saucebase:install react');
     }
 }

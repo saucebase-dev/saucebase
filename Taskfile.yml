@@ -36,8 +36,8 @@ tasks:
         desc: Fresh install — Docker + Node required
         cmd: bash bin/setup-env {{.CLI_ARGS}}
 
-    install:local:
-        desc: Fresh install — native/Herd/Sail (PHP, Composer, Node required locally)
+    install:
+        desc: Fresh install (PHP, Composer, Node required)
         cmds:
             - composer install
             - php artisan saucebase:install --all-modules
@@ -99,8 +99,8 @@ tasks:
         desc: Reset database (migrate:fresh + module seeds)
         prompt: This will erase ALL data. Are you sure?
         cmds:
-            - docker compose exec app php artisan migrate:fresh --seed
-            - docker compose exec app php artisan modules:seed
+            - php artisan migrate:fresh --seed
+            - php artisan modules:seed
 
     # ── Translation ───────────────────────────────────────────────
 

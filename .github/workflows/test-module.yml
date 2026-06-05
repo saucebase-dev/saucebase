@@ -13,20 +13,32 @@ on:
                 type: string
                 default: ''
                 description: 'Space-separated Composer packages, e.g. saucebase/auth'
-            frameworks:
-                required: false
-                type: string
-                default: '["vue"]'
-                description: 'JSON array of frameworks to test, e.g. ["vue","react"]'
 
 jobs:
+    detect-frameworks:
+        runs-on: ubuntu-latest
+        if: inputs.module != ''
+        outputs:
+            matrix: ${{ steps.read.outputs.matrix }}
+        steps:
+            - name: Checkout module
+              uses: actions/checkout@v5
+              with:
+                  path: module-src
+            - name: Read supported frameworks from composer.json
+              id: read
+              run: |
+                  fw=$(jq -c '.extra.saucebase.frameworks // ["vue"]' module-src/composer.json 2>/dev/null || echo '["vue"]')
+                  echo "matrix=$fw" >> $GITHUB_OUTPUT
+
     phpunit:
+        needs: detect-frameworks
         runs-on: ubuntu-latest
         timeout-minutes: 20
         if: inputs.module != ''
         strategy:
             matrix:
-                framework: ${{ fromJSON(inputs.frameworks) }}
+                framework: ${{ fromJSON(needs.detect-frameworks.outputs.matrix) }}
         name: PHPUnit ${{ inputs.module }} (${{ matrix.framework }})
 
         steps:
@@ -127,11 +139,11 @@ jobs:
     e2e:
         runs-on: ubuntu-latest
         timeout-minutes: 30
-        needs: phpunit
+        needs: [detect-frameworks, phpunit]
         if: inputs.module != ''
         strategy:
             matrix:
-                framework: ${{ fromJSON(inputs.frameworks) }}
+                framework: ${{ fromJSON(needs.detect-frameworks.outputs.matrix) }}
         name: E2E ${{ inputs.module }} (${{ matrix.framework }})
 
         steps:

@@ -22,16 +22,21 @@ class InstallCommand extends Command
 
     protected $description = 'Install and configure Saucebase';
 
+    protected ?string $selectedStack = null;
+
     /** @var string[] */
     protected array $selectedModules = [];
 
     /** @var string[] */
     protected array $availableModules = [];
 
+    /** @var array<string, string[]> */
+    protected array $moduleFrameworks = [];
+
     public function handle(): int
     {
         $this->displayWelcome();
-        $this->selectStack();
+        $this->captureStack();
 
         if ($this->isCI()) {
             return $this->handleCIInstallation();
@@ -42,11 +47,13 @@ class InstallCommand extends Command
         return $this->install();
     }
 
-    protected function selectStack(): void
+    protected function captureStack(): void
     {
         $config = @json_decode((string) @file_get_contents(base_path('frontend.json')), true);
 
         if (! empty($config['framework'])) {
+            $this->selectedStack = $config['framework'];
+
             return;
         }
 
@@ -62,7 +69,14 @@ class InstallCommand extends Command
                 );
         }
 
-        $this->call('saucebase:stack', ['stack' => $stack]);
+        $this->selectedStack = $stack;
+    }
+
+    protected function runStack(): void
+    {
+        if ($this->selectedStack) {
+            $this->call('saucebase:stack', ['stack' => $this->selectedStack]);
+        }
     }
 
     protected function promptForModules(): void
@@ -72,6 +86,14 @@ class InstallCommand extends Command
         }
 
         $available = $this->fetchAvailableModules();
+
+        if (empty($available)) {
+            return;
+        }
+
+        if ($this->selectedStack) {
+            $available = $this->filterModulesByFramework($available, $this->selectedStack);
+        }
 
         if (empty($available)) {
             return;
@@ -90,6 +112,50 @@ class InstallCommand extends Command
         );
     }
 
+    /**
+     * @param  string[]  $packages
+     * @return string[]
+     */
+    protected function filterModulesByFramework(array $packages, string $framework): array
+    {
+        return array_values(array_filter(
+            $packages,
+            fn (string $pkg) => in_array($framework, $this->fetchPackageFrameworks($pkg), true)
+        ));
+    }
+
+    /**
+     * @return string[]
+     */
+    protected function fetchPackageFrameworks(string $package): array
+    {
+        if (isset($this->moduleFrameworks[$package])) {
+            return $this->moduleFrameworks[$package];
+        }
+
+        $response = Http::timeout(5)->get("https://packagist.org/packages/{$package}.json");
+
+        if (! $response->ok()) {
+            return $this->moduleFrameworks[$package] = ['vue'];
+        }
+
+        $versions = $response->json('package.versions', []);
+
+        foreach ($versions as $versionKey => $versionData) {
+            if (str_starts_with((string) $versionKey, 'dev-')) {
+                continue;
+            }
+
+            $frameworks = data_get($versionData, 'extra.saucebase.frameworks');
+
+            if (is_array($frameworks) && ! empty($frameworks)) {
+                return $this->moduleFrameworks[$package] = $frameworks;
+            }
+        }
+
+        return $this->moduleFrameworks[$package] = ['vue'];
+    }
+
     protected function install(): int
     {
         if (! $this->ensureEnvFile()) {
@@ -98,6 +164,7 @@ class InstallCommand extends Command
 
         $this->generateApplicationKey();
         $this->setupDatabase();
+        $this->runStack();
         $this->setupModules();
         $this->createStorageLink();
         $this->clearCaches();
@@ -350,7 +417,7 @@ class InstallCommand extends Command
         $this->newLine();
         $this->line('Next steps:');
         $this->line('  1. Ensure <fg=yellow>APP_URL</> is set correctly in <fg=yellow>.env</>');
-        $this->line('  2. Run: <fg=yellow>npm install && npm run dev</>');
+        $this->line('  2. Run: <fg=yellow>npm install && composer dev</>');
         $this->line('  3. Open your app in the browser');
         $this->newLine();
         $this->line('Learn more: <fg=cyan>https://github.com/saucebase-dev/saucebase</>');
