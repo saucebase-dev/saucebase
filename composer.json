@@ -42,7 +42,7 @@
         "nunomaduro/collision": "^8.9.4",
         "phpunit/phpunit": "^12.5.29",
         "saucebase/laravel-playwright": "^1.1",
-        "saucebase/module-installer": "^2.2.0",
+        "saucebase/module-installer": "^2.2.1",
         "symfony/filesystem": "^7.4.11"
     },
     "suggest": {

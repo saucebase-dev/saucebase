@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "11a932655bfc1d7349504ba876f51dc5",
+    "content-hash": "8742c315790cd96c92e2ad4391bc58aa",
     "packages": [
         {
             "name": "blade-ui-kit/blade-heroicons",
@@ -13306,16 +13306,16 @@
         },
         {
             "name": "saucebase/module-installer",
-            "version": "v2.2.0",
+            "version": "v2.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/saucebase-dev/module-installer.git",
-                "reference": "15f38a781ee837ade784c63bcaf01d71717aecc5"
+                "reference": "0c6003fd0126ab884193b33eb9b819f6e9b3e0ff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/saucebase-dev/module-installer/zipball/15f38a781ee837ade784c63bcaf01d71717aecc5",
-                "reference": "15f38a781ee837ade784c63bcaf01d71717aecc5",
+                "url": "https://api.github.com/repos/saucebase-dev/module-installer/zipball/0c6003fd0126ab884193b33eb9b819f6e9b3e0ff",
+                "reference": "0c6003fd0126ab884193b33eb9b819f6e9b3e0ff",
                 "shasum": ""
             },
             "require": {
@@ -13351,9 +13351,9 @@
             "description": "Custom Composer installer for Sauce Base modules (type: saucebase-module). Installs to modules/<name> (lowercase) with configurable base dir.",
             "support": {
                 "issues": "https://github.com/saucebase-dev/module-installer/issues",
-                "source": "https://github.com/saucebase-dev/module-installer/tree/v2.2.0"
+                "source": "https://github.com/saucebase-dev/module-installer/tree/v2.2.1"
             },
-            "time": "2026-06-05T20:33:44+00:00"
+            "time": "2026-06-06T08:46:47+00:00"
         },
         {
             "name": "sebastian/cli-parser",
