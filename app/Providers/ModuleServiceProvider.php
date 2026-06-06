@@ -28,6 +28,7 @@ abstract class ModuleServiceProvider extends ServiceProvider
         // internachi currently only discovers lang/ inside resources/, but modules keep it at root.
         $this->registerTranslations();
         $this->registerConfig();
+        $this->registerPublicAssets();
         $this->shareInertiaData();
     }
 
@@ -63,6 +64,18 @@ abstract class ModuleServiceProvider extends ServiceProvider
 
         $this->publishes([module_path($this->moduleName(), $configPath) => config_path($this->moduleName().'.php')], $configPath);
         $this->mergeConfigFrom(module_path($this->moduleName(), $configPath), $this->moduleName());
+    }
+
+    protected function registerPublicAssets(): void
+    {
+        $imagesPath = module_path($this->moduleName(), 'resources/images');
+
+        if (is_dir($imagesPath)) {
+            $this->publishes(
+                [$imagesPath => public_path('images/'.$this->moduleName())],
+                'module-assets'
+            );
+        }
     }
 
     /**
