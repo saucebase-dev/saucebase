@@ -68,11 +68,11 @@ abstract class ModuleServiceProvider extends ServiceProvider
 
     protected function registerPublicAssets(): void
     {
-        $imagesPath = module_path($this->moduleName(), 'resources/images');
+        $assetsPath = module_path($this->moduleName(), 'resources/assets');
 
-        if (is_dir($imagesPath)) {
+        if (is_dir($assetsPath)) {
             $this->publishes(
-                [$imagesPath => public_path('images/'.$this->moduleName())],
+                [$assetsPath => public_path('modules/'.$this->moduleName())],
                 'module-assets'
             );
         }
