@@ -340,7 +340,7 @@ class RecipeToModuleCommand extends Command
         $rel = "modules/{$this->moduleFolder}/resources/js/app.ts";
         exec('git -C '.escapeshellarg(base_path())." update-index --skip-worktree {$rel} 2>&1", $output, $exitCode);
 
-        if ($exitCode !== 0 && isset($this->output)) {
+        if ($exitCode !== 0) {
             $this->warn("Could not skip-worktree {$rel} (not in git index).");
         }
     }

@@ -474,7 +474,7 @@ class StackCommand extends Command
             'frontend.json',
         ];
 
-        foreach (glob($this->basePath.'/modules/*/resources/js/app.ts') ?? [] as $path) {
+        foreach (glob($this->basePath.'/modules/*/resources/js/app.ts') ?: [] as $path) {
             $files[] = str_replace($this->basePath.'/', '', $path);
         }
 
