@@ -18,6 +18,7 @@ class InstallCommand extends Command
                             {--fresh : Run migrate:fresh instead of migrate (destructive)}
                             {--all-modules : Enable and migrate all available modules without prompting}
                             {--modules= : Comma-separated list of modules to enable (e.g. Auth,Settings)}
+                            {--dev : Dev environment}
                             {--force : Skip confirmations}';
 
     protected $description = 'Install and configure Saucebase';
@@ -75,13 +76,14 @@ class InstallCommand extends Command
     protected function runStack(): void
     {
         if ($this->selectedStack) {
-            $this->call('saucebase:stack', ['stack' => $this->selectedStack]);
+            $isDev = $this->option('dev') ? ['--dev' => true] : [];
+            $this->call('saucebase:stack', array_merge(['stack' => $this->selectedStack], $isDev));
         }
     }
 
     protected function promptForModules(): void
     {
-        if ($this->option('all-modules') || $this->option('modules')) {
+        if ($this->option('all-modules') || $this->option('modules') || $this->option('dev') || $this->isCI()) {
             return;
         }
 
