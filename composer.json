@@ -42,7 +42,7 @@
         "nunomaduro/collision": "^8.9.4",
         "phpunit/phpunit": "^12.5.29",
         "saucebase/laravel-playwright": "^1.1",
-        "saucebase/module-installer": "^2.2.1",
+        "saucebase/module-installer": "^2.3.0",
         "symfony/filesystem": "^7.4.11"
     },
     "suggest": {
@@ -95,7 +95,8 @@
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
-            "@php artisan vendor:publish --tag=livewire:assets --ansi --force"
+            "@php artisan vendor:publish --tag=livewire:assets --ansi --force",
+            "@php artisan vendor:publish --tag=module-assets --ansi --force"
         ],
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
