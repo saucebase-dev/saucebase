@@ -45,17 +45,18 @@ class InstallCommandTest extends TestCase
     public function test_fetch_package_frameworks_defaults_to_vue_on_api_failure(): void
     {
         Http::fake([
-            'raw.githubusercontent.com/saucebase-dev/auth/main/composer.json' => Http::response([], 500),
+            'raw.githubusercontent.com/saucebase-dev/no-such-module/main/composer.json' => Http::response([], 500),
         ]);
 
         $cmd = new TestableInstallCommand;
-        $this->assertSame(['vue'], $cmd->exposedFetchPackageFrameworks('saucebase/auth'));
+        $this->assertSame(['vue'], $cmd->exposedFetchPackageFrameworks('saucebase/no-such-module'));
     }
 
     public function test_fetch_package_frameworks_reads_local_composer_json(): void
     {
         // No Http::fake() — Http::preventStrayRequests() will throw if HTTP is called
-        $modulesDir = base_path('modules/auth');
+        // Use a fake slug that can never collide with a real installed module.
+        $modulesDir = base_path('modules/test-fixture');
         @mkdir($modulesDir, 0755, true);
         file_put_contents($modulesDir.'/composer.json', json_encode([
             'extra' => ['saucebase' => ['frameworks' => ['vue', 'react']]],
@@ -63,7 +64,7 @@ class InstallCommandTest extends TestCase
 
         try {
             $cmd = new TestableInstallCommand;
-            $this->assertSame(['vue', 'react'], $cmd->exposedFetchPackageFrameworks('saucebase/auth'));
+            $this->assertSame(['vue', 'react'], $cmd->exposedFetchPackageFrameworks('saucebase/test-fixture'));
         } finally {
             unlink($modulesDir.'/composer.json');
             @rmdir($modulesDir);
