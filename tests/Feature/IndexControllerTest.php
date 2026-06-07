@@ -22,10 +22,14 @@ class IndexControllerTest extends TestCase
 
     private function bindFramework(?string $framework): void
     {
-        $this->app->bind(FrontendConfig::class, fn () => new class($framework) extends FrontendConfig {
+        app()->bind(FrontendConfig::class, fn () => new class($framework) extends FrontendConfig
+        {
             public function __construct(private readonly ?string $fw) {}
 
-            public function getFramework(): ?string { return $this->fw; }
+            public function getFramework(): ?string
+            {
+                return $this->fw;
+            }
         });
     }
 

@@ -72,8 +72,12 @@ class InertiaSSRTest extends TestCase
     {
         $this->assertTrue(config('inertia.ssr.enabled'), 'SSR should be enabled in config at boot');
 
-        $this->app->bind(FrontendConfig::class, fn () => new class extends FrontendConfig {
-            public function getFramework(): ?string { return 'vue'; }
+        app()->bind(FrontendConfig::class, fn () => new class extends FrontendConfig
+        {
+            public function getFramework(): ?string
+            {
+                return 'vue';
+            }
         });
 
         $this->get('/')->assertOk();

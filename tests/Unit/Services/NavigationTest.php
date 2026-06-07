@@ -279,7 +279,7 @@ class NavigationTest extends TestCase
 
     public function test_is_item_active_returns_true_for_exact_url_match(): void
     {
-        $this->app->instance('request', Request::create('http://localhost/dashboard'));
+        app()->instance('request', Request::create('http://localhost/dashboard'));
 
         $this->navigation->add('Dashboard', 'http://localhost/dashboard', function (Section $section) {
             $section->attributes(['group' => 'main']);
@@ -292,7 +292,7 @@ class NavigationTest extends TestCase
 
     public function test_is_item_active_returns_false_for_different_url(): void
     {
-        $this->app->instance('request', Request::create('http://localhost/settings'));
+        app()->instance('request', Request::create('http://localhost/settings'));
 
         $this->navigation->add('Dashboard', 'http://localhost/dashboard', function (Section $section) {
             $section->attributes(['group' => 'main']);
@@ -305,7 +305,7 @@ class NavigationTest extends TestCase
 
     public function test_is_item_active_normalizes_trailing_slashes(): void
     {
-        $this->app->instance('request', Request::create('http://localhost/dashboard/'));
+        app()->instance('request', Request::create('http://localhost/dashboard/'));
 
         $this->navigation->add('Dashboard', 'http://localhost/dashboard', function (Section $section) {
             $section->attributes(['group' => 'main']);
@@ -370,7 +370,7 @@ class NavigationTest extends TestCase
         // Swap the container binding to our fresh test instance and use include
         // (not require_once) to reliably re-execute the navigation file
         NavigationFacade::clearResolvedInstances();
-        $this->app->instance(Navigation::class, $this->navigation);
+        app()->instance(Navigation::class, $this->navigation);
 
         include base_path('routes/navigation.php');
 
@@ -446,7 +446,7 @@ class NavigationTest extends TestCase
 
     public function test_action_item_with_hash_url(): void
     {
-        $this->app->instance('request', Request::create('http://localhost/dashboard'));
+        app()->instance('request', Request::create('http://localhost/dashboard'));
 
         $this->navigation->add('Log out', '#', function (Section $section) {
             $section->attributes([
@@ -538,7 +538,7 @@ class NavigationTest extends TestCase
 
     public function test_is_item_active_works_with_closure_url(): void
     {
-        $this->app->instance('request', Request::create('http://localhost/invoices'));
+        app()->instance('request', Request::create('http://localhost/invoices'));
 
         $this->navigation->add('Invoices', fn () => 'http://localhost/invoices', function (Section $section) {
             $section->attributes(['group' => 'main']);
@@ -551,7 +551,7 @@ class NavigationTest extends TestCase
 
     public function test_is_item_active_not_active_with_closure_url_mismatch(): void
     {
-        $this->app->instance('request', Request::create('http://localhost/dashboard'));
+        app()->instance('request', Request::create('http://localhost/dashboard'));
 
         $this->navigation->add('Invoices', fn () => 'http://localhost/invoices', function (Section $section) {
             $section->attributes(['group' => 'main']);
