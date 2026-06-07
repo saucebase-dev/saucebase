@@ -111,7 +111,7 @@ jobs:
 
             - name: Install Composer dependencies
               working-directory: saucebase
-              run: composer update --prefer-dist --no-interaction --no-progress --no-scripts && composer dump-autoload --no-scripts
+              run: composer install --prefer-dist --no-interaction --no-progress --no-scripts && composer dump-autoload --no-scripts
 
             - name: Setup Laravel environment
               uses: ./saucebase/.github/actions/setup-laravel
