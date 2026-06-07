@@ -7,7 +7,7 @@ on:
             module:
                 required: true
                 type: string
-                description: 'StudlyCase module name, e.g. Billing'
+                description: 'LowerCase module name, e.g. billing'
             dependencies:
                 required: false
                 type: string
@@ -58,8 +58,9 @@ jobs:
               env:
                   MODULE: ${{ inputs.module }}
               run: |
-                  rm -rf saucebase/modules/$MODULE
-                  cp -r module-src saucebase/modules/$MODULE
+                  pkg=$(echo "$MODULE" | tr '[:upper:]' '[:lower:]')
+                  rm -rf saucebase/modules/$pkg
+                  cp -r module-src saucebase/modules/$pkg
 
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
@@ -102,11 +103,11 @@ jobs:
                   # Dependencies first (in declared order)
                   for dep in $DEPENDENCIES; do
                       pkg="${dep#saucebase/}"
-                      mod=$(echo "$pkg" | sed 's/-\([a-z]\)/\u\1/g; s/^\([a-z]\)/\u\1/')
-                      apply_patches "saucebase/modules/$mod/patches"
+                      apply_patches "saucebase/modules/$pkg/patches"
                   done
                   # Primary module last
-                  apply_patches "saucebase/modules/$MODULE/patches"
+                  mod=$(echo "$MODULE" | tr '[:upper:]' '[:lower:]')
+                  apply_patches "saucebase/modules/$mod/patches"
 
             - name: Install Composer dependencies
               working-directory: saucebase
@@ -124,7 +125,9 @@ jobs:
               working-directory: saucebase
               env:
                   MODULE: ${{ inputs.module }}
-              run: php artisan test modules/$MODULE/tests
+              run: |
+                  pkg=$(echo "$MODULE" | tr '[:upper:]' '[:lower:]')
+                  php artisan test modules/$pkg/tests
 
             - name: Archive saucebase environment
               run: tar --exclude='saucebase/node_modules' -czf saucebase-env.tar.gz saucebase/
