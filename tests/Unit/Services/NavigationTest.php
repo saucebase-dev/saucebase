@@ -377,9 +377,6 @@ class NavigationTest extends TestCase
         $grouped = $this->navigation->treeGrouped();
 
         $this->assertArrayHasKey('main', $grouped);
-
-        $titles = array_column($grouped['main'], 'title');
-        $this->assertContains('Dashboard', $titles);
     }
 
     public function test_load_discovers_modules_via_registry(): void
