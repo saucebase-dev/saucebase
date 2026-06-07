@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Navigation::add('Dashboard', fn () => route('dashboard'), function (Section $section) {
+Navigation::add('Welcome', fn () => route('dashboard'), function (Section $section) {
     $section->attributes([
         'group' => 'main',
         'slug' => 'dashboard',
