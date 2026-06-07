@@ -45,28 +45,29 @@ class InstallCommandTest extends TestCase
     public function test_fetch_package_frameworks_defaults_to_vue_on_api_failure(): void
     {
         Http::fake([
-            'raw.githubusercontent.com/saucebase-dev/auth/main/composer.json' => Http::response([], 500),
+            'raw.githubusercontent.com/saucebase-dev/no-such-module/main/composer.json' => Http::response([], 500),
         ]);
 
         $cmd = new TestableInstallCommand;
-        $this->assertSame(['vue'], $cmd->exposedFetchPackageFrameworks('saucebase/auth'));
+        $this->assertSame(['vue'], $cmd->exposedFetchPackageFrameworks('saucebase/no-such-module'));
     }
 
     public function test_fetch_package_frameworks_reads_local_composer_json(): void
     {
         // No Http::fake() — Http::preventStrayRequests() will throw if HTTP is called
-        $modulesDir = base_path('modules/auth');
-        @mkdir($modulesDir, 0755, true);
-        file_put_contents($modulesDir.'/composer.json', json_encode([
+        $tmpDir = sys_get_temp_dir().'/sb-install-test-'.uniqid();
+        mkdir($tmpDir.'/test-fixture', 0755, true);
+        file_put_contents($tmpDir.'/test-fixture/composer.json', json_encode([
             'extra' => ['saucebase' => ['frameworks' => ['vue', 'react']]],
         ]));
 
         try {
-            $cmd = new TestableInstallCommand;
-            $this->assertSame(['vue', 'react'], $cmd->exposedFetchPackageFrameworks('saucebase/auth'));
+            $cmd = new TestableInstallCommand($tmpDir);
+            $this->assertSame(['vue', 'react'], $cmd->exposedFetchPackageFrameworks('saucebase/test-fixture'));
         } finally {
-            unlink($modulesDir.'/composer.json');
-            @rmdir($modulesDir);
+            unlink($tmpDir.'/test-fixture/composer.json');
+            rmdir($tmpDir.'/test-fixture');
+            rmdir($tmpDir);
         }
     }
 
@@ -251,6 +252,14 @@ class TestableInstallCommand extends InstallCommand
     /** @var array<string, string[]> Pre-built framework map (overrides HTTP for filtering tests). */
     public array $frameworkFixtures = [];
 
+    private ?string $customModulesBasePath;
+
+    public function __construct(?string $modulesBasePath = null)
+    {
+        parent::__construct();
+        $this->customModulesBasePath = $modulesBasePath;
+    }
+
     public function exposedFetchPackageFrameworks(string $package): array
     {
         return $this->fetchPackageFrameworks($package);
@@ -269,5 +278,10 @@ class TestableInstallCommand extends InstallCommand
         }
 
         return parent::fetchPackageFrameworks($package);
+    }
+
+    protected function modulesBasePath(): string
+    {
+        return $this->customModulesBasePath ?? parent::modulesBasePath();
     }
 }

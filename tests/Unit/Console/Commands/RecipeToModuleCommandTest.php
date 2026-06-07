@@ -3,8 +3,11 @@
 namespace Tests\Unit\Console\Commands;
 
 use App\Console\Commands\SauceBase\RecipeToModuleCommand;
+use Illuminate\Console\OutputStyle;
 use Illuminate\Filesystem\Filesystem;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\NullOutput;
 use Tests\TestCase;
 
 class TestableRecipeToModuleCommand extends RecipeToModuleCommand
@@ -201,6 +204,7 @@ class RecipeToModuleCommandTest extends TestCase
         $cmd = new TestableRecipeToModuleCommand;
         $cmd->moduleConfigPath = $this->tmpDir.'/modules/';
         $cmd->moduleFolder = 'test-module';
+        $cmd->setOutput(new OutputStyle(new ArrayInput([]), new NullOutput));
 
         return $cmd;
     }

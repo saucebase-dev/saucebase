@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands\SauceBase;
 
+use App\Services\FrontendConfig;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
@@ -18,6 +19,7 @@ class InstallCommand extends Command
                             {--fresh : Run migrate:fresh instead of migrate (destructive)}
                             {--all-modules : Enable and migrate all available modules without prompting}
                             {--modules= : Comma-separated list of modules to enable (e.g. Auth,Settings)}
+                            {--dev : Dev environment}
                             {--force : Skip confirmations}';
 
     protected $description = 'Install and configure Saucebase';
@@ -49,10 +51,10 @@ class InstallCommand extends Command
 
     protected function captureStack(): void
     {
-        $config = @json_decode((string) @file_get_contents(base_path('frontend.json')), true);
+        $framework = app(FrontendConfig::class)->getFramework();
 
-        if (! empty($config['framework'])) {
-            $this->selectedStack = $config['framework'];
+        if (! empty($framework)) {
+            $this->selectedStack = $framework;
 
             return;
         }
@@ -75,13 +77,14 @@ class InstallCommand extends Command
     protected function runStack(): void
     {
         if ($this->selectedStack) {
-            $this->call('saucebase:stack', ['stack' => $this->selectedStack]);
+            $isDev = $this->option('dev') ? ['--dev' => true] : [];
+            $this->call('saucebase:stack', array_merge(['stack' => $this->selectedStack], $isDev));
         }
     }
 
     protected function promptForModules(): void
     {
-        if ($this->option('all-modules') || $this->option('modules')) {
+        if ($this->option('all-modules') || $this->option('modules') || $this->option('dev') || $this->isCI()) {
             return;
         }
 
@@ -134,7 +137,7 @@ class InstallCommand extends Command
         }
 
         $name = Str::after($package, '/');
-        $localManifest = base_path("modules/{$name}/composer.json");
+        $localManifest = $this->modulesBasePath()."/{$name}/composer.json";
 
         if (file_exists($localManifest)) {
             $local = json_decode((string) file_get_contents($localManifest), true);
@@ -156,6 +159,11 @@ class InstallCommand extends Command
         }
 
         return $this->moduleFrameworks[$package] = ['vue'];
+    }
+
+    protected function modulesBasePath(): string
+    {
+        return base_path('modules');
     }
 
     protected function install(): int

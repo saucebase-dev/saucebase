@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands\SauceBase;
 
+use App\Services\FrontendConfig;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
 use RuntimeException;
@@ -58,12 +59,8 @@ class RecipeToModuleCommand extends Command
             return true;
         }
 
-        $frontendJson = base_path('frontend.json');
-        $frontendData = file_exists($frontendJson)
-            ? (json_decode((string) file_get_contents($frontendJson), true) ?? [])
-            : [];
-
-        $framework = $frontendData['framework'] ?? null;
+        $frontendConfig = app(FrontendConfig::class);
+        $framework = $frontendConfig->getFramework();
 
         if ($framework === null) {
             error('No frontend framework selected. Run `php artisan saucebase:stack vue` or `php artisan saucebase:stack react` first.');
@@ -71,7 +68,7 @@ class RecipeToModuleCommand extends Command
             return true;
         }
 
-        $isDev = ($frontendData['dev'] ?? false) === true;
+        $isDev = $frontendConfig->isDev();
 
         $this->template = $this->getTemplate();
         $this->templatePath = base_path($this->template);
@@ -340,7 +337,7 @@ class RecipeToModuleCommand extends Command
         $rel = "modules/{$this->moduleFolder}/resources/js/app.ts";
         exec('git -C '.escapeshellarg(base_path())." update-index --skip-worktree {$rel} 2>&1", $output, $exitCode);
 
-        if ($exitCode !== 0 && isset($this->output)) {
+        if ($exitCode !== 0) {
             $this->warn("Could not skip-worktree {$rel} (not in git index).");
         }
     }

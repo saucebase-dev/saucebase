@@ -227,6 +227,10 @@ If both core and module workflows changed, run both sets of commands.
 
 Run `/code-review` to launch the code review agent (`feature-dev:code-reviewer`). Do not run it automatically.
 
+### Moving Files Involving Modules
+
+Before using `git mv` or any git-level file operation that touches `modules/`, check whether the module directory is its own git repository (`git -C modules/<name> rev-parse --git-dir 2>/dev/null`). If it is, **never use `git mv` from the root repo** — the module's files must be tracked by its own repo, not the core. Use plain `mv` instead: the core repo will see a deletion, the module repo will see a new file.
+
 ## Working Style
 
 **Ask before assuming.** When context is missing — a file path, a git repo URL, an install workflow, a third-party service — stop and ask rather than searching the entire codebase or inferring from adjacent projects. State clearly what you need and why, then wait for the answer.

@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\FrontendConfig;
 use Illuminate\Http\Response;
 use Inertia\Inertia;
 use Inertia\Response as InertiaResponse;
 
 class IndexController extends Controller
 {
-    public function __invoke(): Response|InertiaResponse
+    public function __invoke(FrontendConfig $config): Response|InertiaResponse
     {
-        $config = @json_decode((string) @file_get_contents(base_path('frontend.json')), true);
-
-        if (empty($config['framework'])) {
+        if (empty($config->getFramework())) {
             return response()->view('setup');
         }
 
