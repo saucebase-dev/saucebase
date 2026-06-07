@@ -55,19 +55,19 @@ class InstallCommandTest extends TestCase
     public function test_fetch_package_frameworks_reads_local_composer_json(): void
     {
         // No Http::fake() — Http::preventStrayRequests() will throw if HTTP is called
-        // Use a fake slug that can never collide with a real installed module.
-        $modulesDir = base_path('modules/test-fixture');
-        @mkdir($modulesDir, 0755, true);
-        file_put_contents($modulesDir.'/composer.json', json_encode([
+        $tmpDir = sys_get_temp_dir().'/sb-install-test-'.uniqid();
+        mkdir($tmpDir.'/test-fixture', 0755, true);
+        file_put_contents($tmpDir.'/test-fixture/composer.json', json_encode([
             'extra' => ['saucebase' => ['frameworks' => ['vue', 'react']]],
         ]));
 
         try {
-            $cmd = new TestableInstallCommand;
+            $cmd = new TestableInstallCommand($tmpDir);
             $this->assertSame(['vue', 'react'], $cmd->exposedFetchPackageFrameworks('saucebase/test-fixture'));
         } finally {
-            unlink($modulesDir.'/composer.json');
-            @rmdir($modulesDir);
+            unlink($tmpDir.'/test-fixture/composer.json');
+            rmdir($tmpDir.'/test-fixture');
+            rmdir($tmpDir);
         }
     }
 
@@ -252,6 +252,14 @@ class TestableInstallCommand extends InstallCommand
     /** @var array<string, string[]> Pre-built framework map (overrides HTTP for filtering tests). */
     public array $frameworkFixtures = [];
 
+    private ?string $customModulesBasePath;
+
+    public function __construct(?string $modulesBasePath = null)
+    {
+        parent::__construct();
+        $this->customModulesBasePath = $modulesBasePath;
+    }
+
     public function exposedFetchPackageFrameworks(string $package): array
     {
         return $this->fetchPackageFrameworks($package);
@@ -270,5 +278,10 @@ class TestableInstallCommand extends InstallCommand
         }
 
         return parent::fetchPackageFrameworks($package);
+    }
+
+    protected function modulesBasePath(): string
+    {
+        return $this->customModulesBasePath ?? parent::modulesBasePath();
     }
 }

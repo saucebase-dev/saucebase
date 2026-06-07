@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use App\Services\FrontendConfig;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Config;
 use Inertia\Inertia;
@@ -69,26 +70,15 @@ class InertiaSSRTest extends TestCase
 
     public function test_home_page_uses_ssr(): void
     {
-        // Verify SSR starts enabled in config (required for SSR server to run)
         $this->assertTrue(config('inertia.ssr.enabled'), 'SSR should be enabled in config at boot');
 
-        // Set a framework so IndexController takes the Inertia path (not the setup page)
-        $frontendJson = base_path('frontend.json');
-        $originalJson = file_get_contents($frontendJson);
+        $this->app->bind(FrontendConfig::class, fn () => new class extends FrontendConfig {
+            public function getFramework(): ?string { return 'vue'; }
+        });
 
-        try {
-            file_put_contents($frontendJson, json_encode(['framework' => 'vue']));
+        $this->get('/')->assertOk();
 
-            $response = $this->get('/');
-
-            $response->assertOk();
-
-            // After middleware disables it and controller enables it with ->withSSR(),
-            // SSR should be enabled
-            $this->assertTrue(config('inertia.ssr.enabled'), 'SSR should be enabled after ->withSSR()');
-        } finally {
-            file_put_contents($frontendJson, $originalJson);
-        }
+        $this->assertTrue(config('inertia.ssr.enabled'), 'SSR should be enabled after ->withSSR()');
     }
 
     public function test_without_ssr_macro_disables_ssr(): void

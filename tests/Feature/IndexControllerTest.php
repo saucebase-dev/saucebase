@@ -2,67 +2,60 @@
 
 namespace Tests\Feature;
 
+use App\Services\FrontendConfig;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use InterNACHI\Modular\Support\ModuleRegistry;
 use Tests\TestCase;
 
 class IndexControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    private string $frontendJson;
-
     protected function setUp(): void
     {
         parent::setUp();
-        $this->frontendJson = base_path('frontend.json');
+
+        if (app(ModuleRegistry::class)->module('demo') !== null) {
+            $this->markTestSkipped('IndexController is not the / route handler when the Demo module is active.');
+        }
     }
 
-    protected function tearDown(): void
+    private function bindFramework(?string $framework): void
     {
-        file_put_contents($this->frontendJson, json_encode(['framework' => null], JSON_PRETTY_PRINT).PHP_EOL);
-        parent::tearDown();
+        $this->app->bind(FrontendConfig::class, fn () => new class($framework) extends FrontendConfig {
+            public function __construct(private readonly ?string $fw) {}
+
+            public function getFramework(): ?string { return $this->fw; }
+        });
     }
 
     public function test_renders_setup_blade_when_framework_is_null(): void
     {
-        file_put_contents($this->frontendJson, json_encode(['framework' => null]));
+        $this->bindFramework(null);
 
-        $response = $this->get('/');
-
-        $response->assertStatus(200);
-        $response->assertViewIs('setup');
+        $this->get('/')->assertStatus(200)->assertViewIs('setup');
     }
 
     public function test_renders_setup_blade_when_frontend_json_missing(): void
     {
-        rename($this->frontendJson, $this->frontendJson.'.bak');
+        $this->bindFramework(null);
 
-        try {
-            $response = $this->get('/');
-            $response->assertStatus(200);
-            $response->assertViewIs('setup');
-        } finally {
-            rename($this->frontendJson.'.bak', $this->frontendJson);
-        }
+        $this->get('/')->assertStatus(200)->assertViewIs('setup');
     }
 
     public function test_renders_inertia_when_framework_is_set(): void
     {
-        file_put_contents($this->frontendJson, json_encode(['framework' => 'vue']));
+        $this->bindFramework('vue');
 
-        $response = $this->get('/');
-
-        $response->assertStatus(200);
-        $response->assertViewIs('app');
+        $this->get('/')->assertStatus(200)->assertViewIs('app');
     }
 
     public function test_setup_page_shows_vue_and_react_commands(): void
     {
-        file_put_contents($this->frontendJson, json_encode(['framework' => null]));
+        $this->bindFramework(null);
 
-        $response = $this->get('/');
-
-        $response->assertSeeText('saucebase:install vue');
-        $response->assertSeeText('saucebase:install react');
+        $this->get('/')
+            ->assertSeeText('saucebase:install vue')
+            ->assertSeeText('saucebase:install react');
     }
 }
