@@ -19,6 +19,14 @@ Authentication, registration, magic link (passwordless), password reset, email v
 | Layout | `AuthCardLayout` — card with logo, status alerts, page transitions |
 | Component | `SocialiteProviders` — Google/GitHub buttons with divider |
 
+## Frontend
+
+Follows the dual-framework pattern (see root `CLAUDE.md` → Architecture > Frontend).
+
+- Both `resources/js/vue/` and `resources/js/react/` exist and must stay in sync
+- `resources/js/app.ts` is a generated re-export — do not edit it directly
+- `registerIcon()`, `registerAction()`, `registerGlobalComponent()` calls in `setup()` must be mirrored in both framework implementations
+
 ## Routes
 
 **Guest routes** (`/auth/*`): login (GET/POST), register (GET/POST), forgot-password (GET/POST), reset-password/{token} (GET, signed), reset-password (POST, throttle:6,1), magic-link (GET/POST, throttle:5,1)
@@ -74,7 +82,7 @@ Redirect URIs default to `/auth/socialite/{provider}/callback`. Providers config
 
 ```bash
 php artisan test --testsuite=Modules --filter='^Modules\\Auth\\Tests'  # PHPUnit
-npx playwright test --project="@Auth*"                 # E2E
+npx playwright test --project="@auth*"                 # E2E
 ```
 
 **E2E coverage**: login (basic, errors, security/rate-limiting, social, logout), register (basic, errors), forgot-password (basic, errors), verify-email. Page objects in `tests/e2e/pages/`, fixtures in `tests/e2e/fixtures/users.ts`.

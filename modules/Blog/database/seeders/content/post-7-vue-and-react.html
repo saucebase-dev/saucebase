@@ -1,0 +1,30 @@
+<p>Choosing a frontend framework used to mean committing to a stack for the life of your project. Pick Vue, and every module you install needs to be Vue. Pick React, and you're locked into that ecosystem. For a starter kit that ships with authentication, billing, settings, and a blog out of the box, that's a real constraint.</p>
+
+<p>Saucebase 2.0 removes it.</p>
+
+<h2>Both frameworks, fully supported</h2>
+
+<p>Every Saucebase module ships with both a Vue 3 and a React 19 implementation. When you set up a new project, you choose your framework — and every module you install just works with it. No adapters, no workarounds, no "Vue only" footnotes in the docs.</p>
+
+<p>Under the hood, each module keeps its framework implementations in <code>resources/js/vue/</code> and <code>resources/js/react/</code>. The module installer reads your project's <code>frontend.json</code> and copies the right files into place automatically.</p>
+
+<h2>How switching works</h2>
+
+<p>For contributors and teams evaluating the framework decision, Saucebase ships a command that makes switching non-destructive:</p>
+
+<pre><code>php artisan saucebase:stack vue --dev
+php artisan saucebase:stack react --dev</code></pre>
+
+<p>In <code>--dev</code> mode, both framework directories are kept on disk. Entry points are thin passthroughs. You can flip between them without losing any work.</p>
+
+<h2>The shared foundation</h2>
+
+<p>Framework-specific code only lives where it has to. Routing, backend logic, Filament admin panels, database migrations, API endpoints — all of that is shared. The only thing that differs between the Vue and React versions of a module is the frontend layer.</p>
+
+<p>This means a bug fix in a controller, a new field on a model, or a Filament resource change is written once and works for everyone regardless of their chosen framework.</p>
+
+<h2>Why this matters for a starter kit</h2>
+
+<p>A starter kit's job is to get out of your way. Locking you into a framework decision on day one — before you've written a single line of product code — is the opposite of that. Saucebase 2.0 lets you start building and figure out the rest later. Or never figure it out at all, because both options keep working.</p>
+
+<p><strong>Pick the framework your team knows. Saucebase handles the rest.</strong></p>

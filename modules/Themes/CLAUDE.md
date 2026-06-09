@@ -112,9 +112,9 @@ documentElement inline styles  ← set by applyThemeVars() when a theme is activ
 |------|------|
 | `resources/themes/*.json` | Theme definitions — committed source of truth |
 | `resources/css/theme.css` | (in `resources/css/`, not inside module) — baked CSS output |
-| `app/Console/Commands/ApplyThemeCommand.php` | Patches theme.css from JSON; writes `:root` and `.dark` blocks |
-| `app/Providers/ThemesServiceProvider.php` | Discovers themes, parses JSON, shares via Inertia |
-| `app/Http/Controllers/ThemesController.php` | REST API for save/update/delete of user themes |
+| `src/Console/Commands/ApplyThemeCommand.php` | Patches theme.css from JSON; writes `:root` and `.dark` blocks |
+| `src/Providers/ThemesServiceProvider.php` | Discovers themes, parses JSON, shares via Inertia |
+| `src/Http/Controllers/ThemesController.php` | REST API for save/update/delete of user themes |
 | `resources/js/fields.ts` | Canonical list of all editable fields with type, vars, constraints |
 | `resources/js/utils/theme.ts` | Core utilities: `applyThemeVars`, `computeShadows`, `computeRadiusScale`, `computeTrackingScale`, font loading |
 | `resources/js/components/ThemePanel.vue` | Full visual editor — field rendering, per-field mode sync, save dropdown |
@@ -242,7 +242,7 @@ ls modules/Themes/resources/themes/
 php -d memory_limit=2048M artisan test --compact modules/Themes/tests/
 
 # E2E
-npx playwright test --project="@Themes*"
+npx playwright test --project="@themes*"
 ```
 
 Key test files:

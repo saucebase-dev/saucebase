@@ -2,7 +2,7 @@
 // Augmentations here are auto-picked up when the module is enabled (no core edits needed).
 // See docs: architecture/module-system#typescript-page-props
 
-// declare module '@inertiajs/vue3' {
+// declare module '@inertiajs/core' {
 //   interface PageProps {
 //     // my_shared_prop?: MyType;
 //   }

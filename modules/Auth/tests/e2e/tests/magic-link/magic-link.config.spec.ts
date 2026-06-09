@@ -1,7 +1,7 @@
 import { test, expect } from '@e2e/fixtures';
 import { LoginPage } from '../../pages/LoginPage';
 
-test.describe.parallel('Magic Link Config', () => {
+test.describe('Magic Link Config', () => {
     test('magic link page returns 404 when feature is disabled', async ({
         page,
         laravel,

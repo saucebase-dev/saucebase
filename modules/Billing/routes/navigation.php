@@ -33,7 +33,7 @@ use Modules\Billing\Models\Product;
 Navigation::addWhen(
     fn () => ! Auth::user()?->isSubscriber(),
     'Upgrade',
-    route('billing.plans'),
+    fn () => route('billing.plans'),
     function (Section $section) {
         $section->attributes([
             'group' => 'user',
@@ -45,8 +45,7 @@ Navigation::addWhen(
     }
 );
 
-// Settings sidebar - Billing
-Navigation::add('Billing', route('settings.billing'), function (Section $section) {
+Navigation::add('Billing', fn () => route('settings.billing'), function (Section $section) {
     $section->attributes([
         'group' => 'settings',
         'slug' => 'billing',

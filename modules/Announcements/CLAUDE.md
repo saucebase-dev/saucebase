@@ -55,7 +55,7 @@ The module ships one patch that must be applied to the core app:
 |-------|--------|
 | `patches/app-vue.patch` | Imports `AnnouncementBanner` and adds it to `App.vue` template |
 
-The `announcement` TypeScript type is handled automatically via `resources/js/types/page-props.d.ts`, which augments `@inertiajs/vue3`'s `PageProps` — no manual core edit required.
+The `announcement` TypeScript type is handled automatically via `resources/js/types/page-props.d.ts`, which augments `@inertiajs/core`'s `PageProps` — no manual core edit required.
 
 ## Configuration
 
@@ -68,7 +68,7 @@ The `announcement` TypeScript type is handled automatically via `resources/js/ty
 
 ```bash
 php artisan test --testsuite=Modules --filter='^Modules\\Announcements\\Tests'  # PHPUnit
-npx playwright test --project="@Announcements*"                         # E2E
+npx playwright test --project="@announcements*"                         # E2E
 ```
 
 **Unit coverage** (`tests/Unit/AnnouncementTest.php`): `active()` scope — inactive, no schedule, future starts_at, past ends_at, within window, multiple active.

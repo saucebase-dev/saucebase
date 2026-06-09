@@ -9,11 +9,17 @@ tasks:
 
     test:e2e:
         desc: Run E2E tests for Roadmap module
-        cmd: npx playwright test --project="@Roadmap*" {{.CLI_ARGS}}
+        cmd: npx playwright test --project="@roadmap*" {{.CLI_ARGS}}
         interactive: true
+
+    # ── Database ──────────────────────────────────────────────────
+
+    db:seed:
+        desc: Seed the Roadmap module database
+        cmd: php artisan modules:seed --module=roadmap
 
     # ── Code Generation ────────────────────────────────────────────
 
     types:generate:
         desc: Generate TypeScript types from PHP DTOs and enums
-        cmd: php artisan module:generate-types Roadmap
+        cmd: php artisan module:generate-types roadmap

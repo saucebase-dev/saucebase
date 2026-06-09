@@ -227,4 +227,24 @@ test.describe('Theme panel', () => {
 
         await expect(colorInput).toHaveValue('#aabbcc');
     });
+
+    test('color mode dark button writes to appearance localStorage key, not vueuse-dark', async ({ page }) => {
+        await page.getByTestId('theme-panel-trigger').click();
+        await switchColorMode(page, 'dark');
+
+        const stored = await page.evaluate(() => localStorage.getItem('appearance'));
+        expect(stored).toBe('dark');
+
+        const wrongKey = await page.evaluate(() => localStorage.getItem('vueuse-dark'));
+        expect(wrongKey).toBeNull();
+    });
+
+    test('color mode dark button sets appearance cookie for server-side persistence', async ({ page }) => {
+        await page.getByTestId('theme-panel-trigger').click();
+        await switchColorMode(page, 'dark');
+
+        const cookies = await page.context().cookies();
+        const appearanceCookie = cookies.find((c) => c.name === 'appearance');
+        expect(appearanceCookie?.value).toBe('dark');
+    });
 });

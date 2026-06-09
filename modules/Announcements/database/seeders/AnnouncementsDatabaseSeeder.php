@@ -14,7 +14,7 @@ class AnnouncementsDatabaseSeeder extends Seeder
         }
 
         Announcement::create([
-            'text' => '🎉 <strong>Announcements module is live!</strong> Manage banners like this one from the <a href="/admin/announcements">admin panel</a>.',
+            'text' => '🎉 <strong>Saucebase 2.0 is here!</strong> Much faster, better DX, and now ships with Vue 3 and React 19. <a href="/blog/vue-or-react-what-about-both">Learn more →</a>',
             'is_active' => true,
             'is_dismissable' => true,
             'show_on_frontend' => true,

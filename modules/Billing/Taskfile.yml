@@ -15,11 +15,17 @@ tasks:
 
     test:e2e:
         desc: Run E2E tests for Billing module
-        cmd: npx playwright test --project="@Billing*" {{.CLI_ARGS}}
+        cmd: npx playwright test --project="@billing*" {{.CLI_ARGS}}
         interactive: true
+
+    # ── Database ──────────────────────────────────────────────────
+
+    db:seed:
+        desc: Seed the Billing module database
+        cmd: php artisan modules:seed --module=billing
 
     # ── Code Generation ────────────────────────────────────────────
 
     types:generate:
         desc: Generate TypeScript types from PHP DTOs and enums
-        cmd: php artisan module:generate-types Billing
+        cmd: php artisan module:generate-types billing

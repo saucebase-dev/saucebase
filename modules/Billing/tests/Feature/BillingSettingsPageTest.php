@@ -3,6 +3,7 @@
 namespace Modules\Billing\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Route;
 use Inertia\Testing\AssertableInertia;
 use Modules\Billing\Enums\InvoiceStatus;
 use Modules\Billing\Enums\SubscriptionStatus;
@@ -15,6 +16,15 @@ use Tests\TestCase;
 class BillingSettingsPageTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        if (! Route::has('settings.index')) {
+            $this->markTestSkipped('Settings module not installed.');
+        }
+    }
 
     public function test_billing_page_requires_auth(): void
     {

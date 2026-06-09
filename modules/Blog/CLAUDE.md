@@ -57,7 +57,7 @@ When adding a field visible on the frontend, update **all three** in sync:
 php -d memory_limit=2048M artisan test --testsuite=Modules --filter='^Modules\\Blog\\Tests'
 
 # E2E
-npx playwright test --project="@Blog*"
+npx playwright test --project="@blog*"
 ```
 
 ---

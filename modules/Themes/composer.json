@@ -1,29 +1,35 @@
 {
-    "name": "saucebase/themes",
-    "description": "",
-    "type": "saucebase-module",
-    "authors": [
-        {
-            "name": "Saucebase",
-            "email": "hello@saucebase.dev"
-        }
-    ],
-    "extra": {
-        "laravel": {
-            "providers": [],
-            "aliases": {}
-        }
-    },
-    "autoload": {
-        "psr-4": {
-            "Modules\\Themes\\": "app/",
-            "Modules\\Themes\\Database\\Factories\\": "database/factories/",
-            "Modules\\Themes\\Database\\Seeders\\": "database/seeders/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Modules\\Themes\\Tests\\": "tests/"
-        }
+  "name": "saucebase/themes",
+  "description": "Themes module",
+  "type": "saucebase-module",
+  "license": "proprietary",
+  "version": "v2.0.2",
+  "authors": [
+    {
+      "name": "Saucebase",
+      "email": "hello@saucebase.dev"
     }
+  ],
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Modules\\Themes\\Providers\\ThemesServiceProvider"
+      ],
+      "aliases": {}
+    }
+  },
+  "autoload": {
+    "psr-4": {
+      "Modules\\Themes\\": "src/",
+      "Modules\\Themes\\Database\\Factories\\": "database/factories/",
+      "Modules\\Themes\\Database\\Seeders\\": "database/seeders/",
+      "Modules\\Themes\\Tests\\Support\\": "tests/Support/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Modules\\Themes\\Tests\\": "tests/"
+    }
+  },
+  "minimum-stability": "stable"
 }

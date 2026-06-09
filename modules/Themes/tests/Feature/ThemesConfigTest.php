@@ -2,6 +2,7 @@
 
 namespace Modules\Themes\Tests\Feature;
 
+use App\Services\FrontendConfig;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -15,6 +16,10 @@ class ThemesConfigTest extends TestCase
     {
         parent::setUp();
         $this->storageDir = storage_path('app/themes');
+
+        app()->bind(FrontendConfig::class, fn () => new class extends FrontendConfig {
+            public function getFramework(): ?string { return 'vue'; }
+        });
     }
 
     protected function tearDown(): void

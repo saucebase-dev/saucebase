@@ -14,7 +14,7 @@ use App\Navigation\Section;
 */
 
 // User menu - Settings
-Navigation::add('Settings', route('settings.index'), function (Section $section) {
+Navigation::add('Settings', fn () => route('settings.index'), function (Section $section) {
     $section->attributes([
         'group' => 'user',
         'slug' => 'settings',
@@ -24,7 +24,7 @@ Navigation::add('Settings', route('settings.index'), function (Section $section)
 });
 
 // Settings sidebar - General
-Navigation::add('General', route('settings.index'), function (Section $section) {
+Navigation::add('General', fn () => route('settings.index'), function (Section $section) {
     $section->attributes([
         'group' => 'settings',
         'slug' => 'settings',
@@ -34,7 +34,7 @@ Navigation::add('General', route('settings.index'), function (Section $section) 
 });
 
 // Settings sidebar - Profile
-Navigation::add('Profile', route('settings.profile'), function (Section $section) {
+Navigation::add('Profile', fn () => route('settings.profile'), function (Section $section) {
     $section->attributes([
         'group' => 'settings',
         'slug' => 'profile',
@@ -44,7 +44,7 @@ Navigation::add('Profile', route('settings.profile'), function (Section $section
 });
 
 // Secondary navigation - Settings
-Navigation::add('Settings', route('settings.index'), function (Section $section) {
+Navigation::add('Settings', fn () => route('settings.index'), function (Section $section) {
     $section->attributes([
         'group' => 'secondary',
         'slug' => 'settings',

@@ -5,3 +5,4 @@ A Laravel module that extends Saucebase core functionality. Designed for seamles
 This module is part of **[Saucebase](https://github.com/saucebase-dev/saucebase)** 
 
 **[Documentation →](https://saucebase-dev.github.io/docs/modules/announcements)**
+

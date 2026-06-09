@@ -9,11 +9,17 @@ tasks:
 
     test:e2e:
         desc: Run E2E tests for Demo module
-        cmd: npx playwright test --project="@Demo*" {{.CLI_ARGS}}
+        cmd: npx playwright test --project="@demo*" {{.CLI_ARGS}}
         interactive: true
+
+    # ── Database ──────────────────────────────────────────────────
+
+    db:seed:
+        desc: Seed the Demo module database
+        cmd: php artisan modules:seed --module=demo
 
     # ── Code Generation ────────────────────────────────────────────
 
     types:generate:
         desc: Generate TypeScript types from PHP DTOs and enums
-        cmd: php artisan module:generate-types Demo
+        cmd: php artisan module:generate-types demo

@@ -13,7 +13,7 @@ use App\Navigation\Section;
 |
 */
 
-Navigation::add('Blog', route('blog.index'), function (Section $section) {
+Navigation::add('Blog', fn () => route('blog.index'), function (Section $section) {
     $section->attributes([
         'group' => 'landing',
         'slug' => 'blog',

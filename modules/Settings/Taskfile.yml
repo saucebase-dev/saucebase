@@ -9,11 +9,17 @@ tasks:
 
     test:e2e:
         desc: Run E2E tests for Settings module
-        cmd: npx playwright test --project="@Settings*" {{.CLI_ARGS}}
+        cmd: npx playwright test --project="@settings*" {{.CLI_ARGS}}
         interactive: true
+
+    # ── Database ──────────────────────────────────────────────────
+
+    db:seed:
+        desc: Seed the Settings module database
+        cmd: php artisan modules:seed --module=settings
 
     # ── Code Generation ────────────────────────────────────────────
 
     types:generate:
         desc: Generate TypeScript types from PHP DTOs and enums
-        cmd: php artisan module:generate-types Settings
+        cmd: php artisan module:generate-types settings

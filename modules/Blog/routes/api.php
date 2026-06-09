@@ -1,3 +1,5 @@
 <?php
 
-// No API routes for Blog module
+Route::middleware('api')->group(function (): void {
+    // No API routes for Blog module
+});

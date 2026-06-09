@@ -1,6 +1,6 @@
 import type { Announcement } from '.';
 
-declare module '@inertiajs/vue3' {
+declare module '@inertiajs/core' {
     interface PageProps {
         announcement?: Announcement | null;
     }

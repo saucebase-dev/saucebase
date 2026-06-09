@@ -13,7 +13,7 @@ use App\Navigation\Section;
 |
 */
 
-Navigation::add('Roadmap', route('roadmap.index'), function (Section $section) {
+Navigation::add('Roadmap', fn () => route('roadmap.index'), function (Section $section) {
     $section->attributes([
         'group' => 'main',
         'slug' => 'roadmap',

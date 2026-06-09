@@ -1,29 +1,35 @@
 {
-    "name": "saucebase/roadmap",
-    "description": "",
-    "type": "saucebase-module",
-    "authors": [
-        {
-            "name": "Saucebase",
-            "email": "hello@saucebase.dev"
-        }
-    ],
-    "extra": {
-        "laravel": {
-            "providers": [],
-            "aliases": {}
-        }
-    },
-    "autoload": {
-        "psr-4": {
-            "Modules\\Roadmap\\": "app/",
-            "Modules\\Roadmap\\Database\\Factories\\": "database/factories/",
-            "Modules\\Roadmap\\Database\\Seeders\\": "database/seeders/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Modules\\Roadmap\\Tests\\": "tests/"
-        }
+  "name": "saucebase/roadmap",
+  "description": "Roadmap module",
+  "type": "saucebase-module",
+  "license": "proprietary",
+  "version": "v2.0.0",
+  "authors": [
+    {
+      "name": "Saucebase",
+      "email": "hello@saucebase.dev"
     }
+  ],
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Modules\\Roadmap\\Providers\\RoadmapServiceProvider"
+      ],
+      "aliases": {}
+    }
+  },
+  "autoload": {
+    "psr-4": {
+      "Modules\\Roadmap\\": "src/",
+      "Modules\\Roadmap\\Database\\Factories\\": "database/factories/",
+      "Modules\\Roadmap\\Database\\Seeders\\": "database/seeders/",
+      "Modules\\Roadmap\\Tests\\Support\\": "tests/Support/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Modules\\Roadmap\\Tests\\": "tests/"
+    }
+  },
+  "minimum-stability": "stable"
 }
