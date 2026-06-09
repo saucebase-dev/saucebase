@@ -1,29 +1,35 @@
 {
-    "name": "saucebase/announcements",
-    "description": "",
-    "type": "saucebase-module",
-    "authors": [
-        {
-            "name": "Saucebase",
-            "email": "hello@saucebase.dev"
-        }
-    ],
-    "extra": {
-        "laravel": {
-            "providers": [],
-            "aliases": {}
-        }
-    },
-    "autoload": {
-        "psr-4": {
-            "Modules\\Announcements\\": "app/",
-            "Modules\\Announcements\\Database\\Factories\\": "database/factories/",
-            "Modules\\Announcements\\Database\\Seeders\\": "database/seeders/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Modules\\Announcements\\Tests\\": "tests/"
-        }
+  "name": "saucebase/announcements",
+  "description": "Site-wide announcement banners",
+  "type": "saucebase-module",
+  "license": "proprietary",
+  "version": "v2.1.0",
+  "authors": [
+    {
+      "name": "Saucebase",
+      "email": "hello@saucebase.dev"
     }
+  ],
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Modules\\Announcements\\Providers\\AnnouncementsServiceProvider"
+      ],
+      "aliases": {}
+    }
+  },
+  "autoload": {
+    "psr-4": {
+      "Modules\\Announcements\\": "src/",
+      "Modules\\Announcements\\Database\\Factories\\": "database/factories/",
+      "Modules\\Announcements\\Database\\Seeders\\": "database/seeders/",
+      "Modules\\Announcements\\Tests\\Support\\": "tests/Support/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Modules\\Announcements\\Tests\\": "tests/"
+    }
+  },
+  "minimum-stability": "stable"
 }

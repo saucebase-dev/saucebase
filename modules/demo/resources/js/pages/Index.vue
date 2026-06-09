@@ -7,9 +7,9 @@ import FilamentSection from './sections/FilamentSection.vue';
 
 import { Head } from '@inertiajs/vue3';
 
-import ProductSection from '@modules/billing/resources/js/vue/components/ProductSection.vue';
+import ProductSection from '@modules/billing/resources/js/components/ProductSection.vue';
 import type { Product } from '@modules/billing/resources/js/types';
-import LatestPostsSection from '@modules/blog/resources/js/vue/components/LatestPostsSection.vue';
+import LatestPostsSection from '@modules/blog/resources/js/components/LatestPostsSection.vue';
 import HeroSection from './sections/HeroSection.vue';
 import ModulesSection from './sections/ModulesSection.vue';
 
