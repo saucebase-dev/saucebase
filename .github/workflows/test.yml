@@ -9,21 +9,6 @@ permissions:
     contents: read
 
 jobs:
-    phpunit-raw:
-        runs-on: ubuntu-latest
-        timeout-minutes: 10
-        name: PHPUnit (raw)
-
-        steps:
-            - uses: actions/checkout@v5
-
-            - uses: ./.github/actions/setup-laravel
-              with:
-                  skip-build: 'true'
-
-            - name: Run tests
-              run: php artisan test
-
     phpunit:
         runs-on: ubuntu-latest
         timeout-minutes: 15
