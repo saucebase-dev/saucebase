@@ -1,0 +1,25 @@
+# https://taskfile.dev
+version: '3'
+
+tasks:
+    # ── Testing ───────────────────────────────────────────────────
+    test:php:
+        desc: Run PHPUnit tests for Settings module
+        cmd: php artisan test --testsuite=Modules --filter='^Modules\\Settings\\Tests'
+
+    test:e2e:
+        desc: Run E2E tests for Settings module
+        cmd: npx playwright test --project="@settings*" {{.CLI_ARGS}}
+        interactive: true
+
+    # ── Database ──────────────────────────────────────────────────
+
+    db:seed:
+        desc: Seed the Settings module database
+        cmd: php artisan modules:seed --module=settings
+
+    # ── Code Generation ────────────────────────────────────────────
+
+    types:generate:
+        desc: Generate TypeScript types from PHP DTOs and enums
+        cmd: php artisan module:generate-types settings

@@ -95,6 +95,7 @@ const currentLanguage = computed(() => {
     <!-- Submenu Mode (NavUser) -->
     <DropdownMenuSub v-else>
         <DropdownMenuSubTrigger
+            data-testid="language-selector-trigger"
             class="[&>svg]:text-muted-foreground [&>svg]:mr-2"
         >
             <slot name="submenu-trigger" :current-language="currentLanguage">

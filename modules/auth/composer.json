@@ -1,0 +1,44 @@
+{
+  "name": "saucebase/auth",
+  "description": "Authentication module for Saucebase",
+  "type": "saucebase-module",
+  "license": "proprietary",
+  "version": "v2.1.4",
+  "authors": [
+    {
+      "name": "Saucebase",
+      "email": "hello@saucebase.dev"
+    }
+  ],
+  "extra": {
+    "saucebase": {
+      "frameworks": [
+        "vue",
+        "react"
+      ]
+    },
+    "laravel": {
+      "providers": [
+        "Modules\\Auth\\Providers\\AuthServiceProvider"
+      ],
+      "aliases": {}
+    }
+  },
+  "autoload": {
+    "psr-4": {
+      "Modules\\Auth\\": "src/",
+      "Modules\\Auth\\Database\\Factories\\": "database/factories/",
+      "Modules\\Auth\\Database\\Seeders\\": "database/seeders/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Modules\\Auth\\Tests\\": "tests/"
+    }
+  },
+  "require": {
+    "laravel/socialite": "^5.21",
+    "stechstudio/filament-impersonate": "^5.1"
+  },
+  "minimum-stability": "stable"
+}

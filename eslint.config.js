@@ -10,14 +10,23 @@ export default defineConfigWithVueTs(
     vue.configs['flat/essential'],
     vueTsConfigs.recommended,
     {
+        languageOptions: {
+            parserOptions: {
+                tsconfigRootDir: import.meta.dirname,
+            },
+        },
+    },
+    {
         ignores: [
             'vendor',
             'node_modules',
             'public',
             'bootstrap/ssr',
+            'stubs',
             'tailwind.config.js',
             'resources/js/components/ui/*',
             'modules/*/resources/js/components/ui/*',
+            'stubs/saucebase/stack/*/resources/js/**/*',
         ],
     },
     {

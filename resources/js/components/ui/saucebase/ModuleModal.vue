@@ -129,7 +129,7 @@ onUnmounted(() => {
                             class="mt-2 flex flex-col gap-2"
                         >
                             <div
-                                class="flex items-center gap-3 rounded-full bg-gray-950 px-4 py-3 dark:bg-gray-900 shadow-sm"
+                                class="flex items-center gap-3 rounded-full bg-gray-950 px-4 py-3 shadow-sm dark:bg-gray-900"
                             >
                                 <Terminal
                                     class="size-4 shrink-0 text-gray-500"

@@ -3,7 +3,7 @@
 # Saucebase Bootstrap — gets Docker running, then hands off to artisan installer
 set -e
 
-echo "Saucebase Development Environment Setup"
+echo "Saucebase Docker & Environment Setup for Development"
 echo "========================================"
 echo ""
 
@@ -22,7 +22,7 @@ if [[ " $* " =~ " --no-docker " ]]; then
     fi
 
     composer install
-    php artisan saucebase:install "$@"
+    php artisan saucebase:install --dev "$@"
     npm install && npm run build
     echo ""
     echo "Setup complete! Run 'npm run dev' to start developing."
@@ -70,11 +70,11 @@ docker compose exec -T app composer install
 
 # Hand off to artisan installer (pass all flags through)
 echo "Running artisan installer..."
-docker compose exec app php artisan saucebase:install "$@"
+docker compose exec -T app php artisan saucebase:install --dev "$@"
 
 # Reload app container to pick up APP_KEY written to .env during install
 echo "Reloading app container..."
-docker compose up -d --wait 
+docker compose up -d --wait
 
 # Frontend (runs on host where Node lives)
 echo "Installing frontend dependencies..."

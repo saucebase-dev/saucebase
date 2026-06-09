@@ -10,6 +10,7 @@
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
         "noEmit": true,
+        "resolveJsonModule": true,
         "skipLibCheck": true,
         "paths": {
             "@/*": ["./resources/js/*"],
@@ -18,7 +19,13 @@
             "ziggy-js": ["./vendor/tightenco/ziggy"]
         }
     },
+    "exclude": [
+        "stubs",
+        "vendor",
+        "node_modules"
+    ],
     "include": [
+        "resources/js/*.ts",
         "resources/js/**/*.ts",
         "resources/js/**/*.vue",
         "modules/**/resources/js/**/*.ts",

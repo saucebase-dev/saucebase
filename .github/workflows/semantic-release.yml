@@ -4,12 +4,12 @@ on:
     workflow_call:
         inputs:
             version_file:
-                description: 'File to update with version (module.json, composer.json, package.json, or empty to skip)'
+                description: 'File to update with version (composer.json, package.json, or empty to skip)'
                 required: false
                 type: string
                 default: ''
             version_file_path:
-                description: 'JSON path to version field (e.g., .version for module.json)'
+                description: 'JSON path to version field (e.g., .version for composer.json)'
                 required: false
                 type: string
                 default: '.version'
@@ -42,7 +42,7 @@ jobs:
                   private-key: ${{ secrets.APP_PRIVATE_KEY }}
 
             - name: Checkout code
-              uses: actions/checkout@v4
+              uses: actions/checkout@v5
               with:
                   fetch-depth: 0
                   token: ${{ steps.generate-token.outputs.token || secrets.GITHUB_TOKEN }}

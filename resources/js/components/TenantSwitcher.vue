@@ -33,7 +33,7 @@ const activeTenant = ref(tenants[0]);
 </script>
 
 <template>
-    <SidebarMenu>
+    <SidebarMenu data-testid="tenant-switcher">
         <SidebarMenuItem>
             <template v-if="tenants.length > 1">
                 <DropdownMenu :modal="false">

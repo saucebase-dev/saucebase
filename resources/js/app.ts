@@ -12,7 +12,7 @@ import {
     executeModuleSetups,
 } from './lib/moduleSetup';
 
-import '../css/app.css';
+import '@css/app.css';
 
 /**
  * Used as a wrapper to global components
@@ -38,20 +38,22 @@ createInertiaApp({
             });
 
         // Execute module setup functions and collect afterMount callbacks
-        executeModuleSetups(app, moduleSetups).then(async (afterMountCallbacks) => {
-            // Initialize global theme persistence after mount for proper Vue reactivity
-            useColorMode();
+        executeModuleSetups(app, moduleSetups).then(
+            async (afterMountCallbacks) => {
+                // Initialize global theme persistence after mount for proper Vue reactivity
+                useColorMode({ storageKey: 'appearance' });
 
-            // Wait for translations to be applied before mounting to avoid
-            // a flash of untranslated keys on first render (issue: laravel-vue-i18n#189)
-            await loadLanguageAsync(language.value);
+                // Wait for translations to be applied before mounting to avoid
+                // a flash of untranslated keys on first render (issue: laravel-vue-i18n#189)
+                await loadLanguageAsync(language.value);
 
-            // Mount the app
-            app.mount(el);
+                // Mount the app
+                app.mount(el);
 
-            // Execute module afterMount callbacks
-            executeAfterMountCallbacks(afterMountCallbacks, app);
-        });
+                // Execute module afterMount callbacks
+                executeAfterMountCallbacks(afterMountCallbacks, app);
+            },
+        );
     },
     progress: {
         color:

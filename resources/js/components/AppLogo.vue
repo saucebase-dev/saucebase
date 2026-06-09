@@ -2,7 +2,7 @@
 import { useColorMode } from '@vueuse/core';
 import { computed } from 'vue';
 
-const colorMode = useColorMode();
+const colorMode = useColorMode({ storageKey: 'appearance' });
 
 const primaryFill = computed(() =>
     colorMode.value === 'dark'
@@ -250,7 +250,7 @@ const logoAlt = 'Saucebase logo';
                 <span class="text-primary dark:text-foreground">base</span>
             </h1>
             <p
-                v-if="showSubtitle !== false"
+                v-if="showSubtitle"
                 :class="[
                     subtitleSizeClasses[subtitleSize || size || 'sm'],
                     'leading-tight',

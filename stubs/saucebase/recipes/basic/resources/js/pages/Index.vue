@@ -12,14 +12,12 @@ import CardHeader from '@/components/ui/card/CardHeader.vue';
 import CardTitle from '@/components/ui/card/CardTitle.vue';
 import Separator from '@/components/ui/separator/Separator.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
-import { Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
 import IconArrowRight from '~icons/heroicons/arrow-right';
 import IconArrowTrendingDown from '~icons/heroicons/arrow-trending-down';
 import IconArrowTrendingUp from '~icons/heroicons/arrow-trending-up';
 import IconChart from '~icons/heroicons/chart-bar';
-import IconCog from '~icons/heroicons/cog-6-tooth';
 import IconCreditCard from '~icons/heroicons/credit-card';
 import IconInfo from '~icons/heroicons/information-circle';
 import IconRocket from '~icons/heroicons/rocket-launch';
@@ -127,12 +125,6 @@ const recentActivity = ref([
                     </p>
                 </div>
                 <div class="flex gap-4">
-                    <Link :href="route('settings.index')">
-                        <Button variant="outline">
-                            <IconCog class="h-4 w-4" />
-                            {{ $t('Settings') }}
-                        </Button>
-                    </Link>
                     <Button>
                         <IconSparkles class="h-4 w-4" />
                         {{ $t('New') }}

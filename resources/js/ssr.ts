@@ -4,7 +4,10 @@ import { i18nVue } from 'laravel-vue-i18n';
 import { createSSRApp, h } from 'vue';
 import { renderToString } from 'vue/server-renderer';
 import { ZiggyVue } from 'ziggy-js';
-import { resolveLanguageForSsr, resolveModularPageComponent } from './lib/utils';
+import {
+    resolveLanguageForSsr,
+    resolveModularPageComponent,
+} from './lib/utils';
 
 /**
  * Used as a wrapper to global components

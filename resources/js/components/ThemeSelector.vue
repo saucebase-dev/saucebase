@@ -10,6 +10,7 @@ import {
     DropdownMenuSubTrigger,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { setCookie } from '@/lib/utils';
 import { useColorMode } from '@vueuse/core';
 import { computed, ref } from 'vue';
 import IconAuto from '~icons/fluent/dark-theme-20-filled';
@@ -51,6 +52,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const colorMode = useColorMode({
     emitAuto: true,
+    storageKey: 'appearance',
 });
 
 const triggerRef = ref<HTMLElement | null>(null);
@@ -69,6 +71,7 @@ const switchTheme = async (
     themeCode: 'light' | 'dark' | 'auto',
     triggerEl?: HTMLElement,
 ) => {
+    setCookie('appearance', themeCode);
     // Check if browser supports View Transitions API
     if (
         props.disableAnimation ||
@@ -170,6 +173,7 @@ function handleInlineClick(
             <DropdownMenuItem
                 v-for="theme in visibleThemes"
                 :key="theme.code"
+                :data-testid="`color-mode-${theme.code}`"
                 @click="switchTheme(theme.code)"
                 :class="{
                     'bg-accent text-accent-foreground':
@@ -186,6 +190,7 @@ function handleInlineClick(
     <DropdownMenuSub v-else>
         <DropdownMenuSubTrigger
             ref="triggerRef"
+            data-testid="theme-selector-trigger"
             class="[&>svg]:text-muted-foreground [&>svg]:mr-2"
         >
             <slot name="submenu-trigger" :current-theme="currentTheme">
@@ -197,6 +202,7 @@ function handleInlineClick(
             <DropdownMenuItem
                 v-for="theme in visibleThemes"
                 :key="theme.code"
+                :data-testid="`color-mode-${theme.code}`"
                 @click="switchTheme(theme.code)"
                 :class="{ 'bg-accent': colorMode === theme.code }"
             >

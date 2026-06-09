@@ -3,17 +3,35 @@ name: Tests
 on:
     pull_request:
         branches: [demo]
+    workflow_dispatch:
 
 permissions:
     contents: read
 
 jobs:
+    phpunit-raw:
+        runs-on: ubuntu-latest
+        timeout-minutes: 10
+        name: PHPUnit (raw)
+
+        steps:
+            - uses: actions/checkout@v5
+
+            - uses: ./.github/actions/setup-laravel
+              with:
+                  skip-build: 'true'
+
+            - name: Run tests
+              run: php artisan test
+
     phpunit:
         runs-on: ubuntu-latest
         timeout-minutes: 15
+        needs: phpunit-raw
+        name: PHPUnit
 
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v5
 
             - uses: ./.github/actions/setup-laravel
 
@@ -24,9 +42,10 @@ jobs:
         runs-on: ubuntu-latest
         timeout-minutes: 30
         needs: phpunit
+        name: E2E
 
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v5
 
             - uses: ./.github/actions/setup-laravel
 

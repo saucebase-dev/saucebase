@@ -1,15 +1,13 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
-@import 'theme.css';
-@import 'transitions.css';
+@import './theme.css';
+@import './transitions.css';
+@import './saucebase.css';
 
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
 
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
-@source '../resources/js/**/*.vue';
-@source '../../modules/*/resources/js/**/*.vue';
+@source '../../modules/*/resources/js/**/*.{vue,jsx,tsx}';
 
 @custom-variant dark (&:is(.dark *, [data-theme="dark"] *));
 

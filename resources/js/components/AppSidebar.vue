@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type { SidebarProps } from '@/components/ui/sidebar';
+import type { SidebarProps } from '@/components/ui/sidebar/index';
 import {
     Sidebar,
     SidebarContent,
     SidebarFooter,
     SidebarHeader,
-} from '@/components/ui/sidebar';
+} from '@/components/ui/sidebar/index';
 import type { User } from '@/types';
 import type { Navigation } from '@/types/navigation';
 import { usePage } from '@inertiajs/vue3';

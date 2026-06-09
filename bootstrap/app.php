@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\HandleLocalization;
 use Illuminate\Foundation\Application;
@@ -22,8 +23,12 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // Exclude appearance cookie from encryption so JS-set values are readable server-side
+        $middleware->encryptCookies(except: ['appearance']);
+
         // Register global middleware
         $middleware->web(append: [
+            HandleAppearance::class,
             HandleLocalization::class,
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,

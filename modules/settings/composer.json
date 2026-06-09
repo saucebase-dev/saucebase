@@ -1,0 +1,34 @@
+{
+  "name": "saucebase/settings",
+  "description": "Settings module",
+  "type": "saucebase-module",
+  "license": "proprietary",
+  "version": "v2.0.2",
+  "authors": [
+    {
+      "name": "Saucebase",
+      "email": "hello@saucebase.dev"
+    }
+  ],
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Modules\\Settings\\Providers\\SettingsServiceProvider"
+      ],
+      "aliases": {}
+    }
+  },
+  "autoload": {
+    "psr-4": {
+      "Modules\\Settings\\": "src/",
+      "Modules\\Settings\\Database\\Factories\\": "database/factories/",
+      "Modules\\Settings\\Database\\Seeders\\": "database/seeders/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Modules\\Settings\\Tests\\": "tests/"
+    }
+  },
+  "minimum-stability": "stable"
+}

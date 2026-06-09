@@ -3,24 +3,31 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { twMerge } from 'tailwind-merge';
 import { DefineComponent } from 'vue';
 
+declare const __SAUCEBASE_DEV__: boolean;
+declare const __SAUCEBASE_FRAMEWORK__: string;
+
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
 
-/**
- * Resolve a Vue component, supporting modular namespaces.
- *
- * @param name The name of the component to resolve. Can include module namespace like 'ModuleName::ComponentPath'.
- * @returns A Promise that resolves to the Vue component.
- */
+export function setCookie(name: string, value: string, days = 365): void {
+    document.cookie = `${name}=${value};path=/;max-age=${days * 24 * 60 * 60};SameSite=Lax`;
+}
+
 export const resolveModularPageComponent = (name: string) => {
     if (name.includes('::')) {
         const [moduleName, componentPath] = name.split('::', 2);
-        const moduleComponentPath = `../../../modules/${moduleName}/resources/js/pages/${componentPath}.vue`;
+        const moduleFolderName = moduleName
+            .replace(/([a-z])([A-Z])/g, '$1-$2')
+            .toLowerCase();
 
         const moduleGlobs = import.meta.glob<DefineComponent>(
-            '../../../modules/*/resources/js/**/*.vue',
+            '/modules/*/resources/js/**/pages/**/*.vue',
         );
+
+        const moduleComponentPath = __SAUCEBASE_DEV__
+            ? `/modules/${moduleFolderName}/resources/js/${__SAUCEBASE_FRAMEWORK__}/pages/${componentPath}.vue`
+            : `/modules/${moduleFolderName}/resources/js/pages/${componentPath}.vue`;
 
         return resolvePageComponent(moduleComponentPath, moduleGlobs);
     }
@@ -31,7 +38,7 @@ export const resolveModularPageComponent = (name: string) => {
     );
 };
 
-const langGlobs = import.meta.glob('../../../lang/*.json', {
+const langGlobs = import.meta.glob('/lang/*.json', {
     eager: true,
 }) as Record<string, { default: any }>;
 
@@ -44,8 +51,8 @@ const langGlobs = import.meta.glob('../../../lang/*.json', {
  * PHP translations take precedence over JSON translations.
  */
 const resolveLang = (lang: string): Record<string, any> => {
-    const jsonData = langGlobs[`../../../lang/${lang}.json`]?.default ?? {};
-    const phpData = langGlobs[`../../../lang/php_${lang}.json`]?.default ?? {};
+    const jsonData = langGlobs[`/lang/${lang}.json`]?.default ?? {};
+    const phpData = langGlobs[`/lang/php_${lang}.json`]?.default ?? {};
     return { ...jsonData, ...phpData };
 };
 

@@ -5,7 +5,11 @@ import SiteLayout from '@/layouts/SiteLayout.vue';
 <template>
     <SiteLayout
         :title="$t('Terms of Service')"
-        :description="$t('Read our Terms of Service to understand the rules and guidelines for using Saucebase.')"
+        :description="
+            $t(
+                'Read our Terms of Service to understand the rules and guidelines for using Saucebase.',
+            )
+        "
     >
         <main class="mx-auto w-full max-w-3xl flex-1 px-6 py-16">
             <h1 class="mb-2 text-4xl font-bold text-gray-900 dark:text-white">

@@ -7,7 +7,7 @@ on:
             module:
                 required: true
                 type: string
-                description: 'StudlyCase module name, e.g. Billing'
+                description: 'LowerCase module name, e.g. billing'
             dependencies:
                 required: false
                 type: string
@@ -15,19 +15,40 @@ on:
                 description: 'Space-separated Composer packages, e.g. saucebase/auth'
 
 jobs:
+    detect-frameworks:
+        runs-on: ubuntu-latest
+        if: inputs.module != ''
+        outputs:
+            matrix: ${{ steps.read.outputs.matrix }}
+        steps:
+            - name: Checkout module
+              uses: actions/checkout@v5
+              with:
+                  path: module-src
+            - name: Read supported frameworks from composer.json
+              id: read
+              run: |
+                  fw=$(jq -c '.extra.saucebase.frameworks // ["vue"]' module-src/composer.json 2>/dev/null || echo '["vue"]')
+                  echo "matrix=$fw" >> $GITHUB_OUTPUT
+
     phpunit:
+        needs: detect-frameworks
         runs-on: ubuntu-latest
         timeout-minutes: 20
         if: inputs.module != ''
+        strategy:
+            matrix:
+                framework: ${{ fromJSON(needs.detect-frameworks.outputs.matrix) }}
+        name: PHPUnit ${{ inputs.module }} (${{ matrix.framework }})
 
         steps:
             - name: Checkout module
-              uses: actions/checkout@v4
+              uses: actions/checkout@v5
               with:
                   path: module-src
 
             - name: Clone Saucebase
-              uses: actions/checkout@v4
+              uses: actions/checkout@v5
               with:
                   repository: saucebase-dev/saucebase
                   ref: main
@@ -37,8 +58,9 @@ jobs:
               env:
                   MODULE: ${{ inputs.module }}
               run: |
-                  rm -rf saucebase/modules/$MODULE
-                  cp -r module-src saucebase/modules/$MODULE
+                  pkg=$(echo "$MODULE" | tr '[:upper:]' '[:lower:]')
+                  rm -rf saucebase/modules/$pkg
+                  cp -r module-src saucebase/modules/$pkg
 
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
@@ -57,18 +79,13 @@ jobs:
                       composer require "$dep" --dev --no-interaction --no-scripts
                   done
 
-            - name: Enable modules
+            - name: Require module in Composer
               working-directory: saucebase
               env:
                   MODULE: ${{ inputs.module }}
-                  DEPENDENCIES: ${{ inputs.dependencies }}
               run: |
-                  jq ". + {\"$MODULE\": true}" modules_statuses.json > tmp.json && mv tmp.json modules_statuses.json
-                  for dep in $DEPENDENCIES; do
-                      pkg="${dep#saucebase/}"
-                      mod=$(echo "$pkg" | sed 's/-\([a-z]\)/\u\1/g; s/^\([a-z]\)/\u\1/')
-                      jq ". + {\"$mod\": true}" modules_statuses.json > tmp.json && mv tmp.json modules_statuses.json
-                  done
+                  pkg=$(echo "$MODULE" | tr '[:upper:]' '[:lower:]')
+                  composer require "saucebase/$pkg:@dev" --no-interaction --no-scripts
 
             - name: Apply patches
               env:
@@ -86,15 +103,15 @@ jobs:
                   # Dependencies first (in declared order)
                   for dep in $DEPENDENCIES; do
                       pkg="${dep#saucebase/}"
-                      mod=$(echo "$pkg" | sed 's/-\([a-z]\)/\u\1/g; s/^\([a-z]\)/\u\1/')
-                      apply_patches "saucebase/modules/$mod/patches"
+                      apply_patches "saucebase/modules/$pkg/patches"
                   done
                   # Primary module last
-                  apply_patches "saucebase/modules/$MODULE/patches"
+                  mod=$(echo "$MODULE" | tr '[:upper:]' '[:lower:]')
+                  apply_patches "saucebase/modules/$mod/patches"
 
             - name: Install Composer dependencies
               working-directory: saucebase
-              run: composer update --prefer-dist --no-interaction --no-progress --no-scripts && composer dump-autoload --no-scripts
+              run: composer install --prefer-dist --no-interaction --no-progress --no-scripts && composer dump-autoload --no-scripts
 
             - name: Setup Laravel environment
               uses: ./saucebase/.github/actions/setup-laravel
@@ -102,12 +119,15 @@ jobs:
                   working-directory: saucebase
                   skip-composer: 'true'
                   skip-php: 'true'
+                  framework: ${{ matrix.framework }}
 
             - name: Run PHPUnit tests
               working-directory: saucebase
               env:
                   MODULE: ${{ inputs.module }}
-              run: php artisan test modules/$MODULE/tests
+              run: |
+                  pkg=$(echo "$MODULE" | tr '[:upper:]' '[:lower:]')
+                  php artisan test modules/$pkg/tests
 
             - name: Archive saucebase environment
               run: tar --exclude='saucebase/node_modules' -czf saucebase-env.tar.gz saucebase/
@@ -115,21 +135,25 @@ jobs:
             - name: Upload environment artifact
               uses: actions/upload-artifact@v4
               with:
-                  name: saucebase-env-${{ inputs.module }}
+                  name: saucebase-env-${{ inputs.module }}-${{ matrix.framework }}
                   path: saucebase-env.tar.gz
                   retention-days: 1
 
     e2e:
         runs-on: ubuntu-latest
         timeout-minutes: 30
-        needs: phpunit
+        needs: [detect-frameworks, phpunit]
         if: inputs.module != ''
+        strategy:
+            matrix:
+                framework: ${{ fromJSON(needs.detect-frameworks.outputs.matrix) }}
+        name: E2E ${{ inputs.module }} (${{ matrix.framework }})
 
         steps:
             - name: Download environment artifact
               uses: actions/download-artifact@v4
               with:
-                  name: saucebase-env-${{ inputs.module }}
+                  name: saucebase-env-${{ inputs.module }}-${{ matrix.framework }}
 
             - name: Extract environment
               run: tar -xzf saucebase-env.tar.gz
@@ -142,7 +166,7 @@ jobs:
                   coverage: none
 
             - name: Setup Node.js
-              uses: actions/setup-node@v4
+              uses: actions/setup-node@v5
               with:
                   node-version: '22'
                   cache: npm
@@ -179,6 +203,6 @@ jobs:
               if: failure()
               uses: actions/upload-artifact@v4
               with:
-                  name: playwright-report-${{ inputs.module }}
+                  name: playwright-report-${{ inputs.module }}-${{ matrix.framework }}
                   path: saucebase/playwright-report/
                   retention-days: 7

@@ -1,5 +1,4 @@
 import { trans } from 'laravel-vue-i18n';
-import './modules.css';
 
 import {
     BarChart3,
@@ -30,8 +29,10 @@ export const modules = [
     {
         id: 'custom',
         title: () => trans('Your Module'),
-        description:
-            () => trans('Build and install your own modules with a single Artisan command. Full ownership, the scaffolded code lives in your repo and is yours to modify freely.'),
+        description: () =>
+            trans(
+                'Build and install your own modules with a single Artisan command. Full ownership, the scaffolded code lives in your repo and is yours to modify freely.',
+            ),
         icon: Lightbulb,
         color: '--secondary',
         badge: {
@@ -39,6 +40,7 @@ export const modules = [
             class: 'bg-destructive text-destructive-foreground border-destructive',
         },
         href: 'https://saucebase-dev.github.io/docs/fundamentals/modules',
+        frameworks: ['vue', 'react'] as const,
         features: [
             () => trans('Single Command'),
             () => trans('Full Ownership'),
@@ -49,12 +51,15 @@ export const modules = [
     {
         id: 'auth',
         title: () => trans('Auth'),
-        description:
-            () => trans('Complete authentication system with login, registration, magic link (passwordless), password reset, email verification, and OAuth integration (Google, GitHub).'),
+        description: () =>
+            trans(
+                'Complete authentication system with login, registration, magic link (passwordless), password reset, email verification, and OAuth integration (Google, GitHub).',
+            ),
         icon: Lock,
         color: '--color-violet-600',
         badge: null,
         href: 'https://saucebase-dev.github.io/docs/modules/auth',
+        frameworks: ['vue', 'react'] as const,
         features: [
             () => trans('Login & Register'),
             () => trans('Magic Link'),
@@ -66,12 +71,15 @@ export const modules = [
     {
         id: 'settings',
         title: () => trans('Settings'),
-        description:
-            () => trans('Account settings pages for managing profile info, avatar, password, and connected social accounts.'),
+        description: () =>
+            trans(
+                'Account settings pages for managing profile info, avatar, password, and connected social accounts.',
+            ),
         icon: Settings2,
         color: '--color-sky-500',
         badge: null,
         href: 'https://saucebase-dev.github.io/docs/modules/settings',
+        frameworks: ['vue'] as const,
         features: [
             () => trans('Profile Info'),
             () => trans('Avatar Upload'),
@@ -82,12 +90,15 @@ export const modules = [
     {
         id: 'billing',
         title: () => trans('Billing'),
-        description:
-            () => trans('Subscription management and payment processing via Stripe with checkout sessions, billing portal, invoices, and webhook processing.'),
+        description: () =>
+            trans(
+                'Subscription management and payment processing via Stripe with checkout sessions, billing portal, invoices, and webhook processing.',
+            ),
         icon: CreditCard,
         color: '--color-green-600',
         badge: null,
         href: 'https://saucebase-dev.github.io/docs/modules/billing',
+        frameworks: ['vue'] as const,
         features: [
             () => trans('Checkout'),
             () => trans('Subscriptions'),
@@ -98,12 +109,15 @@ export const modules = [
     {
         id: 'roadmap',
         title: () => trans('Roadmap'),
-        description:
-            () => trans('Public roadmap with feature requests, voting, moderation, six statuses, and a Filament admin panel.'),
+        description: () =>
+            trans(
+                'Public roadmap with feature requests, voting, moderation, six statuses, and a Filament admin panel.',
+            ),
         icon: Map,
         color: '--color-amber-500',
         badge: null,
         href: 'https://saucebase-dev.github.io/docs/modules/roadmap',
+        frameworks: ['vue'] as const,
         features: [
             () => trans('Feature Requests'),
             () => trans('Voting'),
@@ -114,12 +128,15 @@ export const modules = [
     {
         id: 'announcements',
         title: () => trans('Announcements'),
-        description:
-            () => trans('Site-wide announcement banners with scheduling, audience targeting, and cookie-based dismissal, managed from the Filament admin panel.'),
+        description: () =>
+            trans(
+                'Site-wide announcement banners with scheduling, audience targeting, and cookie-based dismissal, managed from the Filament admin panel.',
+            ),
         icon: Megaphone,
         color: '--color-indigo-500',
         badge: null,
         href: 'https://saucebase-dev.github.io/docs/modules/announcements',
+        frameworks: ['vue'] as const,
         features: [
             () => trans('Banner'),
             () => trans('Scheduling'),
@@ -131,12 +148,15 @@ export const modules = [
     {
         id: 'themes',
         title: () => trans('Themes'),
-        description:
-            () => trans("Visual theme editor for designing your app's colors, fonts, radius, and shadows. Pick a built-in theme or build your own, then bake it into CSS - no runtime overhead."),
+        description: () =>
+            trans(
+                "Visual theme editor for designing your app's colors, fonts, radius, and shadows. Pick a built-in theme or build your own, then bake it into CSS - no runtime overhead.",
+            ),
         icon: Palette,
         color: '--color-purple-500',
         badge: NEW_BADGE,
         href: 'https://saucebase-dev.github.io/docs/modules/themes',
+        frameworks: ['vue'] as const,
         features: [
             () => trans('15 Built-in Themes'),
             () => trans('Visual Editor'),
@@ -148,12 +168,15 @@ export const modules = [
     {
         id: 'blog',
         title: () => trans('Blog'),
-        description:
-            () => trans('Full-featured blog with posts, categories, cover images, SEO metadata, and a Filament admin panel for content management.'),
+        description: () =>
+            trans(
+                'Full-featured blog with posts, categories, cover images, SEO metadata, and a Filament admin panel for content management.',
+            ),
         icon: Newspaper,
         color: '--color-rose-500',
         badge: NEW_BADGE,
         href: 'https://saucebase-dev.github.io/docs/modules/blog',
+        frameworks: ['vue'] as const,
         features: [
             () => trans('Posts'),
             () => trans('Categories'),
@@ -164,12 +187,15 @@ export const modules = [
     {
         id: 'webhooks',
         title: () => trans('Webhooks'),
-        description:
-            () => trans('Send reliable HTTP callbacks to external services when events occur in your app, with delivery logs and retry handling.'),
+        description: () =>
+            trans(
+                'Send reliable HTTP callbacks to external services when events occur in your app, with delivery logs and retry handling.',
+            ),
         icon: Webhook,
         color: '--color-gray-500',
         badge: BADGE_SOON,
         href: null,
+        frameworks: ['vue'] as const,
         features: [
             () => trans('Event Triggers'),
             () => trans('Delivery Logs'),
@@ -180,12 +206,15 @@ export const modules = [
     {
         id: 'integrations',
         title: () => trans('Integrations'),
-        description:
-            () => trans('Connect your app with third-party services like Slack, Zapier, and more through a unified integration layer.'),
+        description: () =>
+            trans(
+                'Connect your app with third-party services like Slack, Zapier, and more through a unified integration layer.',
+            ),
         icon: Blocks,
         color: '--color-gray-500',
         badge: BADGE_SOON,
         href: null,
+        frameworks: ['vue'] as const,
         features: [
             () => trans('Slack'),
             () => trans('Zapier'),
@@ -196,12 +225,15 @@ export const modules = [
     {
         id: 'notifications',
         title: () => trans('Notifications'),
-        description:
-            () => trans('In-app and email notifications with templates, user preferences, and delivery tracking for every channel.'),
+        description: () =>
+            trans(
+                'In-app and email notifications with templates, user preferences, and delivery tracking for every channel.',
+            ),
         icon: Bell,
         color: '--color-gray-500',
         badge: BADGE_SOON,
         href: null,
+        frameworks: ['vue'] as const,
         features: [
             () => trans('In-App'),
             () => trans('Email'),
@@ -212,12 +244,15 @@ export const modules = [
     {
         id: 'analytics',
         title: () => trans('Analytics'),
-        description:
-            () => trans('Track pageviews, custom events, and user behavior with a privacy-friendly built-in dashboard — no third-party scripts.'),
+        description: () =>
+            trans(
+                'Track pageviews, custom events, and user behavior with a privacy-friendly built-in dashboard — no third-party scripts.',
+            ),
         icon: BarChart3,
         color: '--color-gray-500',
         badge: BADGE_SOON,
         href: null,
+        frameworks: ['vue'] as const,
         features: [
             () => trans('Pageviews'),
             () => trans('Custom Events'),

@@ -1,0 +1,52 @@
+<?php
+
+use App\Facades\Navigation;
+use App\Navigation\Section;
+
+/*
+|--------------------------------------------------------------------------
+| Demo Module Navigation
+|--------------------------------------------------------------------------
+|
+| Define Demo module navigation items here.
+| These items will be loaded automatically when the module is enabled.
+|
+*/
+
+// Landing Page Navigation
+Navigation::add('Stripe Integration', '/#pricing', function (Section $section) {
+    $section->attributes([
+        'group' => 'landing',
+        'slug' => 'stripe-integration',
+        'external' => true,
+        'order' => 1,
+    ]);
+});
+
+Navigation::add(
+    'Docs',
+    'https://saucebase-dev.github.io/docs/',
+    function (Section $section) {
+        $section->attributes([
+            'group' => 'landing',
+            'slug' => 'documentation',
+            'external' => true,
+            'newPage' => true,
+            'order' => 10,
+        ]);
+    }
+);
+
+Navigation::add(
+    'Github',
+    'https://github.com/saucebase-dev/saucebase',
+    function (Section $section) {
+        $section->attributes([
+            'group' => 'landing',
+            'slug' => 'github',
+            'external' => true,
+            'newPage' => true,
+            'order' => 20,
+        ]);
+    }
+);
