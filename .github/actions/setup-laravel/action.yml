@@ -48,7 +48,7 @@ runs:
           with:
               node-version: ${{ inputs.node-version }}
               cache: 'npm'
-              cache-dependency-path: ${{ inputs.working-directory }}/stubs/saucebase/stack/${{ inputs.framework != '' && inputs.framework || 'vue' }}/package-lock.json
+              cache-dependency-path: ${{ inputs.framework != '' && format('{0}/stubs/saucebase/stack/{1}/package-lock.json', inputs.working-directory, inputs.framework) || format('{0}/package-lock.json', inputs.working-directory) }}
 
         - name: Copy .env
           shell: bash
