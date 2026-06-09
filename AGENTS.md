@@ -4,12 +4,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Saucebase is a modular Laravel SaaS starter kit built on the VILT stack (Vue 3, Inertia.js, Laravel 13, Tailwind CSS 4). It follows a **copy-and-own philosophy** where modules are installed directly into the repository rather than being maintained as external packages. This is a Docker-first setup with hot reload, TypeScript, and built-in best practices.
+Saucebase is a modular Laravel SaaS starter kit built on Laravel 13, Inertia.js, and Tailwind CSS 4 — with your choice of Vue 3 or React as the frontend framework. It follows a **copy-and-own philosophy** where modules are installed directly into the repository rather than being maintained as external packages. This is a Docker-first setup with hot reload, TypeScript, and built-in best practices.
 
 **Key Technologies:**
 
 - Backend: Laravel 13, PHP 8.4+, Filament 5 admin panel
-- Frontend: Vue 3 Composition API, TypeScript 5.8, Inertia.js 3.0, Tailwind CSS 4
+- Frontend: Vue 3 or React, TypeScript 5.8, Inertia.js 3.0, Tailwind CSS 4
 - Build: Vite 6.4 with HMR, SSR support
 - Testing: PHPUnit (backend), Playwright (E2E)
 - Code Quality: PHPStan level 9, Laravel Pint, ESLint, Prettier
@@ -76,81 +76,43 @@ php artisan saucebase:install --no-interaction  # CI/CD mode
 
 #### Installation Steps
 
-To install a module, follow these steps in order:
-
 ```bash
-# 1. Install the module via Composer
+# Install and activate the module
 composer require saucebase/auth
 
-# For development-only modules, use --dev flag
-# composer require --dev saucebase/module-name
+# Run migrations
+php artisan migrate
 
-# 2. Regenerate autoload files
-composer dump-autoload
+# Seed module data (if the module has seeders)
+php artisan modules:seed --module=auth
 
-# 3. Enable the module
-docker compose exec app php artisan module:enable Auth
-
-# 4. Run migrations and seeders
-docker compose exec app php artisan module:migrate Auth --seed
-
-# 5. Build frontend assets to include module resources
+# Build frontend assets
 npm run build
 ```
 
-**What each command does:**
-
-1. `composer require` - Downloads the module package and adds it to composer.json
-2. `composer dump-autoload` - Regenerates Composer's autoload files to include new module classes
-3. `module:enable` - Marks the module as enabled in `modules_statuses.json`
-4. `module:migrate --seed` - Runs database migrations and seeds module data
-5. `npm run build` - Rebuilds frontend assets to include module JavaScript/CSS
-
-**Alternative for local development (without Docker):**
+**Inside Docker, run artisan commands in the container:**
 
 ```bash
 composer require saucebase/auth
-composer dump-autoload
-php artisan module:enable Auth
-php artisan module:migrate Auth --seed
+docker compose exec app php artisan migrate
+docker compose exec app php artisan modules:seed --module=auth
 npm run build
 ```
-
-#### Managing Installed Modules
-
-```bash
-# Enable/disable modules
-php artisan module:enable Auth
-php artisan module:disable Auth
-
-# Run module-specific operations
-php artisan module:migrate Auth         # Run module migrations
-php artisan module:migrate-refresh Auth # Refresh module migrations
-php artisan module:seed Auth            # Seed module data
-php artisan module:list                 # List all modules
-
-# Inside Docker
-docker compose exec app php artisan module:list
-```
-
-**Important:** After enabling/disabling modules, rebuild frontend assets with `npm run build` or restart `npm run dev`.
 
 #### Example: Installing Auth Module
 
 ```bash
-# Install the package
+# Install and activate
 composer require saucebase/auth
-composer dump-autoload
 
-# Enable and migrate
-docker compose exec app php artisan module:enable Auth
-docker compose exec app php artisan module:migrate Auth --seed
+# Run migrations and seed
+php artisan migrate
+php artisan modules:seed --module=auth
 
 # Build assets
 npm run build
 
-# Configure OAuth (optional)
-# Add to .env:
+# Configure OAuth (optional) — add to .env:
 # GOOGLE_CLIENT_ID=your-client-id
 # GOOGLE_CLIENT_SECRET=your-client-secret
 # GITHUB_CLIENT_ID=your-client-id
@@ -244,7 +206,7 @@ php artisan view:cache             # Compile views
 
 ### Modular Structure
 
-Saucebase uses **nwidart/laravel-modules** for module management. Modules are self-contained feature packs that can be installed, enabled, or disabled independently.
+Saucebase uses **internachi/modular** for module management. Modules are self-contained feature packs installed via Composer — a module is active when required, inactive when removed. There is no enable/disable toggle.
 
 ```
 modules/
@@ -280,9 +242,8 @@ modules/
 
 **Module Discovery:**
 
-- Modules are tracked in `modules_statuses.json` (format: `{"ModuleName": true}`)
-- Only enabled modules are loaded and built
-- The `module-loader.js` automatically discovers and collects enabled module assets, translations, and Playwright configs
+- A module is active when installed via `composer require`; `composer remove` deactivates it — no enable/disable toggle
+- The `module-loader.js` automatically discovers and collects installed module assets, translations, and Playwright configs
 
 ### Frontend Architecture
 
@@ -294,7 +255,7 @@ The frontend uses a custom module resolution system that allows pages to be load
 // In routes: render module pages like this
 return inertia('Auth::Login', ['data' => $data]);
 
-// Resolves to: modules/Auth/resources/js/pages/Login.vue
+// Resolves to: modules/auth/resources/js/pages/Login.vue
 ```
 
 **Key Frontend Files:**
@@ -886,8 +847,8 @@ Pages can be rendered from core or modules:
 return inertia('Dashboard');  // resources/js/pages/Dashboard.vue
 
 // Module pages (namespace syntax)
-return inertia('Auth::Login');  // modules/Auth/resources/js/pages/Login.vue
-return inertia('Settings::Index');  // modules/Settings/resources/js/pages/Index.vue
+return inertia('Auth::Login');  // modules/auth/resources/js/pages/Login.vue
+return inertia('Settings::Index');  // modules/settings/resources/js/pages/Index.vue
 ```
 
 ### Translations
@@ -925,7 +886,7 @@ Mailpit available at `http://localhost:8025` for viewing sent emails during deve
 
 ### Module Not Found Errors
 
-1. Check `modules_statuses.json` - ensure module is enabled (`true`)
+1. Verify module is installed: `php artisan modules:list`
 2. Run `composer dump-autoload`
 3. Clear caches: `php artisan optimize:clear`
 4. Rebuild frontend: `npm run build` or restart `npm run dev`
@@ -981,24 +942,24 @@ docker compose logs mysql
 
 ## Saucebase
 
-Saucebase is a modular Laravel SaaS starter kit (VILT stack). All features are encapsulated as **modules** under `modules/<ModuleName>/`. Modules are copy-and-own: once installed they live in the repo and can be edited freely.
+Saucebase is a modular Laravel SaaS starter kit. All features are encapsulated as **modules** under `modules/<modulename>/` (always lowercase). Modules are copy-and-own: once installed they live in the repo and can be edited freely.
 
 ### Module Creation
 
-Use `php artisan saucebase:recipe {ModuleName}` to scaffold a new module from stubs. After scaffolding: `composer dump-autoload` → `php artisan module:enable ModuleName` → rebuild assets.
+Use `php artisan saucebase:recipe {modulename}` to scaffold a new module from stubs. After scaffolding: `composer dump-autoload` → rebuild assets. There is no enable/disable toggle — a module is active when `composer require`-d.
 
 ### Module System
 
-Modules are managed by `nwidart/laravel-modules`. Enable state is tracked in `modules_statuses.json`.
+Modules are managed by `internachi/modular`. Module folder names are always lowercase (`modules/auth/`, `modules/billing/`). PHP namespaces remain TitleCase (`Modules\Auth\...`) per PSR-4.
 
-**Module discovery:** `module-loader.js` auto-collects assets, translations, and Playwright configs from enabled modules. Never bypass it.
+**Module discovery:** `module-loader.js` auto-collects assets, translations, and Playwright configs from installed modules. Never bypass it.
 
-**Inertia page resolution:**
+**Inertia page resolution** — namespace prefix is TitleCase (PHP namespace), folder path is lowercase:
 
 <code-snippet name="Inertia rendering" lang="php">
 return inertia('Dashboard');           // resources/js/pages/Dashboard.vue
-return inertia('Auth::Login');         // modules/Auth/resources/js/pages/Login.vue
-return inertia('Roadmap::Index');      // modules/Roadmap/resources/js/pages/Index.vue
+return inertia('Auth::Login');         // modules/auth/resources/js/pages/Login.vue
+return inertia('Roadmap::Index');      // modules/roadmap/resources/js/pages/Index.vue
 </code-snippet>
 
 **SSR control** — opt in per response, not globally:
@@ -1023,14 +984,11 @@ Always use `data-testid` attributes — never select by translated text, labels,
 
 ### Module Service Provider Pattern
 
-Every module's main service provider must extend `App\Providers\ModuleServiceProvider` and define `$name` and `$nameLower`. Both properties are required — the base class throws a `LogicException` if either is missing.
+Every module's main service provider must extend `App\Providers\ModuleServiceProvider`. No `$name` or `$nameLower` needed — InterNACHI derives the module name automatically via `ModuleRegistry::moduleForClass()`.
 
 <code-snippet name="Module service provider" lang="php">
 class FeatureServiceProvider extends ModuleServiceProvider
 {
-    protected string $name = 'Feature';
-    protected string $nameLower = 'feature';
-
     protected array $providers = [
         RouteServiceProvider::class,
     ];
@@ -1081,9 +1039,11 @@ Icons are registered in the module's `resources/js/app.ts` via `registerIcon()`.
 Module types are generated separately from the core app:
 
 ```bash
-php artisan module:generate-types FeatureName   # regenerate after PHP enum/DTO changes
+php artisan module:generate-types featurename   # regenerate after PHP enum/DTO changes
 
 ```
+
+**`modules().has()` in Vue/TS:** always use lowercase — `modules().has('auth')`, `modules().has('billing')`. The composable is case-insensitive but lowercase is the canonical form matching the registry.
 
 Never edit `resources/js/types/generated.d.ts` manually — it is auto-generated.
 
@@ -1119,7 +1079,6 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - laravel/framework (LARAVEL) - v13
 - laravel/prompts (PROMPTS) - v0
 - laravel/sanctum (SANCTUM) - v4
-- laravel/socialite (SOCIALITE) - v5
 - livewire/livewire (LIVEWIRE) - v4
 - tightenco/ziggy (ZIGGY) - v2
 - larastan/larastan (LARASTAN) - v3
@@ -1137,15 +1096,7 @@ This application is a Laravel application and its main Laravel ecosystems packag
 
 ## Skills Activation
 
-This project has domain-specific skills available. You MUST activate the relevant skill whenever you work in that domain—don't wait until you're stuck.
-
-- `ai-sdk-development` — TRIGGER when working with ai-sdk which is Laravel official first-party AI SDK. Activate when building, editing AI agents, chatbots, text generation, image generation, audio/TTS, transcription/STT, embeddings, RAG, vector stores, reranking, structured output, streaming, conversation memory, tools, queueing, broadcasting, and provider failover across OpenAI, Anthropic, Gemini, Azure, Groq, xAI, DeepSeek, Mistral, Ollama, ElevenLabs, Cohere, Jina, and VoyageAI. Invoke when the user references ai-sdk, the `Laravel\Ai\` namespace, or this project's AI features — not for Prism PHP or other AI packages used directly.
-- `laravel-best-practices` — Apply this skill whenever writing, reviewing, or refactoring Laravel PHP code. This includes creating or modifying controllers, models, migrations, form requests, policies, jobs, scheduled commands, service classes, and Eloquent queries. Triggers for N+1 and query performance issues, caching strategies, authorization and security patterns, validation, error handling, queue and job configuration, route definitions, and architectural decisions. Also use for Laravel code reviews and refactoring existing Laravel code to follow best practices. Covers any task involving Laravel backend PHP code patterns.
-- `socialite-development` — Manages OAuth social authentication with Laravel Socialite. Activate when adding social login providers; configuring OAuth redirect/callback flows; retrieving authenticated user details; customizing scopes or parameters; setting up community providers; testing with Socialite fakes; or when the user mentions social login, OAuth, Socialite, or third-party authentication.
-- `inertia-vue-development` — Develops Inertia.js v3 Vue client-side applications. Activates when creating Vue pages, forms, or navigation; using <Link>, <Form>, useForm, useHttp, setLayoutProps, or router; working with deferred props, prefetching, optimistic updates, instant visits, or polling; or when user mentions Vue with Inertia, Vue pages, Vue forms, or Vue navigation.
-- `tailwindcss-development` — Always invoke when the user's message includes 'tailwind' in any form. Also invoke for: building responsive grid layouts (multi-column card grids, product grids), flex/grid page structures (dashboards with sidebars, fixed topbars, mobile-toggle navs), styling UI components (cards, tables, navbars, pricing sections, forms, inputs, badges), adding dark mode variants, fixing spacing or typography, and Tailwind v3/v4 work. The core use case: writing or fixing Tailwind utility classes in HTML templates (Blade, JSX, Vue). Skip for backend PHP logic, database queries, API routes, JavaScript with no HTML/CSS component, CSS file audits, build tool configuration, and vanilla CSS.
-- `saucebase-filament-development` — Guides Filament resource development inside Saucebase modules. Activate when creating Filament resources, tables, forms, infolists, or pages inside a module, adding actions/filters/bulk actions, registering navigation groups, or testing Filament resources.
-- `saucebase-module-development` — Guides Saucebase module creation and development. Activate when scaffolding a new module, adding controllers/pages/migrations to a module, working with module service providers, Filament module plugins, or when user mentions saucebase:recipe, module:enable, or asks about module structure.
+This project has domain-specific skills available in `**/skills/**`. You MUST activate the relevant skill whenever you work in that domain—don't wait until you're stuck.
 
 ## Conventions
 
@@ -1220,7 +1171,7 @@ This project has domain-specific skills available. You MUST activate the relevan
 - Always use curly braces for control structures, even for single-line bodies.
 - Use PHP 8 constructor property promotion: `public function __construct(public GitHub $github) { }`. Do not leave empty zero-parameter `__construct()` methods unless the constructor is private.
 - Use explicit return type declarations and type hints for all method parameters: `function isAccessible(User $user, ?string $path = null): bool`
-- Use TitleCase for Enum keys: `FavoritePerson`, `BestLake`, `Monthly`.
+- Follow existing application Enum naming conventions.
 - Prefer PHPDoc blocks over inline comments. Only add inline comments for exceptionally complex logic.
 - Use array shape type definitions in PHPDoc blocks.
 
@@ -1326,14 +1277,13 @@ Vue components must have a single root element.
 
 ## Filament
 
-- Filament is used by this application. Follow the existing conventions for how and where it is implemented.
-- Filament is a Server-Driven UI (SDUI) framework for Laravel that lets you define user interfaces in PHP using structured configuration objects. Built on Livewire, Alpine.js, and Tailwind CSS.
+- Filament is a Laravel UI framework built on Livewire, Alpine.js, and Tailwind CSS. UIs are defined in PHP via fluent, chainable components. Follow existing conventions in this app.
 - Use the `search-docs` tool for official documentation on Artisan commands, code examples, testing, relationships, and idiomatic practices. If `search-docs` is unavailable, refer to https://filamentphp.com/docs.
 
 ### Artisan
 
 - Always use Filament-specific Artisan commands to create files. Find available commands with the `list-artisan-commands` tool, or run `php artisan --help`.
-- Always inspect required options before running a command, and always pass `--no-interaction`.
+- Inspect required options before running, and always pass `--no-interaction`.
 
 ### Patterns
 
@@ -1357,6 +1307,62 @@ TextInput::make('company_name')
 
 </code-snippet>
 
+Use `Set $set` inside `->afterStateUpdated()` on a `->live()` field to mutate another field reactively. Prefer `->live(onBlur: true)` on text inputs to avoid per-keystroke updates:
+
+<code-snippet name="Reactive field update" lang="php">
+use Filament\Schemas\Components\Utilities\Set;
+use Illuminate\Support\Str;
+
+TextInput::make('title')
+    ->required()
+    ->live(onBlur: true)
+    ->afterStateUpdated(fn (Set $set, ?string $state) => $set(
+        'slug',
+        Str::slug($state ?? ''),
+    )),
+
+TextInput::make('slug')
+    ->required(),
+
+</code-snippet>
+
+Compose layout by nesting `Section` and `Grid`. Children need explicit `->columnSpan()` or `->columnSpanFull()`:
+
+<code-snippet name="Section and Grid layout" lang="php">
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Section;
+
+Section::make('Details')
+    ->schema([
+        Grid::make(2)->schema([
+            TextInput::make('first_name')
+                ->columnSpan(1),
+            TextInput::make('last_name')
+                ->columnSpan(1),
+            TextInput::make('bio')
+                ->columnSpanFull(),
+        ]),
+    ]),
+
+</code-snippet>
+
+Use `Repeater` for inline `HasMany` management. `->relationship()` with no args binds to the relationship matching the field name:
+
+<code-snippet name="Repeater for HasMany" lang="php">
+use Filament\Forms\Components\Repeater;
+
+Repeater::make('qualifications')
+    ->relationship()
+    ->schema([
+        TextInput::make('institution')
+            ->required(),
+        TextInput::make('qualification')
+            ->required(),
+    ])
+    ->columns(2),
+
+</code-snippet>
+
 Use `state()` with a `Closure` to compute derived column values:
 
 <code-snippet name="Computed table column value" lang="php">
@@ -1367,11 +1373,28 @@ TextColumn::make('full_name')
 
 </code-snippet>
 
-Actions encapsulate a button with an optional modal form and logic:
+Use `SelectFilter` for enum or relationship filters, and `Filter` with a `->query()` closure for custom logic:
+
+<code-snippet name="Table filters" lang="php">
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
+use Illuminate\Database\Eloquent\Builder;
+
+SelectFilter::make('status')
+    ->options(UserStatus::class),
+
+SelectFilter::make('author')
+    ->relationship('author', 'name'),
+
+Filter::make('verified')
+    ->query(fn (Builder $query) => $query->whereNotNull('email_verified_at')),
+
+</code-snippet>
+
+Actions are buttons that encapsulate optional modal forms and behavior:
 
 <code-snippet name="Action with modal form" lang="php">
 use Filament\Actions\Action;
-use Filament\Forms\Components\TextInput;
 
 Action::make('updateEmail')
     ->schema([
@@ -1379,13 +1402,16 @@ Action::make('updateEmail')
             ->email()
             ->required(),
     ])
-    ->action(fn (array $data, User $record) => $record->update($data))
+    ->action(fn (array $data, User $record) => $record->update($data)),
 
 </code-snippet>
 
 ### Testing
 
-Always authenticate before testing panel functionality. Filament uses Livewire, so use `Livewire::test()` or `livewire()` (available when `pestphp/pest-plugin-livewire` is in `composer.json`):
+Testing setup (requires `pestphp/pest-plugin-livewire` in `composer.json`):
+
+- Always call `$this->actingAs(User::factory()->create())` before testing panel functionality.
+- For edit pages, pass `['record' => $user->id]`, use `->call('save')` (not `->call('create')`), and do not assert `->assertRedirect()` (edit pages do not redirect after save).
 
 <code-snippet name="Table test" lang="php">
 use function Pest\Livewire\livewire;
@@ -1400,7 +1426,6 @@ livewire(ListUsers::class)
 
 <code-snippet name="Create resource test" lang="php">
 use function Pest\Laravel\assertDatabaseHas;
-use function Pest\Livewire\livewire;
 
 livewire(CreateUser::class)
     ->fillForm([
@@ -1409,6 +1434,7 @@ livewire(CreateUser::class)
     ])
     ->call('create')
     ->assertNotified()
+    ->assertHasNoFormErrors()
     ->assertRedirect();
 
 assertDatabaseHas(User::class, [
@@ -1418,9 +1444,21 @@ assertDatabaseHas(User::class, [
 
 </code-snippet>
 
-<code-snippet name="Testing validation" lang="php">
-use function Pest\Livewire\livewire;
+<code-snippet name="Edit resource test" lang="php">
+livewire(EditUser::class, ['record' => $user->id])
+    ->fillForm(['name' => 'Updated'])
+    ->call('save')
+    ->assertNotified()
+    ->assertHasNoFormErrors();
 
+assertDatabaseHas(User::class, [
+    'id' => $user->id,
+    'name' => 'Updated',
+]);
+
+</code-snippet>
+
+<code-snippet name="Testing validation" lang="php">
 livewire(CreateUser::class)
     ->fillForm([
         'name' => null,
@@ -1435,20 +1473,10 @@ livewire(CreateUser::class)
 
 </code-snippet>
 
-<code-snippet name="Calling actions in pages" lang="php">
-use Filament\Actions\DeleteAction;
-use function Pest\Livewire\livewire;
+Use `->callAction(DeleteAction::class)` for page actions, or `->callAction(TestAction::make('name')->table($record))` for table actions:
 
-livewire(EditUser::class, ['record' => $user->id])
-    ->callAction(DeleteAction::class)
-    ->assertNotified()
-    ->assertRedirect();
-
-</code-snippet>
-
-<code-snippet name="Calling actions in tables" lang="php">
+<code-snippet name="Calling actions" lang="php">
 use Filament\Actions\Testing\TestAction;
-use function Pest\Livewire\livewire;
 
 livewire(ListUsers::class)
     ->callAction(TestAction::make('promote')->table($user), [
@@ -1460,20 +1488,25 @@ livewire(ListUsers::class)
 
 ### Correct Namespaces
 
-- Form fields (`TextInput`, `Select`, etc.): `Filament\Forms\Components\`
+- Form fields (`TextInput`, `Select`, `Repeater`, etc.): `Filament\Forms\Components\`
 - Infolist entries (`TextEntry`, `IconEntry`, etc.): `Filament\Infolists\Components\`
 - Layout components (`Grid`, `Section`, `Fieldset`, `Tabs`, `Wizard`, etc.): `Filament\Schemas\Components\`
 - Schema utilities (`Get`, `Set`, etc.): `Filament\Schemas\Components\Utilities\`
+- Table columns (`TextColumn`, `IconColumn`, etc.): `Filament\Tables\Columns\`
+- Table filters (`SelectFilter`, `Filter`, etc.): `Filament\Tables\Filters\`
 - Actions (`DeleteAction`, `CreateAction`, etc.): `Filament\Actions\`. Never use `Filament\Tables\Actions\`, `Filament\Forms\Actions\`, or any other sub-namespace for actions.
 - Icons: `Filament\Support\Icons\Heroicon` enum (e.g., `Heroicon::PencilSquare`)
 
 ### Common Mistakes
 
 - **Never assume public file visibility.** File visibility is `private` by default. Always use `->visibility('public')` when public access is needed.
-- **Never assume full-width layout.** `Grid`, `Section`, and `Fieldset` do not span all columns by default. Explicitly set column spans when needed.
-- **Use correct property types when overriding Page, Resource, and Widget properties.** These properties have union types or changed modifiers that must be preserved:
+- **Never assume full-width layout.** `Grid`, `Section`, `Fieldset`, and `Repeater` do not span all columns by default.
+- **Use `Select::make('author_id')->relationship('author', 'name')` for BelongsTo fields.** `BelongsToSelect` does not exist in v4.
+- **`Repeater` uses `->schema()`, not `->fields()`.**
+- **Never add `->dehydrated(false)` to fields that need to be saved.** It strips the value from form state before `->action()` or the save handler runs. Only use it for helper/UI-only fields.
+- **Use correct property types when overriding `Page`, `Resource`, and `Widget` properties.** These properties have union types or changed modifiers that must be preserved:
   - `$navigationIcon`: `protected static string | BackedEnum | null` (not `?string`)
   - `$navigationGroup`: `protected static string | UnitEnum | null` (not `?string`)
-  - `$view`: `protected string` (not `protected static string`) on Page and Widget classes
+  - `$view`: `protected string` (not `protected static string`) on `Page` and `Widget` classes
 
 </laravel-boost-guidelines>

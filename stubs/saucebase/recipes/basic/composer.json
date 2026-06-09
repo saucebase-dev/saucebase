@@ -1,7 +1,9 @@
 {
-    "name": "saucebase/{module_}",
+    "name": "{COMPOSER_VENDOR}/{module-}",
     "description": "",
-    "type": "saucebase-module",
+    "type": "{COMPOSER_TYPE}",
+    "license": "proprietary",
+    "version": "1.0.0",
     "authors": [
         {
             "name": "Saucebase",
@@ -10,13 +12,14 @@
     ],
     "extra": {
         "laravel": {
-            "providers": [],
-            "aliases": {}
+            "providers": [
+                "{MODULE_NAMESPACE}\\{ModuleStudly}\\Providers\\{ModuleStudly}ServiceProvider"
+            ]
         }
     },
     "autoload": {
         "psr-4": {
-            "{MODULE_NAMESPACE}\\{ModuleStudly}\\": "app/",
+            "{MODULE_NAMESPACE}\\{ModuleStudly}\\": "src/",
             "{MODULE_NAMESPACE}\\{ModuleStudly}\\Database\\Factories\\": "database/factories/",
             "{MODULE_NAMESPACE}\\{ModuleStudly}\\Database\\Seeders\\": "database/seeders/"
         }
@@ -25,5 +28,6 @@
         "psr-4": {
             "{MODULE_NAMESPACE}\\{ModuleStudly}\\Tests\\": "tests/"
         }
-    }
+    },
+    "minimum-stability": "stable"
 }

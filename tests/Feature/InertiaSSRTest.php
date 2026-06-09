@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use App\Services\FrontendConfig;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Config;
 use Inertia\Inertia;
@@ -69,15 +70,18 @@ class InertiaSSRTest extends TestCase
 
     public function test_home_page_uses_ssr(): void
     {
-        // Verify SSR starts enabled in config (required for SSR server to run)
         $this->assertTrue(config('inertia.ssr.enabled'), 'SSR should be enabled in config at boot');
 
-        $response = $this->get('/');
+        app()->bind(FrontendConfig::class, fn () => new class extends FrontendConfig
+        {
+            public function getFramework(): ?string
+            {
+                return 'vue';
+            }
+        });
 
-        $response->assertOk();
+        $this->get('/')->assertOk();
 
-        // After middleware disables it and controller enables it with ->withSSR(),
-        // SSR should be enabled
         $this->assertTrue(config('inertia.ssr.enabled'), 'SSR should be enabled after ->withSSR()');
     }
 

@@ -3,6 +3,7 @@
         "claude_code",
         "copilot"
     ],
+    "cloud": false,
     "guidelines": true,
     "mcp": true,
     "nightwatch_mcp": false,
@@ -13,8 +14,6 @@
     "skills": [
         "ai-sdk-development",
         "laravel-best-practices",
-        "socialite-development",
-        "inertia-vue-development",
         "tailwindcss-development",
         "saucebase-filament-development",
         "saucebase-module-development"

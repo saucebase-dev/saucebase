@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Navigation\Section;
 use Illuminate\Support\Str;
+use InterNACHI\Modular\Support\ModuleRegistry;
 use Spatie\Navigation\Navigation as SpatieNavigation;
 
 /**
@@ -30,12 +31,17 @@ class Navigation extends SpatieNavigation
      * Overrides Spatie's add() to create App\Navigation\Section instances
      * instead of Spatie\Navigation\Section, keeping imports consistent.
      */
-    public function add(string $title = '', string $url = '', ?callable $configure = null): self
+    public function add(string $title = '', string|\Closure $url = '', ?callable $configure = null): self
     {
-        $section = new Section($this, $title, $url);
+        $section = new Section($this, $title, $url instanceof \Closure ? '' : $url);
 
         if ($configure) {
             $configure($section);
+        }
+
+        // Set after configure so it cannot be overwritten by a $section->attributes([...]) call
+        if ($url instanceof \Closure) {
+            $section->attributes(['url_resolver' => $url]);
         }
 
         $this->children[] = $section;
@@ -55,7 +61,7 @@ class Navigation extends SpatieNavigation
      * @param  string  $url  Navigation item URL
      * @param  callable|null  $configure  Optional callback to configure the Section
      */
-    public function addWhen(callable $condition, string $title = '', string $url = '', ?callable $configure = null): self
+    public function addWhen(callable $condition, string $title = '', string|\Closure $url = '', ?callable $configure = null): self
     {
         $this->add($title, $url, function (Section $section) use ($condition, $configure) {
             // Store the 'when' callable for runtime evaluation
@@ -202,16 +208,17 @@ class Navigation extends SpatieNavigation
     {
         $attributes = $item['attributes'] ?? [];
 
-        // Build base MenuItem structure with required fields
+        // Resolve URL once — handles both static strings and Closures
+        $resolvedUrl = $this->resolveItemUrl($item);
+
         $menuItem = [
             'title' => $item['title'],
-            'active' => $this->isItemActive($item),
+            'active' => $this->isItemActiveForUrl($resolvedUrl),
             'slug' => $attributes['slug'] ?? Str::slug($item['title'], '-'),
         ];
 
-        // Add URL from the item (stored at root level by Spatie)
-        if (isset($item['url'])) {
-            $menuItem['url'] = $item['url'];
+        if ($resolvedUrl !== null) {
+            $menuItem['url'] = $resolvedUrl;
         }
 
         // Add icon if specified
@@ -246,21 +253,34 @@ class Navigation extends SpatieNavigation
      */
     protected function isItemActive(array $item): bool
     {
-        $itemUrl = $item['url'] ?? null;
+        return $this->isItemActiveForUrl($this->resolveItemUrl($item));
+    }
 
+    private function isItemActiveForUrl(?string $itemUrl): bool
+    {
         if (! $itemUrl) {
             return false;
         }
 
-        // Get current request URL
         $currentUrl = request()->url();
 
-        // Normalize URLs by removing trailing slashes
         $itemPath = rtrim(parse_url($itemUrl, PHP_URL_PATH), '/');
         $currentPath = rtrim(parse_url($currentUrl, PHP_URL_PATH), '/');
 
-        // Only exact match
         return $currentPath === $itemPath;
+    }
+
+    private function resolveItemUrl(array $item): ?string
+    {
+        $resolver = $item['attributes']['url_resolver'] ?? null;
+
+        if ($resolver instanceof \Closure) {
+            return $resolver();
+        }
+
+        $url = $item['url'] ?? null;
+
+        return ($url !== '' && $url !== null) ? $url : null;
     }
 
     /**
@@ -300,20 +320,13 @@ class Navigation extends SpatieNavigation
             require_once $coreNavigationPath;
         }
 
-        // Load module navigation
-        $modulesStatusPath = base_path('modules_statuses.json');
-        if (file_exists($modulesStatusPath)) {
-            $modulesStatus = json_decode(file_get_contents($modulesStatusPath), true);
-
-            foreach ($modulesStatus as $moduleName => $enabled) {
-                if ($enabled) {
-                    $moduleNavigationPath = base_path("modules/{$moduleName}/routes/navigation.php");
-                    if (file_exists($moduleNavigationPath)) {
-                        require_once $moduleNavigationPath;
-                    }
-                }
+        // Load navigation from all modules discovered by InterNACHI
+        app(ModuleRegistry::class)->modules()->each(function ($module): void {
+            $path = $module->path('routes/navigation.php');
+            if (file_exists($path)) {
+                require_once $path;
             }
-        }
+        });
 
         return $this;
     }
