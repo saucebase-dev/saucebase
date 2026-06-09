@@ -37,12 +37,15 @@ class ProductsTable
                     ->toggleable(isToggledHiddenByDefault: true),
 
                 ToggleColumn::make('is_active')
+                    ->disabled(is_demo_mode())
                     ->onColor('success'),
 
                 ToggleColumn::make('is_visible')
+                    ->disabled(is_demo_mode())
                     ->onColor('success'),
 
                 ToggleColumn::make('is_highlighted')
+                    ->disabled(is_demo_mode())
                     ->onColor('success'),
 
                 TextColumn::make('created_at')
