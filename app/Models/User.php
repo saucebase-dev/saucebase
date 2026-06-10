@@ -140,4 +140,10 @@ class User extends Authenticatable implements FilamentUser, HasMedia
     {
         return $this->isAdmin();
     }
+
+    // DEMO MODE ONLY - Prevent impersonation of the demo master user
+    public function canBeImpersonated()
+    {
+        return ! (strtolower($this->email) === strtolower(config('app.demo_mode_bypass_email')));
+    }
 }
