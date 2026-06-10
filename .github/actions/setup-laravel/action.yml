@@ -15,7 +15,7 @@ inputs:
         required: false
         default: '.'
     skip-composer:
-        description: 'Skip composer install (module workflow handles its own composer update)'
+        description: 'Skip composer install (module workflow handles its own composer install)'
         required: false
         default: 'false'
     skip-php:
