@@ -12,7 +12,6 @@ jobs:
     phpunit:
         runs-on: ubuntu-latest
         timeout-minutes: 15
-        needs: phpunit-raw
         name: PHPUnit
 
         steps:
