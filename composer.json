@@ -7,6 +7,7 @@
     "require": {
         "php": "^8.4",
         "cviebrock/eloquent-sluggable": "^13.0",
+        "fakerphp/faker": "^1.24.1",
         "filament/actions": "^5.6.6",
         "filament/filament": "^5.6.6",
         "filament/forms": "^5.6.6",
@@ -18,7 +19,6 @@
         "inertiajs/inertia-laravel": "^3.1",
         "internachi/modular": "^3.0.2",
         "laravel/ai": "^0.4.5",
-        "fakerphp/faker": "^1.24.1",
         "laravel/framework": "^13.14",
         "laravel/sanctum": "^4.3.2",
         "laravel/tinker": "^3.0.2",

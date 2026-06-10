@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 use InterNACHI\Modular\Support\ModuleRegistry;
 
 abstract class ModuleServiceProvider extends ServiceProvider
@@ -72,7 +73,7 @@ abstract class ModuleServiceProvider extends ServiceProvider
 
         if (is_dir($assetsPath)) {
             $this->publishes(
-                [$assetsPath => public_path('modules/'.$this->moduleName())],
+                [$assetsPath => public_path('modules/'.Str::kebab($this->moduleName()))],
                 'module-assets'
             );
         }
