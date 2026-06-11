@@ -44,7 +44,7 @@
         "@types/react": "^19.0.0",
         "@types/react-dom": "^19.0.0",
         "@vitejs/plugin-react": "^6.0.0",
-        "concurrently": "^9.2.1",
+        "concurrently": "^10.0.3",
         "dotenv": "^17.3.1",
         "eslint": "^9.39.3",
         "eslint-config-prettier": "^10.1.8",
