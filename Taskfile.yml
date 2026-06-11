@@ -90,7 +90,7 @@ tasks:
 
     test:php:
         desc: Run PHPUnit tests
-        cmd: 'php artisan test {{.CLI_ARGS}}'
+        cmd: php artisan test {{.CLI_ARGS}}
         interactive: true
 
     test:e2e:
