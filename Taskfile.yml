@@ -90,12 +90,16 @@ tasks:
 
     test:php:
         desc: Run PHPUnit tests
-        cmd: '{{.APP}} php artisan test {{.CLI_ARGS}}'
+        cmd: 'php artisan test {{.CLI_ARGS}}'
         interactive: true
 
     test:e2e:
         desc: Run E2E tests
         cmd: npm run test:e2e {{.CLI_ARGS}}
+        interactive: true
+    test:e2e:single:
+        desc: Run E2E tests with single worker
+        cmd: npm run test:e2e -- --workers=1 --max-failures=1 {{.CLI_ARGS}}
         interactive: true
 
     # ── Helpers ───────────────────────────────────────────────────
