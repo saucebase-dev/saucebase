@@ -19,6 +19,11 @@ class BlogDatabaseSeeder extends Seeder
         $devExperience = Category::firstOrCreate(['name' => 'Developer Experience']);
 
         $content = fn (string $file): string => file_get_contents(__DIR__.'/content/'.$file);
+        $image = fn (string $file): string => __DIR__.'/../../resources/assets/images/'.$file;
+
+        \Log::info('Seeding blog posts...', [
+            'files' => scandir(__DIR__.'/../../resources/assets/images/'),
+        ]);
 
         $this->createPost([
             'title' => 'What Is Saucebase? The Modular Laravel Starter Kit',
@@ -28,7 +33,7 @@ class BlogDatabaseSeeder extends Seeder
             'published_at' => now()->subMonths(5),
             'category_id' => $gettingStarted->id,
             'author_id' => $author?->id,
-        ], public_path('modules/blog/images/what-is-saucebase.jpg'));
+        ], $image('what-is-saucebase.jpg'));
 
         $this->createPost([
             'title' => 'Stop Rebuilding the Same Boilerplate Every Project',
@@ -48,7 +53,7 @@ class BlogDatabaseSeeder extends Seeder
             'published_at' => now()->subMonths(3),
             'category_id' => $devExperience->id,
             'author_id' => $author?->id,
-        ], public_path('modules/blog/images/tech-stack.jpg'));
+        ], $image('tech-stack.jpg'));
 
         $this->createPost([
             'title' => 'Your First Module: Scaffold and Ship in Under 10 Minutes',
@@ -58,7 +63,7 @@ class BlogDatabaseSeeder extends Seeder
             'published_at' => now()->subMonths(2),
             'category_id' => $featuresModules->id,
             'author_id' => $author?->id,
-        ], public_path('modules/blog/images/add-your-saucebase.jpg'));
+        ], $image('add-your-saucebase.jpg'));
 
         $this->createPost([
             'title' => 'Auth, Billing, and Privacy: The Three Modules Every SaaS Needs',
@@ -68,7 +73,7 @@ class BlogDatabaseSeeder extends Seeder
             'published_at' => now()->subMonth(),
             'category_id' => $featuresModules->id,
             'author_id' => $author?->id,
-        ], public_path('modules/blog/images/cookies-or-privacy.jpg'));
+        ], $image('cookies-or-privacy.jpg'));
 
         $this->createPost([
             'title' => 'Copy-and-Own: The Philosophy Behind Saucebase Modules',
@@ -78,7 +83,7 @@ class BlogDatabaseSeeder extends Seeder
             'published_at' => now()->subWeeks(2),
             'category_id' => $devExperience->id,
             'author_id' => $author?->id,
-        ], public_path('modules/blog/images/your-recipes.jpg'));
+        ], $image('your-recipes.jpg'));
 
         $this->createPost([
             'title' => 'Vue or React? What about both!',
@@ -88,15 +93,15 @@ class BlogDatabaseSeeder extends Seeder
             'published_at' => now()->subDays(3),
             'category_id' => $devExperience->id,
             'author_id' => $author?->id,
-        ], public_path('modules/blog/images/vue-and-react.jpg'));
+        ], $image('vue-and-react.jpg'));
     }
 
     private function createPost(array $data, string $coverImage = ''): Post
     {
-        $post = Post::create($data);
+        $post = Post::firstOrCreate(['title' => $data['title']], $data);
 
         if ($coverImage && file_exists($coverImage)) {
-            $post->addMedia($coverImage)->preservingOriginal()->toMediaCollection('cover');
+            $post->addMedia($coverImage)->preservingOriginal()->toMediaCollection('cover', 'public');
         }
 
         return $post;
