@@ -25,7 +25,7 @@ class TestFixtures
         ]);
         $user->syncRoles([Role::USER->value]);
 
-        // Fixed emails — BillingTestHelper resolves these same users via firstOrCreate
+        // Fixed emails so billing-related tests can reference these accounts consistently.
         $subscriber = User::firstOrCreate(
             ['email' => 'subscriber@example.com'],
             ['name' => 'Subscriber User', 'email_verified_at' => now()]
