@@ -1,4 +1,4 @@
-import { NavGroup } from '@/components/ui/navigation/NavGroup';
+import NavGroup from '@/components/ui/navigation/NavGroup';
 import { Sidebar, SidebarContent, useSidebar } from '@/components/ui/sidebar';
 import { useT } from '@/i18n';
 import type { Navigation } from '@/types/navigation';

@@ -6,13 +6,15 @@ import tseslint from 'typescript-eslint';
 export default tseslint.config(
     js.configs.recommended,
     ...tseslint.configs.recommended,
+    reactHooks.configs.flat['recommended-latest'],
     {
-        plugins: {
-            'react-hooks': reactHooks,
-        },
         rules: {
-            ...reactHooks.configs.recommended.rules,
             '@typescript-eslint/no-explicit-any': 'off',
+            // v7 rules designed for the React compiler — disable until the project adopts it
+            'react-hooks/refs': 'off',
+            'react-hooks/static-components': 'off',
+            'react-hooks/set-state-in-effect': 'off',
+            'react-hooks/purity': 'off',
         },
         languageOptions: {
             parserOptions: {

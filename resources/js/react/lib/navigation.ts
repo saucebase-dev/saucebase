@@ -1,7 +1,7 @@
 import {
     BookOpen,
-    Github,
-    HelpCircle,
+    CircleHelp,
+    GitBranch,
     LayoutDashboard,
     ShieldCheck,
     SquareTerminal,
@@ -44,9 +44,9 @@ type IconComponent = ComponentType<{ className?: string }>;
 
 const iconRegistry: Record<string, IconComponent> = {
     dashboard: SquareTerminal,
-    github: Github,
+    github: GitBranch,
     admin: ShieldCheck,
-    documentation: HelpCircle,
+    documentation: CircleHelp,
     docs: BookOpen,
     home: LayoutDashboard,
 };
