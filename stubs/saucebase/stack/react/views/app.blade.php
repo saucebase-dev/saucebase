@@ -33,9 +33,9 @@
         @routes
         @viteReactRefresh
         @vite(['resources/js/app.tsx'])
-        @inertiaHead
+        <x-inertia::head />
     </head>
     <body class="antialiased bg-background text-foreground dark:bg-background dark:text-foreground">
-        @inertia
+        <x-inertia::app />
     </body>
 </html>
