@@ -123,7 +123,7 @@ tasks:
 
     translation:export:
         desc: Export translations to JSON files for all languages
-        cmd: '{{.APP}} php artisan translatable:export en,pt_BR'
+        cmd: '{{.APP}} php artisan translatable:export pt_BR'
 
     # ── Pipelines ─────────────────────────────────────────────────
 
