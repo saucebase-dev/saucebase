@@ -1,6 +1,11 @@
 # https://taskfile.dev
 version: '3'
 
+dotenv: ['.env']
+
+vars:
+  APP: '{{if eq .SAUCEBASE_ENV "docker"}}docker compose exec app{{else if eq .SAUCEBASE_ENV "sail"}}./vendor/bin/sail{{end}}'
+
 includes:
     # ── BEGIN MODULES ────────────────────────────────────────────────
     auth:
@@ -40,7 +45,7 @@ tasks:
         desc: Fresh install (PHP, Composer, Node required)
         cmds:
             - composer install
-            - php artisan saucebase:install --all-modules
+            - '{{.APP}} php artisan saucebase:install --all-modules'
             - npm install
 
     # ── Development ───────────────────────────────────────────────
@@ -92,6 +97,10 @@ tasks:
         desc: Run E2E tests
         cmd: npm run test:e2e {{.CLI_ARGS}}
         interactive: true
+    test:e2e:single:
+        desc: Run E2E tests with single worker
+        cmd: npm run test:e2e -- --workers=1 --max-failures=1 {{.CLI_ARGS}}
+        interactive: true
 
     # ── Helpers ───────────────────────────────────────────────────
 
@@ -99,14 +108,14 @@ tasks:
         desc: Reset database (migrate:fresh + module seeds)
         prompt: This will erase ALL data. Are you sure?
         cmds:
-            - php artisan migrate:fresh --seed
-            - php artisan modules:seed
+            - '{{.APP}} php artisan migrate:fresh --seed'
+            - '{{.APP}} php artisan modules:seed'
 
     # ── Translation ───────────────────────────────────────────────
 
     translation:export:
         desc: Export translations to JSON files for all languages
-        cmd: php artisan translatable:export en,pt_BR
+        cmd: '{{.APP}} php artisan translatable:export en,pt_BR'
 
     # ── Pipelines ─────────────────────────────────────────────────
 
