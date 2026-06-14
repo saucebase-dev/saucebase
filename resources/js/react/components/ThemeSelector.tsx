@@ -11,13 +11,15 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useTheme, type Theme } from '@/hooks/useTheme';
 import { useT } from '@/i18n';
-import { MonitorCheck, Moon, Sun } from 'lucide-react';
+import IconAuto from '~icons/fluent/dark-theme-20-filled';
+import IconMoon from '~icons/heroicons/moon';
+import IconSun from '~icons/heroicons/sun';
 import { useRef, type ReactNode } from 'react';
 
 const themes = [
-    { code: 'light' as Theme, name: 'Light', Icon: Sun },
-    { code: 'dark' as Theme, name: 'Dark', Icon: Moon },
-    { code: 'auto' as Theme, name: 'Device', Icon: MonitorCheck },
+    { code: 'light' as Theme, name: 'Light', Icon: IconSun },
+    { code: 'dark' as Theme, name: 'Dark', Icon: IconMoon },
+    { code: 'auto' as Theme, name: 'Device', Icon: IconAuto },
 ] as const;
 
 interface ThemeSelectorProps {

@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { NavGroup } from '@/components/ui/navigation/NavGroup';
+import NavGroup from '@/components/ui/navigation/NavGroup';
 import {
     Sheet,
     SheetContent,
