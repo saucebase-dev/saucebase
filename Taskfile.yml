@@ -61,6 +61,14 @@ tasks:
     build:
         desc: Production build (includes SSR)
         cmd: npm run build
+    
+    artisan:
+        desc: 'Run artisan commands. Eg: task artisan -- route:list'
+        cmd: '{{.APP}} php artisan {{.CLI_ARGS}}'
+    
+    composer:
+        desc: 'Run composer commands. Eg: task composer -- update'
+        cmd: '{{.APP}} composer {{.CLI_ARGS}}'
 
     # ── Code quality ──────────────────────────────────────────────
 
