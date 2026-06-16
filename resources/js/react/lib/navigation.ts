@@ -6,8 +6,8 @@ import {
     SquareTerminal,
     type LucideIcon,
 } from 'lucide-react';
-import IconGithub from '~icons/mdi/github';
 import type { ComponentType } from 'react';
+import IconGithub from '~icons/mdi/github';
 
 export type ActionHandler = (event: MouseEvent) => void | Promise<void>;
 

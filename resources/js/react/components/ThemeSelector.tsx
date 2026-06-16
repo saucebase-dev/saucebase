@@ -11,10 +11,10 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useTheme, type Theme } from '@/hooks/useTheme';
 import { useT } from '@/i18n';
+import { useRef, type ReactNode } from 'react';
 import IconAuto from '~icons/fluent/dark-theme-20-filled';
 import IconMoon from '~icons/heroicons/moon';
 import IconSun from '~icons/heroicons/sun';
-import { useRef, type ReactNode } from 'react';
 
 const themes = [
     { code: 'light' as Theme, name: 'Light', Icon: IconSun },

@@ -1,1 +1,1 @@
-export { default as Toaster } from './Wrapper.vue';
+export { default as Toaster } from './Sonner.vue';

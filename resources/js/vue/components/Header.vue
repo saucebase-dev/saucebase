@@ -2,7 +2,7 @@
 import { modules } from '@/composables/useModules';
 import type { MenuItem } from '@/types/navigation';
 import { Link, usePage } from '@inertiajs/vue3';
-import { ArrowRight, ExternalLink } from 'lucide-vue-next';
+import { ArrowRight, ExternalLink } from '@lucide/vue';
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import IconMenu from '~icons/heroicons/bars-3';
 import IconX from '~icons/heroicons/x-mark';

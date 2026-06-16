@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import SiteLayout from '@/layouts/SiteLayout.vue';
 import { ModuleCard, ModuleModal, modules } from '@/components/ui/saucebase';
-import { BookOpen } from 'lucide-vue-next';
+import { BookOpen } from '@lucide/vue';
 import { ref } from 'vue';
 
 import type { Module } from '@/components/ui/saucebase';

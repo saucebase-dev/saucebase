@@ -13,7 +13,7 @@ import {
     Palette,
     Settings2,
     Webhook,
-} from 'lucide-vue-next';
+} from '@lucide/vue';
 
 const BADGE_SOON = {
     label: () => trans('SOON'),

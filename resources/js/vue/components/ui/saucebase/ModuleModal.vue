@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { trans } from 'laravel-vue-i18n';
-import { BookOpen, Check, Copy, Terminal, X } from 'lucide-vue-next';
+import { BookOpen, Check, Copy, Terminal, X } from '@lucide/vue';
 import { onUnmounted, ref } from 'vue';
 import { toast } from 'vue-sonner';
 import type { Module } from './index';

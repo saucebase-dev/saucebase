@@ -25,7 +25,9 @@ export default function Dashboard() {
                             {t(title)}
                         </h1>
                         <p className="text-muted-foreground mt-1">
-                            {t('Your foundation is ready to build something great!')}
+                            {t(
+                                'Your foundation is ready to build something great!',
+                            )}
                         </p>
                     </div>
                 </div>
