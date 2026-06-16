@@ -1,3 +1,4 @@
+/// <reference types="node" />
 import { defineConfig, devices } from '@playwright/test';
 import type { LaravelOptions } from '@saucebase/laravel-playwright';
 import 'dotenv/config';

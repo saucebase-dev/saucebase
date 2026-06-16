@@ -83,12 +83,12 @@ class RecipeToModuleCommand extends Command
         $this->generate();
         $this->writeModuleEntryPoint($framework, $isDev);
         $this->registerInTaskfile();
+        $this->registerInComposer();
 
         info("Starter {$this->moduleName} module generated successfully.");
         info('Next steps:');
-        info("  composer require {$this->composerVendor}/{$this->moduleFolder}");
-        info('  php artisan modules:sync');
-        info('  npm run build');
+        info("  composer update {$this->composerVendor}/{$this->moduleFolder}");
+        info('  `npm run build` or `npm run dev` to build the frontend assets');
 
         return true;
     }
@@ -340,6 +340,24 @@ class RecipeToModuleCommand extends Command
         if ($exitCode !== 0) {
             $this->warn("Could not skip-worktree {$rel} (not in git index).");
         }
+    }
+
+    protected function registerInComposer(): void
+    {
+        $path = base_path('composer.json');
+        $data = json_decode((string) file_get_contents($path), true);
+        $package = "{$this->composerVendor}/{$this->moduleFolder}";
+
+        if (isset($data['require'][$package])) {
+            return;
+        }
+
+        $data['require'][$package] = '*';
+
+        file_put_contents(
+            $path,
+            json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)."\n"
+        );
     }
 
     protected function registerInTaskfile(): void
