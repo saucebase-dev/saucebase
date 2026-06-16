@@ -1,5 +1,5 @@
 import type { Module } from '@/components/ui/saucebase';
-import { ModuleCard, ModuleModal, modules } from '@/components/ui/saucebase';
+import { ModuleCard, ModuleModal, useModuleList } from '@/components/ui/saucebase';
 import { useT } from '@/i18n';
 import SiteLayout from '@/layouts/SiteLayout';
 import { BookOpen } from 'lucide-react';
@@ -7,6 +7,7 @@ import { useState } from 'react';
 
 export default function Index() {
     const t = useT();
+    const modules = useModuleList();
     const [selectedMod, setSelectedMod] = useState<Module | null>(null);
 
     return (

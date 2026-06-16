@@ -1,4 +1,6 @@
+import { computed } from 'vue';
 import { trans } from 'laravel-vue-i18n';
+import { useModules } from '@/composables/useModules';
 
 import {
     BarChart3,
@@ -24,6 +26,21 @@ const NEW_BADGE = {
     label: () => trans('NEW'),
     class: 'border-emerald-600 bg-emerald-600 text-background',
 } as const;
+
+const BADGE_ADDED = {
+    label: () => trans('Added'),
+    class: 'border-primary bg-primary text-primary-foreground',
+} as const;
+
+export function useModuleList() {
+    const { has } = useModules();
+    return computed(() =>
+        modules.map((m) => ({
+            ...m,
+            badge: has(m.id) ? BADGE_ADDED : m.badge,
+        })),
+    );
+}
 
 export const modules = [
     {

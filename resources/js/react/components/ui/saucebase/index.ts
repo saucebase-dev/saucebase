@@ -1,3 +1,4 @@
+import { useModules } from '@/hooks/useModules';
 import type { LucideIcon } from 'lucide-react';
 import {
     BarChart3,
@@ -23,6 +24,19 @@ const NEW_BADGE = {
     label: 'NEW',
     class: 'border-emerald-600 bg-emerald-600 text-background',
 } as const;
+
+const BADGE_ADDED = {
+    label: 'Added',
+    class: 'border-primary bg-primary text-primary-foreground',
+} as const;
+
+export function useModuleList() {
+    const { has } = useModules();
+    return modules.map((m) => ({
+        ...m,
+        badge: has(m.id) ? BADGE_ADDED : m.badge,
+    }));
+}
 
 export interface ModuleBadge {
     label: string;

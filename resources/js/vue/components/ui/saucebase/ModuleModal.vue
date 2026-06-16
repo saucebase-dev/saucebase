@@ -4,9 +4,12 @@ import { BookOpen, Check, Copy, Terminal, X } from '@lucide/vue';
 import { onUnmounted, ref } from 'vue';
 import { toast } from 'vue-sonner';
 import type { Module } from './index';
+import { useModules } from '@/composables/useModules';
 
 const props = defineProps<{ selectedMod: Module | null }>();
 const emit = defineEmits<{ close: [] }>();
+
+const { has: isInstalled } = useModules();
 
 const copied = ref(false);
 let copyTimer: ReturnType<typeof setTimeout> | null = null;
@@ -14,6 +17,8 @@ let copyTimer: ReturnType<typeof setTimeout> | null = null;
 function installCommand(mod: Module) {
     if (mod.id === 'custom')
         return 'php artisan saucebase:recipe MyAmazingModuleIdea';
+    if (isInstalled(mod.id))
+        return `composer update saucebase/${mod.id}`;
     return `composer require saucebase/${mod.id}`;
 }
 
@@ -93,11 +98,19 @@ onUnmounted(() => {
                                     aria-hidden="true"
                                 />
                             </div>
-                            <h2
-                                class="text-foreground flex-1 text-xl leading-tight font-bold"
-                            >
-                                {{ selectedMod.title() }}
-                            </h2>
+                            <div class="flex flex-1 flex-wrap items-center gap-2">
+                                <h2
+                                    class="text-foreground text-xl leading-tight font-bold"
+                                >
+                                    {{ selectedMod.title() }}
+                                </h2>
+                                <span
+                                    v-if="isInstalled(selectedMod.id)"
+                                    class="border-primary text-primary rounded-full border px-3 text-sm ml-2 py-1 font-semibold"
+                                >
+                                    {{ $t('Installed') }}
+                                </span>
+                            </div>
                         </div>
 
                         <!-- Description -->
