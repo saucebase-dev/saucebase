@@ -7,7 +7,8 @@ import {
     type LucideIcon,
 } from 'lucide-react';
 import type { ComponentType } from 'react';
-import IconGithub from '~icons/mdi/github';
+import IconDiscord from '~icons/simple-icons/discord';
+import IconGithub from '~icons/simple-icons/github';
 
 export type ActionHandler = (event: MouseEvent) => void | Promise<void>;
 
@@ -45,6 +46,7 @@ type IconComponent = ComponentType<{ className?: string }>;
 const iconRegistry: Record<string, IconComponent> = {
     dashboard: SquareTerminal,
     github: IconGithub,
+    discord: IconDiscord,
     admin: ShieldCheck,
     documentation: CircleHelp,
     docs: BookOpen,
