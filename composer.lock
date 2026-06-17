@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b3fd2a113ce6a9cecd9695b6899ef3cd",
+    "content-hash": "d9cef71ac5a10c5797ff80dc6848f482",
     "packages": [
         {
             "name": "blade-ui-kit/blade-heroicons",
@@ -13239,20 +13239,21 @@
         },
         {
             "name": "saucebase/installer",
-            "version": "v1.0.0",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/saucebase-dev/installer.git",
-                "reference": "932b180380c4ee6c81db4d1f8ece564138369bc6"
+                "reference": "e990d8c210cf89362849cb09b21e810bd19660e4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/saucebase-dev/installer/zipball/932b180380c4ee6c81db4d1f8ece564138369bc6",
-                "reference": "932b180380c4ee6c81db4d1f8ece564138369bc6",
+                "url": "https://api.github.com/repos/saucebase-dev/installer/zipball/e990d8c210cf89362849cb09b21e810bd19660e4",
+                "reference": "e990d8c210cf89362849cb09b21e810bd19660e4",
                 "shasum": ""
             },
             "require": {
                 "illuminate/console": "^12.0|^13.0",
+                "illuminate/filesystem": "^12.0|^13.0",
                 "illuminate/http": "^12.0|^13.0",
                 "illuminate/support": "^12.0|^13.0",
                 "laravel/prompts": "^0.3",
@@ -13283,9 +13284,9 @@
             "description": "Dev environment installer for Saucebase applications.",
             "support": {
                 "issues": "https://github.com/saucebase-dev/installer/issues",
-                "source": "https://github.com/saucebase-dev/installer/tree/v1.0.0"
+                "source": "https://github.com/saucebase-dev/installer/tree/v1.0.1"
             },
-            "time": "2026-06-17T19:59:10+00:00"
+            "time": "2026-06-17T20:20:26+00:00"
         },
         {
             "name": "saucebase/laravel-playwright",

@@ -41,7 +41,7 @@
         "mockery/mockery": "^1.6.12",
         "nunomaduro/collision": "^8.9.4",
         "phpunit/phpunit": "^12.5.30",
-        "saucebase/installer": "^1.0",
+        "saucebase/installer": "^1.0.1",
         "saucebase/laravel-playwright": "^1.1",
         "saucebase/module-installer": "^2.7.0",
         "symfony/filesystem": "^7.4.11"
