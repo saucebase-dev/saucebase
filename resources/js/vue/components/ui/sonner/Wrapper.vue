@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import Sonner from '@/components/ui/sonner/Sonner.vue';
 import type { Toast } from '@/types';
+import { useColorMode } from '@vueuse/core';
 import { router, usePage } from '@inertiajs/vue3';
-import { watch } from 'vue';
+import { computed, watch } from 'vue';
 import { toast } from 'vue-sonner';
 
 import 'vue-sonner/style.css';
+
+const colorMode = useColorMode({ storageKey: 'appearance' });
+const theme = computed((): 'dark' | 'light' => (colorMode.value === 'dark' ? 'dark' : 'light'));
 
 const page = usePage();
 
@@ -88,5 +92,5 @@ watch(
 );
 </script>
 <template>
-    <Sonner v-bind="$attrs" />
+    <Sonner :theme="theme" v-bind="$attrs" />
 </template>
