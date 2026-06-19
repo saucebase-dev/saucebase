@@ -58,8 +58,9 @@ public/vendor/livewire/
 /.playwright-mcp/
 /storage/laravel-playwright-config.json
 
-# SSL Certificates (generated locally, not tracked)
-/docker/ssl/
+# Docker setup (published from saucebase/installer package)
+/docker-compose.yml
+/docker/
 
 # Generated language files
 lang/php_*.json

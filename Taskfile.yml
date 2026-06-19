@@ -1,10 +1,8 @@
 # https://taskfile.dev
 version: '3'
 
-dotenv: ['.env']
-
 vars:
-  APP: '{{if eq .SAUCEBASE_ENV "docker"}}docker compose exec app{{else if eq .SAUCEBASE_ENV "sail"}}./vendor/bin/sail{{end}}'
+  APP: ''
 
 includes:
     # ── BEGIN MODULES ────────────────────────────────────────────────
