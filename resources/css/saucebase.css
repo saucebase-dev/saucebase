@@ -116,3 +116,8 @@
 [data-slot='sheet-content'] {
     pointer-events: auto;
 }
+
+[data-slot='avatar-image'] {
+    object-fit: cover;
+    object-position: center;
+}
