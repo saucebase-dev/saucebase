@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { cn } from '@/lib/utils';
-import { reactiveOmit } from '@vueuse/core';
-import { Plus } from 'lucide-vue-next';
 import type { NumberFieldIncrementProps } from 'reka-ui';
-import { NumberFieldIncrement, useForwardProps } from 'reka-ui';
 import type { HTMLAttributes } from 'vue';
+import { Plus } from '@lucide/vue';
+import { reactiveOmit } from '@vueuse/core';
+import { NumberFieldIncrement, useForwardProps } from 'reka-ui';
+import { cn } from '@/lib/utils';
 
 const props = defineProps<
     NumberFieldIncrementProps & { class?: HTMLAttributes['class'] }

@@ -107,3 +107,12 @@
     --vue-color: #42b883;
     --react-color: #0ea5e9;
 }
+
+/* Reka UI sets pointer-events: none on <body> for scroll-lock when modals open.
+   Modal content must opt back in — overlays get this from Reka's own styles,
+   but content elements need it explicitly. Targeting data-slot survives shadcn-vue CLI updates. */
+[data-slot='dialog-content'],
+[data-slot='alert-dialog-content'],
+[data-slot='sheet-content'] {
+    pointer-events: auto;
+}
