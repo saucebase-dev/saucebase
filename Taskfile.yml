@@ -2,7 +2,8 @@
 version: '3'
 
 vars:
-  APP: ''
+  # Prefix for running commands in a containerized environment (e.g., 'docker compose exec app')
+  APP: '' 
 
 includes:
     # ── BEGIN MODULES ────────────────────────────────────────────────
