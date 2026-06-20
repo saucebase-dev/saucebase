@@ -133,7 +133,7 @@ jobs:
               run: tar --exclude='saucebase/node_modules' -czf saucebase-env.tar.gz saucebase/
 
             - name: Upload environment artifact
-              uses: actions/upload-artifact@v4
+              uses: actions/upload-artifact@v6
               with:
                   name: saucebase-env-${{ inputs.module }}-${{ matrix.framework }}
                   path: saucebase-env.tar.gz
@@ -151,7 +151,7 @@ jobs:
 
         steps:
             - name: Download environment artifact
-              uses: actions/download-artifact@v4
+              uses: actions/download-artifact@v7
               with:
                   name: saucebase-env-${{ inputs.module }}-${{ matrix.framework }}
 

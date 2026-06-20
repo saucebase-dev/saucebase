@@ -12,7 +12,7 @@ This file lists the production npm (JavaScript) dependencies used by Saucebase a
 | class-variance-authority | ^0.7.1   | Apache-2.0 | https://github.com/joe-bell/cva             |
 | clsx                     | ^2.1.1   | MIT        | https://github.com/lukeed/clsx              |
 | laravel-vue-i18n         | ^2.8.0   | MIT        | https://github.com/xiCO2k/laravel-vue-i18n  |
-| lucide-vue-next          | ^0.525.0 | ISC        | https://github.com/lucide-icons/lucide      |
+| @lucide/vue              | ^1.21.0  | ISC        | https://github.com/lucide-icons/lucide      |
 | reka-ui                  | ^2.8.2   | MIT        | https://github.com/unovue/reka-ui           |
 | tailwind-merge           | ^3.5.0   | MIT        | https://github.com/dcastil/tailwind-merge   |
 | tw-animate-css           | ^1.4.0   | MIT        | https://github.com/RobinTail/tw-animate-css |
