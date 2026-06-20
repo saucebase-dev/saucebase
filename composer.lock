@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "633ad9dd9c6302169bd68b9d209885dd",
+    "content-hash": "3fab64a132b1b1b36012925463e1f1f1",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -62,16 +62,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.384.7",
+            "version": "3.385.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "d1152dfc19b4cf19f454bc9bc9fdc9ed937f2492"
+                "reference": "1952d9ce58aca5a5d444f74ed1034f7ba9125002"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/d1152dfc19b4cf19f454bc9bc9fdc9ed937f2492",
-                "reference": "d1152dfc19b4cf19f454bc9bc9fdc9ed937f2492",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/1952d9ce58aca5a5d444f74ed1034f7ba9125002",
+                "reference": "1952d9ce58aca5a5d444f74ed1034f7ba9125002",
                 "shasum": ""
             },
             "require": {
@@ -82,7 +82,7 @@
                 "guzzlehttp/guzzle": "^7.4.5",
                 "guzzlehttp/promises": "^2.0",
                 "guzzlehttp/psr7": "^2.4.5",
-                "mtdowling/jmespath.php": "^2.8.0",
+                "mtdowling/jmespath.php": "^2.9.1",
                 "php": ">=8.1",
                 "psr/http-message": "^1.0 || ^2.0",
                 "symfony/filesystem": "^v5.4.45 || ^v6.4.3 || ^v7.1.0 || ^v8.0.0"
@@ -153,9 +153,9 @@
             "support": {
                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.384.7"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.385.3"
             },
-            "time": "2026-06-10T18:08:15+00:00"
+            "time": "2026-06-19T18:07:45+00:00"
         },
         {
             "name": "blade-ui-kit/blade-heroicons",
@@ -1889,69 +1889,6 @@
             "time": "2025-03-06T22:45:56+00:00"
         },
         {
-            "name": "fakerphp/faker",
-            "version": "v1.24.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/FakerPHP/Faker.git",
-                "reference": "e0ee18eb1e6dc3cda3ce9fd97e5a0689a88a64b5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/FakerPHP/Faker/zipball/e0ee18eb1e6dc3cda3ce9fd97e5a0689a88a64b5",
-                "reference": "e0ee18eb1e6dc3cda3ce9fd97e5a0689a88a64b5",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.4 || ^8.0",
-                "psr/container": "^1.0 || ^2.0",
-                "symfony/deprecation-contracts": "^2.2 || ^3.0"
-            },
-            "conflict": {
-                "fzaninotto/faker": "*"
-            },
-            "require-dev": {
-                "bamarni/composer-bin-plugin": "^1.4.1",
-                "doctrine/persistence": "^1.3 || ^2.0",
-                "ext-intl": "*",
-                "phpunit/phpunit": "^9.5.26",
-                "symfony/phpunit-bridge": "^5.4.16"
-            },
-            "suggest": {
-                "doctrine/orm": "Required to use Faker\\ORM\\Doctrine",
-                "ext-curl": "Required by Faker\\Provider\\Image to download images.",
-                "ext-dom": "Required by Faker\\Provider\\HtmlLorem for generating random HTML.",
-                "ext-iconv": "Required by Faker\\Provider\\ru_RU\\Text::realText() for generating real Russian text.",
-                "ext-mbstring": "Required for multibyte Unicode string functionality."
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Faker\\": "src/Faker/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "François Zaninotto"
-                }
-            ],
-            "description": "Faker is a PHP library that generates fake data for you.",
-            "keywords": [
-                "data",
-                "faker",
-                "fixtures"
-            ],
-            "support": {
-                "issues": "https://github.com/FakerPHP/Faker/issues",
-                "source": "https://github.com/FakerPHP/Faker/tree/v1.24.1"
-            },
-            "time": "2024-11-21T13:46:39+00:00"
-        },
-        {
             "name": "filament/actions",
             "version": "v5.6.7",
             "source": {
@@ -2473,6 +2410,72 @@
                 "source": "https://github.com/filamentphp/filament"
             },
             "time": "2026-06-08T09:28:17+00:00"
+        },
+        {
+            "name": "firebase/php-jwt",
+            "version": "v7.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/googleapis/php-jwt.git",
+                "reference": "b374a5d1a4f1f67fadc2165cdb284645945e2fc0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/googleapis/php-jwt/zipball/b374a5d1a4f1f67fadc2165cdb284645945e2fc0",
+                "reference": "b374a5d1a4f1f67fadc2165cdb284645945e2fc0",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "guzzlehttp/guzzle": "^7.4",
+                "phpfastcache/phpfastcache": "^9.2",
+                "phpseclib/phpseclib": "~3.0",
+                "phpspec/prophecy-phpunit": "^2.0",
+                "phpunit/phpunit": "^9.5",
+                "psr/cache": "^2.0||^3.0",
+                "psr/http-client": "^1.0",
+                "psr/http-factory": "^1.0"
+            },
+            "suggest": {
+                "ext-sodium": "Support EdDSA (Ed25519) signatures",
+                "paragonie/sodium_compat": "Support EdDSA (Ed25519) signatures when libsodium is not present",
+                "phpseclib/phpseclib": "Support PS256 (RSASSA-PSS) signatures"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Firebase\\JWT\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Neuman Vong",
+                    "email": "neuman+pear@twilio.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Anant Narayanan",
+                    "email": "anant@php.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A simple library to encode and decode JSON Web Tokens (JWT) in PHP. Should conform to the current spec.",
+            "homepage": "https://github.com/googleapis/php-jwt",
+            "keywords": [
+                "jwt",
+                "php"
+            ],
+            "support": {
+                "issues": "https://github.com/googleapis/php-jwt/issues",
+                "source": "https://github.com/googleapis/php-jwt/tree/v7.1.0"
+            },
+            "time": "2026-06-11T17:54:14+00:00"
         },
         {
             "name": "fruitcake/php-cors",
@@ -3830,16 +3833,16 @@
         },
         {
             "name": "laravel/socialite",
-            "version": "v5.27.0",
+            "version": "v5.28.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/socialite.git",
-                "reference": "40e0757a75637c7b2dff05d3286b0d8fc25e5c0e"
+                "reference": "4c131ff4b24d8881a9c8fe4eecb5ffeff9803f26"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/socialite/zipball/40e0757a75637c7b2dff05d3286b0d8fc25e5c0e",
-                "reference": "40e0757a75637c7b2dff05d3286b0d8fc25e5c0e",
+                "url": "https://api.github.com/repos/laravel/socialite/zipball/4c131ff4b24d8881a9c8fe4eecb5ffeff9803f26",
+                "reference": "4c131ff4b24d8881a9c8fe4eecb5ffeff9803f26",
                 "shasum": ""
             },
             "require": {
@@ -3898,7 +3901,7 @@
                 "issues": "https://github.com/laravel/socialite/issues",
                 "source": "https://github.com/laravel/socialite"
             },
-            "time": "2026-04-24T14:05:47+00:00"
+            "time": "2026-06-12T03:24:05+00:00"
         },
         {
             "name": "laravel/tinker",
@@ -5166,16 +5169,16 @@
         },
         {
             "name": "mtdowling/jmespath.php",
-            "version": "2.8.0",
+            "version": "2.9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jmespath/jmespath.php.git",
-                "reference": "a2a865e05d5f420b50cc2f85bb78d565db12a6bc"
+                "reference": "9c208ba27ae7d90853c288b3795d6702eb251d34"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jmespath/jmespath.php/zipball/a2a865e05d5f420b50cc2f85bb78d565db12a6bc",
-                "reference": "a2a865e05d5f420b50cc2f85bb78d565db12a6bc",
+                "url": "https://api.github.com/repos/jmespath/jmespath.php/zipball/9c208ba27ae7d90853c288b3795d6702eb251d34",
+                "reference": "9c208ba27ae7d90853c288b3795d6702eb251d34",
                 "shasum": ""
             },
             "require": {
@@ -5184,7 +5187,7 @@
             },
             "require-dev": {
                 "composer/xdebug-handler": "^3.0.3",
-                "phpunit/phpunit": "^8.5.33"
+                "phpunit/phpunit": "^8.5.52"
             },
             "bin": [
                 "bin/jp.php"
@@ -5192,7 +5195,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.8-dev"
+                    "dev-master": "2.9-dev"
                 }
             },
             "autoload": {
@@ -5226,9 +5229,9 @@
             ],
             "support": {
                 "issues": "https://github.com/jmespath/jmespath.php/issues",
-                "source": "https://github.com/jmespath/jmespath.php/tree/2.8.0"
+                "source": "https://github.com/jmespath/jmespath.php/tree/2.9.1"
             },
-            "time": "2024-09-04T18:46:31+00:00"
+            "time": "2026-06-11T10:43:56+00:00"
         },
         {
             "name": "nesbot/carbon",
@@ -6235,16 +6238,16 @@
         },
         {
             "name": "phpseclib/phpseclib",
-            "version": "3.0.53",
+            "version": "3.0.55",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpseclib/phpseclib.git",
-                "reference": "511ddc8e352d5d1f1e33bea468b6f4ef48438cf9"
+                "reference": "db9744e6d47e742b1f974e965ad49bdd041105af"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/511ddc8e352d5d1f1e33bea468b6f4ef48438cf9",
-                "reference": "511ddc8e352d5d1f1e33bea468b6f4ef48438cf9",
+                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/db9744e6d47e742b1f974e965ad49bdd041105af",
+                "reference": "db9744e6d47e742b1f974e965ad49bdd041105af",
                 "shasum": ""
             },
             "require": {
@@ -6325,7 +6328,7 @@
             ],
             "support": {
                 "issues": "https://github.com/phpseclib/phpseclib/issues",
-                "source": "https://github.com/phpseclib/phpseclib/tree/3.0.53"
+                "source": "https://github.com/phpseclib/phpseclib/tree/3.0.55"
             },
             "funding": [
                 {
@@ -6341,7 +6344,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-06-09T18:08:26+00:00"
+            "time": "2026-06-14T23:24:10+00:00"
         },
         {
             "name": "phpstan/phpdoc-parser",
@@ -7476,11 +7479,11 @@
         },
         {
             "name": "saucebase/auth",
-            "version": "v2.1.4",
+            "version": "v2.2.1",
             "dist": {
                 "type": "path",
                 "url": "modules/auth",
-                "reference": "6efb909eac4d4c25a91ea5acbe0bf3e565b88a4d"
+                "reference": "7cf484e4aa23fee2dc800f6f8b6cd612e20b24d9"
             },
             "require": {
                 "laravel/socialite": "^5.21",
@@ -7530,11 +7533,11 @@
         },
         {
             "name": "saucebase/billing",
-            "version": "v2.1.1",
+            "version": "v2.1.3",
             "dist": {
                 "type": "path",
                 "url": "modules/billing",
-                "reference": "98153ad94050c60d6fa1beac36bca848ba392e23"
+                "reference": "937eb3945deb17b865732b955f96a1e91c40e606"
             },
             "require": {
                 "stripe/stripe-php": "^20.2"
@@ -7578,33 +7581,35 @@
         },
         {
             "name": "saucebase/blog",
-            "version": "v2.1.0",
+            "version": "v2.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/saucebase-dev/blog.git",
+                "reference": "050cbd081c29c6b862948bd4cce488615192f698"
+            },
             "dist": {
-                "type": "path",
-                "url": "modules/blog",
-                "reference": "8aadecef2198f50c8e44e03c0103c8e33e22ef7e"
+                "type": "zip",
+                "url": "https://api.github.com/repos/saucebase-dev/blog/zipball/050cbd081c29c6b862948bd4cce488615192f698",
+                "reference": "050cbd081c29c6b862948bd4cce488615192f698",
+                "shasum": ""
             },
             "type": "saucebase-module",
             "extra": {
                 "laravel": {
+                    "aliases": [],
                     "providers": [
                         "Modules\\Blog\\Providers\\BlogServiceProvider"
-                    ],
-                    "aliases": []
+                    ]
                 }
             },
             "autoload": {
                 "psr-4": {
                     "Modules\\Blog\\": "src/",
-                    "Modules\\Blog\\Database\\Factories\\": "database/factories/",
-                    "Modules\\Blog\\Database\\Seeders\\": "database/seeders/"
+                    "Modules\\Blog\\Database\\Seeders\\": "database/seeders/",
+                    "Modules\\Blog\\Database\\Factories\\": "database/factories/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "Modules\\Blog\\Tests\\": "tests/"
-                }
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "proprietary"
             ],
@@ -7615,10 +7620,11 @@
                 }
             ],
             "description": "Blog module",
-            "transport-options": {
-                "symlink": true,
-                "relative": true
-            }
+            "support": {
+                "issues": "https://github.com/saucebase-dev/blog/issues",
+                "source": "https://github.com/saucebase-dev/blog/tree/v2.1.1"
+            },
+            "time": "2026-06-11T20:09:37+00:00"
         },
         {
             "name": "saucebase/breadcrumbs",
@@ -7682,11 +7688,11 @@
         },
         {
             "name": "saucebase/demo",
-            "version": "v0.6.0",
+            "version": "v0.7.0",
             "dist": {
                 "type": "path",
                 "url": "modules/demo",
-                "reference": "d3b26c84849d27454fdf05cc4b3c53eae6c7eb91"
+                "reference": "b6e2937a5a051a930a183ebedcf8f2d722169c23"
             },
             "type": "saucebase-module",
             "extra": {
@@ -7726,11 +7732,11 @@
         },
         {
             "name": "saucebase/roadmap",
-            "version": "v2.0.0",
+            "version": "v2.0.1",
             "dist": {
                 "type": "path",
                 "url": "modules/roadmap",
-                "reference": "ca7d3354d2cca3cf433bcd12ba044618fde3c5cb"
+                "reference": "a111048dfbf6551eaa09e2343fc31cc4ecf45818"
             },
             "type": "saucebase-module",
             "extra": {
@@ -7771,11 +7777,11 @@
         },
         {
             "name": "saucebase/settings",
-            "version": "v2.0.2",
+            "version": "v2.0.3",
             "dist": {
                 "type": "path",
                 "url": "modules/settings",
-                "reference": "c80509ddc30692787574d5a43b831339d692a357"
+                "reference": "7d3344519773915dc22f2f9c38fab4db27f0b0e6"
             },
             "type": "saucebase-module",
             "extra": {
@@ -7815,11 +7821,11 @@
         },
         {
             "name": "saucebase/themes",
-            "version": "v2.0.2",
+            "version": "v2.0.3",
             "dist": {
                 "type": "path",
                 "url": "modules/themes",
-                "reference": "9b3ec71bb58c4422398e679c5f765e0af88a8da1"
+                "reference": "a217e77dc334bbcb55d3d66dd1c889e178ad98f3"
             },
             "type": "saucebase-module",
             "extra": {
@@ -9229,16 +9235,16 @@
         },
         {
             "name": "stripe/stripe-php",
-            "version": "v20.2.0",
+            "version": "v20.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stripe/stripe-php.git",
-                "reference": "38b784dd45b447609032c151c40712d9b3feecb0"
+                "reference": "c628cfa0b3de4ef5110b2c2bfbf881a33a52fdd5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/38b784dd45b447609032c151c40712d9b3feecb0",
-                "reference": "38b784dd45b447609032c151c40712d9b3feecb0",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/c628cfa0b3de4ef5110b2c2bfbf881a33a52fdd5",
+                "reference": "c628cfa0b3de4ef5110b2c2bfbf881a33a52fdd5",
                 "shasum": ""
             },
             "require": {
@@ -9285,9 +9291,9 @@
             ],
             "support": {
                 "issues": "https://github.com/stripe/stripe-php/issues",
-                "source": "https://github.com/stripe/stripe-php/tree/v20.2.0"
+                "source": "https://github.com/stripe/stripe-php/tree/v20.2.1"
             },
-            "time": "2026-05-27T20:28:12+00:00"
+            "time": "2026-06-12T22:41:56+00:00"
         },
         {
             "name": "symfony/clock",

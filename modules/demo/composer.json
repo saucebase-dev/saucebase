@@ -3,7 +3,7 @@
   "description": "Demo module",
   "type": "saucebase-module",
   "license": "proprietary",
-  "version": "v0.6.0",
+  "version": "v0.7.0",
   "authors": [
     {
       "name": "Saucebase",

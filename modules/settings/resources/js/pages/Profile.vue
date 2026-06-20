@@ -23,7 +23,7 @@ import Separator from '@/components/ui/separator/Separator.vue';
 import SettingsLayout from '@/layouts/SettingsLayout.vue';
 import type { User } from '@/types';
 import { Link, router } from '@inertiajs/vue3';
-import { Loader2 } from 'lucide-vue-next';
+import { Loader2 } from '@lucide/vue';
 import { computed, ref } from 'vue';
 import IconGithub from '~icons/simple-icons/github';
 import IconGoogle from '~icons/simple-icons/google';

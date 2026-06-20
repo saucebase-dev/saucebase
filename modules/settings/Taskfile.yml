@@ -16,7 +16,7 @@ tasks:
 
     db:seed:
         desc: Seed the Settings module database
-        cmd: php artisan modules:seed --module=settings
+        cmd: '{{.APP}} php artisan modules:seed --module=settings'
 
     # ── Code Generation ────────────────────────────────────────────
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { trans } from 'laravel-vue-i18n';
-import { ArrowRight, Bot, Check, Copy, Terminal } from 'lucide-vue-next';
+import { ArrowRight, Bot, Check, Copy, Terminal } from '@lucide/vue';
 import { computed, onUnmounted, ref } from 'vue';
 import { toast } from 'vue-sonner';
 
@@ -13,7 +13,7 @@ const tabs = [
 
 const CLI_COMMAND = 'laravel new --using=saucebase/saucebase --phpunit --boost';
 const AGENT_PROMPT =
-    'I\'m building a SaaS with Saucebase.\n\nFetch https://saucebase-dev.github.io/docs/for-agents.md and treat it as the source of truth for this project.';
+    'I\'m building a new application with Saucebase — a modular Laravel SaaS starter kit. \n\n Fetch and follow the instructions from https://saucebase-dev.github.io/docs/for-agents.md Treat the returned Markdown as the source of truth for how to install, set up, and build with Saucebase in this session.';
 
 const currentIcon = computed(() => (tab.value === 'cli' ? Terminal : Bot));
 const currentText = computed(() => (tab.value === 'cli' ? CLI_COMMAND : AGENT_PROMPT));

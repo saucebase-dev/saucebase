@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import type { Module } from '@/components/ui/saucebase';
-import { ModuleCard, ModuleModal, modules } from '@/components/ui/saucebase';
-import { BookOpen } from 'lucide-vue-next';
+import { ModuleCard, ModuleModal, useModuleList } from '@/components/ui/saucebase';
+import { BookOpen } from '@lucide/vue';
 import { computed, onMounted, onUnmounted, ref } from 'vue';
 
 const selectedFramework = ref<'vue' | 'react'>('vue');
 const selectedMod = ref<Module | null>(null);
 const modulesVisible = ref(false);
-const sectionRef = ref<HTMLElement | null>(null);
 const gridSentinelRef = ref<HTMLElement | null>(null);
 
 let observer: IntersectionObserver | null = null;
@@ -32,8 +31,10 @@ function toggleFramework() {
         selectedFramework.value === 'vue' ? 'react' : 'vue';
 }
 
+const moduleList = useModuleList();
+
 const displayModules = computed(() =>
-    modules.map((m) => {
+    moduleList.value.map((m) => {
         const supported = (m.frameworks as readonly string[]).includes(
             selectedFramework.value,
         );
@@ -48,7 +49,7 @@ const displayModules = computed(() =>
 </script>
 
 <template>
-    <section ref="sectionRef" class="relative mt-16 overflow-hidden bg-slate-900/10">
+    <section class="relative mt-16 overflow-hidden bg-slate-900/10">
         <!-- Split-screen framework picker -->
         <div
             class="relative z-0 min-h-120 w-full overflow-hidden mask-[linear-gradient(to_bottom,black_60%,transparent)]">

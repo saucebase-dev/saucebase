@@ -22,7 +22,7 @@ import {
 import InputField from '@/components/ui/input/InputField.vue';
 import type { User } from '@/types';
 import { Form, router, usePage } from '@inertiajs/vue3';
-import { Camera, Loader2, Trash2 } from 'lucide-vue-next';
+import { Camera, Loader2, Trash2 } from '@lucide/vue';
 import { computed, ref } from 'vue';
 
 import SettingsLayout from '@/layouts/SettingsLayout.vue';

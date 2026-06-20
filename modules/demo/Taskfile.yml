@@ -16,7 +16,7 @@ tasks:
 
     db:seed:
         desc: Seed the Demo module database
-        cmd: php artisan modules:seed --module=demo
+        cmd: '{{.APP}} php artisan modules:seed --module=demo'
 
     # ── Code Generation ────────────────────────────────────────────
 

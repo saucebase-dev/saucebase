@@ -13,7 +13,7 @@ import { useDialog } from '@/composables/useDialog';
 import SettingsLayout from '@/layouts/SettingsLayout.vue';
 import { router } from '@inertiajs/vue3';
 import { trans } from 'laravel-vue-i18n';
-import { CreditCard, Loader2 } from 'lucide-vue-next';
+import { CreditCard, Loader2 } from '@lucide/vue';
 import { ref } from 'vue';
 import type { Invoice, PaymentMethod, Subscription } from '../types';
 

@@ -6,7 +6,7 @@ import {
     Puzzle,
     Table2,
     WandSparkles,
-} from 'lucide-vue-next';
+} from '@lucide/vue';
 
 const features = [
     {
