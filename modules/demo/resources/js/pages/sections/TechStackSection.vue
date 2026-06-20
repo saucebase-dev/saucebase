@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Cloud, Monitor, Server, Wrench } from 'lucide-vue-next';
+import { Cloud, Monitor, Server, Wrench } from '@lucide/vue';
 import { type Component } from 'vue';
 
 const groups: { label: string; icon: Component; items: string[] }[] = [

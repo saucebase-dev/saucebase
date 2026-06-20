@@ -3,7 +3,7 @@
   "description": "Settings module",
   "type": "saucebase-module",
   "license": "proprietary",
-  "version": "v2.0.2",
+  "version": "v2.0.3",
   "authors": [
     {
       "name": "Saucebase",

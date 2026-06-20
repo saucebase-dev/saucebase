@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 import type { User } from '@/types';
 import { router, usePage } from '@inertiajs/vue3';
 import { onClickOutside, onKeyStroke } from '@vueuse/core';
-import { Drama, HistoryIcon, X } from 'lucide-vue-next';
+import { Drama, HistoryIcon, X } from '@lucide/vue';
 import { computed, ref } from 'vue';
 
 interface Impersonation {

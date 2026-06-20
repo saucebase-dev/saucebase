@@ -9,7 +9,7 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useLocalization } from '@/composables/useLocalization';
-import { Globe } from 'lucide-vue-next';
+import { Globe } from '@lucide/vue';
 import { computed } from 'vue';
 import IconBR from '~icons/circle-flags/br';
 import IconEN from '~icons/circle-flags/en';

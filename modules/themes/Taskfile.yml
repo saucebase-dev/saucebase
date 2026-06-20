@@ -16,7 +16,7 @@ tasks:
 
     db:seed:
         desc: Seed the Themes module database
-        cmd: php artisan modules:seed --module=themes
+        cmd: '{{.APP}} php artisan modules:seed --module=themes'
 
     # ── Code Generation ────────────────────────────────────────────
 

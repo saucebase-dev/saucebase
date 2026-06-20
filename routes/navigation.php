@@ -53,6 +53,37 @@ Navigation::add(
     }
 );
 
+Navigation::add(
+    'Discord',
+    'https://discord.gg/CuhSFA7qY',
+    function (Section $section) {
+        $section->attributes([
+            'group' => 'secondary',
+            'slug' => 'discord',
+            'icon' => 'discord',
+            'external' => true,
+            'newPage' => true,
+            'order' => 5,
+            'class' => 'bg-[#5865F2]/10 text-[#5865F2] hover:bg-[#5865F2]/20 hover:text-[#5865F2]/80 dark:hover:text-[#5865F2]',
+        ]);
+    }
+);
+
+Navigation::add(
+    'Discord',
+    'https://discord.gg/CuhSFA7qY',
+    function (Section $section) {
+        $section->attributes([
+            'group' => 'landing',
+            'slug' => 'discord',
+            'external' => true,
+            'newPage' => true,
+            'order' => 99,
+            'class' => 'text-[#5865F2] hover:text-[#5865F2]/70',
+        ]);
+    }
+);
+
 Navigation::addWhen(
     fn () => Auth::check() && Auth::user()->isAdmin(),
     'Admin',

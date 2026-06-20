@@ -9,7 +9,7 @@ import {
     LayoutDashboard,
     Paintbrush,
     Terminal,
-} from 'lucide-vue-next';
+} from '@lucide/vue';
 
 const features = [
     {

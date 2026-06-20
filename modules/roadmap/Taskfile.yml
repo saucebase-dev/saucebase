@@ -16,10 +16,10 @@ tasks:
 
     db:seed:
         desc: Seed the Roadmap module database
-        cmd: php artisan modules:seed --module=roadmap
+        cmd: '{{.APP}} php artisan modules:seed --module=roadmap'
 
     # ── Code Generation ────────────────────────────────────────────
 
     types:generate:
         desc: Generate TypeScript types from PHP DTOs and enums
-        cmd: php artisan module:generate-types roadmap
+        cmd: '{{.APP}} php artisan module:generate-types roadmap'
