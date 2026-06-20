@@ -1,3 +1,4 @@
+import { useModules } from '@/hooks/useModules';
 import { useT } from '@/i18n';
 import { BookOpen, Check, Copy, Terminal, X } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -10,14 +11,16 @@ interface ModuleModalProps {
     onClose: () => void;
 }
 
-function installCommand(mod: Module): string {
+function installCommand(mod: Module, installed: boolean): string {
     if (mod.id === 'custom')
         return 'php artisan saucebase:recipe MyAmazingModuleIdea';
+    if (installed) return `composer update saucebase/${mod.id}`;
     return `composer require saucebase/${mod.id}`;
 }
 
 export function ModuleModal({ selectedMod, onClose }: ModuleModalProps) {
     const t = useT();
+    const { has: isInstalled } = useModules();
     const [copied, setCopied] = useState(false);
     const copyTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -66,7 +69,7 @@ export function ModuleModal({ selectedMod, onClose }: ModuleModalProps) {
     const copyCommand = useCallback(() => {
         if (!mod) return;
         navigator.clipboard
-            .writeText(installCommand(mod))
+            .writeText(installCommand(mod, isInstalled(mod.id)))
             .then(() => {
                 toast.success(t('Copied to clipboard'));
                 if (copyTimerRef.current) clearTimeout(copyTimerRef.current);
@@ -139,9 +142,16 @@ export function ModuleModal({ selectedMod, onClose }: ModuleModalProps) {
                                     aria-hidden="true"
                                 />
                             </div>
-                            <h2 className="text-foreground flex-1 text-xl leading-tight font-bold">
-                                {t(mod.title)}
-                            </h2>
+                            <div className="flex flex-1 flex-wrap items-center gap-2">
+                                <h2 className="text-foreground text-xl leading-tight font-bold">
+                                    {t(mod.title)}
+                                </h2>
+                                {isInstalled(mod.id) && (
+                                    <span className="border-primary text-primary ml-2 rounded-full border px-3 py-1 text-sm font-semibold">
+                                        {t('Installed')}
+                                    </span>
+                                )}
+                            </div>
                         </div>
 
                         {/* Description */}
@@ -175,7 +185,7 @@ export function ModuleModal({ selectedMod, onClose }: ModuleModalProps) {
                                         aria-hidden="true"
                                     />
                                     <code className="flex-1 text-sm text-green-400">
-                                        {installCommand(mod)}
+                                        {installCommand(mod, isInstalled(mod.id))}
                                     </code>
                                     <button
                                         className="cursor-pointer text-gray-300 transition-colors hover:text-gray-300"

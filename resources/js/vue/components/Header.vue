@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { modules } from '@/composables/useModules';
+import { cn } from '@/lib/utils';
 import type { MenuItem } from '@/types/navigation';
 import { Link, usePage } from '@inertiajs/vue3';
-import { ArrowRight, ExternalLink } from 'lucide-vue-next';
+import { ArrowRight, ExternalLink } from '@lucide/vue';
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import IconMenu from '~icons/heroicons/bars-3';
 import IconX from '~icons/heroicons/x-mark';
@@ -78,7 +79,7 @@ onBeforeUnmount(() => {
                         :key="item.slug"
                         :href="item.url"
                         :target="item.newPage ? '_blank' : '_self'"
-                        class="after:bg-primary text-muted-foreground hover:text-foreground relative px-4 py-2 text-sm font-semibold transition-all duration-300 after:absolute after:bottom-0 after:left-1/2 after:h-0.5 after:w-0 after:-translate-x-1/2 after:rounded-xl after:transition-all after:duration-300 hover:after:w-3/4"
+                        :class="cn('after:bg-primary text-muted-foreground hover:text-foreground relative px-4 py-2 text-sm font-semibold transition-all duration-300 after:absolute after:bottom-0 after:left-1/2 after:h-0.5 after:w-0 after:-translate-x-1/2 after:rounded-xl after:transition-all after:duration-300 hover:after:w-3/4', item.class)"
                     >
                         {{ $t(item.title) }}
                         <ExternalLink
@@ -169,7 +170,7 @@ onBeforeUnmount(() => {
                             :key="item.slug"
                             :href="item.url"
                             :target="item.newPage ? '_blank' : '_self'"
-                            class="after:bg-primary hover:text-primary text-foreground relative px-4 py-3 text-base font-semibold transition-all duration-300 after:absolute after:bottom-1 after:left-4 after:h-0.5 after:w-0 after:rounded-xl after:transition-all after:duration-300 hover:after:w-1/2"
+                            :class="cn('after:bg-primary hover:text-primary text-foreground relative px-4 py-3 text-base font-semibold transition-all duration-300 after:absolute after:bottom-1 after:left-4 after:h-0.5 after:w-0 after:rounded-xl after:transition-all after:duration-300 hover:after:w-1/2', item.class)"
                             @click="mobileMenuOpen = false"
                         >
                             {{ $t(item.title) }}

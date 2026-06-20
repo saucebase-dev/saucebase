@@ -75,11 +75,13 @@ export function registerAction(actionId: string, handler: ActionHandler): void {
 import IconHelpCircle from '~icons/lucide/help-circle';
 import IconShieldCheck from '~icons/lucide/shield-check';
 import IconSquareTerminal from '~icons/lucide/square-terminal';
-import IconGithub from '~icons/mdi/github';
+import IconDiscord from '~icons/simple-icons/discord';
+import IconGithub from '~icons/simple-icons/github';
 
 const iconRegistry: Record<string, Component> = {
     dashboard: IconSquareTerminal,
     github: IconGithub,
+    discord: IconDiscord,
     admin: IconShieldCheck,
     documentation: IconHelpCircle,
 };

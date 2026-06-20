@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { Separator } from '@/components/ui/separator';
-import { cn } from '@/lib/utils';
-import { reactiveOmit } from '@vueuse/core';
 import type { SeparatorProps } from 'reka-ui';
 import type { HTMLAttributes } from 'vue';
+import { reactiveOmit } from '@vueuse/core';
+import { cn } from '@/lib/utils';
+import { Separator } from '@/components/ui/separator';
 
 const props = withDefaults(
     defineProps<SeparatorProps & { class?: HTMLAttributes['class'] }>(),

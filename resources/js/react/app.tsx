@@ -26,9 +26,11 @@ createInertiaApp({
                         <InertiaApp {...props}>
                             {({ Component, props: pageProps, key }) => (
                                 <>
-                                    {getGlobalComponents('top').map((TopComponent, i) => (
-                                        <TopComponent key={i} />
-                                    ))}
+                                    {getGlobalComponents('top').map(
+                                        (TopComponent, i) => (
+                                            <TopComponent key={i} />
+                                        ),
+                                    )}
                                     <Component key={key} {...pageProps} />
                                     {getGlobalComponents('bottom').map(
                                         (BottomComponent, i) => (

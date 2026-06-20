@@ -1,21 +1,20 @@
 <script setup lang="ts">
-import { cn } from '@/lib/utils';
-import { reactiveOmit } from '@vueuse/core';
-import { X } from 'lucide-vue-next';
 import type { DialogContentEmits, DialogContentProps } from 'reka-ui';
+import type { HTMLAttributes } from 'vue';
+import { X } from '@lucide/vue';
+import { reactiveOmit } from '@vueuse/core';
 import {
     DialogClose,
     DialogContent,
     DialogPortal,
     useForwardPropsEmits,
 } from 'reka-ui';
-import type { HTMLAttributes } from 'vue';
+import { cn } from '@/lib/utils';
 import SheetOverlay from './SheetOverlay.vue';
 
 interface SheetContentProps extends DialogContentProps {
     class?: HTMLAttributes['class'];
     side?: 'top' | 'right' | 'bottom' | 'left';
-    overlayClass?: HTMLAttributes['class'];
 }
 
 defineOptions({
@@ -34,7 +33,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits);
 
 <template>
     <DialogPortal>
-        <SheetOverlay :class="overlayClass" />
+        <SheetOverlay />
         <DialogContent
             data-slot="sheet-content"
             :class="
@@ -51,7 +50,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits);
                     props.class,
                 )
             "
-            v-bind="{ ...forwarded, ...$attrs }"
+            v-bind="{ ...$attrs, ...forwarded }"
         >
             <slot />
 
