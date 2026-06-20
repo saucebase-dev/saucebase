@@ -201,7 +201,7 @@ jobs:
 
             - name: Upload Playwright report
               if: failure()
-              uses: actions/upload-artifact@v4
+              uses: actions/upload-artifact@v6
               with:
                   name: playwright-report-${{ inputs.module }}-${{ matrix.framework }}
                   path: saucebase/playwright-report/
