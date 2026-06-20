@@ -14,8 +14,10 @@ interface ModuleModalProps {
 function installCommand(mod: Module, installed: boolean): string {
     if (mod.id === 'custom')
         return 'php artisan saucebase:recipe MyAmazingModuleIdea';
-    if (installed) return `composer update saucebase/${mod.id}`;
-    return `composer require saucebase/${mod.id}`;
+    const composer = installed
+        ? `composer update saucebase/${mod.id}`
+        : `composer require saucebase/${mod.id}`;
+    return `${composer}\nphp artisan migrate\nphp artisan modules:seed --module=${mod.id}`;
 }
 
 export function ModuleModal({ selectedMod, onClose }: ModuleModalProps) {
@@ -179,16 +181,16 @@ export function ModuleModal({ selectedMod, onClose }: ModuleModalProps) {
                         {/* Install command */}
                         {mod.href !== null && (
                             <div className="mt-2 flex flex-col gap-2">
-                                <div className="flex items-center gap-3 rounded-full bg-gray-950 px-4 py-3 shadow-sm dark:bg-gray-900">
+                                <div className="flex items-center gap-3 rounded-xl bg-gray-950 px-4 py-3 shadow-sm dark:bg-gray-900">
                                     <Terminal
-                                        className="size-4 shrink-0 text-gray-500"
+                                        className="mt-0.5 size-4 shrink-0 self-start text-gray-500"
                                         aria-hidden="true"
                                     />
-                                    <code className="flex-1 text-sm text-green-400">
+                                    <code className="flex-1 whitespace-pre text-sm text-green-400">
                                         {installCommand(mod, isInstalled(mod.id))}
                                     </code>
                                     <button
-                                        className="cursor-pointer text-gray-300 transition-colors hover:text-gray-300"
+                                        className="cursor-pointer self-start text-gray-300 transition-colors hover:text-gray-300"
                                         onClick={copyCommand}
                                     >
                                         {copied ? (
