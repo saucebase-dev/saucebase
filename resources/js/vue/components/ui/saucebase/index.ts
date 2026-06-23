@@ -67,6 +67,7 @@ export const modules = [
     },
     {
         id: 'auth',
+        customCommands: ['git apply modules/auth/patches/user.patch'],
         title: () => trans('Auth'),
         description: () =>
             trans(
@@ -106,6 +107,7 @@ export const modules = [
     },
     {
         id: 'billing',
+        customCommands: ['git apply modules/billing/patches/user.patch'],
         title: () => trans('Billing'),
         description: () =>
             trans(

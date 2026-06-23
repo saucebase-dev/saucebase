@@ -17,7 +17,10 @@ function installCommand(mod: Module, installed: boolean): string {
     const composer = installed
         ? `composer update saucebase/${mod.id}`
         : `composer require saucebase/${mod.id}`;
-    return `${composer}\nphp artisan migrate\nphp artisan modules:seed --module=${mod.id}`;
+    const base = `${composer}\nphp artisan migrate\nphp artisan modules:seed --module=${mod.id}`;
+    return mod.customCommands?.length
+        ? `${base}\n${mod.customCommands.join('\n')}`
+        : base;
 }
 
 export function ModuleModal({ selectedMod, onClose }: ModuleModalProps) {
