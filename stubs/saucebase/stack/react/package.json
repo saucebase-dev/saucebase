@@ -19,11 +19,9 @@
         "test:e2e:debug": "playwright test --debug",
         "test:e2e:report": "playwright show-report",
         "screenshots": "npm run build && tsx scripts/capture-screenshots.ts",
-        "lint": "eslint ./resources ./modules/*/resources --fix --no-error-on-unmatched-pattern",
-        "saucebase": "tsx saucebase.ts"
+        "lint": "eslint ./resources ./modules/*/resources --fix --no-error-on-unmatched-pattern"
     },
     "devDependencies": {
-        "@clack/prompts": "^1.0.1",
         "@eslint/js": "^10.0.1",
         "@faker-js/faker": "^10.3.0",
         "@go-task/cli": "^3.48.0",
@@ -54,7 +52,6 @@
         "laravel-vite-plugin": "^3.0.0",
         "lint-staged": "^17.0.7",
         "lucide-react": "^1.18.0",
-        "picocolors": "^1.1.1",
         "postcss": "^8.5.6",
         "prettier": "^3.8.3",
         "prettier-plugin-organize-imports": "^4.3.0",
