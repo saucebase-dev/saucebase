@@ -46,6 +46,10 @@ class RecipeToModuleCommand extends Command
 
     public function handle(): bool
     {
+        if (! $this->input->isInteractive() && ! $this->validateForNonInteractive()) {
+            return false;
+        }
+
         $this->moduleName = $this->getModuleName();
         $this->composerVendor = $this->option('vendor')
             ?: config('app-modules.modules_vendor')
@@ -138,12 +142,33 @@ class RecipeToModuleCommand extends Command
                 return $templates[$input];
             }
 
-            error("Invalid template: {$input}");
+            error("Invalid template \"{$input}\". Valid values: ".implode(', ', array_keys($templates)));
         }
 
         $selected = select('Which recipe would you like to use?', array_keys($templates));
 
         return $templates[$selected];
+    }
+
+    private function validateForNonInteractive(): bool
+    {
+        $templates = config('saucebase.template');
+        $missing = [];
+
+        if (blank($this->argument('module'))) {
+            $missing[] = 'module (e.g. php artisan saucebase:recipe MyModule "Basic Recipe")';
+        }
+
+        $template = $this->argument('template') ?? '';
+        if ($template === '' || ! array_key_exists($template, $templates)) {
+            $missing[] = 'template — valid values: '.implode(', ', array_keys($templates));
+        }
+
+        foreach ($missing as $msg) {
+            error("Missing required argument in non-interactive mode: {$msg}");
+        }
+
+        return empty($missing);
     }
 
     protected function generate(): void
