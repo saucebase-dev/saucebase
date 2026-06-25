@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c44378ab12543ddbda4e618544f6e248",
+    "content-hash": "5a17786b172784523a7dc3ce5efbd21e",
     "packages": [
         {
             "name": "blade-ui-kit/blade-heroicons",
@@ -13240,16 +13240,16 @@
         },
         {
             "name": "saucebase/installer",
-            "version": "v1.4.0",
+            "version": "v1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/saucebase-dev/installer.git",
-                "reference": "d81d838a31d58c404ec574854293f1922255e95f"
+                "reference": "2e1039d327d1e468d83218ed574d48bd98807447"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/saucebase-dev/installer/zipball/d81d838a31d58c404ec574854293f1922255e95f",
-                "reference": "d81d838a31d58c404ec574854293f1922255e95f",
+                "url": "https://api.github.com/repos/saucebase-dev/installer/zipball/2e1039d327d1e468d83218ed574d48bd98807447",
+                "reference": "2e1039d327d1e468d83218ed574d48bd98807447",
                 "shasum": ""
             },
             "require": {
@@ -13285,9 +13285,9 @@
             "description": "Dev environment installer for Saucebase applications.",
             "support": {
                 "issues": "https://github.com/saucebase-dev/installer/issues",
-                "source": "https://github.com/saucebase-dev/installer/tree/v1.4.0"
+                "source": "https://github.com/saucebase-dev/installer/tree/v1.5.0"
             },
-            "time": "2026-06-25T20:17:27+00:00"
+            "time": "2026-06-25T20:36:21+00:00"
         },
         {
             "name": "saucebase/laravel-playwright",
