@@ -59,7 +59,6 @@ public/vendor/livewire/
 /storage/laravel-playwright-config.json
 
 # Docker setup (published from saucebase/installer package)
-/docker-compose.yml
 /docker/
 
 # Generated language files

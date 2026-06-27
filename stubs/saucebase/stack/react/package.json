@@ -88,5 +88,6 @@
             "prettier --write"
         ],
         "!(*.{js,ts,tsx})": "prettier --write --ignore-unknown"
-    }
+    },
+    "version": "0.0.0"
 }
