@@ -24,6 +24,7 @@
         "laravel/tinker": "^3.0.2",
         "openplain/filament-shadcn-theme": "^1.1",
         "saucebase/breadcrumbs": "^1.1",
+        "saucebase/core": "*",
         "saucebase/module-installer": "^2.7.0",
         "spatie/laravel-data": "^4.23",
         "spatie/laravel-navigation": "^1.3",
@@ -159,6 +160,14 @@
         "saas boilerplate"
     ],
     "repositories": [
+        {
+            "type": "path",
+            "url": "../packages/*",
+            "canonical": false,
+            "options": {
+                "symlink": true
+            }
+        },
         {
             "type": "path",
             "url": "modules/*",

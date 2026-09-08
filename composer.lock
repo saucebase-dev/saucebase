@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "937ccfee30587c011264244773ab2d57",
+    "content-hash": "55db0d0391b9e2dbf3bd6a8cd2c99fd9",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -6952,6 +6952,65 @@
                 "source": "https://github.com/saucebase-dev/breadcrumbs/tree/v1.1.0"
             },
             "time": "2026-04-25T09:21:15+00:00"
+        },
+        {
+            "name": "saucebase/core",
+            "version": "0.1.0",
+            "dist": {
+                "type": "path",
+                "url": "../packages/core",
+                "reference": "601d473ebb18f0e74670f973c9475a3d2d239cdb"
+            },
+            "require": {
+                "laravel/framework": "^13.0",
+                "php": "^8.4"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.30.5",
+                "orchestra/testbench": "^11.0",
+                "phpunit/phpunit": "^12.5.34"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Saucebase\\Core\\CoreServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Saucebase\\Core\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Saucebase\\Core\\Tests\\": "tests/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Saucebase",
+                    "email": "hello@saucebase.dev"
+                },
+                {
+                    "name": "Renan Roble",
+                    "email": "renanroble@gmail.com"
+                }
+            ],
+            "description": "The Saucebase core package — navigation, localization, module infrastructure, the settings modal, and the Inertia layer.",
+            "keywords": [
+                "laravel",
+                "saas",
+                "saucebase"
+            ],
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
         },
         {
             "name": "saucebase/module-installer",
