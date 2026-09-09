@@ -6,6 +6,7 @@ import {
     BarChart3,
     Bell,
     Blocks,
+    Building2,
     CreditCard,
     Lightbulb,
     Lock,
@@ -13,7 +14,6 @@ import {
     Megaphone,
     Newspaper,
     Palette,
-    Settings2,
     Webhook,
 } from '@lucide/vue';
 
@@ -84,25 +84,8 @@ export const modules = [
             () => trans('Social Login'),
             () => trans('Email Verification'),
             () => trans('Impersonation'),
-        ],
-    },
-    {
-        id: 'settings',
-        title: () => trans('Settings'),
-        description: () =>
-            trans(
-                'Account settings pages for managing profile info, avatar, password, and connected social accounts.',
-            ),
-        icon: Settings2,
-        color: '--color-sky-500',
-        badge: null,
-        href: 'https://saucebase-dev.github.io/docs/modules/settings',
-        frameworks: ['vue'] as const,
-        features: [
-            () => trans('Profile Info'),
-            () => trans('Avatar Upload'),
+            () => trans('Profile & Avatar'),
             () => trans('Password Change'),
-            () => trans('Connected Accounts'),
         ],
     },
     {
@@ -201,6 +184,25 @@ export const modules = [
             () => trans('Categories'),
             () => trans('Admin Panel'),
             () => trans('SEO Optimized'),
+        ],
+    },
+    {
+        id: 'tenancy',
+        title: () => trans('Tenancy'),
+        description: () =>
+            trans(
+                'Subdomain-based workspaces with isolated data, member roles, email invitations, and joining by email domain.',
+            ),
+        icon: Building2,
+        color: '--color-gray-500',
+        badge: BADGE_SOON,
+        href: null,
+        frameworks: ['vue', 'react'] as const,
+        features: [
+            () => trans('Workspaces'),
+            () => trans('Data Isolation'),
+            () => trans('Roles & Invites'),
+            () => trans('Custom Domains'),
         ],
     },
     {

@@ -1,5 +1,3 @@
-![Saucebase](.github/assets/banner.jpg 'Saucebase')
-
 <p align="center">
   <br/>
   <a href="https://saucebase-dev.github.io/docs/">Saucebase</a> is a modular Laravel SaaS starter kit for the modern web &mdash;
@@ -60,7 +58,7 @@ Having trouble? Get help in the official [Saucebase Discord](https://discord.gg/
 | Module | Version | Description |
 | ------ | ------- | ----------- |
 | [auth](https://github.com/saucebase-dev/auth) | [![auth version](https://img.shields.io/packagist/v/saucebase/auth.svg?label=%20)](https://github.com/saucebase-dev/auth) | Authentication, social login, email verification, and admin impersonation |
-| [settings](https://github.com/saucebase-dev/settings) | [![settings version](https://img.shields.io/packagist/v/saucebase/settings.svg?label=%20)](https://github.com/saucebase-dev/settings) | User profile management, avatar uploads, and password changes |
+| [tenancy](https://github.com/saucebase-dev/tenancy) | [![tenancy version](https://img.shields.io/packagist/v/saucebase/tenancy.svg?label=%20)](https://github.com/saucebase-dev/tenancy) | Subdomain workspaces with isolated data, members, invitations, and branding |
 | [billing](https://github.com/saucebase-dev/billing) | [![billing version](https://img.shields.io/packagist/v/saucebase/billing.svg?label=%20)](https://github.com/saucebase-dev/billing) | Subscriptions, checkout sessions, and payment processing |
 | [announcements](https://github.com/saucebase-dev/announcements) | [![announcements version](https://img.shields.io/packagist/v/saucebase/announcements.svg?label=%20)](https://github.com/saucebase-dev/announcements) | Site-wide announcement banners with scheduling and dismissal support |
 | [roadmap](https://github.com/saucebase-dev/roadmap) | [![roadmap version](https://img.shields.io/packagist/v/saucebase/roadmap.svg?label=%20)](https://github.com/saucebase-dev/roadmap) | Feature requests, voting, and public product roadmap |
@@ -76,9 +74,17 @@ Several official packages are maintained outside of this repo:
 
 ## Links
 
-- [License (MIT)](LICENSE)
 - [Contributing](CONTRIBUTING.md)
 - [Documentation](https://saucebase-dev.github.io/docs/)
 - [Demo](https://demo.saucebase.dev/)
-- [Third-party PHP / Composer licenses](THIRD_PARTY_LICENSES.md)
-- [Third-party JavaScript / npm licenses](THIRD_PARTY_PACKAGE_LICENSES.md)
+
+## License
+
+Saucebase is [MIT licensed](LICENSE).
+
+Third-party dependencies keep their own licenses. To list them:
+
+```bash
+composer licenses
+npx license-checker --production
+```
