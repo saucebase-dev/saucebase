@@ -5,8 +5,8 @@ use App\Http\Controllers\IndexController;
 use App\Http\Controllers\PrivacyController;
 use App\Http\Controllers\TermsController;
 use Illuminate\Support\Facades\Route;
-use Saucebase\Core\Localization\LocalizationController;
-use Saucebase\Core\Settings\SettingsController;
+use Saucebase\Core\Http\Controllers\LocalizationController;
+use Saucebase\Core\Http\Controllers\SettingsController;
 
 Route::get('/', IndexController::class)->name('index');
 

@@ -6843,7 +6843,7 @@
             "dist": {
                 "type": "path",
                 "url": "../packages/core",
-                "reference": "e1ad091c29616927d33c49397880920c48937161"
+                "reference": "2d66a0fbe99b280678f5a7c01fc3ace065e1b70b"
             },
             "require": {
                 "cviebrock/eloquent-sluggable": "^13.0.1",
@@ -6877,6 +6877,9 @@
                 "laravel": {
                     "providers": [
                         "Saucebase\\Core\\CoreServiceProvider"
+                    ],
+                    "dont-discover": [
+                        "internachi/modular"
                     ]
                 }
             },
@@ -6885,13 +6888,24 @@
                     "Saucebase\\Core\\": "src/"
                 },
                 "files": [
-                    "src/helpers.php"
+                    "src/Helpers/helpers.php"
                 ]
             },
             "autoload-dev": {
                 "psr-4": {
                     "Saucebase\\Core\\Tests\\": "tests/"
                 }
+            },
+            "scripts": {
+                "test": [
+                    "phpunit"
+                ],
+                "lint": [
+                    "pint"
+                ],
+                "lint:test": [
+                    "pint --test"
+                ]
             },
             "license": [
                 "MIT"
@@ -6906,7 +6920,7 @@
                     "email": "renanroble@gmail.com"
                 }
             ],
-            "description": "The Saucebase core package — navigation, localization, module infrastructure, the settings modal, and the Inertia layer.",
+            "description": "The Saucebase core package",
             "keywords": [
                 "laravel",
                 "saas",
