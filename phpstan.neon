@@ -11,6 +11,14 @@ parameters:
         - app/
         - modules/
 
+    # Larastan infers model properties by parsing migration files, and only looks in
+    # database/migrations by default. Core ships the migrations for its own features
+    # (permissions, media, settings, users.locale), so without this it reports those
+    # columns as undefined properties on App\Models\User.
+    databaseMigrationsPath:
+        - database/migrations
+        - vendor/saucebase/core/database/migrations
+
     # Level 10 is the highest level
     level: 5
 
