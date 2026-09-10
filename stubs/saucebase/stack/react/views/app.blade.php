@@ -1,4 +1,4 @@
-@inject('generalSettings', App\Settings\GeneralSettings::class)
+@inject('generalSettings', Saucebase\Core\Settings\GeneralSettings::class)
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" @class(['dark' => ($appearance ?? 'system') == 'dark'])>
     <head>

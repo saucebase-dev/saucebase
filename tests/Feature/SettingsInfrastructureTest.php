@@ -2,40 +2,57 @@
 
 namespace Tests\Feature;
 
-use App\Filament\Pages\SettingsPage;
 use Filament\Pages\SettingsPage as FilamentSettingsPage;
 use Filament\SpatieLaravelSettingsPluginServiceProvider;
 use Filament\Support\Enums\Width;
 use Illuminate\Support\Facades\Schema;
 use ReflectionClass;
+use Saucebase\Core\Filament\SettingsPage;
 use Tests\TestCase;
 
 class SettingsInfrastructureTest extends TestCase
 {
     /**
-     * Modules ship settings pages without requiring the plugin themselves, so root has to
-     * carry it. Presence is asserted, not the constraint: which version satisfies this is
+     * Modules ship settings pages without requiring the plugin themselves, so something
+     * beneath them has to carry it. That used to be this application; since the v3 core
+     * extraction it is saucebase/core, which owns the SettingsPage base class the pages
+     * extend — the dependency now sits with the code that needs it.
+     *
+     * Presence is asserted, not the constraint: which version satisfies this is
      * `composer.json`'s business, and pinning it here only breaks the test on a bump it
      * has nothing to say about.
      */
-    public function test_root_application_provides_settings_infrastructure_to_modules(): void
+    public function test_core_provides_settings_infrastructure_to_modules(): void
     {
-        $rootComposer = json_decode(
-            file_get_contents(base_path('composer.json')),
+        $coreComposer = json_decode(
+            file_get_contents($this->corePackagePath('composer.json')),
             true,
             flags: JSON_THROW_ON_ERROR,
         );
 
         $this->assertArrayHasKey(
             'filament/spatie-laravel-settings-plugin',
-            $rootComposer['require'],
-            'The settings plugin must be required by the root application, not by a module.',
+            $coreComposer['require'],
+            'The settings plugin must be required by saucebase/core, not by a module.',
         );
 
         $this->assertTrue(
             class_exists(SpatieLaravelSettingsPluginServiceProvider::class),
             'The settings plugin is declared but not installed.',
         );
+    }
+
+    /**
+     * Resolve a path inside the installed saucebase/core package.
+     *
+     * Uses the class map rather than a hardcoded vendor path, so this works whether core
+     * is symlinked from packages/ during development or installed from Packagist.
+     */
+    private function corePackagePath(string $path): string
+    {
+        $src = dirname((new ReflectionClass(SettingsPage::class))->getFileName());
+
+        return dirname($src, 2).'/'.$path;
     }
 
     public function test_root_application_migrations_create_the_settings_repository(): void

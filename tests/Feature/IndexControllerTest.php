@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\Services\FrontendConfig;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use InterNACHI\Modular\Support\ModuleRegistry;
+use Saucebase\Core\Frontend\FrontendConfig;
 use Tests\TestCase;
 
 class IndexControllerTest extends TestCase

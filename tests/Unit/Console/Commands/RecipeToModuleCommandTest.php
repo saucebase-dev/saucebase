@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\Console\Commands;
 
-use App\Console\Commands\SauceBase\RecipeToModuleCommand;
 use Illuminate\Console\OutputStyle;
 use Illuminate\Filesystem\Filesystem;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Saucebase\Core\Modules\RecipeToModuleCommand;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 use Tests\TestCase;

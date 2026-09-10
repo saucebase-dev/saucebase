@@ -2,12 +2,12 @@
 
 namespace Tests\Feature;
 
-use App\Services\FrontendConfig;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
+use Saucebase\Core\Frontend\FrontendConfig;
 use Tests\TestCase;
 
 class InertiaSSRTest extends TestCase

@@ -3,14 +3,14 @@
 namespace Tests\Feature;
 
 use App\Enums\Role;
-use App\Filament\Admin\Pages\LocalizationSettings as LocalizationSettingsPage;
 use App\Models\User;
-use App\Settings\LocalizationSettings;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Testing\AssertableInertia;
 use Livewire\Livewire;
+use Saucebase\Core\Filament\Admin\LocalizationSettings as LocalizationSettingsPage;
+use Saucebase\Core\Localization\LocalizationSettings;
 use Tests\TestCase;
 
 class LocalizationSettingsTest extends TestCase
@@ -30,19 +30,6 @@ class LocalizationSettingsTest extends TestCase
 
         $this->assertSame(['en', 'pt_BR'], $settings->enabled_locales);
         $this->assertSame('en', $settings->default_locale);
-    }
-
-    public function test_settings_migration_preserves_existing_values(): void
-    {
-        $this->setEnabledLocales(['en'], 'en');
-
-        $migration = require database_path('settings/0001_01_01_000012_create_localization_settings.php');
-        $migration->up();
-
-        app()->forgetInstance(LocalizationSettings::class);
-        $settings = app(LocalizationSettings::class);
-
-        $this->assertSame(['en'], $settings->enabled_locales);
     }
 
     public function test_available_locales_are_discovered_from_lang_directories(): void

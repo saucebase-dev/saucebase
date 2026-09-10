@@ -2,12 +2,12 @@
 
 namespace Tests\Feature;
 
-use App\Settings\SectionRegistry;
-use App\Settings\SettingsSection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Saucebase\Core\Settings\SectionRegistry;
+use Saucebase\Core\Settings\SettingsSection;
 use Tests\TestCase;
 
 class SettingsModalTest extends TestCase

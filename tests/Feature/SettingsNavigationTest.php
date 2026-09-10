@@ -3,11 +3,11 @@
 namespace Tests\Feature;
 
 use App\Enums\Role;
-use App\Filament\Admin\Pages\GeneralSettings;
 use App\Models\User;
 use Filament\Facades\Filament;
 use Filament\Navigation\NavigationGroup;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Saucebase\Core\Filament\Admin\GeneralSettings;
 use Tests\TestCase;
 
 class SettingsNavigationTest extends TestCase

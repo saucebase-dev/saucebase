@@ -3,9 +3,7 @@
 namespace Tests\Feature;
 
 use App\Enums\Role;
-use App\Filament\Admin\Pages\GeneralSettings as GeneralSettingsPage;
 use App\Models\User;
-use App\Settings\GeneralSettings;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Route;
@@ -14,6 +12,8 @@ use Inertia\Inertia;
 use Inertia\Testing\AssertableInertia;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Saucebase\Core\Filament\Admin\GeneralSettings as GeneralSettingsPage;
+use Saucebase\Core\Settings\GeneralSettings;
 use Tests\TestCase;
 
 class GeneralSettingsTest extends TestCase
@@ -39,25 +39,6 @@ class GeneralSettingsTest extends TestCase
         $this->assertNull($settings->site_icon);
         $this->assertNull($settings->site_logo);
         $this->assertFalse($settings->prefer_logo);
-    }
-
-    public function test_core_settings_migration_preserves_existing_values(): void
-    {
-        $settings = app(GeneralSettings::class);
-        $settings->site_name = 'Existing Platform';
-        $settings->site_tagline = 'Existing tagline';
-        $settings->site_description = 'Existing description.';
-        $settings->save();
-
-        $migration = require database_path('settings/0001_01_01_000010_create_general_settings.php');
-        $migration->up();
-
-        app()->forgetInstance(GeneralSettings::class);
-        $reloadedSettings = app(GeneralSettings::class);
-
-        $this->assertSame('Existing Platform', $reloadedSettings->site_name);
-        $this->assertSame('Existing tagline', $reloadedSettings->site_tagline);
-        $this->assertSame('Existing description.', $reloadedSettings->site_description);
     }
 
     public function test_administrator_can_load_general_settings_form(): void

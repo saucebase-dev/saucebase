@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\FrontendConfig;
 use Illuminate\Http\Response;
 use Inertia\Inertia;
 use Inertia\Response as InertiaResponse;
+use Saucebase\Core\Frontend\FrontendConfig;
 
 class IndexController extends Controller
 {

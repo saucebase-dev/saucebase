@@ -98,7 +98,7 @@ return [
     | installed module, whether or not it is named here; a discovered locale with
     | no entry falls back to its own code. Which of them visitors can switch
     | between, and which one is the default, are set in the admin panel under
-    | Settings, and stored via App\Settings\LocalizationSettings.
+    | Settings, and stored via Saucebase\Core\Localization\LocalizationSettings.
     |
     */
     'available_locales' => [

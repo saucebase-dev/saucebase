@@ -2,7 +2,7 @@
 
 namespace ___MODULE_NAMESPACE___\___Module___\Providers;
 
-use App\Providers\ModuleServiceProvider;
+use Saucebase\Core\Modules\ModuleServiceProvider;
 
 class ___Module___ServiceProvider extends ModuleServiceProvider
 {
