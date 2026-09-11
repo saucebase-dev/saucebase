@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c2270dda5abc5024f5143b8d7d7815d0",
+    "content-hash": "22ffbad8e2dfd850e08c04fdc3a3a1b3",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -2924,16 +2924,16 @@
         },
         {
             "name": "inertiajs/inertia-laravel",
-            "version": "v3.3.3",
+            "version": "v3.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/inertiajs/inertia-laravel.git",
-                "reference": "42dccee77d7df6b2e152965434a89cafc35a2961"
+                "reference": "15fb5a7b2f984780ff968d9da3787aef6138326d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/inertiajs/inertia-laravel/zipball/42dccee77d7df6b2e152965434a89cafc35a2961",
-                "reference": "42dccee77d7df6b2e152965434a89cafc35a2961",
+                "url": "https://api.github.com/repos/inertiajs/inertia-laravel/zipball/15fb5a7b2f984780ff968d9da3787aef6138326d",
+                "reference": "15fb5a7b2f984780ff968d9da3787aef6138326d",
                 "shasum": ""
             },
             "require": {
@@ -2990,9 +2990,9 @@
             ],
             "support": {
                 "issues": "https://github.com/inertiajs/inertia-laravel/issues",
-                "source": "https://github.com/inertiajs/inertia-laravel/tree/v3.3.3"
+                "source": "https://github.com/inertiajs/inertia-laravel/tree/v3.3.4"
             },
-            "time": "2026-09-04T13:56:39+00:00"
+            "time": "2026-09-11T13:57:53+00:00"
         },
         {
             "name": "inertiaui/modal",
@@ -6839,11 +6839,17 @@
         },
         {
             "name": "saucebase/core",
-            "version": "0.1.0",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/saucebase-dev/core.git",
+                "reference": "c8e7188d98f95bdf6a3c0cda732ee893f8043e7d"
+            },
             "dist": {
-                "type": "path",
-                "url": "../packages/core",
-                "reference": "2d66a0fbe99b280678f5a7c01fc3ace065e1b70b"
+                "type": "zip",
+                "url": "https://api.github.com/repos/saucebase-dev/core/zipball/c8e7188d98f95bdf6a3c0cda732ee893f8043e7d",
+                "reference": "c8e7188d98f95bdf6a3c0cda732ee893f8043e7d",
+                "shasum": ""
             },
             "require": {
                 "cviebrock/eloquent-sluggable": "^13.0.1",
@@ -6868,6 +6874,7 @@
                 "tightenco/ziggy": "^2.6.4"
             },
             "require-dev": {
+                "larastan/larastan": "^3.11",
                 "laravel/pint": "^1.30.5",
                 "orchestra/testbench": "^11.0",
                 "phpunit/phpunit": "^12.5.34"
@@ -6884,29 +6891,14 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Saucebase\\Core\\": "src/"
-                },
                 "files": [
                     "src/Helpers/helpers.php"
-                ]
-            },
-            "autoload-dev": {
+                ],
                 "psr-4": {
-                    "Saucebase\\Core\\Tests\\": "tests/"
+                    "Saucebase\\Core\\": "src/"
                 }
             },
-            "scripts": {
-                "test": [
-                    "phpunit"
-                ],
-                "lint": [
-                    "pint"
-                ],
-                "lint:test": [
-                    "pint --test"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -6926,10 +6918,11 @@
                 "saas",
                 "saucebase"
             ],
-            "transport-options": {
-                "symlink": true,
-                "relative": true
-            }
+            "support": {
+                "issues": "https://github.com/saucebase-dev/core/issues",
+                "source": "https://github.com/saucebase-dev/core/tree/v1.0.0"
+            },
+            "time": "2026-09-11T16:27:28+00:00"
         },
         {
             "name": "saucebase/module-installer",
@@ -12126,16 +12119,16 @@
         },
         {
             "name": "larastan/larastan",
-            "version": "v3.11.0",
+            "version": "v3.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/larastan/larastan.git",
-                "reference": "9baa74074f17cc70feaef31616a06ea0faeebba5"
+                "reference": "ab26fdf90d84877061388109e1e251f67ca3ff7a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/larastan/larastan/zipball/9baa74074f17cc70feaef31616a06ea0faeebba5",
-                "reference": "9baa74074f17cc70feaef31616a06ea0faeebba5",
+                "url": "https://api.github.com/repos/larastan/larastan/zipball/ab26fdf90d84877061388109e1e251f67ca3ff7a",
+                "reference": "ab26fdf90d84877061388109e1e251f67ca3ff7a",
                 "shasum": ""
             },
             "require": {
@@ -12203,7 +12196,7 @@
             ],
             "support": {
                 "issues": "https://github.com/larastan/larastan/issues",
-                "source": "https://github.com/larastan/larastan/tree/v3.11.0"
+                "source": "https://github.com/larastan/larastan/tree/v3.12.0"
             },
             "funding": [
                 {
@@ -12211,20 +12204,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-09-01T16:35:48+00:00"
+            "time": "2026-09-10T09:06:54+00:00"
         },
         {
             "name": "laravel/boost",
-            "version": "v2.8.0",
+            "version": "v2.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/boost.git",
-                "reference": "ac0b51fbaf3cc19453aef7a1b188bce19a1ec049"
+                "reference": "820bc93b7826c456ca591cfecca463b4dc794a72"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/boost/zipball/ac0b51fbaf3cc19453aef7a1b188bce19a1ec049",
-                "reference": "ac0b51fbaf3cc19453aef7a1b188bce19a1ec049",
+                "url": "https://api.github.com/repos/laravel/boost/zipball/820bc93b7826c456ca591cfecca463b4dc794a72",
+                "reference": "820bc93b7826c456ca591cfecca463b4dc794a72",
                 "shasum": ""
             },
             "require": {
@@ -12277,7 +12270,7 @@
                 "issues": "https://github.com/laravel/boost/issues",
                 "source": "https://github.com/laravel/boost"
             },
-            "time": "2026-09-08T17:07:40+00:00"
+            "time": "2026-09-10T15:25:39+00:00"
         },
         {
             "name": "laravel/mcp",
@@ -12435,16 +12428,16 @@
         },
         {
             "name": "laravel/pint",
-            "version": "v1.32.0",
+            "version": "v1.32.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/pint.git",
-                "reference": "dea4e95f0f1722b8fec9eaabc8fdd676d71e8841"
+                "reference": "006bd7825eb01daf92959d060b89cd9514fe4253"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/pint/zipball/dea4e95f0f1722b8fec9eaabc8fdd676d71e8841",
-                "reference": "dea4e95f0f1722b8fec9eaabc8fdd676d71e8841",
+                "url": "https://api.github.com/repos/laravel/pint/zipball/006bd7825eb01daf92959d060b89cd9514fe4253",
+                "reference": "006bd7825eb01daf92959d060b89cd9514fe4253",
                 "shasum": ""
             },
             "require": {
@@ -12501,7 +12494,7 @@
                 "issues": "https://github.com/laravel/pint/issues",
                 "source": "https://github.com/laravel/pint"
             },
-            "time": "2026-09-09T16:26:47+00:00"
+            "time": "2026-09-10T10:47:55+00:00"
         },
         {
             "name": "laravel/roster",
