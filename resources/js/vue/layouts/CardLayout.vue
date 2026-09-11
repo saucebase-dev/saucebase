@@ -44,7 +44,7 @@ withDefaults(
         <div class="mt-6">
             <Head :title="title" />
             <Link :href="route('index')" class="mt-6 font-medium">
-                <AppLogo size="md" :showText="true" />
+                <AppLogo size="md" />
             </Link>
         </div>
 

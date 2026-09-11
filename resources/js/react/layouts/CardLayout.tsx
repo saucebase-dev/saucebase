@@ -64,7 +64,7 @@ export default function CardLayout({
             <div className="mt-6">
                 <Head title={title} />
                 <Link href={route('index')} className="mt-6 font-medium">
-                    <AppLogo size="md" showText={true} />
+                    <AppLogo size="md" />
                 </Link>
             </div>
 

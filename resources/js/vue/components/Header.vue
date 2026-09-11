@@ -87,7 +87,7 @@ onBeforeUnmount(() => {
                     href="/"
                     class="flex shrink-0 items-center transition-opacity hover:opacity-80"
                 >
-                    <AppLogo size="md" :showText="true" />
+                    <AppLogo size="md" />
                 </Link>
 
                 <!-- Landing navigation - Centered -->

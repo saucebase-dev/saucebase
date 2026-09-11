@@ -84,7 +84,7 @@ export default function Header() {
                         href="/"
                         className="flex shrink-0 items-center transition-opacity hover:opacity-80"
                     >
-                        <AppLogo size="md" showText />
+                        <AppLogo size="md" />
                     </Link>
 
                     {/* Centered navigation */}

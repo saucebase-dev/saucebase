@@ -26,7 +26,7 @@ const settings = useSettings();
                     <div
                         class="text-sidebar-primary-foreground flex size-8 items-center justify-center rounded-lg p-0"
                     >
-                        <AppLogo size="sm" />
+                        <AppLogo size="sm" variant="icon" />
                     </div>
                     <div class="grid flex-1 text-left text-sm leading-tight">
                         <span

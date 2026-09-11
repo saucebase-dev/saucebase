@@ -23,7 +23,7 @@ export default function AppBrand() {
                 <SidebarMenuButton size="lg" asChild>
                     <Link href="/dashboard">
                         <div className="text-sidebar-primary-foreground flex size-8 items-center justify-center rounded-lg p-0">
-                            <AppLogo size="sm" />
+                            <AppLogo size="sm" variant="icon" />
                         </div>
                         <div className="grid flex-1 text-left text-sm leading-tight">
                             <span

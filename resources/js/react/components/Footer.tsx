@@ -58,16 +58,9 @@ export default function Footer() {
                     className="text-center text-[21vw] leading-none font-black -tracking-widest select-none"
                     data-testid="footer-watermark"
                 >
-                    {settings.general.site_name === 'Saucebase' ? (
-                        <>
-                            <span className="text-foreground/5">Sauce</span>
-                            <span className="text-foreground/10">base</span>
-                        </>
-                    ) : (
-                        <span className="text-foreground/10">
-                            {settings.general.site_name}
-                        </span>
-                    )}
+                    <span className="text-foreground/10">
+                        {settings.general.site_name}
+                    </span>
                 </p>
             </div>
         </footer>
