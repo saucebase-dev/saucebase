@@ -41,8 +41,8 @@
              <Head> component adopts them via the matching data-inertia keys. --}}
         <x-inertia::head>
             <title data-inertia>{{ $brand->site_name }}</title>
-            @if ($brand->site_description)
-                <meta data-inertia="description" name="description" content="{{ $brand->site_description }}">
+            @if ($description = $brand->metaDescription())
+                <meta data-inertia="description" name="description" content="{{ $description }}">
             @endif
         </x-inertia::head>
     </head>
