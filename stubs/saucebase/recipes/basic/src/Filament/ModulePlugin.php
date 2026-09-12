@@ -2,9 +2,9 @@
 
 namespace ___MODULE_NAMESPACE___\___Module___\Filament;
 
-use App\Filament\ModulePlugin;
 use Filament\Contracts\Plugin;
 use Filament\Panel;
+use Saucebase\Core\Filament\ModulePlugin;
 
 class ___Module___Plugin implements Plugin
 {

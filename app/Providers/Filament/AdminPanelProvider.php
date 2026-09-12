@@ -2,7 +2,6 @@
 
 namespace App\Providers\Filament;
 
-use App\Filament\ModulesPlugin;
 use Filament\Actions\Action;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -20,6 +19,9 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Openplain\FilamentShadcnTheme\Color;
+use Saucebase\Core\Filament\Admin\Pages\GeneralSettings;
+use Saucebase\Core\Filament\Admin\Pages\LocalizationSettings;
+use Saucebase\Core\Filament\ModulesPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -50,8 +52,14 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\Filament\Admin\Resources')
             ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\Filament\Admin\Pages')
+            // Core's own settings pages are named rather than discovered: they live in
+            // vendor/, where Filament's directory scan does not reach. Removing one is a
+            // deleted line here, which is the escape hatch for anybody rebranding.
+            // TODO: Consider adding a mechanism to allow discovery of core settings pages if needed.
             ->pages([
                 Dashboard::class,
+                GeneralSettings::class,
+                LocalizationSettings::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Admin/Widgets'), for: 'App\Filament\Admin\Widgets')
             ->widgets([
