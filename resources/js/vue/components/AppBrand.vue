@@ -4,7 +4,6 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { useSettings } from '@/composables/useSettings';
 import { Link } from '@inertiajs/vue3';
 import AppLogo from './AppLogo.vue';
 
@@ -14,8 +13,10 @@ import AppLogo from './AppLogo.vue';
  * What fills the `sidebar-brand` slot when no module claims it. A module with something
  * better to put there registers over it, so core never needs to know whether any
  * particular module is installed.
+ *
+ * The wide logo already carries the name; the square icon takes over when the sidebar
+ * collapses to icons.
  */
-const settings = useSettings();
 </script>
 
 <template>
@@ -23,19 +24,14 @@ const settings = useSettings();
         <SidebarMenuItem>
             <SidebarMenuButton size="lg" as-child>
                 <Link href="/dashboard">
-                    <div
-                        class="text-sidebar-primary-foreground flex size-8 items-center justify-center rounded-lg p-0"
+                    <span
+                        class="flex min-w-0 group-data-[collapsible=icon]:hidden"
                     >
+                        <AppLogo size="sm" />
+                    </span>
+                    <span class="hidden group-data-[collapsible=icon]:flex">
                         <AppLogo size="sm" variant="icon" />
-                    </div>
-                    <div class="grid flex-1 text-left text-sm leading-tight">
-                        <span
-                            class="truncate font-medium"
-                            data-testid="app-brand-name"
-                        >
-                            {{ settings.general.site_name }}
-                        </span>
-                    </div>
+                    </span>
                 </Link>
             </SidebarMenuButton>
         </SidebarMenuItem>

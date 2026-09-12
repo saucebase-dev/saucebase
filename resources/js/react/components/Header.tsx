@@ -5,10 +5,19 @@ import type { MenuItem } from '@/types/navigation';
 import { Link, usePage } from '@inertiajs/react';
 import { ModalLink } from '@inertiaui/modal-react';
 import { ArrowRight, ExternalLink, Menu, X } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type MouseEvent } from 'react';
 import AppLogo from './AppLogo';
 import LanguageSelector from './LanguageSelector';
 import ThemeSelector from './ThemeSelector';
+
+/**
+ * The modal marks `#app` `aria-hidden` as it opens, and its focus trap only
+ * claims focus once the panel has loaded. Leaving focus on the trigger in that
+ * gap puts a focused element inside an aria-hidden subtree.
+ */
+function blurTrigger(event: MouseEvent<Element>) {
+    (event.currentTarget as HTMLElement).blur();
+}
 
 export default function Header() {
     const t = useT();
@@ -42,7 +51,9 @@ export default function Header() {
      * shared link lands on the full page.
      */
     const AuthLink = auth?.modal_enabled ? ModalLink : Link;
-    const authLinkProps = auth?.modal_enabled ? { navigate: true } : {};
+    const authLinkProps = auth?.modal_enabled
+        ? { navigate: true, onClick: blurTrigger }
+        : {};
 
     useEffect(() => {
         const handleScroll = () => {
@@ -146,7 +157,9 @@ export default function Header() {
                         {route().has('logout') && isLoggedIn && (
                             <Link
                                 href={route('logout')}
-                                className="text-muted-foreground hover:bg-accent hover:text-accent-foreground rounded-xl px-4 py-2 text-sm font-medium transition-all duration-200"
+                                method="post"
+                                as="button"
+                                className="text-muted-foreground hover:bg-accent hover:text-accent-foreground cursor-pointer rounded-xl px-4 py-2 text-sm font-medium transition-all duration-200"
                             >
                                 {t('Logout')}
                             </Link>

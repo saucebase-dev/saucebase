@@ -17,6 +17,20 @@ function applyTheme(theme: Theme): void {
     document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';
 }
 
+export type TransitionOrigin = { x: number; y: number };
+
+/** Measure the rendered option before the menu handles selection and closes. */
+export function transitionOrigin(event: {
+    currentTarget: EventTarget | null;
+}): TransitionOrigin {
+    const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
+
+    return {
+        x: rect.left + rect.width / 2,
+        y: rect.top + rect.height / 2,
+    };
+}
+
 export function initializeTheme(): void {
     const stored = (localStorage.getItem(STORAGE_KEY) as Theme) || 'auto';
     applyTheme(stored);
@@ -39,46 +53,62 @@ export function useTheme() {
         applyTheme(theme);
     }, [theme]);
 
-    const setTheme = useCallback((next: Theme, triggerEl?: HTMLElement) => {
-        localStorage.setItem(STORAGE_KEY, next);
-        setCookie(next);
+    const setTheme = useCallback(
+        (next: Theme, origin: TransitionOrigin, animate = true) => {
+            localStorage.setItem(STORAGE_KEY, next);
+            setCookie(next);
 
-        if (
-            !document.startViewTransition ||
-            window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
-            !triggerEl
-        ) {
-            setThemeState(next);
-            return;
-        }
+            const apply = () => {
+                // Applied to the DOM here, not only through state: the effect runs
+                // after the view transition has already captured the new snapshot.
+                applyTheme(next);
+                setThemeState(next);
+            };
 
-        const rect = triggerEl.getBoundingClientRect();
-        const x = rect.left + rect.width / 2;
-        const y = rect.top + rect.height / 2;
-        const endRadius = Math.hypot(
-            Math.max(x, innerWidth - x),
-            Math.max(y, innerHeight - y),
-        );
+            if (
+                !animate ||
+                !document.startViewTransition ||
+                window.matchMedia('(prefers-reduced-motion: reduce)').matches
+            ) {
+                apply();
+                return;
+            }
 
-        const transition = document.startViewTransition(() =>
-            setThemeState(next),
-        );
-        transition.ready.then(() => {
-            document.documentElement.animate(
-                {
-                    clipPath: [
-                        `circle(0px at ${x}px ${y}px)`,
-                        `circle(${endRadius}px at ${x}px ${y}px)`,
-                    ],
-                },
-                {
-                    duration: 500,
-                    easing: 'ease-in-out',
-                    pseudoElement: '::view-transition-new(root)',
-                },
+            const root = document.documentElement;
+            const { x, y } = origin;
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            const endRadius = Math.hypot(
+                Math.max(x, width - x),
+                Math.max(y, height - y),
             );
-        });
-    }, []);
+
+            /** Circle percentages use the reference box's normalized diagonal. */
+            const radiusReference = Math.hypot(width, height) / Math.SQRT2;
+
+            root.style.setProperty('--theme-reveal-x', `${(x / width) * 100}%`);
+            root.style.setProperty(
+                '--theme-reveal-y',
+                `${(y / height) * 100}%`,
+            );
+            root.style.setProperty(
+                '--theme-reveal-radius',
+                `${(endRadius / radiusReference) * 100}%`,
+            );
+            root.setAttribute('data-theme-reveal', '');
+
+            const transition = document.startViewTransition(apply);
+
+            // A skipped transition still applies the theme and resolves finished.
+            transition.finished.finally(() => {
+                root.removeAttribute('data-theme-reveal');
+                root.style.removeProperty('--theme-reveal-x');
+                root.style.removeProperty('--theme-reveal-y');
+                root.style.removeProperty('--theme-reveal-radius');
+            });
+        },
+        [],
+    );
 
     return { theme, setTheme };
 }

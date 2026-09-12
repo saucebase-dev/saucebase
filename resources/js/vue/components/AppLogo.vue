@@ -25,7 +25,7 @@ type Size = 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
 
 const heights: Record<Size, string> = {
     sm: 'h-8',
-    md: 'h-12',
+    md: 'h-10',
     lg: 'h-16',
     xl: 'h-20',
     xxl: 'h-30',
@@ -33,7 +33,7 @@ const heights: Record<Size, string> = {
 
 const squares: Record<Size, string> = {
     sm: 'w-8',
-    md: 'w-12',
+    md: 'w-10',
     lg: 'w-16',
     xl: 'w-20',
     xxl: 'w-30',

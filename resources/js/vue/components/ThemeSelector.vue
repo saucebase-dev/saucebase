@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { setCookie } from '@/lib/utils';
 import { useColorMode } from '@vueuse/core';
-import { computed } from 'vue';
+import { computed, nextTick } from 'vue';
 import IconAuto from '~icons/fluent/dark-theme-20-filled';
 import IconMoon from '~icons/heroicons/moon';
 import IconSun from '~icons/heroicons/sun';
@@ -65,68 +65,73 @@ const visibleThemes = computed(() =>
     props.hideDevice ? themes.filter((t) => t.code !== 'auto') : [...themes],
 );
 
+type TransitionOrigin = { x: number; y: number };
+
+/** Measure the rendered option before the dropdown handles selection and closes. */
+function transitionOrigin(event: MouseEvent): TransitionOrigin {
+    const option = event.currentTarget as HTMLElement;
+    const rect = option.getBoundingClientRect();
+
+    return {
+        x: rect.left + rect.width / 2,
+        y: rect.top + rect.height / 2,
+    };
+}
+
 const switchTheme = async (
     themeCode: 'light' | 'dark' | 'auto',
-    triggerEl?: HTMLElement,
+    event: MouseEvent,
 ) => {
+    const { x, y } = transitionOrigin(event);
     setCookie('appearance', themeCode);
-    // Check if browser supports View Transitions API
+
     if (
         props.disableAnimation ||
         !document.startViewTransition ||
         window.matchMedia('(prefers-reduced-motion: reduce)').matches
     ) {
-        // Fallback: Just change the theme without animation
         colorMode.value = themeCode;
         return;
     }
 
-    let x = 0;
-    let y = 0;
-
-    if (triggerEl && typeof triggerEl.getBoundingClientRect === 'function') {
-        const rect = triggerEl.getBoundingClientRect();
-        x = rect.left + rect.width / 2;
-        y = rect.top + rect.height / 2;
-    }
-
-    // Calculate the radius needed to cover the entire viewport
+    const root = document.documentElement;
+    const width = window.innerWidth;
+    const height = window.innerHeight;
     const endRadius = Math.hypot(
-        Math.max(x, innerWidth - x),
-        Math.max(y, innerHeight - y),
+        Math.max(x, width - x),
+        Math.max(y, height - y),
     );
 
-    // Start view transition
-    const transition = document.startViewTransition(() => {
-        colorMode.value = themeCode;
-    });
+    /** Circle percentages use the reference box's normalized diagonal. */
+    const radiusReference = Math.hypot(width, height) / Math.SQRT2;
 
-    // Wait for transition to be ready
-    await transition.ready;
-
-    // Animate the clip-path
-    document.documentElement.animate(
-        {
-            clipPath: [
-                `circle(0px at ${x}px ${y}px)`,
-                `circle(${endRadius}px at ${x}px ${y}px)`,
-            ],
-        },
-        {
-            duration: 400,
-            easing: 'cubic-bezier(0.4, 0, 1, 1)',
-            pseudoElement: '::view-transition-new(root)',
-        },
+    root.style.setProperty('--theme-reveal-x', `${(x / width) * 100}%`);
+    root.style.setProperty('--theme-reveal-y', `${(y / height) * 100}%`);
+    root.style.setProperty(
+        '--theme-reveal-radius',
+        `${(endRadius / radiusReference) * 100}%`,
     );
+    root.setAttribute('data-theme-reveal', '');
+
+    try {
+        const transition = document.startViewTransition(async () => {
+            colorMode.value = themeCode;
+            await nextTick();
+        });
+
+        // A skipped transition still applies the theme and resolves finished.
+        await transition.finished;
+    } finally {
+        root.removeAttribute('data-theme-reveal');
+        root.style.removeProperty('--theme-reveal-x');
+        root.style.removeProperty('--theme-reveal-y');
+        root.style.removeProperty('--theme-reveal-radius');
+    }
 };
 
 const currentTheme = computed(
     () => themes.find((theme) => theme.code === colorMode.value) || themes[0],
 );
-
-function handleItemClick(themeCode: 'light' | 'dark' | 'auto', event: Event) {
-    switchTheme(themeCode, event.currentTarget as HTMLElement);
-}
 </script>
 
 <template>
@@ -143,7 +148,7 @@ function handleItemClick(themeCode: 'light' | 'dark' | 'auto', event: Event) {
             ]"
             :data-testid="`color-mode-${theme.code}`"
             :aria-label="$t(theme.name)"
-            @click="handleItemClick(theme.code, $event)"
+            @click.capture="switchTheme(theme.code, $event)"
         >
             <component :is="theme.icon" class="size-4" />
             {{ $t(theme.name) }}
@@ -167,7 +172,7 @@ function handleItemClick(themeCode: 'light' | 'dark' | 'auto', event: Event) {
                 v-for="theme in visibleThemes"
                 :key="theme.code"
                 :data-testid="`color-mode-${theme.code}`"
-                @click="handleItemClick(theme.code, $event)"
+                @click.capture="switchTheme(theme.code, $event)"
                 :class="{
                     'bg-accent text-accent-foreground':
                         colorMode === theme.code,
@@ -195,7 +200,7 @@ function handleItemClick(themeCode: 'light' | 'dark' | 'auto', event: Event) {
                 v-for="theme in visibleThemes"
                 :key="theme.code"
                 :data-testid="`color-mode-${theme.code}`"
-                @click="handleItemClick(theme.code, $event)"
+                @click.capture="switchTheme(theme.code, $event)"
                 :class="{ 'bg-accent': colorMode === theme.code }"
             >
                 <component :is="theme.icon" class="size-4" />
