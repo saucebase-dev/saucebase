@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c2270dda5abc5024f5143b8d7d7815d0",
+    "content-hash": "5cd8be5fab4a24a729e0acff12770f6c",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -2924,16 +2924,16 @@
         },
         {
             "name": "inertiajs/inertia-laravel",
-            "version": "v3.3.3",
+            "version": "v3.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/inertiajs/inertia-laravel.git",
-                "reference": "42dccee77d7df6b2e152965434a89cafc35a2961"
+                "reference": "15fb5a7b2f984780ff968d9da3787aef6138326d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/inertiajs/inertia-laravel/zipball/42dccee77d7df6b2e152965434a89cafc35a2961",
-                "reference": "42dccee77d7df6b2e152965434a89cafc35a2961",
+                "url": "https://api.github.com/repos/inertiajs/inertia-laravel/zipball/15fb5a7b2f984780ff968d9da3787aef6138326d",
+                "reference": "15fb5a7b2f984780ff968d9da3787aef6138326d",
                 "shasum": ""
             },
             "require": {
@@ -2990,9 +2990,9 @@
             ],
             "support": {
                 "issues": "https://github.com/inertiajs/inertia-laravel/issues",
-                "source": "https://github.com/inertiajs/inertia-laravel/tree/v3.3.3"
+                "source": "https://github.com/inertiajs/inertia-laravel/tree/v3.3.4"
             },
-            "time": "2026-09-04T13:56:39+00:00"
+            "time": "2026-09-11T13:57:53+00:00"
         },
         {
             "name": "inertiaui/modal",
@@ -6839,11 +6839,17 @@
         },
         {
             "name": "saucebase/core",
-            "version": "0.1.0",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/saucebase-dev/core.git",
+                "reference": "62a51d57a3779a79898257244ff7b8f1b97a3b9a"
+            },
             "dist": {
-                "type": "path",
-                "url": "../packages/core",
-                "reference": "2d66a0fbe99b280678f5a7c01fc3ace065e1b70b"
+                "type": "zip",
+                "url": "https://api.github.com/repos/saucebase-dev/core/zipball/62a51d57a3779a79898257244ff7b8f1b97a3b9a",
+                "reference": "62a51d57a3779a79898257244ff7b8f1b97a3b9a",
+                "shasum": ""
             },
             "require": {
                 "cviebrock/eloquent-sluggable": "^13.0.1",
@@ -6868,6 +6874,7 @@
                 "tightenco/ziggy": "^2.6.4"
             },
             "require-dev": {
+                "larastan/larastan": "^3.11",
                 "laravel/pint": "^1.30.5",
                 "orchestra/testbench": "^11.0",
                 "phpunit/phpunit": "^12.5.34"
@@ -6884,29 +6891,14 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Saucebase\\Core\\": "src/"
-                },
                 "files": [
                     "src/Helpers/helpers.php"
-                ]
-            },
-            "autoload-dev": {
+                ],
                 "psr-4": {
-                    "Saucebase\\Core\\Tests\\": "tests/"
+                    "Saucebase\\Core\\": "src/"
                 }
             },
-            "scripts": {
-                "test": [
-                    "phpunit"
-                ],
-                "lint": [
-                    "pint"
-                ],
-                "lint:test": [
-                    "pint --test"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -6926,10 +6918,11 @@
                 "saas",
                 "saucebase"
             ],
-            "transport-options": {
-                "symlink": true,
-                "relative": true
-            }
+            "support": {
+                "issues": "https://github.com/saucebase-dev/core/issues",
+                "source": "https://github.com/saucebase-dev/core/tree/v1.0.1"
+            },
+            "time": "2026-09-11T18:45:42+00:00"
         },
         {
             "name": "saucebase/module-installer",
