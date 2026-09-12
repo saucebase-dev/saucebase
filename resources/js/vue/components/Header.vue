@@ -24,9 +24,18 @@ const page = usePage();
  */
 const authLink = computed(() =>
     page.props.auth?.modal_enabled
-        ? { is: ModalLink, props: { navigate: true } }
+        ? { is: ModalLink, props: { navigate: true, onClick: blurTrigger } }
         : { is: Link, props: {} },
 );
+
+/**
+ * The modal marks `#app` `aria-hidden` as it opens, and its focus trap only
+ * claims focus once the panel has loaded. Leaving focus on the trigger in that
+ * gap puts a focused element inside an aria-hidden subtree.
+ */
+function blurTrigger(event: MouseEvent) {
+    (event.currentTarget as HTMLElement).blur();
+}
 const landingNav = computed<MenuItem[]>(
     () => (page.props.navigation as { landing?: MenuItem[] })?.landing || [],
 );
@@ -87,7 +96,7 @@ onBeforeUnmount(() => {
                     href="/"
                     class="flex shrink-0 items-center transition-opacity hover:opacity-80"
                 >
-                    <AppLogo size="md" :showText="true" />
+                    <AppLogo size="md" />
                 </Link>
 
                 <!-- Landing navigation - Centered -->
@@ -159,7 +168,9 @@ onBeforeUnmount(() => {
                     <Link
                         v-if="route().has('logout') && $page.props.auth?.user"
                         :href="route('logout')"
-                        class="text-muted-foreground hover:bg-accent hover:text-accent-foreground rounded-xl px-4 py-2 text-sm font-medium transition-all duration-200"
+                        method="post"
+                        as="button"
+                        class="text-muted-foreground hover:bg-accent hover:text-accent-foreground cursor-pointer rounded-xl px-4 py-2 text-sm font-medium transition-all duration-200"
                     >
                         {{ $t('Logout') }}
                     </Link>

@@ -6,7 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.4",
-        "laravel/framework": "^13.30.1",
+        "laravel/framework": "^13.31.0",
         "laravel/tinker": "^3.0.2",
         "saucebase/core": "^1.0"
     },
@@ -14,13 +14,13 @@
         "barryvdh/laravel-ide-helper": "^3.7",
         "fakerphp/faker": "^1.24.1",
         "kkomelin/laravel-translatable-string-exporter": "^1.26",
-        "larastan/larastan": "^3.11",
-        "laravel/boost": "^2.7.1",
+        "larastan/larastan": "^3.12",
+        "laravel/boost": "^2.8.1",
         "laravel/pail": "^1.2.7",
-        "laravel/pint": "^1.30.5",
+        "laravel/pint": "^1.32.1",
         "mockery/mockery": "^1.6.15",
         "nunomaduro/collision": "^8.9.5",
-        "phpunit/phpunit": "^12.5.34",
+        "phpunit/phpunit": "^12.5.35",
         "saucebase/laravel-playwright": "^1.1"
     },
     "suggest": {

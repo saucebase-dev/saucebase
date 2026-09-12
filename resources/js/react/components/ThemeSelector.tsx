@@ -9,9 +9,9 @@ import {
     DropdownMenuSubTrigger,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useTheme, type Theme } from '@/hooks/useTheme';
+import { transitionOrigin, useTheme, type Theme } from '@/hooks/useTheme';
 import { useT } from '@/i18n';
-import { useRef, type ReactNode } from 'react';
+import { type MouseEvent, type ReactNode } from 'react';
 import IconAuto from '~icons/fluent/dark-theme-20-filled';
 import IconMoon from '~icons/heroicons/moon';
 import IconSun from '~icons/heroicons/sun';
@@ -42,7 +42,6 @@ export default function ThemeSelector({
 }: ThemeSelectorProps) {
     const t = useT();
     const { theme, setTheme } = useTheme();
-    const triggerRef = useRef<HTMLButtonElement>(null);
 
     const visibleThemes = hideDevice
         ? themes.filter((th) => th.code !== 'auto')
@@ -50,13 +49,8 @@ export default function ThemeSelector({
     const currentTheme = themes.find((th) => th.code === theme) ?? themes[0];
     const CurrentIcon = currentTheme.Icon;
 
-    function switchTheme(code: Theme, el?: HTMLElement) {
-        setTheme(
-            code,
-            disableAnimation
-                ? undefined
-                : (el ?? triggerRef.current ?? undefined),
-        );
+    function switchTheme(code: Theme, event: MouseEvent<HTMLElement>) {
+        setTheme(code, transitionOrigin(event), !disableAnimation);
     }
 
     if (inline) {
@@ -70,7 +64,7 @@ export default function ThemeSelector({
                         className={`${fullWidth ? 'flex-1' : ''} ${theme === code ? 'font-semibold' : ''}`}
                         data-testid={`color-mode-${code}`}
                         aria-label={t(name)}
-                        onClick={(e) => switchTheme(code, e.currentTarget)}
+                        onClick={(event) => switchTheme(code, event)}
                     >
                         <Icon className="size-4" />
                         {t(name)}
@@ -85,7 +79,6 @@ export default function ThemeSelector({
             <DropdownMenu modal={false}>
                 <DropdownMenuTrigger asChild>
                     <button
-                        ref={triggerRef}
                         className={triggerClass}
                         aria-label={t('Toggle theme')}
                     >
@@ -97,12 +90,7 @@ export default function ThemeSelector({
                         <DropdownMenuItem
                             key={code}
                             data-testid={`color-mode-${code}`}
-                            onClick={(e) =>
-                                switchTheme(
-                                    code,
-                                    e.currentTarget as HTMLElement,
-                                )
-                            }
+                            onClick={(event) => switchTheme(code, event)}
                             className={
                                 theme === code
                                     ? 'bg-accent text-accent-foreground'
@@ -132,9 +120,7 @@ export default function ThemeSelector({
                     <DropdownMenuItem
                         key={code}
                         data-testid={`color-mode-${code}`}
-                        onClick={(e) =>
-                            switchTheme(code, e.currentTarget as HTMLElement)
-                        }
+                        onClick={(event) => switchTheme(code, event)}
                         className={theme === code ? 'bg-accent' : ''}
                     >
                         <Icon className="size-4" />
