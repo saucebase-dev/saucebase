@@ -11,14 +11,12 @@ import { useLocalization } from '@/hooks/useLocalization';
 import { useT } from '@/i18n';
 import { Globe } from 'lucide-react';
 import type { JSX, SVGProps } from 'react';
-import IconBR from '~icons/circle-flags/br';
 import IconEN from '~icons/circle-flags/en';
 
 type IconComponent = (props: SVGProps<SVGSVGElement>) => JSX.Element;
 
 const iconMap: Record<string, IconComponent> = {
     en: IconEN,
-    pt_BR: IconBR,
 };
 
 interface LanguageSelectorProps {
