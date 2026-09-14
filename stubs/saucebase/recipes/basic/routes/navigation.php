@@ -1,7 +1,7 @@
 <?php
 
-use App\Facades\Navigation;
-use App\Navigation\Section;
+use Saucebase\Core\Facades\Navigation;
+use Saucebase\Core\Navigation\Section;
 
 /*
 |--------------------------------------------------------------------------

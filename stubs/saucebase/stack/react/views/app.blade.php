@@ -1,21 +1,19 @@
-@inject('generalSettings', Saucebase\Core\Settings\GeneralSettings::class)
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" @class(['dark' => ($appearance ?? 'system') == 'dark'])>
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        {{-- A configured icon replaces the shipped set outright. Sizes are omitted
-             deliberately: one uploaded image is not a size variant of anything, and
-             claiming 32x32 for a 512px file makes the browser scale the wrong one. --}}
-        @if ($generalSettings->siteIconUrl())
-            <link rel="icon" href="{{ $generalSettings->siteIconUrl() }}">
-            <link rel="apple-touch-icon" href="{{ $generalSettings->siteIconUrl() }}">
-        @else
-            <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
-            <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
-            <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
-        @endif
+        {{-- The icon is always set: it falls back to the artwork core ships, so there is
+             no unconfigured case to branch on. Light and dark are chosen by the browser
+             rather than the server, because `appearance` may be `system` — which only
+             the client can resolve.
+
+             No `sizes`: one image is not a size variant of anything, and claiming 32x32
+             for a 512px file makes the browser scale the wrong one. --}}
+        <link rel="icon" href="{{ $brand->iconOnLightUrl() }}">
+        <link rel="icon" href="{{ $brand->iconOnDarkUrl() }}" media="(prefers-color-scheme: dark)">
+        <link rel="apple-touch-icon" href="{{ $brand->iconOnLightUrl() }}">
         <link rel="manifest" href="/site.webmanifest">
 
         {{-- Detect system dark mode and apply before page renders --}}
@@ -43,9 +41,9 @@
         {{-- Fallback head elements, rendered only when SSR is inactive. The client
              <Head> component adopts them via the matching data-inertia keys. --}}
         <x-inertia::head>
-            <title data-inertia>{{ $generalSettings->site_name }}</title>
-            @if ($generalSettings->site_description)
-                <meta data-inertia="description" name="description" content="{{ $generalSettings->site_description }}">
+            <title data-inertia>{{ $brand->site_name }}</title>
+            @if ($description = $brand->metaDescription())
+                <meta data-inertia="description" name="description" content="{{ $description }}">
             @endif
         </x-inertia::head>
     </head>

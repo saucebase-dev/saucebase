@@ -58,11 +58,7 @@ const settings = useSettings();
                 class="text-center text-[min(21vw,400px)] leading-none font-black -tracking-widest select-none"
                 data-testid="footer-watermark"
             >
-                <template v-if="settings.general.site_name === 'Saucebase'">
-                    <span class="text-foreground/5">Sauce</span
-                    ><span class="text-foreground/10">base</span>
-                </template>
-                <span v-else class="text-foreground/10">
+                <span class="text-foreground/10">
                     {{ settings.general.site_name }}
                 </span>
             </p>

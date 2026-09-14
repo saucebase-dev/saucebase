@@ -14,9 +14,17 @@ export type Settings = {
         site_name: string;
         site_tagline: string | null;
         site_description: string | null;
-        site_icon: string | null;
-        site_logo: string | null;
-        prefer_logo: boolean;
+        /**
+         * Always a URL, never null: these fall back to the artwork core ships, so
+         * nothing rendering them needs an "unconfigured" branch.
+         *
+         * The suffix names the background the asset sits on, not the colour of its
+         * ink — `on_dark` is the light-coloured artwork.
+         */
+        site_logo_on_light: string;
+        site_logo_on_dark: string;
+        site_icon_on_light: string;
+        site_icon_on_dark: string;
     };
     [domain: string]: unknown;
 };

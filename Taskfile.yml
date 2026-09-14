@@ -118,4 +118,5 @@ tasks:
         cmds:
             - task: lint
             - task: analyse
-            - task: test
+            - task: test:php
+            - task: test:e2e
