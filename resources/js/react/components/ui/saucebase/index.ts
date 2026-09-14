@@ -129,10 +129,10 @@ export const modules: Module[] = [
         description:
             'Site-wide announcement banners with scheduling, audience targeting, and cookie-based dismissal, managed from the Filament admin panel.',
         icon: Megaphone,
-        color: '--color-gray-500',
-        badge: BADGE_SOON,
-        href: null,
-        frameworks: ['vue'] as const,
+        color: '--color-indigo-500',
+        badge: null,
+        href: 'https://saucebase-dev.github.io/docs/modules/announcements',
+        frameworks: ['vue', 'react'] as const,
         features: [
             'Banner',
             'Scheduling',
