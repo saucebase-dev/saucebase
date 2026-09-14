@@ -103,7 +103,6 @@ return [
     */
     'available_locales' => [
         'en' => 'English',
-        'pt_BR' => 'Português',
     ],
 
     /*

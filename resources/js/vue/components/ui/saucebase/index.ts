@@ -138,7 +138,7 @@ export const modules = [
         color: '--color-indigo-500',
         badge: null,
         href: 'https://saucebase-dev.github.io/docs/modules/announcements',
-        frameworks: ['vue'] as const,
+        frameworks: ['vue', 'react'] as const,
         features: [
             () => trans('Banner'),
             () => trans('Scheduling'),

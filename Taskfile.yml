@@ -22,9 +22,6 @@ includes:
     themes:
         taskfile: ./modules/themes/Taskfile.yml
         optional: true
-    demo:
-        taskfile: ./modules/demo/Taskfile.yml
-        optional: true
     blog:
         taskfile: ./modules/blog/Taskfile.yml
         optional: true
@@ -104,12 +101,6 @@ tasks:
         cmds:
             - '{{.APP}} php artisan migrate:fresh --seed'
             - '{{.APP}} php artisan modules:seed'
-
-    # ── Translation ───────────────────────────────────────────────
-
-    translation:export:
-        desc: Export translations to JSON files for all languages
-        cmd: '{{.APP}} php artisan translatable:export pt_BR'
 
     # ── Pipelines ─────────────────────────────────────────────────
 

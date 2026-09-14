@@ -11,7 +11,6 @@ import {
 import { useLocalization } from '@/composables/useLocalization';
 import { Globe } from '@lucide/vue';
 import { computed } from 'vue';
-import IconBR from '~icons/circle-flags/br';
 import IconEN from '~icons/circle-flags/en';
 
 interface Props {
@@ -36,7 +35,6 @@ const { language, locales, setLanguage } = useLocalization();
 // Icon mapping for different locales
 const iconMap: Record<string, any> = {
     en: IconEN,
-    pt_BR: IconBR,
 };
 
 // Map backend locales to language objects with icons
