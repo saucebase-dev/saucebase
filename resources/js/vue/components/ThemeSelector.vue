@@ -111,7 +111,7 @@ const switchTheme = async (
         '--theme-reveal-radius',
         `${(endRadius / radiusReference) * 100}%`,
     );
-    root.setAttribute('data-theme-reveal', '');
+    root.dataset.themeReveal = '';
 
     try {
         const transition = document.startViewTransition(async () => {
@@ -122,7 +122,7 @@ const switchTheme = async (
         // A skipped transition still applies the theme and resolves finished.
         await transition.finished;
     } finally {
-        root.removeAttribute('data-theme-reveal');
+        delete root.dataset.themeReveal;
         root.style.removeProperty('--theme-reveal-x');
         root.style.removeProperty('--theme-reveal-y');
         root.style.removeProperty('--theme-reveal-radius');

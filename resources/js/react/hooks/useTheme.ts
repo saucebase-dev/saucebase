@@ -95,13 +95,13 @@ export function useTheme() {
                 '--theme-reveal-radius',
                 `${(endRadius / radiusReference) * 100}%`,
             );
-            root.setAttribute('data-theme-reveal', '');
+            root.dataset.themeReveal = '';
 
             const transition = document.startViewTransition(apply);
 
             // A skipped transition still applies the theme and resolves finished.
             transition.finished.finally(() => {
-                root.removeAttribute('data-theme-reveal');
+                delete root.dataset.themeReveal;
                 root.style.removeProperty('--theme-reveal-x');
                 root.style.removeProperty('--theme-reveal-y');
                 root.style.removeProperty('--theme-reveal-radius');
