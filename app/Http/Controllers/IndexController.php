@@ -9,7 +9,7 @@ use Saucebase\Core\Services\FrontendConfig;
 
 class IndexController extends Controller
 {
-    public function __invoke(FrontendConfig $config): Response|InertiaResponse
+    public function index(FrontendConfig $config): Response|InertiaResponse
     {
         if (empty($config->getFramework())) {
             return response()->view('setup');
@@ -18,5 +18,15 @@ class IndexController extends Controller
         return Inertia::render('Index', [
             // Share here your frontend data, e.g. products, announcements, etc.
         ])->withSSR();
+    }
+
+    public function terms(): InertiaResponse
+    {
+        return Inertia::render('Terms')->withSSR();
+    }
+
+    public function privacy(): InertiaResponse
+    {
+        return Inertia::render('Privacy')->withSSR();
     }
 }
