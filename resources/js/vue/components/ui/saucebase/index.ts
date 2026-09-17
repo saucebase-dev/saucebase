@@ -119,7 +119,7 @@ export const modules = [
         color: '--color-amber-500',
         badge: null,
         href: 'https://saucebase-dev.github.io/docs/modules/roadmap',
-        frameworks: ['vue'] as const,
+        frameworks: ['vue', 'react'] as const,
         features: [
             () => trans('Feature Requests'),
             () => trans('Upvotes'),
