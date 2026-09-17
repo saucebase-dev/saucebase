@@ -140,6 +140,14 @@ html {
     z-index: 60;
 }
 
+/* Inertia Modal (React) mounts the panel a frame before its enter animation
+   starts, flashing it fully open. The animation overrides this while it runs. */
+:is(.im-modal-wrapper, .im-slideover-wrapper):has(
+        > [data-inertiaui-modal-entered='false']
+    ) {
+    opacity: 0;
+}
+
 
 /* Inertia Modal's backdrop, softened from its own opaque `bg-black/75`. */
 .im-backdrop {
