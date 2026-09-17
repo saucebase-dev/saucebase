@@ -12,6 +12,12 @@ tasks:
         cmd: npx playwright test --project="@{Module}*" {{.CLI_ARGS}}
         interactive: true
 
+    # ── Database ──────────────────────────────────────────────────
+
+    db:seed:demo:
+        desc: Seed the {Module} module with sample content
+        cmd: '{{.APP}} php artisan modules:seed --module={module} --demo'
+
     # ── Code Generation ────────────────────────────────────────────
 
     types:generate:
