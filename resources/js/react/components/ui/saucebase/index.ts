@@ -164,10 +164,10 @@ export const modules: Module[] = [
         description:
             'Full-featured blog with posts, categories, cover images, SEO metadata, and a Filament admin panel for content management.',
         icon: Newspaper,
-        color: '--color-gray-500',
-        badge: BADGE_SOON,
-        href: null,
-        frameworks: ['vue'] as const,
+        color: '--color-rose-500',
+        badge: NEW_BADGE,
+        href: 'https://saucebase-dev.github.io/docs/modules/blog',
+        frameworks: ['vue', 'react'] as const,
         features: ['Posts', 'Categories', 'Admin Panel', 'SEO Optimized'],
     },
     {
@@ -244,3 +244,4 @@ export const modules: Module[] = [
 
 export { ModuleCard } from './ModuleCard';
 export { ModuleModal } from './ModuleModal';
+export { default as PageHero } from './PageHero';

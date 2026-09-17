@@ -42,6 +42,8 @@ class RouteAccessTest extends TestCase
             'privacy' => ['privacy'],
             'terms' => ['terms'],
             'locale' => ['locale'],
+            'sitemap' => ['sitemap'],
+            'robots' => ['robots'],
         ];
     }
 

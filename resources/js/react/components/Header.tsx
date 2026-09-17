@@ -100,22 +100,31 @@ export default function Header() {
 
                     {/* Centered navigation */}
                     <div className="absolute left-1/2 hidden -translate-x-1/2 items-center space-x-1 lg:flex">
-                        {landingNav.map((item) => (
-                            <a
-                                key={item.slug}
-                                href={item.url}
-                                target={item.newPage ? '_blank' : '_self'}
-                                className={cn(
-                                    'after:bg-primary text-muted-foreground hover:text-foreground relative px-4 py-2 text-sm font-semibold transition-all duration-300 after:absolute after:bottom-0 after:left-1/2 after:h-0.5 after:w-0 after:-translate-x-1/2 after:rounded-xl after:transition-all after:duration-300 hover:after:w-3/4',
-                                    item.class,
-                                )}
-                            >
-                                {t(item.title)}
-                                {item.newPage && (
-                                    <ExternalLink className="-mt-1 ml-1 inline-block size-3.5" />
-                                )}
-                            </a>
-                        ))}
+                        {landingNav.map((item) => {
+                            // Inertia links keep an internal page in the SPA;
+                            // an external destination has to leave it.
+                            const NavLink = item.external ? 'a' : Link;
+
+                            return (
+                                <NavLink
+                                    key={item.slug}
+                                    href={item.url}
+                                    target={item.newPage ? '_blank' : undefined}
+                                    className={cn(
+                                        'after:bg-primary relative px-4 py-2 text-sm font-semibold transition-all duration-300 after:absolute after:bottom-0 after:left-1/2 after:h-0.5 after:w-0 after:-translate-x-1/2 after:rounded-xl after:transition-all after:duration-300 hover:after:w-3/4',
+                                        item.active
+                                            ? 'text-foreground after:w-3/4'
+                                            : 'text-foreground/80 hover:text-foreground',
+                                        item.class,
+                                    )}
+                                >
+                                    {t(item.title)}
+                                    {item.newPage && (
+                                        <ExternalLink className="-mt-1 ml-1 inline-block size-3.5" />
+                                    )}
+                                </NavLink>
+                            );
+                        })}
                     </div>
 
                     {/* Right side */}
@@ -129,7 +138,7 @@ export default function Header() {
                                 <AuthLink
                                     {...authLinkProps}
                                     href={route('login')}
-                                    className="text-muted-foreground hover:bg-accent hover:text-accent-foreground cursor-pointer rounded-xl px-4 py-2 text-sm font-medium transition-all duration-200"
+                                    className="text-foreground/80 hover:bg-accent hover:text-accent-foreground cursor-pointer rounded-xl px-4 py-2 text-sm font-medium transition-all duration-200"
                                     data-testid="header-sign-in"
                                 >
                                     {t('Sign In')}
@@ -159,7 +168,7 @@ export default function Header() {
                                 href={route('logout')}
                                 method="post"
                                 as="button"
-                                className="text-muted-foreground hover:bg-accent hover:text-accent-foreground cursor-pointer rounded-xl px-4 py-2 text-sm font-medium transition-all duration-200"
+                                className="text-foreground/80 hover:bg-accent hover:text-accent-foreground cursor-pointer rounded-xl px-4 py-2 text-sm font-medium transition-all duration-200"
                             >
                                 {t('Logout')}
                             </Link>
@@ -178,7 +187,7 @@ export default function Header() {
                                     : t('Open mobile menu')
                             }
                             aria-expanded={mobileMenuOpen}
-                            className="text-muted-foreground hover:bg-accent hover:text-accent-foreground rounded-xl p-2 transition-colors duration-200"
+                            className="text-foreground/80 hover:bg-accent hover:text-accent-foreground rounded-xl p-2 transition-colors duration-200"
                         >
                             {mobileMenuOpen ? (
                                 <X className="h-6 w-6" />
@@ -193,20 +202,29 @@ export default function Header() {
                 {mobileMenuOpen && (
                     <div className="border-border/40 bg-background/80 mx-2 mt-4 rounded-lg border-t pb-6 backdrop-blur-sm lg:hidden">
                         <div className="flex flex-col space-y-1 px-2 pt-4">
-                            {landingNav.map((item) => (
-                                <a
-                                    key={item.slug}
-                                    href={item.url}
-                                    target={item.newPage ? '_blank' : '_self'}
-                                    className={cn(
-                                        'after:bg-primary hover:text-primary text-foreground relative px-4 py-3 text-base font-semibold transition-all duration-300 after:absolute after:bottom-1 after:left-4 after:h-0.5 after:w-0 after:rounded-xl after:transition-all after:duration-300 hover:after:w-1/2',
-                                        item.class,
-                                    )}
-                                    onClick={() => setMobileMenuOpen(false)}
-                                >
-                                    {t(item.title)}
-                                </a>
-                            ))}
+                            {landingNav.map((item) => {
+                                const NavLink = item.external ? 'a' : Link;
+
+                                return (
+                                    <NavLink
+                                        key={item.slug}
+                                        href={item.url}
+                                        target={
+                                            item.newPage ? '_blank' : undefined
+                                        }
+                                        className={cn(
+                                            'after:bg-primary hover:text-primary relative px-4 py-3 text-base font-semibold transition-all duration-300 after:absolute after:bottom-1 after:left-4 after:h-0.5 after:w-0 after:rounded-xl after:transition-all after:duration-300 hover:after:w-1/2',
+                                            item.active
+                                                ? 'text-primary after:w-1/2'
+                                                : 'text-foreground',
+                                            item.class,
+                                        )}
+                                        onClick={() => setMobileMenuOpen(false)}
+                                    >
+                                        {t(item.title)}
+                                    </NavLink>
+                                );
+                            })}
 
                             <div className="border-border/60 mt-2 border-t pt-4">
                                 {isGuest && (

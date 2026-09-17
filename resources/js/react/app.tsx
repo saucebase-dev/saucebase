@@ -33,6 +33,10 @@ putConfig(
     'modal.panelClasses',
     'bg-background overflow-hidden rounded-lg border shadow-lg',
 );
+putConfig(
+    'slideover.panelClasses',
+    'bg-background min-h-screen overflow-hidden border-l shadow-lg',
+);
 
 createInertiaApp({
     title: siteTitle,

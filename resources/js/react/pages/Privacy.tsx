@@ -1,20 +1,35 @@
+import { PageHero } from '@/components/ui/saucebase';
+import { useSettings } from '@/hooks/useSettings';
 import { useT } from '@/i18n';
 import SiteLayout from '@/layouts/SiteLayout';
 
+import IconShieldCheck from '~icons/heroicons/shield-check';
+
 export default function Privacy() {
     const t = useT();
+    // The site name comes from settings, so the copy survives rebranding.
+    const siteName = useSettings().general.site_name;
 
     return (
         <SiteLayout
             title={t('Privacy Policy')}
             description={t(
-                'Learn how Saucebase collects, uses, and protects your personal information.',
+                'Learn how :app collects, uses, and protects your personal information.',
+                { app: siteName },
             )}
         >
+            <PageHero
+                testId="privacy-hero"
+                title={t('Privacy Policy')}
+                description={t(
+                    'Learn how :app collects, uses, and protects your personal information.',
+                    { app: siteName },
+                )}
+                icon={IconShieldCheck}
+                width="3xl"
+            />
+
             <main className="mx-auto w-full max-w-3xl flex-1 px-6 py-16">
-                <h1 className="mb-2 text-4xl font-bold text-gray-900 dark:text-white">
-                    {t('Privacy Policy')}
-                </h1>
                 <p className="mb-10 text-sm text-gray-500 dark:text-gray-400">
                     {t('Last updated: January 1, 2026')}
                 </p>

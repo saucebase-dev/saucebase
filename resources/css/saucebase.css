@@ -134,6 +134,13 @@ html {
     }
 }
 
+/* Inertia Modal's `.im-dialog` wrapper stacks at z-20, painting the whole panel
+   under the app's fixed chrome; unlayered so it beats the package's utility. */
+.im-dialog {
+    z-index: 60;
+}
+
+
 /* Inertia Modal's backdrop, softened from its own opaque `bg-black/75`. */
 .im-backdrop {
     background-color: rgb(0 0 0 / 0.4);

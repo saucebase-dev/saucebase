@@ -1,5 +1,13 @@
 <script setup lang="ts">
+import { PageHero } from '@/components/ui/saucebase';
+import { useSettings } from '@/composables/useSettings';
 import SiteLayout from '@/layouts/SiteLayout.vue';
+import { computed } from 'vue';
+
+import IconDocumentText from '~icons/heroicons/document-text';
+
+const settings = useSettings();
+const siteName = computed(() => settings.value.general.site_name);
 </script>
 
 <template>
@@ -7,14 +15,25 @@ import SiteLayout from '@/layouts/SiteLayout.vue';
         :title="$t('Terms of Service')"
         :description="
             $t(
-                'Read our Terms of Service to understand the rules and guidelines for using Saucebase.',
+                'Read our Terms of Service to understand the rules and guidelines for using :app.',
+                { app: siteName },
             )
         "
     >
+        <PageHero
+            test-id="terms-hero"
+            :title="$t('Terms of Service')"
+            :description="
+                $t(
+                    'Read our Terms of Service to understand the rules and guidelines for using :app.',
+                    { app: siteName },
+                )
+            "
+            :icon="IconDocumentText"
+            width="3xl"
+        />
+
         <main class="mx-auto w-full max-w-3xl flex-1 px-6 py-16">
-            <h1 class="mb-2 text-4xl font-bold text-gray-900 dark:text-white">
-                {{ $t('Terms of Service') }}
-            </h1>
             <p class="mb-10 text-sm text-gray-500 dark:text-gray-400">
                 {{ $t('Last updated: January 1, 2026') }}
             </p>
@@ -29,7 +48,8 @@ import SiteLayout from '@/layouts/SiteLayout.vue';
                     <p>
                         {{
                             $t(
-                                'By accessing or using Saucebase, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our service.',
+                                'By accessing or using :app, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our service.',
+                                { app: siteName },
                             )
                         }}
                     </p>
@@ -44,7 +64,8 @@ import SiteLayout from '@/layouts/SiteLayout.vue';
                     <p>
                         {{
                             $t(
-                                'You agree to use Saucebase only for lawful purposes and in accordance with these Terms. You must not use the service in any way that violates applicable local, national, or international laws or regulations.',
+                                'You agree to use :app only for lawful purposes and in accordance with these Terms. You must not use the service in any way that violates applicable local, national, or international laws or regulations.',
+                                { app: siteName },
                             )
                         }}
                     </p>
@@ -74,7 +95,8 @@ import SiteLayout from '@/layouts/SiteLayout.vue';
                     <p>
                         {{
                             $t(
-                                'The service and its original content, features, and functionality are and will remain the exclusive property of Saucebase and its licensors. Our trademarks and trade dress may not be used without our prior written consent.',
+                                'The service and its original content, features, and functionality are and will remain the exclusive property of :app and its licensors. Our trademarks and trade dress may not be used without our prior written consent.',
+                                { app: siteName },
                             )
                         }}
                     </p>
@@ -89,7 +111,8 @@ import SiteLayout from '@/layouts/SiteLayout.vue';
                     <p>
                         {{
                             $t(
-                                'Certain features of Saucebase may require payment. You agree to pay all applicable fees as described on our pricing page. All payments are non-refundable unless otherwise specified or required by law.',
+                                'Certain features of :app may require payment. You agree to pay all applicable fees as described on our pricing page. All payments are non-refundable unless otherwise specified or required by law.',
+                                { app: siteName },
                             )
                         }}
                     </p>
@@ -104,7 +127,8 @@ import SiteLayout from '@/layouts/SiteLayout.vue';
                     <p>
                         {{
                             $t(
-                                'Saucebase is provided on an "as is" and "as available" basis without any warranties of any kind, either express or implied. We do not warrant that the service will be uninterrupted, error-free, or completely secure.',
+                                ':app is provided on an "as is" and "as available" basis without any warranties of any kind, either express or implied. We do not warrant that the service will be uninterrupted, error-free, or completely secure.',
+                                { app: siteName },
                             )
                         }}
                     </p>
@@ -119,7 +143,8 @@ import SiteLayout from '@/layouts/SiteLayout.vue';
                     <p>
                         {{
                             $t(
-                                'To the fullest extent permitted by law, Saucebase shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of the service.',
+                                'To the fullest extent permitted by law, :app shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of the service.',
+                                { app: siteName },
                             )
                         }}
                     </p>

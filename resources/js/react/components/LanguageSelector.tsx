@@ -26,7 +26,7 @@ interface LanguageSelectorProps {
 
 export default function LanguageSelector({
     mode = 'standalone',
-    triggerClass = 'flex items-center rounded-lg p-2 text-muted-foreground transition-colors duration-200 hover:bg-accent hover:text-accent-foreground',
+    triggerClass = 'flex items-center rounded-lg p-2 text-foreground/80 transition-colors duration-200 hover:bg-accent hover:text-accent-foreground',
 }: LanguageSelectorProps) {
     const t = useT();
     const { language, locales, setLanguage } = useLocalization();

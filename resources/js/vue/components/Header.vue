@@ -103,14 +103,18 @@ onBeforeUnmount(() => {
                 <div
                     class="absolute left-1/2 hidden -translate-x-1/2 items-center space-x-1 lg:flex"
                 >
-                    <a
+                    <component
+                        :is="item.external ? 'a' : Link"
                         v-for="item in landingNav"
                         :key="item.slug"
                         :href="item.url"
-                        :target="item.newPage ? '_blank' : '_self'"
+                        :target="item.newPage ? '_blank' : undefined"
                         :class="
                             cn(
-                                'after:bg-primary text-muted-foreground hover:text-foreground relative px-4 py-2 text-sm font-semibold transition-all duration-300 after:absolute after:bottom-0 after:left-1/2 after:h-0.5 after:w-0 after:-translate-x-1/2 after:rounded-xl after:transition-all after:duration-300 hover:after:w-3/4',
+                                'after:bg-primary relative px-4 py-2 text-sm font-semibold transition-all duration-300 after:absolute after:bottom-0 after:left-1/2 after:h-0.5 after:w-0 after:-translate-x-1/2 after:rounded-xl after:transition-all after:duration-300 hover:after:w-3/4',
+                                item.active
+                                    ? 'text-foreground after:w-3/4'
+                                    : 'text-foreground/80 hover:text-foreground',
                                 item.class,
                             )
                         "
@@ -120,7 +124,7 @@ onBeforeUnmount(() => {
                             v-if="item.newPage"
                             class="-mt-1 ml-1 inline-block size-3.5"
                         />
-                    </a>
+                    </component>
                 </div>
 
                 <!-- Right side actions -->
@@ -135,7 +139,7 @@ onBeforeUnmount(() => {
                         v-bind="authLink.props"
                         v-if="modules().has('Auth') && !$page.props.auth?.user"
                         :href="route('login')"
-                        class="text-muted-foreground hover:bg-accent hover:text-accent-foreground cursor-pointer rounded-xl px-4 py-2 text-sm font-medium transition-all duration-200"
+                        class="text-foreground/80 hover:bg-accent hover:text-accent-foreground cursor-pointer rounded-xl px-4 py-2 text-sm font-medium transition-all duration-200"
                         data-testid="header-sign-in"
                     >
                         {{ $t('Sign In') }}
@@ -170,7 +174,7 @@ onBeforeUnmount(() => {
                         :href="route('logout')"
                         method="post"
                         as="button"
-                        class="text-muted-foreground hover:bg-accent hover:text-accent-foreground cursor-pointer rounded-xl px-4 py-2 text-sm font-medium transition-all duration-200"
+                        class="text-foreground/80 hover:bg-accent hover:text-accent-foreground cursor-pointer rounded-xl px-4 py-2 text-sm font-medium transition-all duration-200"
                     >
                         {{ $t('Logout') }}
                     </Link>
@@ -188,7 +192,7 @@ onBeforeUnmount(() => {
                                 : $t('Open mobile menu')
                         "
                         :aria-expanded="mobileMenuOpen"
-                        class="text-muted-foreground hover:bg-accent hover:text-accent-foreground rounded-xl p-2 transition-colors duration-200"
+                        class="text-foreground/80 hover:bg-accent hover:text-accent-foreground rounded-xl p-2 transition-colors duration-200"
                     >
                         <IconMenu v-if="!mobileMenuOpen" class="h-6 w-6" />
                         <IconX v-else class="h-6 w-6" />
@@ -210,22 +214,26 @@ onBeforeUnmount(() => {
                     class="border-border/40 bg-background/80 mx-2 mt-4 rounded-lg border-t pb-6 backdrop-blur-sm lg:hidden"
                 >
                     <div class="flex flex-col space-y-1 px-2 pt-4">
-                        <!-- Landing navigation (anchor links) -->
-                        <a
+                        <!-- Landing navigation: Inertia links stay in the SPA, external ones do not -->
+                        <component
+                            :is="item.external ? 'a' : Link"
                             v-for="item in landingNav"
                             :key="item.slug"
                             :href="item.url"
-                            :target="item.newPage ? '_blank' : '_self'"
+                            :target="item.newPage ? '_blank' : undefined"
                             :class="
                                 cn(
-                                    'after:bg-primary hover:text-primary text-foreground relative px-4 py-3 text-base font-semibold transition-all duration-300 after:absolute after:bottom-1 after:left-4 after:h-0.5 after:w-0 after:rounded-xl after:transition-all after:duration-300 hover:after:w-1/2',
+                                    'after:bg-primary hover:text-primary relative px-4 py-3 text-base font-semibold transition-all duration-300 after:absolute after:bottom-1 after:left-4 after:h-0.5 after:w-0 after:rounded-xl after:transition-all after:duration-300 hover:after:w-1/2',
+                                    item.active
+                                        ? 'text-primary after:w-1/2'
+                                        : 'text-foreground',
                                     item.class,
                                 )
                             "
                             @click="mobileMenuOpen = false"
                         >
                             {{ $t(item.title) }}
-                        </a>
+                        </component>
 
                         <!-- Mobile auth actions -->
                         <div class="border-border/60 mt-2 border-t pt-4">

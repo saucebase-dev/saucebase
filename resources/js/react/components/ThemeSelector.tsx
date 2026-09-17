@@ -34,7 +34,7 @@ interface ThemeSelectorProps {
 
 export default function ThemeSelector({
     mode = 'standalone',
-    triggerClass = 'flex items-center rounded-lg p-2 text-muted-foreground transition-colors duration-200 hover:bg-accent hover:text-accent-foreground',
+    triggerClass = 'flex items-center rounded-lg p-2 text-foreground/80 transition-colors duration-200 hover:bg-accent hover:text-accent-foreground',
     disableAnimation = false,
     inline = false,
     hideDevice = false,

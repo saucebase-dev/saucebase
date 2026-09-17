@@ -113,7 +113,7 @@ export const modules = [
         title: () => trans('Roadmap'),
         description: () =>
             trans(
-                'Public roadmap with feature requests, voting, moderation, six statuses, and a Filament admin panel.',
+                'Public roadmap board with feature requests, upvotes, comments, team replies, duplicate merging, and a Filament admin panel.',
             ),
         icon: Map,
         color: '--color-amber-500',
@@ -122,9 +122,9 @@ export const modules = [
         frameworks: ['vue'] as const,
         features: [
             () => trans('Feature Requests'),
-            () => trans('Voting'),
-            () => trans('Sorting'),
-            () => trans('Admin Panel'),
+            () => trans('Upvotes'),
+            () => trans('Comments'),
+            () => trans('Kanban Board'),
         ],
     },
     {
@@ -178,7 +178,7 @@ export const modules = [
         color: '--color-rose-500',
         badge: NEW_BADGE,
         href: 'https://saucebase-dev.github.io/docs/modules/blog',
-        frameworks: ['vue'] as const,
+        frameworks: ['vue', 'react'] as const,
         features: [
             () => trans('Posts'),
             () => trans('Categories'),
@@ -287,3 +287,4 @@ export type Module = (typeof modules)[number];
 
 export { default as ModuleCard } from './ModuleCard.vue';
 export { default as ModuleModal } from './ModuleModal.vue';
+export { default as PageHero } from './PageHero.vue';

@@ -21,6 +21,7 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Openplain\FilamentShadcnTheme\Color;
 use Saucebase\Core\Filament\Admin\Pages\GeneralSettings;
 use Saucebase\Core\Filament\Admin\Pages\LocalizationSettings;
+use Saucebase\Core\Filament\Admin\Pages\SeoSettings;
 use Saucebase\Core\Filament\ModulesPlugin;
 
 class AdminPanelProvider extends PanelProvider
@@ -60,6 +61,7 @@ class AdminPanelProvider extends PanelProvider
                 Dashboard::class,
                 GeneralSettings::class,
                 LocalizationSettings::class,
+                SeoSettings::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Admin/Widgets'), for: 'App\Filament\Admin\Widgets')
             ->widgets([
