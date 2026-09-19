@@ -10,6 +10,7 @@ import {
     ModalStackProvider,
     putConfig,
 } from '@inertiaui/modal-react';
+import { initializeModals } from '@js/modal';
 import { siteTitle } from '@js/settings';
 import { createRoot } from 'react-dom/client';
 import {
@@ -23,20 +24,7 @@ initializeTheme();
 
 const moduleSetups = discoverModuleSetups();
 
-// A native `<dialog>` sits in the top layer, where it would cover the app-level
-// confirm dialog and make it unclickable from inside a modal.
-putConfig('useNativeDialog', false);
-
-// The package defaults the panel to a hardcoded `bg-white`, which breaks dark
-// mode. Set key by key so its other defaults stay in place.
-putConfig(
-    'modal.panelClasses',
-    'bg-background overflow-hidden rounded-lg border shadow-lg',
-);
-putConfig(
-    'slideover.panelClasses',
-    'bg-background min-h-screen overflow-hidden border-l shadow-lg',
-);
+initializeModals(putConfig);
 
 createInertiaApp({
     title: siteTitle,

@@ -140,6 +140,30 @@ html {
     z-index: 60;
 }
 
+/* An overlay opened from inside a modal has to clear the modal's own stacking
+   level above, which its shipped `z-50` does not. Targeting data-slot survives
+   shadcn CLI updates; keying off the modal keeps the ordering unchanged
+   everywhere else. */
+body:has(.im-dialog) :is(
+        [data-slot='dialog-overlay'],
+        [data-slot='alert-dialog-overlay'],
+        [data-slot='sheet-overlay']
+    ) {
+    z-index: 70;
+}
+
+body:has(.im-dialog) :is(
+        [data-slot='dialog-content'],
+        [data-slot='alert-dialog-content'],
+        [data-slot='sheet-content'],
+        [data-slot='dropdown-menu-content'],
+        [data-slot='dropdown-menu-sub-content'],
+        [data-slot='popover-content'],
+        [data-slot='tooltip-content']
+    ) {
+    z-index: 71;
+}
+
 /* Inertia Modal (React) mounts the panel a frame before its enter animation
    starts, flashing it fully open. The animation overrides this while it runs. */
 :is(.im-modal-wrapper, .im-slideover-wrapper):has(

@@ -32,6 +32,14 @@ add `$name` or `$nameLower`: the base provider resolves the module name through
 Use lowercase module identifiers in frontend checks such as
 `modules().has('auth')`.
 
+Module migrations are named `0000_00_00_NNNNNN_<action>_table.php`, numbered
+in dependency order within the module. A module ships its whole schema at
+install, so the date carries no meaning; only the order does. The app's
+`users` table is `0000_00_00_000000` and therefore always runs first. Modules
+may depend on `users` and nothing else today; a module that gains a foreign
+key to another module's table takes the next day, `0000_00_01_`, so it sorts
+after everything it depends on.
+
 ### Frontend Conventions
 
 Saucebase supports both Vue and React. Apply shared frontend infrastructure
@@ -62,12 +70,13 @@ Two rules the fragment imposes:
   `preventDefault()` and writes history with `pushState`, so the browser never
   fires `hashchange` and nothing hears the fragment change. Use `settingsHref()`
   (`useSettingsModal`), never `Link`.
-- **Overlays inside a panel must portal into the modal**, not the body. The
-  modal traps focus with a document-level `focusin` listener, so a body-portalled
-  dialog or menu sits outside that subtree and the two traps recurse until the
-  stack overflows. Core's `dialog` and `dropdown-menu` already read
-  `useOverlayContainer()`; a panel needs no change, but a new overlay primitive
-  does.
+- **The modal's focus trap yields to overlays above it.** The modal traps focus
+  with a document-level `focusin` listener, and so does every dialog, menu or
+  popover portalled to the body, so the two would recurse until the stack
+  overflows. `initializeModals()` in `resources/js/modal.ts`, called
+  once from each stack's `app` entry, swallows the event while the modal
+  is `data-aria-hidden`. Panels and overlay primitives need no change; never fix
+  this inside `components/ui/`, which the shadcn CLI regenerates.
 
 Panels render a bare `space-y-8` block with an `h2` title and a muted `p`
 description — no `Card` shell, which the modal already provides — and carry a

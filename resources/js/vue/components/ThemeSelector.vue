@@ -188,7 +188,7 @@ const currentTheme = computed(
     <DropdownMenuSub v-else>
         <DropdownMenuSubTrigger
             data-testid="theme-selector-trigger"
-            class="[&>svg]:text-muted-foreground [&>svg]:mr-2"
+            class="[&>svg]:text-muted-foreground"
         >
             <slot name="submenu-trigger" :current-theme="currentTheme">
                 <component :is="currentTheme.icon" class="size-4" />

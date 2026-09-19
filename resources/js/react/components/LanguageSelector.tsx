@@ -88,7 +88,7 @@ export default function LanguageSelector({
         <DropdownMenuSub>
             <DropdownMenuSubTrigger
                 data-testid="language-selector-trigger"
-                className="[&>svg]:text-muted-foreground [&>svg]:mr-2"
+                className="[&>svg]:text-muted-foreground"
             >
                 <Globe className="size-3.5 rounded-full" />
                 {t('Language')}

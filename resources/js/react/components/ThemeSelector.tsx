@@ -110,7 +110,7 @@ export default function ThemeSelector({
         <DropdownMenuSub>
             <DropdownMenuSubTrigger
                 data-testid="theme-selector-trigger"
-                className="[&>svg]:text-muted-foreground [&>svg]:mr-2"
+                className="[&>svg]:text-muted-foreground"
             >
                 <CurrentIcon className="size-4" />
                 {t('Theme')}
