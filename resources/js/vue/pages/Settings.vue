@@ -137,7 +137,7 @@ const isPanelReady = computed(
                             "
                             :class="
                                 cn(
-                                    'flex w-full cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors',
+                                    'flex w-full cursor-pointer items-center gap-2 rounded-lg p-1 pr-3 text-sm transition-colors',
                                     current?.slug === item.slug
                                         ? 'bg-accent text-accent-foreground font-medium'
                                         : 'text-muted-foreground hover:bg-accent/50 hover:text-foreground',
@@ -145,11 +145,21 @@ const isPanelReady = computed(
                             "
                             @click="open(item.slug)"
                         >
-                            <component
-                                :is="resolveIcon(item.icon)"
-                                v-if="item.icon && resolveIcon(item.icon)"
-                                class="size-4 shrink-0"
-                            />
+                            <span
+                                :class="
+                                    cn(
+                                        'flex size-8 shrink-0 items-center justify-center rounded-md',
+                                        current?.slug === item.slug &&
+                                            'bg-background shadow-sm',
+                                    )
+                                "
+                            >
+                                <component
+                                    :is="resolveIcon(item.icon)"
+                                    v-if="item.icon && resolveIcon(item.icon)"
+                                    class="size-4"
+                                />
+                            </span>
                             {{ $t(item.title) }}
                         </button>
                     </li>
@@ -160,7 +170,12 @@ const isPanelReady = computed(
             <div class="flex min-w-0 flex-1 flex-col">
                 <!-- Fixed header: the close control must not scroll away with
                      the section, and only the section below it scrolls. -->
-                <div class="flex shrink-0 justify-end p-3">
+                <div
+                    class="flex shrink-0 items-center justify-between gap-4 py-3 pr-3 pl-6"
+                >
+                    <h2 class="truncate pt-2 text-xl font-semibold">
+                        {{ current ? $t(current.title) : '' }}
+                    </h2>
                     <button
                         type="button"
                         class="text-muted-foreground hover:bg-accent hover:text-foreground focus-visible:ring-ring cursor-pointer rounded-md p-1.5 transition-colors focus-visible:ring-2 focus-visible:outline-none"

@@ -157,16 +157,24 @@ export default function Settings({
                                                     : undefined
                                             }
                                             className={cn(
-                                                'flex w-full cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors',
+                                                'flex w-full cursor-pointer items-center gap-2 rounded-lg p-1 pr-3 text-sm transition-colors',
                                                 slug === item.slug
                                                     ? 'bg-accent text-accent-foreground font-medium'
                                                     : 'text-muted-foreground hover:bg-accent/50 hover:text-foreground',
                                             )}
                                             onClick={() => open(item.slug)}
                                         >
-                                            {Icon && (
-                                                <Icon className="size-4 shrink-0" />
-                                            )}
+                                            <span
+                                                className={cn(
+                                                    'flex size-8 shrink-0 items-center justify-center rounded-md',
+                                                    slug === item.slug &&
+                                                        'bg-background shadow-sm',
+                                                )}
+                                            >
+                                                {Icon && (
+                                                    <Icon className="size-4" />
+                                                )}
+                                            </span>
                                             {t(item.title)}
                                         </button>
                                     </li>
@@ -179,7 +187,10 @@ export default function Settings({
                     <div className="flex min-w-0 flex-1 flex-col">
                         {/* Fixed header: the close control must not scroll away with
                         the section, and only the section below it scrolls. */}
-                        <div className="flex shrink-0 justify-end p-3">
+                        <div className="flex shrink-0 items-center justify-between gap-4 py-3 pr-3 pl-6">
+                            <h2 className="truncate pt-2 text-xl font-semibold">
+                                {current ? t(current.title) : ''}
+                            </h2>
                             <button
                                 type="button"
                                 className="text-muted-foreground hover:bg-accent hover:text-foreground focus-visible:ring-ring cursor-pointer rounded-md p-1.5 transition-colors focus-visible:ring-2 focus-visible:outline-none"
