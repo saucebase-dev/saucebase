@@ -78,9 +78,11 @@ Two rules the fragment imposes:
   is `data-aria-hidden`. Panels and overlay primitives need no change; never fix
   this inside `components/ui/`, which the shadcn CLI regenerates.
 
-Panels render a bare `space-y-8` block with an `h2` title and a muted `p`
-description — no `Card` shell, which the modal already provides — and carry a
-`settings-<slug>-panel` test id.
+Panels render a bare `space-y-8` block opening with a muted `p` description —
+no `Card` shell, which the modal already provides — and carry a
+`settings-<slug>-panel` test id. The title is not the panel's: the modal draws
+the active section's title in its own header, so a panel that repeats it shows
+it twice.
 
 ### Verification
 
