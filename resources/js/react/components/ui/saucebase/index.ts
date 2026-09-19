@@ -105,9 +105,9 @@ export const modules: Module[] = [
         description:
             'Subscription management and payment processing via Stripe with checkout sessions, billing portal, invoices, and webhook processing.',
         icon: CreditCard,
-        color: '--color-gray-500',
-        badge: BADGE_SOON,
-        href: null,
+        color: '--color-green-600',
+        badge: null,
+        href: 'https://saucebase-dev.github.io/docs/modules/billing',
         frameworks: ['vue'] as const,
         features: ['Checkout', 'Subscriptions', 'Billing Portal', 'Webhooks'],
     },
