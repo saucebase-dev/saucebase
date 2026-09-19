@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { modules } from '@/composables/useModules';
+import { handleAction } from '@/lib/navigation';
 import { cn } from '@/lib/utils';
 import type { MenuItem } from '@/types/navigation';
 import { Link, usePage } from '@inertiajs/vue3';
@@ -169,15 +170,17 @@ onBeforeUnmount(() => {
                     >
                         {{ $t('Dashboard') }}
                     </Link>
-                    <Link
+                    <!-- The action, not a plain post: logging out is confirmed
+                         the same way here as it is in the app. -->
+                    <button
                         v-if="route().has('logout') && $page.props.auth?.user"
-                        :href="route('logout')"
-                        method="post"
-                        as="button"
+                        type="button"
+                        data-testid="logout-button"
                         class="text-foreground/80 hover:bg-accent hover:text-accent-foreground cursor-pointer rounded-xl px-4 py-2 text-sm font-medium transition-all duration-200"
+                        @click="handleAction('logout', $event)"
                     >
                         {{ $t('Logout') }}
-                    </Link>
+                    </button>
                 </div>
 
                 <!-- Mobile Menu Button - Better positioning -->

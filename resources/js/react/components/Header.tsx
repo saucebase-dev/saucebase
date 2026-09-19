@@ -1,5 +1,6 @@
 import { useModules } from '@/hooks/useModules';
 import { useT } from '@/i18n';
+import { handleAction } from '@/lib/navigation';
 import { cn } from '@/lib/utils';
 import type { MenuItem } from '@/types/navigation';
 import { Link, usePage } from '@inertiajs/react';
@@ -163,15 +164,19 @@ export default function Header() {
                                 {t('Dashboard')}
                             </Link>
                         )}
+                        {/* The action, not a plain post: logging out is
+                            confirmed the same way here as it is in the app. */}
                         {route().has('logout') && isLoggedIn && (
-                            <Link
-                                href={route('logout')}
-                                method="post"
-                                as="button"
+                            <button
+                                type="button"
+                                data-testid="logout-button"
                                 className="text-foreground/80 hover:bg-accent hover:text-accent-foreground cursor-pointer rounded-xl px-4 py-2 text-sm font-medium transition-all duration-200"
+                                onClick={(event) =>
+                                    handleAction('logout', event.nativeEvent)
+                                }
                             >
                                 {t('Logout')}
-                            </Link>
+                            </button>
                         )}
                     </div>
 
