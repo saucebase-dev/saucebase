@@ -1,6 +1,6 @@
 import { createInertiaApp } from '@inertiajs/vue3';
 import createServer from '@inertiajs/vue3/server';
-import { siteTitle } from '@js/settings';
+import { siteTitle } from '@js/lib/settings';
 import { i18nVue } from 'laravel-vue-i18n';
 import { createSSRApp, h } from 'vue';
 import { renderToString } from 'vue/server-renderer';

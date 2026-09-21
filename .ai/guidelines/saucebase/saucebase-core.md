@@ -40,6 +40,10 @@ may depend on `users` and nothing else today; a module that gains a foreign
 key to another module's table takes the next day, `0000_00_01_`, so it sorts
 after everything it depends on.
 
+Traits live in a `Traits/` directory, never `Concerns/` — the name says what the
+file is. This holds for internal helpers too (`Filament/Traits/`,
+`Console/Traits/`), not only the ones a host model uses.
+
 ### Frontend Conventions
 
 Saucebase supports both Vue and React. Apply shared frontend infrastructure
@@ -48,6 +52,17 @@ changes to both implementations.
 In contributor mode, edit the real sources under `resources/js/vue/` and
 `resources/js/react/`. Do not edit generated root entry-point passthroughs or
 generated TypeScript declarations.
+
+Framework-neutral code shared by both stacks lives in a `lib/` directory —
+`resources/js/lib/` in the app (imported as `@js/lib/...`) and
+`resources/js/lib/` in a module — never `utils/`, matching `vue/lib/` and
+`react/lib/`.
+
+Format dates with `formatDate()` from `@js/lib/dates`, passing the app's language
+(`useLocalization().language` in Vue, `useTranslation().locale` in React) —
+never `toLocaleDateString()` directly, and never `page.props.locale`, which goes
+stale when the language switcher changes it without a page load.
+`formatDateTime()` is for pages that never render on the server.
 
 All components must support light and dark themes. Use stable `data-testid`
 attributes for E2E selectors; never select translated text, labels, or role
@@ -73,7 +88,7 @@ Two rules the fragment imposes:
 - **The modal's focus trap yields to overlays above it.** The modal traps focus
   with a document-level `focusin` listener, and so does every dialog, menu or
   popover portalled to the body, so the two would recurse until the stack
-  overflows. `initializeModals()` in `resources/js/modal.ts`, called
+  overflows. `initializeModals()` in `resources/js/lib/modal.ts`, called
   once from each stack's `app` entry, swallows the event while the modal
   is `data-aria-hidden`. Panels and overlay primitives need no change; never fix
   this inside `components/ui/`, which the shadcn CLI regenerates.

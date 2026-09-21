@@ -2,7 +2,7 @@ import App from '@/components/App';
 import { I18nProvider } from '@/i18n';
 import { createInertiaApp } from '@inertiajs/react';
 import createServer from '@inertiajs/react/server';
-import { siteTitle } from '@js/settings';
+import { siteTitle } from '@js/lib/settings';
 import ReactDOMServer from 'react-dom/server';
 import { resolveModularPageComponent } from './lib/utils';
 

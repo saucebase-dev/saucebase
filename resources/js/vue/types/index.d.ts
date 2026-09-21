@@ -1,4 +1,4 @@
-import type { Settings } from '@js/settings';
+import type { Settings } from '@js/lib/settings';
 
 export interface User {
     id: number;

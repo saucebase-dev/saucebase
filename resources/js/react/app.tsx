@@ -10,8 +10,8 @@ import {
     ModalStackProvider,
     putConfig,
 } from '@inertiaui/modal-react';
-import { initializeModals } from '@js/modal';
-import { siteTitle } from '@js/settings';
+import { initializeModals } from '@js/lib/modal';
+import { siteTitle } from '@js/lib/settings';
 import { createRoot } from 'react-dom/client';
 import {
     discoverModuleSetups,

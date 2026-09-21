@@ -3,7 +3,7 @@ import { useSettings } from '@/composables/useSettings';
 import { useSettingsModal } from '@/composables/useSettingsModal';
 import { resolveIcon } from '@/lib/navigation';
 import { cn, resolveModularPageComponent } from '@/lib/utils';
-import type { SettingsSection } from '@js/settings';
+import type { SettingsSection } from '@js/lib/settings';
 import { router } from '@inertiajs/vue3';
 import { Modal, useModal } from '@inertiaui/modal-vue';
 import { X } from '@lucide/vue';

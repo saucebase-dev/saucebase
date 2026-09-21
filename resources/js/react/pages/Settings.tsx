@@ -6,7 +6,7 @@ import { OverlayContainerProvider } from '@/lib/overlayContainer';
 import { cn, resolveModularPageComponent } from '@/lib/utils';
 import { router } from '@inertiajs/react';
 import { Modal, useModal } from '@inertiaui/modal-react';
-import type { SettingsSection } from '@js/settings';
+import type { SettingsSection } from '@js/lib/settings';
 import { X } from 'lucide-react';
 import { useEffect, useState, type ComponentType } from 'react';
 

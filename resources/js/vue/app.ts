@@ -1,8 +1,8 @@
 import { useLocalization } from '@/composables/useLocalization';
 import { createInertiaApp } from '@inertiajs/vue3';
 import { putConfig, withInertiaModal } from '@inertiaui/modal-vue';
-import { initializeModals } from '@js/modal';
-import { siteTitle } from '@js/settings';
+import { initializeModals } from '@js/lib/modal';
+import { siteTitle } from '@js/lib/settings';
 import { useColorMode } from '@vueuse/core';
 import { i18nVue, loadLanguageAsync } from 'laravel-vue-i18n';
 import { createApp, h } from 'vue';
