@@ -16,8 +16,8 @@ import { handleAction } from '@/lib/navigation';
 import type { MenuBadge, MenuItem } from '@/types/navigation';
 import { Link } from '@inertiajs/react';
 import { ChevronRight } from 'lucide-react';
-import { Badge } from '../badge';
-import { Separator } from '../separator';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
 import NavIcon from './NavIcon';
 
 interface NavItemProps {

@@ -1,6 +1,6 @@
 import AppBrand from '@/components/AppBrand';
-import NavGroup from '@/components/ui/navigation/NavGroup';
-import NavUser from '@/components/ui/navigation/NavUser';
+import NavGroup from '@/components/ui/saucebase/navigation/NavGroup';
+import NavUser from '@/components/ui/saucebase/navigation/NavUser';
 import {
     Sidebar,
     SidebarContent,

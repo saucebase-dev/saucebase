@@ -19,6 +19,10 @@ import {
 import { useSettings } from '@/hooks/useSettings';
 import { settingsHref } from '@/hooks/useSettingsModal';
 import { useT } from '@/i18n';
+import {
+    getGlobalComponents,
+    hasGlobalComponent,
+} from '@/lib/globalComponents';
 import { handleAction } from '@/lib/navigation';
 import type { User } from '@/types';
 import type { MenuItem } from '@/types/navigation';
@@ -89,6 +93,11 @@ export default function NavUser({ user, items }: NavUserProps) {
      */
     const hasSettingsSections = (settings.sections?.length ?? 0) > 0;
 
+    const firstName = user.name.split(' ')[0];
+
+    // A module may show something else under the name, such as the user's plan.
+    const subtitleIsClaimed = hasGlobalComponent('user-subtitle');
+
     const userInitials = user.name
         .split(' ')
         .map((word) => word.charAt(0).toUpperCase())
@@ -115,11 +124,21 @@ export default function NavUser({ user, items }: NavUserProps) {
                                 </AvatarFallback>
                             </Avatar>
                             <div className="grid flex-1 text-left text-sm leading-tight">
-                                <span className="truncate font-medium">
-                                    {user.name}
+                                <span
+                                    className="truncate font-semibold"
+                                    data-testid="user-menu-name"
+                                >
+                                    {firstName}
                                 </span>
-                                <span className="truncate text-xs">
-                                    {user.email}
+                                <span
+                                    className="text-muted-foreground truncate text-xs"
+                                    data-testid="user-menu-subtitle"
+                                >
+                                    {subtitleIsClaimed
+                                        ? getGlobalComponents(
+                                              'user-subtitle',
+                                          ).map((C, i) => <C key={i} />)
+                                        : user.email}
                                 </span>
                             </div>
                             <ChevronsUpDown className="ml-auto size-4" />
