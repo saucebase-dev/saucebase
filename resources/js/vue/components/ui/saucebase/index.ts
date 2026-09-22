@@ -100,7 +100,7 @@ export const modules = [
         color: '--color-green-600',
         badge: null,
         href: 'https://saucebase-dev.github.io/docs/modules/billing',
-        frameworks: ['vue'] as const,
+        frameworks: ['vue', 'react'] as const,
         features: [
             () => trans('Checkout'),
             () => trans('Subscriptions'),
