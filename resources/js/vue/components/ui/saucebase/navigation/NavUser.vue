@@ -12,7 +12,8 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import NavigationIcon from '@/components/ui/navigation/NavIcon.vue';
+import GlobalComponents from '@/components/GlobalComponents.vue';
+import NavigationIcon from '@/components/ui/saucebase/navigation/NavIcon.vue';
 import {
     SidebarMenu,
     SidebarMenuButton,
@@ -21,6 +22,7 @@ import {
 } from '@/components/ui/sidebar';
 import { useSettings } from '@/composables/useSettings';
 import { settingsHref } from '@/composables/useSettingsModal';
+import { hasGlobalComponent } from '@/lib/globalComponents';
 import { handleAction } from '@/lib/navigation';
 import type { User } from '@/types';
 import type { MenuBadge, MenuItem } from '@/types/navigation';
@@ -45,6 +47,11 @@ const settings = useSettings();
 const hasSettingsSections = computed(
     () => (settings.value.sections?.length ?? 0) > 0,
 );
+
+const firstName = computed(() => props.user.name.split(' ')[0]);
+
+// A module may show something else under the name, such as the user's plan.
+const subtitleIsClaimed = hasGlobalComponent('user-subtitle');
 
 const userInitials = computed(() => {
     return props.user.name
@@ -93,11 +100,21 @@ function handleClick(item: MenuItem, event: MouseEvent) {
                         <div
                             class="grid flex-1 text-left text-sm leading-tight"
                         >
-                            <span class="truncate font-medium">
-                                {{ user.name }}
+                            <span
+                                class="truncate font-semibold"
+                                data-testid="user-menu-name"
+                            >
+                                {{ firstName }}
                             </span>
-                            <span class="truncate text-xs">
-                                {{ user.email }}
+                            <span
+                                class="truncate text-xs text-muted-foreground"
+                                data-testid="user-menu-subtitle"
+                            >
+                                <GlobalComponents
+                                    v-if="subtitleIsClaimed"
+                                    position="user-subtitle"
+                                />
+                                <template v-else>{{ user.email }}</template>
                             </span>
                         </div>
                         <IconChevronsUpDown class="ml-auto size-4" />

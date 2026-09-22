@@ -283,7 +283,8 @@ export const modules = [
     },
 ];
 
-export type Module = (typeof modules)[number];
+/** A module as the cards show it: its badge may be swapped for "Added". */
+export type Module = ReturnType<typeof useModuleList>['value'][number];
 
 export { default as ModuleCard } from './ModuleCard.vue';
 export { default as ModuleModal } from './ModuleModal.vue';

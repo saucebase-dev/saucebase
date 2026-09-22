@@ -12,11 +12,9 @@ enum Role: string implements HasColor, HasLabel
      *
      * @case ADMIN - Administrator with full access to Filament panel and dashboard
      * @case USER - Regular user with limited access to dashboard
-     * @case SUBSCRIBER - Additive role for users with an active subscription
      */
     case ADMIN = 'admin';
     case USER = 'user';
-    case SUBSCRIBER = 'subscriber';
 
     /**
      * Get the human-readable label for the role
@@ -26,7 +24,6 @@ enum Role: string implements HasColor, HasLabel
         return match ($this) {
             self::ADMIN => __('Administrator'),
             self::USER => __('User'),
-            self::SUBSCRIBER => __('Subscriber'),
         };
     }
 
@@ -35,7 +32,6 @@ enum Role: string implements HasColor, HasLabel
         return match ($this) {
             self::ADMIN => 'danger',
             self::USER => 'info',
-            self::SUBSCRIBER => 'success',
         };
     }
 

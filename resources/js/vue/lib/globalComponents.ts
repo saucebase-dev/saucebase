@@ -5,18 +5,21 @@ import type { Component } from 'vue';
  *
  * `top` and `bottom` wrap the page, above and below everything a layout renders.
  * `sidebar-brand` replaces the block above the sidebar navigation, whose default is
- * core's own `AppBrand`.
+ * core's own `AppBrand`. `user-subtitle` replaces the email under the user's first
+ * name in the sidebar's user menu.
  *
  * Adding a slot means adding a case here and rendering it in the layout that owns that
  * region. Modules register from their `app.ts`, which `module-loader.js` runs on install,
  * so an adopter wires nothing by hand.
  */
-export type GlobalComponentSlot = 'top' | 'bottom' | 'sidebar-brand';
+export type GlobalComponentSlot =
+    'top' | 'bottom' | 'sidebar-brand' | 'user-subtitle';
 
 const slots: Record<GlobalComponentSlot, Component[]> = {
     top: [],
     bottom: [],
     'sidebar-brand': [],
+    'user-subtitle': [],
 };
 
 export function registerGlobalComponent(

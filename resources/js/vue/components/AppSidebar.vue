@@ -13,8 +13,8 @@ import { usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
 import AppBrand from './AppBrand.vue';
 import GlobalComponents from './GlobalComponents.vue';
-import NavGroup from './ui/navigation/NavGroup.vue';
-import NavUser from './ui/navigation/NavUser.vue';
+import NavGroup from './ui/saucebase/navigation/NavGroup.vue';
+import NavUser from './ui/saucebase/navigation/NavUser.vue';
 
 withDefaults(defineProps<SidebarProps>(), {
     collapsible: 'icon',
@@ -22,13 +22,18 @@ withDefaults(defineProps<SidebarProps>(), {
     class: 'bg-transparent',
 });
 
-const page = usePage<{ navigation: Navigation; auth: { user: User } }>();
+const page = usePage();
+const navigation = computed(
+    () => page.props.navigation as Navigation | undefined,
+);
 
 // Always show main navigation in main sidebar
-const items = computed(() => page.props.navigation?.main || []);
-const userItems = computed(() => page.props.navigation?.user || []);
-const secondaryItems = computed(() => page.props.navigation?.secondary || []);
-const user = computed(() => page.props.auth?.user);
+const items = computed(() => navigation.value?.main || []);
+const userItems = computed(() => navigation.value?.user || []);
+const secondaryItems = computed(() => navigation.value?.secondary || []);
+const user = computed(
+    () => (page.props.auth as { user?: User } | undefined)?.user,
+);
 
 // A module may own this block instead. Registration happens at import time, so this is
 // settled before the first render.
