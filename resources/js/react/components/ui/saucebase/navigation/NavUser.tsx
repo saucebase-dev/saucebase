@@ -56,7 +56,10 @@ function NavLink({
 }) {
     const children = (
         <>
-            <NavIcon icon={icon} />
+            <NavIcon
+                icon={icon}
+                className={props.className ? 'text-current' : undefined}
+            />
             <span>{title}</span>
         </>
     );
@@ -227,6 +230,7 @@ export default function NavUser({ user, items }: NavUserProps) {
                                                     url={item.url}
                                                     icon={item.icon}
                                                     title={t(item.title)}
+                                                    className={item.class}
                                                 />
                                             )}
                                         </DropdownMenuItem>
