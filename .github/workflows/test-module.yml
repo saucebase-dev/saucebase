@@ -13,6 +13,11 @@ on:
                 type: string
                 default: ''
                 description: 'Space-separated Composer packages, e.g. saucebase/auth'
+            extra_patches:
+                required: false
+                type: string
+                default: ''
+                description: 'Space-separated optional patches, relative to the module, applied after its own, e.g. patches/optional/bill-workspaces.patch'
             serve_port:
                 required: false
                 type: string
@@ -96,6 +101,7 @@ jobs:
               env:
                   MODULE: ${{ inputs.module }}
                   DEPENDENCIES: ${{ inputs.dependencies }}
+                  EXTRA_PATCHES: ${{ inputs.extra_patches }}
               run: |
                   apply_patches() {
                       local dir="$1"
@@ -113,6 +119,11 @@ jobs:
                   # Primary module last
                   mod=$(echo "$MODULE" | tr '[:upper:]' '[:lower:]')
                   apply_patches "saucebase/modules/$mod/patches"
+                  # Optional patches the caller opted into, last
+                  for f in $EXTRA_PATCHES; do
+                      echo "Applying optional patch: $f"
+                      patch -p1 -d saucebase < "saucebase/modules/$mod/$f"
+                  done
 
             - name: Install Composer dependencies
               working-directory: saucebase
