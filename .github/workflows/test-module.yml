@@ -18,6 +18,11 @@ on:
                 type: string
                 default: ''
                 description: 'Space-separated optional patches, relative to the module, applied after its own, e.g. patches/optional/bill-workspaces.patch'
+            saucebase_ref:
+                required: false
+                type: string
+                default: 'main'
+                description: 'Saucebase branch, tag, or commit to test against'
             serve_port:
                 required: false
                 type: string
@@ -61,7 +66,7 @@ jobs:
               uses: actions/checkout@v5
               with:
                   repository: saucebase-dev/saucebase
-                  ref: main
+                  ref: ${{ inputs.saucebase_ref }}
                   path: saucebase
 
             - name: Install module from local checkout
