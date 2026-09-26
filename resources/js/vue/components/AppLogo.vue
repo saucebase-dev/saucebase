@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useSettings } from '@/composables/useSettings';
+import { brandAssetUrl } from '@js/lib/settings';
 import { computed } from 'vue';
 
 /**
@@ -49,14 +50,16 @@ const classes = computed(() =>
 );
 
 const onLight = computed(() =>
-    isIcon.value
-        ? brand.value.site_icon_on_light
-        : brand.value.site_logo_on_light,
+    brandAssetUrl(
+        brand.value,
+        isIcon.value ? 'site_icon_on_light' : 'site_logo_on_light',
+    ),
 );
 const onDark = computed(() =>
-    isIcon.value
-        ? brand.value.site_icon_on_dark
-        : brand.value.site_logo_on_dark,
+    brandAssetUrl(
+        brand.value,
+        isIcon.value ? 'site_icon_on_dark' : 'site_logo_on_dark',
+    ),
 );
 </script>
 

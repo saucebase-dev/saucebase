@@ -1,4 +1,5 @@
 import { useSettings } from '@/hooks/useSettings';
+import { brandAssetUrl } from '@js/lib/settings';
 
 type Size = 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
 
@@ -44,10 +45,14 @@ export default function AppLogo({
         ? `${heights[size]} ${squares[size]} object-contain`
         : `${heights[size]} w-auto max-w-full object-contain`;
 
-    const onLight = isIcon
-        ? brand.site_icon_on_light
-        : brand.site_logo_on_light;
-    const onDark = isIcon ? brand.site_icon_on_dark : brand.site_logo_on_dark;
+    const onLight = brandAssetUrl(
+        brand,
+        isIcon ? 'site_icon_on_light' : 'site_logo_on_light',
+    );
+    const onDark = brandAssetUrl(
+        brand,
+        isIcon ? 'site_icon_on_dark' : 'site_logo_on_dark',
+    );
 
     /*
      * Both variants render and CSS picks. Resolving the theme in JavaScript would flash

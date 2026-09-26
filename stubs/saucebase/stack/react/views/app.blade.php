@@ -4,16 +4,17 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        {{-- The icon is always set: it falls back to the artwork core ships, so there is
-             no unconfigured case to branch on. Light and dark are chosen by the browser
+        {{-- Core holds only uploaded icons; the app's own artwork stands in for a
+             missing one. Keep these paths in step with BRAND_FALLBACKS in
+             resources/js/lib/settings.ts. Light and dark are chosen by the browser
              rather than the server, because `appearance` may be `system` — which only
              the client can resolve.
 
              No `sizes`: one image is not a size variant of anything, and claiming 32x32
              for a 512px file makes the browser scale the wrong one. --}}
-        <link rel="icon" href="{{ $brand->iconOnLightUrl() }}">
-        <link rel="icon" href="{{ $brand->iconOnDarkUrl() }}" media="(prefers-color-scheme: dark)">
-        <link rel="apple-touch-icon" href="{{ $brand->iconOnLightUrl() }}">
+        <link rel="icon" href="{{ $brand->iconOnLightUrl() ?? '/images/icon-on-light.svg' }}">
+        <link rel="icon" href="{{ $brand->iconOnDarkUrl() ?? '/images/icon-on-dark.svg' }}" media="(prefers-color-scheme: dark)">
+        <link rel="apple-touch-icon" href="{{ $brand->iconOnLightUrl() ?? '/images/icon-on-light.svg' }}">
         <link rel="manifest" href="/site.webmanifest">
 
         {{-- Detect system dark mode and apply before page renders --}}
