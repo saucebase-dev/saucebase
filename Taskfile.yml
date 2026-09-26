@@ -84,6 +84,10 @@ tasks:
         cmd: php artisan test {{.CLI_ARGS}}
         interactive: true
 
+    test:unit:
+        desc: Run frontend unit tests (lib/ code, Vitest)
+        cmd: npm run test:unit {{.CLI_ARGS}}
+
     test:e2e:
         desc: Run E2E tests
         cmd: npm run test:e2e {{.CLI_ARGS}}
