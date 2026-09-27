@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { revealOrigin, revealTransition } from '@js/lib/themeReveal';
 import { Button } from '@/components/ui/button';
 import { ButtonGroup } from '@/components/ui/button-group';
 import {
@@ -65,68 +66,23 @@ const visibleThemes = computed(() =>
     props.hideDevice ? themes.filter((t) => t.code !== 'auto') : [...themes],
 );
 
-type TransitionOrigin = { x: number; y: number };
-
-/** Measure the rendered option before the dropdown handles selection and closes. */
-function transitionOrigin(event: MouseEvent): TransitionOrigin {
-    const option = event.currentTarget as HTMLElement;
-    const rect = option.getBoundingClientRect();
-
-    return {
-        x: rect.left + rect.width / 2,
-        y: rect.top + rect.height / 2,
-    };
-}
-
 const switchTheme = async (
     themeCode: 'light' | 'dark' | 'auto',
     event: MouseEvent,
 ) => {
-    const { x, y } = transitionOrigin(event);
+    // Measured now: the dropdown closes and removes the option once it handles the click.
+    const origin = revealOrigin(event.currentTarget as HTMLElement);
     setCookie('appearance', themeCode);
 
-    if (
-        props.disableAnimation ||
-        !document.startViewTransition ||
-        window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    ) {
+    if (props.disableAnimation) {
         colorMode.value = themeCode;
         return;
     }
 
-    const root = document.documentElement;
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-    const endRadius = Math.hypot(
-        Math.max(x, width - x),
-        Math.max(y, height - y),
-    );
-
-    /** Circle percentages use the reference box's normalized diagonal. */
-    const radiusReference = Math.hypot(width, height) / Math.SQRT2;
-
-    root.style.setProperty('--theme-reveal-x', `${(x / width) * 100}%`);
-    root.style.setProperty('--theme-reveal-y', `${(y / height) * 100}%`);
-    root.style.setProperty(
-        '--theme-reveal-radius',
-        `${(endRadius / radiusReference) * 100}%`,
-    );
-    root.dataset.themeReveal = '';
-
-    try {
-        const transition = document.startViewTransition(async () => {
-            colorMode.value = themeCode;
-            await nextTick();
-        });
-
-        // A skipped transition still applies the theme and resolves finished.
-        await transition.finished;
-    } finally {
-        delete root.dataset.themeReveal;
-        root.style.removeProperty('--theme-reveal-x');
-        root.style.removeProperty('--theme-reveal-y');
-        root.style.removeProperty('--theme-reveal-radius');
-    }
+    await revealTransition(origin, async () => {
+        colorMode.value = themeCode;
+        await nextTick();
+    });
 };
 
 const currentTheme = computed(

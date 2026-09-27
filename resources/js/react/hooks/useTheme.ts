@@ -1,3 +1,4 @@
+import { revealTransition, type RevealOrigin } from '@js/lib/themeReveal';
 import { useCallback, useEffect, useState } from 'react';
 
 export type Theme = 'light' | 'dark' | 'auto';
@@ -15,20 +16,6 @@ function applyTheme(theme: Theme): void {
     const isDark = theme === 'dark' || (theme === 'auto' && prefersDark);
     document.documentElement.classList.toggle('dark', isDark);
     document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';
-}
-
-export type TransitionOrigin = { x: number; y: number };
-
-/** Measure the rendered option before the menu handles selection and closes. */
-export function transitionOrigin(event: {
-    currentTarget: EventTarget | null;
-}): TransitionOrigin {
-    const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
-
-    return {
-        x: rect.left + rect.width / 2,
-        y: rect.top + rect.height / 2,
-    };
 }
 
 export function initializeTheme(): void {
@@ -54,7 +41,7 @@ export function useTheme() {
     }, [theme]);
 
     const setTheme = useCallback(
-        (next: Theme, origin: TransitionOrigin, animate = true) => {
+        (next: Theme, origin: RevealOrigin, animate = true) => {
             localStorage.setItem(STORAGE_KEY, next);
             setCookie(next);
 
@@ -65,47 +52,12 @@ export function useTheme() {
                 setThemeState(next);
             };
 
-            if (
-                !animate ||
-                !document.startViewTransition ||
-                window.matchMedia('(prefers-reduced-motion: reduce)').matches
-            ) {
+            if (!animate) {
                 apply();
                 return;
             }
 
-            const root = document.documentElement;
-            const { x, y } = origin;
-            const width = window.innerWidth;
-            const height = window.innerHeight;
-            const endRadius = Math.hypot(
-                Math.max(x, width - x),
-                Math.max(y, height - y),
-            );
-
-            /** Circle percentages use the reference box's normalized diagonal. */
-            const radiusReference = Math.hypot(width, height) / Math.SQRT2;
-
-            root.style.setProperty('--theme-reveal-x', `${(x / width) * 100}%`);
-            root.style.setProperty(
-                '--theme-reveal-y',
-                `${(y / height) * 100}%`,
-            );
-            root.style.setProperty(
-                '--theme-reveal-radius',
-                `${(endRadius / radiusReference) * 100}%`,
-            );
-            root.dataset.themeReveal = '';
-
-            const transition = document.startViewTransition(apply);
-
-            // A skipped transition still applies the theme and resolves finished.
-            transition.finished.finally(() => {
-                delete root.dataset.themeReveal;
-                root.style.removeProperty('--theme-reveal-x');
-                root.style.removeProperty('--theme-reveal-y');
-                root.style.removeProperty('--theme-reveal-radius');
-            });
+            void revealTransition(origin, apply);
         },
         [],
     );
