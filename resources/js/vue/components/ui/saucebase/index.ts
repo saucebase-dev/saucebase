@@ -158,12 +158,12 @@ export const modules = [
         color: '--color-purple-500',
         badge: NEW_BADGE,
         href: 'https://saucebase-dev.github.io/docs/modules/themes',
-        frameworks: ['vue'] as const,
+        frameworks: ['vue', 'react'] as const,
         features: [
-            () => trans('15 Built-in Themes'),
+            () => trans('14 Built-in Themes'),
             () => trans('Visual Editor'),
             () => trans('Dark & Light Mode'),
-            () => trans('Baked CSS'),
+            () => trans('Admin Panel Theme'),
         ],
     },
 

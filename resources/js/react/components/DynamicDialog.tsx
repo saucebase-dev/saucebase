@@ -34,11 +34,15 @@ export default function DynamicDialog() {
         ? 'flex flex-col items-center text-center'
         : 'flex flex-row items-center gap-4';
 
-    const headerClass = isCentered && Icon ? 'sm:text-center' : '';
+    // The default-size content left-aligns its header from `sm` up; undo that here.
+    const headerClass =
+        isCentered && Icon
+            ? 'sm:group-data-[size=default]/alert-dialog-content:place-items-center sm:group-data-[size=default]/alert-dialog-content:text-center'
+            : '';
 
     return (
         <AlertDialog open={isOpen}>
-            <AlertDialogContent className="overflow-hidden p-0 sm:max-w-sm">
+            <AlertDialogContent className="z-51 overflow-hidden p-0 data-[size=default]:sm:max-w-sm">
                 <div data-testid="confirm-dialog">
                     <div
                         className={cn(

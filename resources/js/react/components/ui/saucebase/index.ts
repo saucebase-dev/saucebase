@@ -147,15 +147,15 @@ export const modules: Module[] = [
         description:
             "Visual theme editor for designing your app's colors, fonts, radius, and shadows. Pick a built-in theme or build your own, then bake it into CSS - no runtime overhead.",
         icon: Palette,
-        color: '--color-gray-500',
-        badge: BADGE_SOON,
-        href: null,
-        frameworks: ['vue'] as const,
+        color: '--color-purple-500',
+        badge: NEW_BADGE,
+        href: 'https://saucebase-dev.github.io/docs/modules/themes',
+        frameworks: ['vue', 'react'] as const,
         features: [
-            '15 Built-in Themes',
+            '14 Built-in Themes',
             'Visual Editor',
             'Dark & Light Mode',
-            'Baked CSS',
+            'Admin Panel Theme',
         ],
     },
     {
