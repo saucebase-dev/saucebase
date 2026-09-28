@@ -23,8 +23,14 @@ saucebase stack react --dev
 
 Contributor mode retains both framework source trees and generates thin root
 entry-point passthroughs. Edit `resources/js/vue/` or `resources/js/react/`,
-not generated root entry points. Shared frontend changes must work with both
-stacks.
+never the generated root entry points or generated TypeScript declarations.
+Shared frontend changes must work with both stacks, and a module's Vue and
+React trees must stay in step.
+
+Modules follow the same layout. On a user's install the module installer keeps
+only the selected stack and flattens it into `resources/js/`, so documentation
+shipped with a module — its `README.md`, `CLAUDE.md` and `resources/boost/` —
+must describe that installed layout, not contributor mode.
 
 Install dependencies and prepare the application:
 
@@ -61,19 +67,28 @@ manifests are the source of truth for frontend commands.
 Create a module from the maintained recipe:
 
 ```bash
-php artisan saucebase:recipe example
-composer dump-autoload
+php artisan saucebase:recipe Example "Basic Recipe"
+composer update <vendor>/example
 npm run build
 ```
 
 Module directories are lowercase, while PHP namespaces are TitleCase. Main
-module providers extend `App\Providers\ModuleServiceProvider`; `$name` and
-`$nameLower` properties are obsolete because the base provider resolves the
-module name through InterNACHI's `ModuleRegistry`.
+module providers extend `Saucebase\Core\Providers\ModuleServiceProvider`;
+`$name` and `$nameLower` properties are obsolete because the base provider
+resolves the module name through InterNACHI's `ModuleRegistry`.
 
 Do not bypass `module-loader.js`. It discovers module assets, translations, and
 Playwright projects. See
 `.ai/guidelines/saucebase/saucebase-core.md` for the maintained module patterns.
+
+A module ships its agent context in `resources/boost/`: a short
+`guidelines/core.md` that is always loaded, and a
+`skills/saucebase-<module>-development/SKILL.md` with the full detail. The
+module's `CLAUDE.md` only imports that skill, and its `AGENTS.md` only points to
+it. `composer boost:update` runs
+`php artisan modules:boost` first, which links each module into the vendor path
+Boost scans and registers it in `boost.json`, so modules never need listing by
+hand.
 
 ## Tests and quality checks
 
@@ -105,7 +120,7 @@ Documentation changes must be checked against implementation and manifests:
 - `CONTRIBUTING.md` owns contributor setup and verification workflows.
 - `.ai/guidelines/` owns always-loaded agent conventions.
 - `.ai/skills/` owns task-specific agent workflows.
-- `AGENTS.md`, `CLAUDE.md`, and `boost.json` are local Laravel Boost outputs
+- The root `AGENTS.md`, `CLAUDE.md`, and `boost.json` are local Laravel Boost outputs
   and are not tracked. Run `php artisan boost:install` once after cloning.
 
 Avoid repeating version tables across these files. When a dependency changes,
@@ -122,9 +137,10 @@ Never edit the `<laravel-boost-guidelines>` blocks in `AGENTS.md` or
 `CLAUDE.md` directly — they are overwritten on every regeneration, and they
 are not tracked, so the edit reaches nobody. `.ai/` is the only source.
 
-To pick up guidelines newly shipped by a package or module, run the Artisan
-command directly. Composer sets `COMPOSER_DEV_MODE`, which suppresses the
-discovery prompt, so `composer boost:update` cannot add new packages:
+Installed modules are picked up by `composer boost:update` automatically. To
+pick up guidelines newly shipped by any other package, run the Artisan command
+directly. Composer sets `COMPOSER_DEV_MODE`, which suppresses the discovery
+prompt, so `composer boost:update` cannot add third-party packages:
 
 ```bash
 php artisan boost:update

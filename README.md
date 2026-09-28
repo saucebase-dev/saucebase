@@ -65,10 +65,15 @@ Having trouble? Get help in the official [Saucebase Discord](https://discord.gg/
 | [themes](https://github.com/saucebase-dev/themes) | [![themes version](https://img.shields.io/packagist/v/saucebase/themes.svg?label=%20)](https://github.com/saucebase-dev/themes) | Visual theme editor for designing and baking your app's look and feel |
 | [blog](https://github.com/saucebase-dev/blog) | [![blog version](https://img.shields.io/packagist/v/saucebase/blog.svg?label=%20)](https://github.com/saucebase-dev/blog) | Public blog with categories, cover images, scheduling, and SEO |
 
+Each module ships [Laravel Boost](https://laravel.com/docs/boost) guidelines and a skill, so AI agents
+understand the modules you install. Run `composer boost:update` after installing one.
+
 Several official packages are maintained outside of this repo:
 
 | Package | Repository |
 | ------- | ---------- |
+| [saucebase/core](https://github.com/saucebase-dev/core) | [saucebase-dev/core](https://github.com/saucebase-dev/core) |
+| [saucebase/module-installer](https://github.com/saucebase-dev/module-installer) | [saucebase-dev/module-installer](https://github.com/saucebase-dev/module-installer) |
 | [saucebase/breadcrumbs](https://github.com/saucebase-dev/breadcrumbs) | [saucebase-dev/breadcrumbs](https://github.com/saucebase-dev/breadcrumbs) |
 | [saucebase/laravel-playwright](https://github.com/saucebase-dev/laravel-playwright) | [saucebase-dev/laravel-playwright](https://github.com/saucebase-dev/laravel-playwright) |
 
