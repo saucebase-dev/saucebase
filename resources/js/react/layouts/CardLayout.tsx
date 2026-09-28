@@ -15,6 +15,12 @@ interface CardLayoutProps {
     title?: string;
     description?: string;
     cardClass?: string;
+
+    /**
+     * Width of the card. Overridden by pages whose content reads better narrow —
+     * the default suits the sign-in and registration forms.
+     */
+    widthClass?: string;
     children: ReactNode;
     outside?: ReactNode;
 
@@ -49,6 +55,7 @@ export default function CardLayout({
     title,
     description,
     cardClass,
+    widthClass = 'min-[450px]:min-w-md',
     children,
     outside,
     icon,
@@ -69,7 +76,9 @@ export default function CardLayout({
             </div>
 
             <div className="flex w-full grow flex-col items-center">
-                <div className="w-full px-4 min-[450px]:w-auto min-[450px]:min-w-md min-[450px]:px-0">
+                <div
+                    className={`w-full px-4 min-[450px]:w-auto min-[450px]:px-0 ${widthClass}`}
+                >
                     <Card className={cardClass}>
                         <CardHeader className="px-8 text-center">
                             {icon && (
