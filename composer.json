@@ -70,6 +70,7 @@
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
             "@php artisan vendor:publish --tag=livewire:assets --ansi --force",
             "@php artisan vendor:publish --tag=module-assets --ansi --force",
+            "@php artisan modules:boost --ansi",
             "@php artisan boost:update --ansi"
         ],
         "post-root-package-install": [
@@ -84,6 +85,7 @@
             "vendor/bin/phpstan analyse --memory-limit=2G"
         ],
         "boost:update": [
+            "@php artisan modules:boost --ansi",
             "@php artisan boost:update --discover --no-interaction"
         ],
         "ide-helper": [
