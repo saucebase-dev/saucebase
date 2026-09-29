@@ -8,69 +8,24 @@ from prose.
 
 - Backend dependencies and constraints: `composer.json`
 - Static-analysis configuration: `phpstan.neon`
-- Vue stack: `stubs/saucebase/stack/vue/package.json`
-- React stack: `stubs/saucebase/stack/react/package.json`
+- Frontend dependencies: `package.json`
 - Module behavior: `Saucebase\Core\Providers\ModuleServiceProvider` (the
   `saucebase/core` package),
   `module-loader.js`, and the recipe stubs
 
-The root `package.json` is framework-neutral before stack selection. Do not use
-it alone to determine the supported Vue or React dependencies.
-
 ### Module Conventions
 
-Modules are copy-and-own Composer packages installed under lowercase
-`modules/<name>/` directories. PHP namespaces remain TitleCase.
-
-An installed Composer module is active; there is no enable/disable toggle.
-Never bypass `module-loader.js` for module assets, translations, or Playwright
-project discovery.
-
-Every main module provider extends `Saucebase\Core\Providers\ModuleServiceProvider`. Do not
-add `$name` or `$nameLower`: the base provider resolves the module name through
-`ModuleRegistry::moduleForClass()`.
-
-Use lowercase module identifiers in frontend checks such as
-`modules().has('auth')`.
-
-Module migrations are named `0000_00_00_NNNNNN_<action>_table.php`, numbered
-in dependency order within the module. A module ships its whole schema at
-install, so the date carries no meaning; only the order does. The app's
-`users` table is `0000_00_00_000000` and therefore always runs first. Modules
-may depend on `users` and nothing else today; a module that gains a foreign
-key to another module's table takes the next day, `0000_00_01_`, so it sorts
-after everything it depends on.
-
-Traits live in a `Traits/` directory, never `Concerns/` — the name says what the
-file is. This holds for internal helpers too (`Filament/Traits/`,
-`Console/Traits/`), not only the ones a host model uses.
-
-A module's agent context lives in `resources/boost/`: a short
-`guidelines/core.md` that is always loaded, and a
-`skills/saucebase-<module>-development/SKILL.md` with the full detail. The module's
-`CLAUDE.md` only imports that skill, and its `AGENTS.md` only points to
-it. `composer boost:update` runs
-`modules:boost`, which links each module into the vendor path Boost scans and
-registers it in `boost.json`; never list modules there by hand.
+Module conventions come from the `saucebase/core` guideline. In the app,
+never bypass `module-loader.js` for module assets, translations, or Playwright
+project discovery, and use lowercase module identifiers in frontend checks
+such as `modules().has('auth')`.
 
 ### Frontend Conventions
 
 If both `resources/js/vue/` and `resources/js/react/` exist, this is a
 contributor checkout: follow `CONTRIBUTING.md` before changing any frontend code.
 
-Framework-neutral code shared by both stacks lives in a `lib/` directory —
-`resources/js/lib/` in the app (imported as `@js/lib/...`) and
-`resources/js/lib/` in a module — never `utils/`.
-
-Format dates with `formatDate()` from `@js/lib/dates`, passing the app's language
-(`useLocalization().language` in Vue, `useTranslation().locale` in React) —
-never `toLocaleDateString()` directly, and never `page.props.locale`, which goes
-stale when the language switcher changes it without a page load.
-`formatDateTime()` is for pages that never render on the server.
-
-All components must support light and dark themes. Use stable `data-testid`
-attributes for E2E selectors; never select translated text, labels, or role
-names. Item-specific selectors use `{action}-${item.id}`.
+All components must support light and dark themes.
 
 ### Settings Modal
 
@@ -78,10 +33,9 @@ Account and workspace settings are one modal over the current page, addressed by
 the URL fragment `#settings/<slug>`. There is no settings page, layout, or
 sidebar route.
 
-A module contributes a panel by putting a `Saucebase\Core\Settings\SettingsSection`
-subclass in its own `src/Settings` directory; `SectionRegistry` discovers it
-there. Only the requested section's `props()` runs — the rest are
-`Inertia::optional()` and resolve when the user switches to them.
+Sections come from `SettingsSection` subclasses (see
+`saucebase-module-development`). Only the requested section's `props()` runs;
+the rest are `Inertia::optional()` and resolve when the user switches to them.
 
 Two rules the fragment imposes:
 
@@ -93,17 +47,24 @@ Two rules the fragment imposes:
   with a document-level `focusin` listener, and so does every dialog, menu or
   popover portalled to the body, so the two would recurse until the stack
   overflows. `initializeModals()` in `resources/js/lib/modal.ts`, called
-  once from each stack's `app` entry, swallows the event while the modal
+  once from the `app` entry, swallows the event while the modal
   is `data-aria-hidden`. Panels and overlay primitives need no change; never fix
   this inside `components/ui/`, which the shadcn CLI regenerates.
 
-Panels render a bare `space-y-8` block opening with a muted `p` description —
-no `Card` shell, which the modal already provides — and carry a
-`settings-<slug>-panel` test id. The title is not the panel's: the modal draws
-the active section's title in its own header, so a panel that repeats it shows
-it twice.
+### Where to Look
+
+- Module structure, provider, navigation, settings sections, seeders:
+  `saucebase-module-development` (from `saucebase/core`)
+- Filament: `saucebase-filament-development` (from `saucebase/core`)
+- Pages, navigation, module frontend wiring: `saucebase-frontend-development`
+- Which tests to write and run: `saucebase-testing`
+- Path-specific rules (migrations, frontend, E2E, settings panels, shadcn):
+  `.ai/rules/index.md`
 
 ### Verification
+
+Write the failing test before the change. Before finishing, run the affected
+tests, `vendor/bin/pint --dirty --format agent`, and `composer analyse`.
 
 Run the smallest relevant checks from `CONTRIBUTING.md`. Run module PHPUnit
 tests with a 2048 MB PHP memory limit.

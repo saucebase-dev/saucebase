@@ -77,9 +77,17 @@ module providers extend `Saucebase\Core\Providers\ModuleServiceProvider`;
 `$name` and `$nameLower` properties are obsolete because the base provider
 resolves the module name through InterNACHI's `ModuleRegistry`.
 
+A shipped module's migrations are named `0000_00_00_NNNNNN_<action>_table.php`,
+numbered in dependency order: a module installs its whole schema at once, so
+only the order matters. The app's `users` table is `0000_00_00_000000` and runs
+first. A module that needs another module's table uses `0000_00_01_` so it sorts
+after it. After a release, change the schema with a new timestamped migration,
+because renaming a shipped one breaks databases that already ran it.
+
 Do not bypass `module-loader.js`. It discovers module assets, translations, and
-Playwright projects. See
-`.ai/guidelines/saucebase/saucebase-core.md` for the maintained module patterns.
+Playwright projects. Module patterns are maintained in `saucebase/core`'s
+`resources/boost/` (guideline plus the `saucebase-module-development` and
+`saucebase-filament-development` skills), so they update with core.
 
 A module ships its agent context in `resources/boost/`: a short
 `guidelines/core.md` that is always loaded, and a
@@ -88,7 +96,8 @@ module's `CLAUDE.md` only imports that skill, and its `AGENTS.md` only points to
 it. `composer boost:update` runs
 `php artisan modules:boost` first, which links each module into the vendor path
 Boost scans and registers it in `boost.json`, so modules never need listing by
-hand.
+hand. It registers `saucebase/core` the same way; core is a regular Composer
+package, so it needs no link.
 
 ## Tests and quality checks
 
@@ -119,7 +128,9 @@ Documentation changes must be checked against implementation and manifests:
   lines.
 - `CONTRIBUTING.md` owns contributor setup and verification workflows.
 - `.ai/guidelines/` owns always-loaded agent conventions.
-- `.ai/skills/` owns task-specific agent workflows.
+- `.ai/skills/` owns task-specific agent workflows for the app.
+- `.ai/rules/` owns path-scoped rules, listed in `.ai/rules/index.md`.
+- `saucebase/core`'s `resources/boost/` owns module and Filament conventions.
 - The root `AGENTS.md`, `CLAUDE.md`, and `boost.json` are local Laravel Boost outputs
   and are not tracked. Run `php artisan boost:install` once after cloning.
 
@@ -137,7 +148,7 @@ Never edit the `<laravel-boost-guidelines>` blocks in `AGENTS.md` or
 `CLAUDE.md` directly — they are overwritten on every regeneration, and they
 are not tracked, so the edit reaches nobody. `.ai/` is the only source.
 
-Installed modules are picked up by `composer boost:update` automatically. To
+Installed modules and core are picked up by `composer boost:update` automatically. To
 pick up guidelines newly shipped by any other package, run the Artisan command
 directly. Composer sets `COMPOSER_DEV_MODE`, which suppresses the discovery
 prompt, so `composer boost:update` cannot add third-party packages:
