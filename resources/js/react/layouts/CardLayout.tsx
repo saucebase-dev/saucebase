@@ -97,15 +97,22 @@ export default function CardLayout({
                             </CardDescription>
                         </CardHeader>
                         <CardContent className="px-8">
-                            {status || error ? (
-                                <div data-testid="alert">
-                                    <AlertMessage
-                                        message={status || error}
-                                        variant={status ? 'success' : 'error'}
-                                    />
-                                </div>
-                            ) : null}
-                            {children}
+                            <div
+                                key={page.url}
+                                className="animate-in fade-in duration-300 motion-reduce:animate-none"
+                            >
+                                {status || error ? (
+                                    <div data-testid="alert">
+                                        <AlertMessage
+                                            message={status || error}
+                                            variant={
+                                                status ? 'success' : 'error'
+                                            }
+                                        />
+                                    </div>
+                                ) : null}
+                                {children}
+                            </div>
                         </CardContent>
                     </Card>
                 </div>
