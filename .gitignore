@@ -14,7 +14,7 @@
 /.claude
 /.codex
 /.agents
-/.ai
+/.ai/rules/boost
 
 # Laravel Boost generated output — run `php artisan boost:install` to create
 /AGENTS.md

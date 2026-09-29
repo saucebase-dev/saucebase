@@ -34,7 +34,6 @@ class User extends Authenticatable implements FilamentUser, HasLocalePreference,
         'email',
         'password',
         'avatar',
-        'email_verified_at',
         'last_login_at',
     ];
 
@@ -139,16 +138,6 @@ class User extends Authenticatable implements FilamentUser, HasLocalePreference,
     public function isUser(): bool
     {
         return $this->hasRole(Role::USER);
-    }
-
-    /**
-     * Check if user is a subscriber
-     *
-     * @return bool True if the user has subscriber role
-     */
-    public function isSubscriber(): bool
-    {
-        return $this->hasRole(Role::SUBSCRIBER);
     }
 
     /**
