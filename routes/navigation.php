@@ -85,7 +85,7 @@ Navigation::add(
 );
 
 Navigation::addWhen(
-    fn () => Auth::check() && Auth::user()->isAdmin(),
+    fn () => Auth::user()?->can('access admin panel') ?? false,
     'Admin',
     fn () => route('filament.admin.pages.dashboard'),
     function (Section $section) {

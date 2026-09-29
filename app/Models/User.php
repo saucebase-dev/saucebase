@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\Role;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Contracts\Translation\HasLocalePreference;
@@ -121,30 +120,10 @@ class User extends Authenticatable implements FilamentUser, HasLocalePreference,
     }
 
     /**
-     * Check if user is an administrator
-     *
-     * @return bool True if the user has admin role
-     */
-    public function isAdmin(): bool
-    {
-        return $this->hasRole(Role::ADMIN);
-    }
-
-    /**
-     * Check if user is a regular user
-     *
-     * @return bool True if the user has user role
-     */
-    public function isUser(): bool
-    {
-        return $this->hasRole(Role::USER);
-    }
-
-    /**
      * Determine if the user can access the Filament admin panel.
      */
     public function canAccessPanel(Panel $panel): bool
     {
-        return $this->isAdmin();
+        return $this->can('access admin panel');
     }
 }

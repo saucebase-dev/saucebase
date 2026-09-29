@@ -81,7 +81,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-                'role:admin',
+                'permission:access admin panel',
             ])
             ->plugins([
                 ModulesPlugin::make(),

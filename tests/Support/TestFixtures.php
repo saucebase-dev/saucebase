@@ -2,7 +2,6 @@
 
 namespace Tests\Support;
 
-use App\Enums\Role;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -49,7 +48,7 @@ class TestFixtures
                 ]
             );
 
-            $account->syncRoles([Role::USER->value]);
+            $account->syncRoles(['user']);
 
             ModuleSupport::prepareUser($account);
         }
@@ -72,13 +71,13 @@ class TestFixtures
             'password' => Hash::make($password),
             'email_verified_at' => now(),
         ]);
-        $admin->syncRoles([Role::ADMIN->value]);
+        $admin->syncRoles(['admin']);
 
         $user = User::factory()->create([
             'password' => Hash::make($password),
             'email_verified_at' => now(),
         ]);
-        $user->syncRoles([Role::USER->value]);
+        $user->syncRoles(['user']);
 
         // Installed modules get the accounts into a usable state — see prepareUser().
         ModuleSupport::prepareUser($admin);

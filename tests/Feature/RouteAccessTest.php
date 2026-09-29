@@ -55,11 +55,11 @@ class RouteAccessTest extends TestCase
         $this->assertContains('auth', $middleware);
         $this->assertContains('verified', $middleware);
 
-        // Which roles, rather than that there are roles, is left unpinned: the set is
-        // expected to change (see sc-690), and this test has nothing to say about it.
-        $this->assertNotEmpty(
-            array_filter($middleware, fn (string $m): bool => str_starts_with($m, 'role:')),
-            "Route [{$name}] should carry a role guard.",
+        // Signing in is the whole gate: every signed-in user, whatever their role, gets in.
+        // Anything narrower gets its own permission on its own route.
+        $this->assertEmpty(
+            array_filter($middleware, fn (string $m): bool => str_starts_with($m, 'role:') || str_starts_with($m, 'permission:')),
+            "Route [{$name}] should not need a role or permission beyond signing in.",
         );
     }
 

@@ -18,7 +18,7 @@ Route::get('/robots.txt', RobotsController::class)->name('robots');
 
 Route::post('/locale/{locale}', LocalizationController::class)->name('locale');
 
-Route::middleware(['auth', 'verified', 'role:admin|user'])->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
 
     Route::get('/settings', SettingsController::class)->name('settings');
