@@ -12,6 +12,7 @@ import {
 } from '@inertiaui/modal-react';
 import { initializeModals } from '@js/lib/modal';
 import { siteTitle } from '@js/lib/settings';
+import { flushSync } from 'react-dom';
 import { createRoot } from 'react-dom/client';
 import {
     discoverModuleSetups,
@@ -42,34 +43,43 @@ createInertiaApp({
 
         executeModuleSetups(moduleSetups)
             .then(() => {
-                createRoot(el).render(
-                    <I18nProvider initialLocale={locale}>
-                        <ModalStackProvider>
-                            <App>
-                                <InertiaApp {...props}>
-                                    {({ Component, props: pageProps, key }) => (
-                                        <>
-                                            {getGlobalComponents('top').map(
-                                                (TopComponent, i) => (
-                                                    <TopComponent key={i} />
-                                                ),
-                                            )}
-                                            <Component
-                                                key={key}
-                                                {...pageProps}
-                                            />
-                                            {getGlobalComponents('bottom').map(
-                                                (BottomComponent, i) => (
+                // Committed synchronously, as Vue's mount() is: a module's afterMount()
+                // must run after the tree's layout effects, or they overwrite its work.
+                const root = createRoot(el);
+                flushSync(() =>
+                    root.render(
+                        <I18nProvider initialLocale={locale}>
+                            <ModalStackProvider>
+                                <App>
+                                    <InertiaApp {...props}>
+                                        {({
+                                            Component,
+                                            props: pageProps,
+                                            key,
+                                        }) => (
+                                            <>
+                                                {getGlobalComponents('top').map(
+                                                    (TopComponent, i) => (
+                                                        <TopComponent key={i} />
+                                                    ),
+                                                )}
+                                                <Component
+                                                    key={key}
+                                                    {...pageProps}
+                                                />
+                                                {getGlobalComponents(
+                                                    'bottom',
+                                                ).map((BottomComponent, i) => (
                                                     <BottomComponent key={i} />
-                                                ),
-                                            )}
-                                            <ModalRoot />
-                                        </>
-                                    )}
-                                </InertiaApp>
-                            </App>
-                        </ModalStackProvider>
-                    </I18nProvider>,
+                                                ))}
+                                                <ModalRoot />
+                                            </>
+                                        )}
+                                    </InertiaApp>
+                                </App>
+                            </ModalStackProvider>
+                        </I18nProvider>,
+                    ),
                 );
 
                 return executeAfterMountCallbacks(moduleSetups);

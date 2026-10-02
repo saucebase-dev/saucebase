@@ -81,8 +81,23 @@ A shipped module's migrations are named `0000_00_00_NNNNNN_<action>_table.php`,
 numbered in dependency order: a module installs its whole schema at once, so
 only the order matters. The app's `users` table is `0000_00_00_000000` and runs
 first. A module that needs another module's table uses `0000_00_01_` so it sorts
-after it. After a release, change the schema with a new timestamped migration,
+after it. One that changes a `saucebase/core` table (core ships `0001_01_01_`)
+uses `0001_01_02_`. After a release, change the schema with a new timestamped migration,
 because renaming a shipped one breaks databases that already ran it.
+
+Installers choose their own database, so shipped migrations and queries must
+work on MySQL, PostgreSQL and SQLite. MySQL indexes a foreign key column on its
+own; PostgreSQL and SQLite do not. Give every foreign key column that queries
+filter or join on an index of its own (or lead a composite index with it)
+rather than relying on `constrained()`.
+
+Tables for test-only models go in the module's `tests/Support/migrations/`; core
+loads them only while tests run. Never create a table inside a test: on MySQL the
+DDL commits the test's transaction.
+
+An action (`src/Actions/`) does one thing and has exactly one public method,
+`handle()`. Helpers it shares with other callers belong elsewhere — on the model,
+or with the module's other utilities — not as extra public methods on the action.
 
 Do not bypass `module-loader.js`. It discovers module assets, translations, and
 Playwright projects. Module patterns are maintained in `saucebase/core`'s
