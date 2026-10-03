@@ -8,7 +8,7 @@ import { fileURLToPath, pathToFileURL } from 'url';
  * Automatically discovers enabled modules and collects their lang paths,
  * Playwright configs, and other metadata for the main Vite configuration.
  *
- * @fileoverview Modules are identified by the presence of a vite.config.js file.
+ * @fileoverview A module is a directory under modules/ with a composer.json.
  * Module CSS and JS assets are imported directly in each module's app.ts entry point.
  */
 
@@ -27,11 +27,11 @@ export async function loadEnabledModuleNames(baseDir) {
             if (!entry.isDirectory() || entry.name.startsWith('.')) continue;
             try {
                 await fs.access(
-                    path.join(modulesDir, entry.name, 'vite.config.js'),
+                    path.join(modulesDir, entry.name, 'composer.json'),
                 );
                 names.push(entry.name);
             } catch {
-                // no vite.config.js — not a module directory
+                // no composer.json — not a module directory
             }
         }
 

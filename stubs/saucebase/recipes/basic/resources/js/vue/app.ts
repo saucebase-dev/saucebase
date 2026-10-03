@@ -1,7 +1,8 @@
 // import { registerIcon } from '@/lib/navigation';
 // import IconExample from '~icons/lucide/example';
 
-import '@modules/{module}/resources/css/style.css';
+// Custom styles: create resources/css/style.css in this module and uncomment.
+// import '@modules/{module}/resources/css/style.css';
 
 /**
  * {Module} module setup
