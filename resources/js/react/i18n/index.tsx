@@ -1,4 +1,9 @@
 import {
+    setTranslations,
+    trans,
+    type Translations,
+} from '@js/lib/translations';
+import {
     createContext,
     useCallback,
     useContext,
@@ -6,7 +11,7 @@ import {
     useState,
 } from 'react';
 
-type Translations = Record<string, string>;
+export { trans };
 
 interface I18nContextValue {
     t: (key: string, replacements?: Record<string, string | number>) => string;
@@ -58,35 +63,27 @@ export function I18nProvider({
     initialLocale = 'en',
 }: I18nProviderProps) {
     const [locale, setLocale] = useState(initialLocale);
-    const [translations, setTranslations] = useState<Translations>(() =>
-        loadTranslations(initialLocale),
-    );
+    // Set during render, not in an effect, so the first render and the server
+    // render already read the right language through `trans()`.
+    const [translations, setLoaded] = useState<Translations>(() => {
+        const loaded = loadTranslations(initialLocale);
+        setTranslations(loaded);
+
+        return loaded;
+    });
 
     const handleSetLocale = useCallback((newLocale: string) => {
+        const loaded = loadTranslations(newLocale);
+        setTranslations(loaded);
         setLocale(newLocale);
-        setTranslations(loadTranslations(newLocale));
+        setLoaded(loaded);
     }, []);
 
+    // A new function per language, so components using it re-render on a switch.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const t = useCallback(
-        (
-            key: string,
-            replacements?: Record<string, string | number>,
-        ): string => {
-            let value = translations[key] ?? key;
-
-            if (replacements) {
-                for (const [placeholder, replacement] of Object.entries(
-                    replacements,
-                )) {
-                    value = value.replace(
-                        new RegExp(`:${placeholder}`, 'g'),
-                        String(replacement),
-                    );
-                }
-            }
-
-            return value;
-        },
+        (key: string, replacements?: Record<string, string | number>) =>
+            trans(key, replacements),
         [translations],
     );
 
