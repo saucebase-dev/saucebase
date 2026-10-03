@@ -138,6 +138,17 @@ npm run test:e2e
 npm run build
 ```
 
+Tests run on SQLite. Before changing migrations or raw queries, also run them on
+MySQL and PostgreSQL. Point them at an empty database of their own, never your
+app's: `RefreshDatabase` empties whatever it runs against.
+
+```bash
+DB_CONNECTION=mysql DB_HOST=127.0.0.1 DB_DATABASE=testing DB_USERNAME=testing DB_PASSWORD=testing \
+    php -d memory_limit=2048M artisan test modules/tenancy/tests
+```
+
+Use `DB_CONNECTION=pgsql` (port 5432) for PostgreSQL.
+
 Some npm commands are unavailable until a frontend stack is selected. User-facing
 work should include feature or E2E coverage; complex isolated logic should
 include unit coverage. E2E tests must select stable `data-testid` attributes,
