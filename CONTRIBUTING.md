@@ -62,6 +62,14 @@ npm run build                        # production client and SSR builds
 Available npm scripts depend on the selected stack. The Vue and React stack
 manifests are the source of truth for frontend commands.
 
+## Conventions
+
+Follow Laravel's conventions unless a recorded decision says otherwise. Where
+Laravel names or places something, do the same: exceptions end in `Exception`
+(`PurgeFailedException`), console commands in `Command`, form requests in
+`Request`. A deliberate departure is written down here or in the relevant skill,
+with the reason.
+
 ## Modules
 
 Create a module from the maintained recipe:
