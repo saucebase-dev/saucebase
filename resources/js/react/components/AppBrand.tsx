@@ -21,7 +21,7 @@ export default function AppBrand() {
         <SidebarMenu data-testid="app-brand">
             <SidebarMenuItem>
                 <SidebarMenuButton size="lg" asChild>
-                    <Link href="/dashboard">
+                    <Link href={route('dashboard')}>
                         <span className="flex min-w-0 group-data-[collapsible=icon]:hidden">
                             <AppLogo size="sm" />
                         </span>

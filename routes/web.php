@@ -25,6 +25,4 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/settings', SettingsController::class)->name('settings');
 });
 
-// Where a signed-in user lands; the app chooses with Home::using(). Outside `tenant`:
-// the destination, not this redirect, decides whether a workspace is needed.
 Route::get('/home', HomeController::class)->middleware(['auth', 'verified'])->name('home');

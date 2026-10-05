@@ -23,7 +23,7 @@ import AppLogo from './AppLogo.vue';
     <SidebarMenu data-testid="app-brand">
         <SidebarMenuItem>
             <SidebarMenuButton size="lg" as-child>
-                <Link href="/dashboard">
+                <Link :href="route('dashboard')">
                     <span
                         class="flex min-w-0 group-data-[collapsible=icon]:hidden"
                     >

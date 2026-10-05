@@ -35,10 +35,8 @@ return Application::configure(basePath: dirname(__DIR__))
             AddLinkHeadersForPreloadedAssets::class,
         ]);
 
-        // A signed-in visitor to a guest page goes where the app says home is.
         $middleware->redirectUsersTo(fn (Request $request): string => Home::url($request));
 
-        // Register Spatie Permission Middleware
         $middleware->alias([
             'role' => RoleMiddleware::class,
             'permission' => PermissionMiddleware::class,
