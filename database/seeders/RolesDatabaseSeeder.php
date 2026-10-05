@@ -9,32 +9,19 @@ use Spatie\Permission\Models\Role;
 class RolesDatabaseSeeder extends Seeder
 {
     /**
-     * The platform roles and the permissions each is granted.
+     * The platform roles and permissions.
      *
-     * `admin` needs none: it passes every check (see AppServiceProvider). `user` is the
-     * role every sign-up gets. Add a role here, or at runtime with
-     * `php artisan permission:create-role`.
-     *
-     * @var array<string, list<string>>
+     * `admin` needs no permissions: it passes every check (see AppServiceProvider). `user`
+     * is the role every sign-up gets. Modules create their own permissions (`manage blog`,
+     * …) when `modules:seed` runs, so grant those after it, e.g.
+     * `Role::findOrCreate('blog admin')->syncPermissions(['access admin panel', 'manage blog'])`.
      */
-    private const array ROLES = [
-        'admin' => [],
-        'user' => [],
-    ];
-
-    /** @var list<string> */
-    private const array PERMISSIONS = [
-        'access admin panel',
-    ];
-
     public function run(): void
     {
-        foreach (self::PERMISSIONS as $permission) {
-            Permission::findOrCreate($permission);
-        }
+        Permission::findOrCreate('access admin panel');
+        Permission::findOrCreate('manage settings');
 
-        foreach (self::ROLES as $role => $permissions) {
-            Role::findOrCreate($role)->syncPermissions($permissions);
-        }
+        Role::findOrCreate('admin');
+        Role::findOrCreate('user');
     }
 }
