@@ -162,10 +162,8 @@ onBeforeUnmount(() => {
                     </component>
 
                     <Link
-                        v-if="
-                            route().has('dashboard') && $page.props.auth?.user
-                        "
-                        :href="route('dashboard')"
+                        v-if="route().has('home') && $page.props.auth?.user"
+                        :href="route('home')"
                         class="bg-primary text-primary-foreground hover:bg-primary/90 focus:ring-primary inline-flex items-center justify-center rounded-xl px-5 py-2.5 text-sm font-semibold transition-all duration-200 focus:ring-2 focus:ring-offset-2 focus:outline-none"
                     >
                         {{ $t('Dashboard') }}
@@ -274,13 +272,13 @@ onBeforeUnmount(() => {
                                 </component>
                             </div>
 
-                            <!-- Authenticated: single dashboard button -->
+                            <!-- Authenticated: one button, home -->
                             <Link
                                 v-if="
                                     modules().has('auth') &&
                                     $page.props.auth?.user
                                 "
-                                :href="route('dashboard')"
+                                :href="route('home')"
                                 class="bg-primary text-primary-foreground hover:bg-primary/90 flex w-full items-center justify-center gap-1.5 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all duration-200"
                                 @click="mobileMenuOpen = false"
                             >

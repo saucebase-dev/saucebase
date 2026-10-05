@@ -6,6 +6,7 @@ use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Saucebase\Core\Facades\Home;
 use Saucebase\Core\Http\Middleware\HandleAppearance;
 use Saucebase\Core\Http\Middleware\HandleInertiaRequests;
 use Saucebase\Core\Http\Middleware\HandleLocalization;
@@ -33,6 +34,9 @@ return Application::configure(basePath: dirname(__DIR__))
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
         ]);
+
+        // A signed-in visitor to a guest page goes where the app says home is.
+        $middleware->redirectUsersTo(fn (Request $request): string => Home::url($request));
 
         // Register Spatie Permission Middleware
         $middleware->alias([

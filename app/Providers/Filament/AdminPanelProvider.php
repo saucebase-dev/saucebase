@@ -44,7 +44,7 @@ class AdminPanelProvider extends PanelProvider
                     ->openUrlInNewTab(),
                 Action::make('dashboard')
                     ->label('User Dashboard')
-                    ->url(fn (): string => route('dashboard'))
+                    ->url(fn (): string => route('home'))
                     ->icon('heroicon-o-home')
                     ->openUrlInNewTab(),
             ])

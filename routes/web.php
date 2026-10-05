@@ -3,6 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\IndexController;
 use Illuminate\Support\Facades\Route;
+use Saucebase\Core\Http\Controllers\HomeController;
 use Saucebase\Core\Http\Controllers\LocalizationController;
 use Saucebase\Core\Http\Controllers\RobotsController;
 use Saucebase\Core\Http\Controllers\SettingsController;
@@ -23,3 +24,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/settings', SettingsController::class)->name('settings');
 });
+
+// Where a signed-in user lands; the app chooses with Home::using(). Outside `tenant`:
+// the destination, not this redirect, decides whether a workspace is needed.
+Route::get('/home', HomeController::class)->middleware(['auth', 'verified'])->name('home');

@@ -28,6 +28,7 @@ class RouteAccessTest extends TestCase
     {
         return [
             'dashboard' => ['dashboard'],
+            'home' => ['home'],
             'settings' => ['settings'],
         ];
     }
