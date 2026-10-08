@@ -1,4 +1,5 @@
-import { useHttp, usePage } from '@inertiajs/vue3';
+import { useHttp } from '@/composables/useHttp';
+import { usePage } from '@inertiajs/vue3';
 import { loadLanguageAsync } from 'laravel-vue-i18n';
 import { computed, readonly, ref, watch, type Ref } from 'vue';
 
@@ -34,21 +35,24 @@ export const useLocalization = () => {
      */
     const setLanguage = async (lang: string) => {
         const { post } = useHttp();
-        try {
-            // Update backend session
-            await post(route('locale', { locale: lang }));
+        let saved = false;
 
-            // Update local state
-            if (languageState) {
-                languageState.value = lang;
-            }
+        // Update backend session; a failure is shown and the language stays as it was
+        await post(route('locale', { locale: lang }), {
+            onSuccess: () => (saved = true),
+        });
 
-            // Load i18n translations for the new language
-            await loadLanguageAsync(lang);
-        } catch (error) {
-            console.error('Error changing language', error);
-            throw error;
+        if (!saved) {
+            return;
         }
+
+        // Update local state
+        if (languageState) {
+            languageState.value = lang;
+        }
+
+        // Load i18n translations for the new language
+        await loadLanguageAsync(lang);
     };
 
     // Set up watch only once to avoid multiple watchers

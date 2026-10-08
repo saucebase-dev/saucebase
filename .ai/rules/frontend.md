@@ -8,6 +8,9 @@ paths:
 ## Shared code goes in lib/
 Framework-neutral code goes in `resources/js/lib/` (the app's is imported as `@js/lib/...`), never `utils/`. Vitest covers only `lib/**/*.test.ts` in the app and modules, so logic outside `lib/` gets no unit tests.
 
+## useHttp failures
+Import `useHttp` from `@/composables/useHttp` (Vue) or `@/hooks/useHttp` (React), not from `@inertiajs/*`. Inertia's `onError` fires for a 422 only; the wrapper shows any other failure (419, 500, no connection) as a toast and resolves `undefined` instead of rejecting, so check success in `onSuccess`, not after `await`. Pass a second argument to show the message elsewhere (a field's error, or a toast plus your own cleanup), or give one call its own `onHttpException`/`onNetworkError` to replace it.
+
 ## Format dates with formatDate()
 Use `formatDate()` from `@js/lib/dates` with the app's language (`useLocalization().language` in Vue, `useTranslation().locale` in React). `toLocaleDateString()` ignores the app's language, and `page.props.locale` goes stale when the language switcher changes it without a page load. `formatDateTime()` is only for pages that never render on the server.
 
