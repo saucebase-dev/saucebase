@@ -34,12 +34,6 @@ export async function loginAs(
  * landing URL, which varies by which modules are installed (e.g. tenancy
  * redirects authenticated visitors away from `/dashboard`).
  *
- * `/api/v1/user` looks like the obvious check but isn't wired for
- * session-cookie auth in this app (`bootstrap/app.php` never registers
- * Sanctum's `EnsureFrontendRequestsAreStateful`, so it only accepts bearer
- * tokens) — it always 401s for a real browser session regardless of login
- * state.
- *
  * A `reload()` is required before reading the prop: Inertia's client-side
  * router updates its in-memory page state on navigation but does not rewrite
  * the `<script data-page="app">` tag's contents, so reading it right after an
