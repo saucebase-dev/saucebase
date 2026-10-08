@@ -33,6 +33,16 @@ on:
                 type: string
                 default: '8000'
                 description: 'Port the E2E server listens on. Use 80 for modules whose URLs are host-based (subdomains), since a host derived from APP_URL drops the port.'
+            e2e_variants:
+                required: false
+                type: string
+                default: '[""]'
+                description: 'JSON list of names; E2E runs once per name, e.g. ["domain","slug"]'
+            e2e_setup:
+                required: false
+                type: string
+                default: ''
+                description: 'Shell run in the app before the E2E server starts, with the variant name in $E2E_VARIANT'
 
 jobs:
     detect-frameworks:
@@ -173,7 +183,8 @@ jobs:
         strategy:
             matrix:
                 framework: ${{ fromJSON(needs.detect-frameworks.outputs.matrix) }}
-        name: E2E ${{ inputs.module }} (${{ matrix.framework }})
+                variant: ${{ fromJSON(inputs.e2e_variants) }}
+        name: E2E ${{ inputs.module }} (${{ matrix.framework }}${{ matrix.variant != '' && format(', {0}', matrix.variant) || '' }})
         env:
             SERVE_PORT: ${{ inputs.serve_port }}
             # The non-empty branch must sit on `true`: '' is falsy in GitHub
@@ -211,6 +222,14 @@ jobs:
               working-directory: saucebase
               run: npx playwright install chromium --with-deps
 
+            - name: Prepare E2E variant
+              if: inputs.e2e_setup != ''
+              working-directory: saucebase
+              env:
+                  E2E_VARIANT: ${{ matrix.variant }}
+                  E2E_SETUP: ${{ inputs.e2e_setup }}
+              run: bash -euo pipefail -c "$E2E_SETUP"
+
             - name: Start Laravel server
               working-directory: saucebase
               run: |
@@ -241,6 +260,6 @@ jobs:
               if: failure()
               uses: actions/upload-artifact@v6
               with:
-                  name: playwright-report-${{ inputs.module }}-${{ matrix.framework }}${{ inputs.artifact_suffix }}
+                  name: playwright-report-${{ inputs.module }}-${{ matrix.framework }}${{ inputs.artifact_suffix }}${{ matrix.variant != '' && format('-{0}', matrix.variant) || '' }}
                   path: saucebase/playwright-report/
                   retention-days: 7
