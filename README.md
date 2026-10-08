@@ -52,7 +52,7 @@ Saucebase ships in English. Every string in the app and its modules is ready to 
 1. Collect the strings: `task translation:export LOCALE=pt_BR` writes every one to `lang/pt_BR.json`. Run it again whenever you add code or modules; it adds what is missing and keeps your translations.
 2. Translate the values in `lang/pt_BR.json`. `task translation:missing LOCALE=pt_BR` lists what is left.
 3. Rebuild the frontend (`npm run build`): the browser only gets a language's strings from the build.
-4. Name it in `config/app.php` under `available_locales` (`'pt_BR' => 'Português (Brasil)'`).
+4. Name it under `locales` in `config/saucebase.php` (`'pt_BR' => 'Português (Brasil)'`). Publish that file first with `php artisan vendor:publish --tag=saucebase-config`.
 5. Switch it on in the admin: **Settings → Localization**. The language selector appears once two languages are on.
 6. Optional: add its flag to the icon map in `resources/js/*/components/LanguageSelector`. Without one it shows a globe.
 
