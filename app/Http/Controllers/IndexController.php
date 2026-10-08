@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Response;
 use Inertia\Inertia;
 use Inertia\Response as InertiaResponse;
-use Saucebase\Core\Services\FrontendConfig;
+use Saucebase\Core\FrontendConfig;
 
 class IndexController extends Controller
 {

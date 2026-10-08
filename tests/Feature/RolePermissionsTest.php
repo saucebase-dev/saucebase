@@ -6,9 +6,9 @@ use App\Models\User;
 use Filament\Facades\Filament;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Saucebase\Core\Filament\Admin\Pages\GeneralSettings;
-use Saucebase\Core\Filament\Admin\Pages\LocalizationSettings;
-use Saucebase\Core\Filament\Admin\Pages\SeoSettings;
+use Saucebase\Core\Filament\Pages\GeneralSettings;
+use Saucebase\Core\Filament\Pages\LocalizationSettings;
+use Saucebase\Core\Filament\Pages\SeoSettings;
 use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
