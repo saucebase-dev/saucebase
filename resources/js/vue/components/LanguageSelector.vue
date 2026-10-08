@@ -85,6 +85,7 @@ const currentLanguage = computed(() => {
                 <DropdownMenuItem
                     v-for="lang in languages"
                     :key="lang.code"
+                    :data-testid="`language-option-${lang.code}`"
                     @click="switchLanguage(lang.code)"
                     :class="{
                         'bg-accent text-accent-foreground':
@@ -115,6 +116,7 @@ const currentLanguage = computed(() => {
                 <DropdownMenuItem
                     v-for="lang in languages"
                     :key="lang.code"
+                    :data-testid="`language-option-${lang.code}`"
                     @click="switchLanguage(lang.code)"
                     :class="{ 'bg-accent': language === lang.code }"
                 >

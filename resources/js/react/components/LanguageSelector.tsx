@@ -64,6 +64,7 @@ export default function LanguageSelector({
                     {languages.map(({ code, name, Icon }) => (
                         <DropdownMenuItem
                             key={code}
+                            data-testid={`language-option-${code}`}
                             onClick={() => setLanguage(code)}
                             className={
                                 language === code
@@ -97,6 +98,7 @@ export default function LanguageSelector({
                 {languages.map(({ code, name, Icon }) => (
                     <DropdownMenuItem
                         key={code}
+                        data-testid={`language-option-${code}`}
                         onClick={() => setLanguage(code)}
                         className={language === code ? 'bg-accent' : ''}
                     >

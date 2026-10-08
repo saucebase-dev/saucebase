@@ -118,6 +118,20 @@ tasks:
         desc: Seed every module with sample content
         cmd: '{{.APP}} php artisan modules:seed --demo'
 
+    # ── Translation ───────────────────────────────────────────────
+
+    translation:export:
+        desc: 'Add missing strings from the app and every module to lang/<LOCALE>.json (task translation:export LOCALE=pt_BR)'
+        requires:
+            vars: [LOCALE]
+        cmd: '{{.APP}} php artisan translatable:export {{.LOCALE}}'
+
+    translation:missing:
+        desc: 'List strings still untranslated in lang/<LOCALE>.json (task translation:missing LOCALE=pt_BR)'
+        requires:
+            vars: [LOCALE]
+        cmd: '{{.APP}} php artisan translatable:inspect-translations {{.LOCALE}}'
+
     # ── Pipelines ─────────────────────────────────────────────────
 
     check:
