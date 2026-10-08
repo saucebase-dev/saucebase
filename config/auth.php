@@ -22,18 +22,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Login Rate Limiting
-    |--------------------------------------------------------------------------
-    |
-    | This value controls how many consecutive failed login attempts a user
-    | can make before being rate limited. It may be overridden by the
-    | "LOGIN_RATE_LIMIT" environment variable.
-    |
-    */
-    'login_rate_limit' => env('LOGIN_RATE_LIMIT', 5),
-
-    /*
-    |--------------------------------------------------------------------------
     | Authentication Guards
     |--------------------------------------------------------------------------
     |
