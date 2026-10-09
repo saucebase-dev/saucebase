@@ -228,7 +228,6 @@ return [
     |
     */
 
-    // 'json' loses a failed sign-in's errors when the login opens as a modal; keep 'php' until that is fixed.
-    'serialization' => 'php',
+    'serialization' => 'json',
 
 ];
