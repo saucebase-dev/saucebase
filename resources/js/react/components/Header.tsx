@@ -1,24 +1,15 @@
+import { useAuth } from '@/hooks/useAuth';
 import { useModules } from '@/hooks/useModules';
 import { useT } from '@/i18n';
 import { handleAction } from '@/lib/navigation';
 import { cn } from '@/lib/utils';
 import type { MenuItem } from '@/types/navigation';
 import { Link, usePage } from '@inertiajs/react';
-import { ModalLink } from '@inertiaui/modal-react';
 import { ArrowRight, ExternalLink, Menu, X } from 'lucide-react';
-import { useEffect, useRef, useState, type MouseEvent } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import AppLogo from './AppLogo';
 import LanguageSelector from './LanguageSelector';
 import ThemeSelector from './ThemeSelector';
-
-/**
- * The modal marks `#app` `aria-hidden` as it opens, and its focus trap only
- * claims focus once the panel has loaded. Leaving focus on the trigger in that
- * gap puts a focused element inside an aria-hidden subtree.
- */
-function blurTrigger(event: MouseEvent<Element>) {
-    (event.currentTarget as HTMLElement).blur();
-}
 
 export default function Header() {
     const t = useT();
@@ -36,25 +27,14 @@ export default function Header() {
         | {
               user?: unknown;
               registration_enabled?: boolean;
-              modal_enabled?: boolean;
           }
         | undefined;
     const isLoggedIn = auth?.user != null;
     const isGuest = has('auth') && !isLoggedIn;
     const canRegister = isGuest && auth?.registration_enabled === true;
 
-    /**
-     * How the sign-in and registration entry points render.
-     *
-     * A modal over the current page when the site has that switched on, an
-     * ordinary page link when it has not. `navigate` puts the auth route in the
-     * address bar while the modal is open, so Back closes it and a refresh or
-     * shared link lands on the full page.
-     */
-    const AuthLink = auth?.modal_enabled ? ModalLink : Link;
-    const authLinkProps = auth?.modal_enabled
-        ? { navigate: true, onClick: blurTrigger }
-        : {};
+    /** How the sign-in and registration entry points render. */
+    const { login, signup } = useAuth();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -136,23 +116,23 @@ export default function Header() {
                         </div>
                         {isGuest && (
                             <>
-                                <AuthLink
-                                    {...authLinkProps}
+                                <a
                                     href={route('login')}
                                     className="text-foreground/80 hover:bg-accent hover:text-accent-foreground cursor-pointer rounded-xl px-4 py-2 text-sm font-medium transition-all duration-200"
                                     data-testid="header-sign-in"
+                                    onClick={login}
                                 >
                                     {t('Sign In')}
-                                </AuthLink>
+                                </a>
                                 {canRegister && (
-                                    <AuthLink
-                                        {...authLinkProps}
+                                    <a
                                         href={route('register')}
                                         className="bg-primary text-primary-foreground hover:bg-primary/90 focus:ring-primary inline-flex cursor-pointer items-center justify-center rounded-xl px-5 py-2.5 text-sm font-semibold transition-all duration-200 focus:ring-2 focus:ring-offset-2 focus:outline-none"
                                         data-testid="header-get-started"
+                                        onClick={signup}
                                     >
                                         {t('Get Started')}
-                                    </AuthLink>
+                                    </a>
                                 )}
                             </>
                         )}
@@ -234,30 +214,30 @@ export default function Header() {
                             <div className="border-border/60 mt-2 border-t pt-4">
                                 {isGuest && (
                                     <div className="flex gap-3">
-                                        <AuthLink
-                                            {...authLinkProps}
+                                        <a
                                             href={route('login')}
                                             className="border-border text-foreground hover:bg-accent flex-1 cursor-pointer rounded-xl border px-4 py-2.5 text-center text-sm font-medium transition-all duration-200"
                                             data-testid="header-sign-in-mobile"
-                                            onClick={() =>
-                                                setMobileMenuOpen(false)
-                                            }
+                                            onClick={(event) => {
+                                                setMobileMenuOpen(false);
+                                                login(event);
+                                            }}
                                         >
                                             {t('Sign In')}
-                                        </AuthLink>
+                                        </a>
                                         {canRegister && (
-                                            <AuthLink
-                                                {...authLinkProps}
+                                            <a
                                                 href={route('register')}
                                                 className="bg-primary text-primary-foreground hover:bg-primary/90 flex flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all duration-200"
                                                 data-testid="header-get-started-mobile"
-                                                onClick={() =>
-                                                    setMobileMenuOpen(false)
-                                                }
+                                                onClick={(event) => {
+                                                    setMobileMenuOpen(false);
+                                                    signup(event);
+                                                }}
                                             >
                                                 {t('Get Started')}
                                                 <ArrowRight className="h-3.5 w-3.5" />
-                                            </AuthLink>
+                                            </a>
                                         )}
                                     </div>
                                 )}

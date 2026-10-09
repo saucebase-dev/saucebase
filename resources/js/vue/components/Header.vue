@@ -1,10 +1,10 @@
 <script setup lang="ts">
+import { useAuth } from '@/composables/useAuth';
 import { modules } from '@/composables/useModules';
 import { handleAction } from '@/lib/navigation';
 import { cn } from '@/lib/utils';
 import type { MenuItem } from '@/types/navigation';
 import { Link, usePage } from '@inertiajs/vue3';
-import { ModalLink } from '@inertiaui/modal-vue';
 import { ArrowRight, ExternalLink } from '@lucide/vue';
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import IconMenu from '~icons/heroicons/bars-3';
@@ -15,28 +15,8 @@ import ThemeSelector from './ThemeSelector.vue';
 
 const page = usePage();
 
-/**
- * How the sign-in and registration entry points render.
- *
- * A modal over the current page when the site has that switched on, an ordinary
- * page link when it has not. `navigate` puts the auth route in the address bar
- * while the modal is open, so Back closes it and a refresh or shared link lands
- * on the full page.
- */
-const authLink = computed(() =>
-    page.props.auth?.modal_enabled
-        ? { is: ModalLink, props: { navigate: true, onClick: blurTrigger } }
-        : { is: Link, props: {} },
-);
-
-/**
- * The modal marks `#app` `aria-hidden` as it opens, and its focus trap only
- * claims focus once the panel has loaded. Leaving focus on the trigger in that
- * gap puts a focused element inside an aria-hidden subtree.
- */
-function blurTrigger(event: MouseEvent) {
-    (event.currentTarget as HTMLElement).blur();
-}
+/** How the sign-in and registration entry points render. */
+const { login, signup } = useAuth();
 const landingNav = computed<MenuItem[]>(
     () => (page.props.navigation as { landing?: MenuItem[] })?.landing || [],
 );
@@ -135,20 +115,17 @@ onBeforeUnmount(() => {
                         <ThemeSelector mode="standalone" />
                     </div>
 
-                    <component
-                        :is="authLink.is"
-                        v-bind="authLink.props"
+                    <a
                         v-if="modules().has('Auth') && !$page.props.auth?.user"
                         :href="route('login')"
                         class="text-foreground/80 hover:bg-accent hover:text-accent-foreground cursor-pointer rounded-xl px-4 py-2 text-sm font-medium transition-all duration-200"
                         data-testid="header-sign-in"
+                        @click="login"
                     >
                         {{ $t('Sign In') }}
-                    </component>
+                    </a>
 
-                    <component
-                        :is="authLink.is"
-                        v-bind="authLink.props"
+                    <a
                         v-if="
                             modules().has('Auth') &&
                             !$page.props.auth?.user &&
@@ -157,9 +134,10 @@ onBeforeUnmount(() => {
                         :href="route('register')"
                         class="bg-primary text-primary-foreground hover:bg-primary/90 focus:ring-primary inline-flex cursor-pointer items-center justify-center rounded-xl px-5 py-2.5 text-sm font-semibold transition-all duration-200 focus:ring-2 focus:ring-offset-2 focus:outline-none"
                         data-testid="header-get-started"
+                        @click="signup"
                     >
                         {{ $t('Get Started') }}
-                    </component>
+                    </a>
 
                     <Link
                         v-if="route().has('home') && $page.props.auth?.user"
@@ -246,30 +224,32 @@ onBeforeUnmount(() => {
                                 "
                                 class="flex gap-3"
                             >
-                                <component
-                                    :is="authLink.is"
-                                    v-bind="authLink.props"
+                                <a
                                     :href="route('login')"
                                     class="border-border text-foreground hover:bg-accent flex-1 cursor-pointer rounded-xl border px-4 py-2.5 text-center text-sm font-medium transition-all duration-200"
                                     data-testid="header-sign-in-mobile"
-                                    @click="mobileMenuOpen = false"
+                                    @click="
+                                        mobileMenuOpen = false;
+                                        login($event);
+                                    "
                                 >
                                     {{ $t('Sign In') }}
-                                </component>
-                                <component
-                                    :is="authLink.is"
-                                    v-bind="authLink.props"
+                                </a>
+                                <a
                                     v-if="
                                         $page.props.auth?.registration_enabled
                                     "
                                     :href="route('register')"
                                     class="bg-primary text-primary-foreground hover:bg-primary/90 flex flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all duration-200"
                                     data-testid="header-get-started-mobile"
-                                    @click="mobileMenuOpen = false"
+                                    @click="
+                                        mobileMenuOpen = false;
+                                        signup($event);
+                                    "
                                 >
                                     {{ $t('Get Started') }}
                                     <ArrowRight class="h-3.5 w-3.5" />
-                                </component>
+                                </a>
                             </div>
 
                             <!-- Authenticated: one button, home -->
