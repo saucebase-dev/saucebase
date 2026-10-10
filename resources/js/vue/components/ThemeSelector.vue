@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { revealOrigin, revealTransition } from '@js/lib/themeReveal';
+import {
+    revealOrigin,
+    revealTransition,
+} from '@saucebase/core/lib/themeReveal';
 import { Button } from '@/components/ui/button';
 import { ButtonGroup } from '@/components/ui/button-group';
 import {

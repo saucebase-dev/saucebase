@@ -22,8 +22,8 @@ import {
 } from '@/components/ui/sidebar';
 import { useSettings } from '@/composables/useSettings';
 import { settingsHref } from '@/composables/useSettingsModal';
-import { hasGlobalComponent } from '@/lib/globalComponents';
-import { handleAction } from '@/lib/navigation';
+import { hasGlobalComponent } from '@saucebase/vue/lib/globalComponents';
+import { handleAction } from '@saucebase/vue/lib/navigation';
 import type { User } from '@/types';
 import type { MenuBadge, MenuItem } from '@/types/navigation';
 import { Link } from '@inertiajs/vue3';

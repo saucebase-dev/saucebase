@@ -2,7 +2,7 @@
 import {
     getGlobalComponents,
     type GlobalComponentSlot,
-} from '@/lib/globalComponents';
+} from '@saucebase/vue/lib/globalComponents';
 
 const { position } = defineProps<{ position: GlobalComponentSlot }>();
 const components = getGlobalComponents(position);

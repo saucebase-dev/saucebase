@@ -11,12 +11,12 @@ from prose.
 - Frontend dependencies: `package.json`
 - Module behavior: `Saucebase\Core\Providers\ModuleServiceProvider` (the
   `saucebase/core` package),
-  `module-loader.js`, and the recipe stubs
+  its Vite preset (`resources/js/vite.ts`), and the recipe stubs
 
 ### Module Conventions
 
 Module conventions come from the `saucebase/core` guideline. In the app,
-never bypass `module-loader.js` for module assets, translations, or Playwright
+never bypass the Saucebase Vite preset for module assets, translations, or Playwright
 project discovery, and use lowercase module identifiers in frontend checks
 such as `modules().has('auth')`.
 
@@ -46,7 +46,7 @@ Two rules the fragment imposes:
 - **The modal's focus trap yields to overlays above it.** The modal traps focus
   with a document-level `focusin` listener, and so does every dialog, menu or
   popover portalled to the body, so the two would recurse until the stack
-  overflows. `initializeModals()` in `resources/js/lib/modal.ts`, called
+  overflows. `initializeModals()` in `@saucebase/core/lib/modal`, called
   once from the `app` entry, swallows the event while the modal
   is `data-aria-hidden`. Panels and overlay primitives need no change; never fix
   this inside `components/ui/`, which the shadcn CLI regenerates.

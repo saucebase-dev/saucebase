@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useAuth } from '@/composables/useAuth';
 import { modules } from '@/composables/useModules';
-import { handleAction } from '@/lib/navigation';
+import { handleAction } from '@saucebase/vue/lib/navigation';
 import { cn } from '@/lib/utils';
 import type { MenuItem } from '@/types/navigation';
 import { Link, usePage } from '@inertiajs/vue3';

@@ -1,10 +1,10 @@
 import { useAuth } from '@/hooks/useAuth';
 import { useModules } from '@/hooks/useModules';
 import { useT } from '@/i18n';
-import { handleAction } from '@/lib/navigation';
 import { cn } from '@/lib/utils';
 import type { MenuItem } from '@/types/navigation';
 import { Link, usePage } from '@inertiajs/react';
+import { handleAction } from '@saucebase/react/lib/navigation';
 import { ArrowRight, ExternalLink, Menu, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import AppLogo from './AppLogo';

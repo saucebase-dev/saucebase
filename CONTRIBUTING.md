@@ -107,8 +107,8 @@ An action (`src/Actions/`) does one thing and has exactly one public method,
 `handle()`. Helpers it shares with other callers belong elsewhere — on the model,
 or with the module's other utilities — not as extra public methods on the action.
 
-Do not bypass `module-loader.js`. It discovers module assets, translations, and
-Playwright projects. Module patterns are maintained in `saucebase/core`'s
+Do not bypass the Vite preset in `saucebase/core` (`resources/js`). It discovers
+module assets, translations, and Playwright projects. Module patterns are maintained in `saucebase/core`'s
 `resources/boost/` (guideline plus the `saucebase-module-development` and
 `saucebase-filament-development` skills), so they update with core.
 

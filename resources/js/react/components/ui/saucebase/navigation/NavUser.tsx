@@ -22,8 +22,8 @@ import { useT } from '@/i18n';
 import {
     getGlobalComponents,
     hasGlobalComponent,
-} from '@/lib/globalComponents';
-import { handleAction } from '@/lib/navigation';
+} from '@saucebase/react/lib/globalComponents';
+import { handleAction } from '@saucebase/react/lib/navigation';
 import type { User } from '@/types';
 import type { MenuItem } from '@/types/navigation';
 import { Link } from '@inertiajs/react';

@@ -1,4 +1,4 @@
-import type { Settings } from '@js/lib/settings';
+import type { Settings } from '@saucebase/core/lib/settings';
 
 export interface User {
     id: number;

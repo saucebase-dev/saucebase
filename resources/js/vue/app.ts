@@ -1,19 +1,20 @@
 import { useLocalization } from '@/composables/useLocalization';
 import { createInertiaApp } from '@inertiajs/vue3';
 import { putConfig, withInertiaModal } from '@inertiaui/modal-vue';
-import { initializeModals } from '@js/lib/modal';
-import { siteTitle } from '@js/lib/settings';
+import { initializeModals } from '@saucebase/core/lib/modal';
+import { siteTitle } from '@saucebase/core/lib/settings';
 import { useColorMode } from '@vueuse/core';
 import { i18nVue, loadLanguageAsync } from 'laravel-vue-i18n';
 import { createApp, h } from 'vue';
 import { ZiggyVue } from 'ziggy-js';
+import { registerNavigationDefaults } from './lib/navigation';
 import { resolveLanguage, resolveModularPageComponent } from './lib/utils';
 
 import {
     discoverModuleSetups,
     executeAfterMountCallbacks,
     executeModuleSetups,
-} from './lib/moduleSetup';
+} from '@saucebase/vue/lib/moduleSetup';
 
 import '@css/app.css';
 
@@ -21,6 +22,8 @@ import '@css/app.css';
  * Used as a wrapper to global components
  */
 import AppWrapper from '@/components/App.vue';
+
+registerNavigationDefaults();
 
 const moduleSetups = discoverModuleSetups();
 

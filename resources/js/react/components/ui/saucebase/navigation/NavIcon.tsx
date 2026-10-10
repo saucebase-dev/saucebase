@@ -1,4 +1,4 @@
-import { resolveIcon } from '@/lib/navigation';
+import { resolveIcon } from '@saucebase/react/lib/navigation';
 import { cn } from '@/lib/utils';
 import { HelpCircle } from 'lucide-react';
 

@@ -7,13 +7,13 @@ import {
     SidebarFooter,
     SidebarHeader,
 } from '@/components/ui/sidebar';
-import {
-    getGlobalComponents,
-    hasGlobalComponent,
-} from '@/lib/globalComponents';
 import type { PageProps, User } from '@/types';
 import type { Navigation } from '@/types/navigation';
 import { usePage } from '@inertiajs/react';
+import {
+    getGlobalComponents,
+    hasGlobalComponent,
+} from '@saucebase/react/lib/globalComponents';
 
 export default function AppSidebar() {
     const page =

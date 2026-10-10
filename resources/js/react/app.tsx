@@ -1,7 +1,6 @@
 import App from '@/components/App';
 import { initializeTheme } from '@/hooks/useTheme';
 import { I18nProvider } from '@/i18n';
-import { getGlobalComponents } from '@/lib/globalComponents';
 import '@css/app.css';
 import { createInertiaApp } from '@inertiajs/react';
 import {
@@ -10,18 +9,22 @@ import {
     ModalStackProvider,
     putConfig,
 } from '@inertiaui/modal-react';
-import { initializeModals } from '@js/lib/modal';
-import { siteTitle } from '@js/lib/settings';
-import { flushSync } from 'react-dom';
-import { createRoot } from 'react-dom/client';
+import { initializeModals } from '@saucebase/core/lib/modal';
+import { siteTitle } from '@saucebase/core/lib/settings';
+import { getGlobalComponents } from '@saucebase/react/lib/globalComponents';
 import {
     discoverModuleSetups,
     executeAfterMountCallbacks,
     executeModuleSetups,
-} from './lib/moduleSetup';
+} from '@saucebase/react/lib/moduleSetup';
+import { flushSync } from 'react-dom';
+import { createRoot } from 'react-dom/client';
+import { registerNavigationDefaults } from './lib/navigation';
 import { resolveModularPageComponent } from './lib/utils';
 
 initializeTheme();
+
+registerNavigationDefaults();
 
 const moduleSetups = discoverModuleSetups();
 

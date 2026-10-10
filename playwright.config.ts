@@ -1,8 +1,8 @@
 /// <reference types="node" />
 import { defineConfig, devices } from '@playwright/test';
 import type { LaravelOptions } from '@saucebase/laravel-playwright';
+import { collectModulePlaywrightConfigs } from './vendor/saucebase/core/resources/js/modules.ts';
 import 'dotenv/config';
-import { collectModulePlaywrightConfigs } from './module-loader.js';
 
 const BASE_URL = process.env.APP_URL ?? 'http://localhost';
 

@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/sidebar/index';
 import type { User } from '@/types';
 import type { Navigation } from '@/types/navigation';
-import { hasGlobalComponent } from '@/lib/globalComponents';
+import { hasGlobalComponent } from '@saucebase/vue/lib/globalComponents';
 import { usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
 import AppBrand from './AppBrand.vue';

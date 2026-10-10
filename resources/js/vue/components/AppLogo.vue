@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useSettings } from '@/composables/useSettings';
-import { brandAssetUrl } from '@js/lib/settings';
+import { brandAssetUrl } from '@saucebase/core/lib/settings';
 import { computed } from 'vue';
 
 /**

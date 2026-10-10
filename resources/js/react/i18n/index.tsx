@@ -2,7 +2,7 @@ import {
     setTranslations,
     trans,
     type Translations,
-} from '@js/lib/translations';
+} from '@saucebase/core/lib/translations';
 import {
     createContext,
     useCallback,

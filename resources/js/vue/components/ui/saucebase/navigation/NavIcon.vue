@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { resolveIcon } from '@/lib/navigation';
+import { resolveIcon } from '@saucebase/vue/lib/navigation';
 import { computed, type Component } from 'vue';
 import IconHelpCircle from '~icons/lucide/help-circle';
 

@@ -1,4 +1,7 @@
-import { revealTransition, type RevealOrigin } from '@js/lib/themeReveal';
+import {
+    revealTransition,
+    type RevealOrigin,
+} from '@saucebase/core/lib/themeReveal';
 import { useCallback, useEffect, useState } from 'react';
 
 export type Theme = 'light' | 'dark' | 'auto';

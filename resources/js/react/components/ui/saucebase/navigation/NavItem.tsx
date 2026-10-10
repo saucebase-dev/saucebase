@@ -12,7 +12,7 @@ import {
     SidebarMenuSubItem,
 } from '@/components/ui/sidebar';
 import { useT } from '@/i18n';
-import { handleAction } from '@/lib/navigation';
+import { handleAction } from '@saucebase/react/lib/navigation';
 import type { MenuBadge, MenuItem } from '@/types/navigation';
 import { Link } from '@inertiajs/react';
 import { ChevronRight } from 'lucide-react';
