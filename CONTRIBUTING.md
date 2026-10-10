@@ -62,6 +62,12 @@ npm run build                        # production client and SSR builds
 Available npm scripts depend on the selected stack. The Vue and React stack
 manifests are the source of truth for frontend commands.
 
+When `saucebase/core` is symlinked into `vendor/` (a Composer path repository),
+`npm run dev` and `npm run build` print "Could not resolve ... treating it as an
+external dependency" warnings for the build plugins. They are harmless: Vite
+follows the symlink to load its config, then finds the plugins in the app. An
+app that installs core from Packagist doesn't see them.
+
 ## Conventions
 
 Follow Laravel's conventions unless a recorded decision says otherwise. Where
