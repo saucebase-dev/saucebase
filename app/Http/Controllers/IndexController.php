@@ -15,9 +15,7 @@ class IndexController extends Controller
             return response()->view('setup');
         }
 
-        return Inertia::render('Index', [
-            // Share here your frontend data, e.g. products, announcements, etc.
-        ])->withSSR();
+        return Inertia::render('Index')->withSSR();
     }
 
     public function terms(): InertiaResponse
