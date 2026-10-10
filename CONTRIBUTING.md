@@ -27,6 +27,13 @@ The app's UI lives in `saucebase/core`, under `stubs/stack/vue/js/` and
 entry-point passthroughs; an installed app gets its own copy in `resources/js/`.
 Edit the tree in core, never the generated root entry points or generated
 TypeScript declarations.
+
+The CSS is the exception. It also lives in core (`stubs/stack/css/`), but its
+files find modules and packages by relative path, so `saucebase stack` copies
+them into `resources/css/`, which git ignores here. Edit that copy to see changes
+live, including a theme set with **Set as default**, then run
+`saucebase stack --sync` to copy it back and commit in core. `stack --reset`
+refuses to continue while the copy has edits core doesn't.
 Shared frontend changes must work with both stacks, and a module's Vue and
 React trees must stay in step.
 

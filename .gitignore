@@ -57,6 +57,8 @@ Thumbs.db
 
 # Filament 
 public/css/filament
+# Copied from saucebase/core by `saucebase stack`; edit here, then `saucebase stack --sync`.
+/resources/css/
 public/fonts/filament
 public/js/filament
 public/vendor/livewire/

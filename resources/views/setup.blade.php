@@ -20,7 +20,7 @@
     </style>
 
     <style>
-        {!! file_get_contents(resource_path('css/theme.css')) !!}
+        {!! file_get_contents(base_path('vendor/saucebase/core/stubs/stack/css/theme.css')) !!}
 
         /* --color-* aliases (compiled by @theme inline in the real app, manual here) */
         :root {
@@ -38,7 +38,7 @@
             --react-color: #0ea5e9;
         }
 
-        {!! file_get_contents(resource_path('css/saucebase.css')) !!}
+        {!! file_get_contents(base_path('vendor/saucebase/core/stubs/stack/css/saucebase.css')) !!}
 
         body {
             font-family: 'Outfit', sans-serif;
