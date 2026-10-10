@@ -16,9 +16,9 @@ import {
     SidebarMenuItem,
     useSidebar,
 } from '@/components/ui/sidebar';
-import { useSettings } from '@/hooks/useSettings';
-import { settingsHref } from '@/hooks/useSettingsModal';
-import { useT } from '@/i18n';
+import { useSettings } from '@saucebase/react/hooks/useSettings';
+import { settingsHref } from '@saucebase/react/hooks/useSettingsModal';
+import { useT } from '@saucebase/react/i18n';
 import {
     getGlobalComponents,
     hasGlobalComponent,

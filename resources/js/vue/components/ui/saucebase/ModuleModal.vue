@@ -4,7 +4,7 @@ import { BookOpen, Check, Copy, Terminal, X } from '@lucide/vue';
 import { onUnmounted, ref } from 'vue';
 import { toast } from 'vue-sonner';
 import type { Module } from './index';
-import { useModules } from '@/composables/useModules';
+import { useModules } from '@saucebase/vue/composables/useModules';
 
 const props = defineProps<{ selectedMod: Module | null }>();
 const emit = defineEmits<{ close: [] }>();

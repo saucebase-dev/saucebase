@@ -8,9 +8,9 @@ import {
     AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { buttonVariants } from '@/components/ui/button';
-import { useDialog } from '@/hooks/useDialog';
-import { useT } from '@/i18n';
 import { cn } from '@/lib/utils';
+import { useDialog } from '@saucebase/react/hooks/useDialog';
+import { useT } from '@saucebase/react/i18n';
 
 export default function DynamicDialog() {
     const t = useT();

@@ -1,5 +1,5 @@
-import { useSettings } from '@/hooks/useSettings';
 import { brandAssetUrl } from '@saucebase/core/lib/settings';
+import { useSettings } from '@saucebase/react/hooks/useSettings';
 
 type Size = 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
 

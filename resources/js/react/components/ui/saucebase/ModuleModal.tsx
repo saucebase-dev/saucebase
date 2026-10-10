@@ -1,5 +1,5 @@
-import { useModules } from '@/hooks/useModules';
-import { useT } from '@/i18n';
+import { useModules } from '@saucebase/react/hooks/useModules';
+import { useT } from '@saucebase/react/i18n';
 import { BookOpen, Check, Copy, Terminal, X } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';

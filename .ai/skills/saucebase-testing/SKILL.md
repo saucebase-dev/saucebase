@@ -13,7 +13,7 @@ Write the failing test first, then the code that makes it pass.
 |---|---|---|
 | PHP behavior in the app | PHPUnit `Feature` / `Unit` | `tests/Feature`, `tests/Unit` |
 | PHP behavior in a module | PHPUnit `Modules` | `modules/<name>/tests/{Feature,Unit}` |
-| Framework-neutral TypeScript | Vitest | `**/resources/js/lib/**/*.test.ts` only |
+| Framework-neutral TypeScript | Vitest | `modules/*/resources/js/lib/**/*.test.ts` in the app; `*.test.ts` in `saucebase/core`'s `resources/js` |
 | Components, pages, user flows | Playwright | `tests/e2e`, `modules/<name>/tests/e2e` |
 
 Vitest runs in a Node environment with no Vite plugins, so it can't render components; Playwright covers those.

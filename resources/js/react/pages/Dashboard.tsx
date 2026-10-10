@@ -6,8 +6,8 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
-import { useT } from '@/i18n';
 import AppLayout from '@/layouts/AppLayout';
+import { useT } from '@saucebase/react/i18n';
 import { Rocket } from 'lucide-react';
 
 const title = 'Welcome to Saucebase';

@@ -11,7 +11,7 @@ import {
     SidebarMenuSubButton,
     SidebarMenuSubItem,
 } from '@/components/ui/sidebar';
-import { useT } from '@/i18n';
+import { useT } from '@saucebase/react/i18n';
 import { handleAction } from '@saucebase/react/lib/navigation';
 import type { MenuBadge, MenuItem } from '@/types/navigation';
 import { Link } from '@inertiajs/react';

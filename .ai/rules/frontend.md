@@ -9,7 +9,7 @@ paths:
 Framework-neutral code goes in `lib/`, never `utils/`: Saucebase's own is in `saucebase/core` (`@saucebase/core/lib/...`), a module's in its `resources/js/lib/`. Vitest covers only `lib/**/*.test.ts` in modules (and core's `resources/js`), so logic outside `lib/` gets no unit tests.
 
 ## useHttp failures
-Import `useHttp` from `@/composables/useHttp` (Vue) or `@/hooks/useHttp` (React), not from `@inertiajs/*`. Inertia's `onError` fires for a 422 only; the wrapper shows any other failure (419, 500, no connection) as a toast and resolves `undefined` instead of rejecting, so check success in `onSuccess`, not after `await`. Pass a second argument to show the message elsewhere (a field's error, or a toast plus your own cleanup), or give one call its own `onHttpException`/`onNetworkError` to replace it.
+Import `useHttp` from `@saucebase/vue/composables/useHttp` (Vue) or `@saucebase/react/hooks/useHttp` (React), not from `@inertiajs/*`. Inertia's `onError` fires for a 422 only; the wrapper shows any other failure (419, 500, no connection) as a toast and resolves `undefined` instead of rejecting, so check success in `onSuccess`, not after `await`. Pass a second argument to show the message elsewhere (a field's error, or a toast plus your own cleanup), or give one call its own `onHttpException`/`onNetworkError` to replace it.
 
 ## Format dates with formatDate()
 Use `formatDate()` from `@saucebase/core/lib/dates` with the app's language (`useLocalization().language` in Vue, `useTranslation().locale` in React). `toLocaleDateString()` ignores the app's language, and `page.props.locale` goes stale when the language switcher changes it without a page load. `formatDateTime()` is only for pages that never render on the server.

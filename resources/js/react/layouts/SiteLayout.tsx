@@ -1,7 +1,7 @@
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
-import { useSettings } from '@/hooks/useSettings';
 import { Head } from '@inertiajs/react';
+import { useSettings } from '@saucebase/react/hooks/useSettings';
 import type { ReactNode } from 'react';
 
 interface SiteLayoutProps {

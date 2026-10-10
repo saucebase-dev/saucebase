@@ -1,15 +1,13 @@
 import { createInertiaApp } from '@inertiajs/vue3';
 import createServer from '@inertiajs/vue3/server';
 import { siteTitle } from '@saucebase/core/lib/settings';
+import { resolveLanguageForSsr } from '@saucebase/vue/lib/language';
+import { resolveModularPageComponent } from '@saucebase/vue/lib/pages';
 import { i18nVue } from 'laravel-vue-i18n';
 import { createSSRApp, h } from 'vue';
 import { renderToString } from 'vue/server-renderer';
 import { ZiggyVue } from 'ziggy-js';
 import { registerNavigationDefaults } from './lib/navigation';
-import {
-    resolveLanguageForSsr,
-    resolveModularPageComponent,
-} from './lib/utils';
 
 /**
  * Used as a wrapper to global components

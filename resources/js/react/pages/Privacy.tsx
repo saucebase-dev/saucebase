@@ -1,7 +1,7 @@
 import { PageHero } from '@/components/ui/saucebase';
-import { useSettings } from '@/hooks/useSettings';
-import { useT } from '@/i18n';
 import SiteLayout from '@/layouts/SiteLayout';
+import { useSettings } from '@saucebase/react/hooks/useSettings';
+import { useT } from '@saucebase/react/i18n';
 
 import IconShieldCheck from '~icons/heroicons/shield-check';
 

@@ -1,4 +1,4 @@
-import { useModules } from '@/composables/useModules';
+import { useModules } from '@saucebase/vue/composables/useModules';
 import { trans } from 'laravel-vue-i18n';
 import { computed } from 'vue';
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Footer from '@/components/Footer.vue';
 import Header from '@/components/Header.vue';
-import { useSettings } from '@/composables/useSettings';
+import { useSettings } from '@saucebase/vue/composables/useSettings';
 import { Head } from '@inertiajs/vue3';
 import { computed } from 'vue';
 

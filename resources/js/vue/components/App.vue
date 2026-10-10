@@ -2,7 +2,7 @@
 import DynamicDialog from '@/components/DynamicDialog.vue';
 import GlobalComponents from '@/components/GlobalComponents.vue';
 import { Toaster } from '@/components/ui/sonner';
-import { useSettingsModalSync } from '@/composables/useSettingsModal';
+import { useSettingsModalSync } from '@saucebase/vue/composables/useSettingsModal';
 
 useSettingsModalSync();
 </script>

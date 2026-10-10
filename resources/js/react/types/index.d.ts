@@ -1,5 +1,6 @@
 import type { PageProps as InertiaPageProps } from '@inertiajs/core';
 import type { Settings } from '@saucebase/core/lib/settings';
+import type { Toast } from '@saucebase/react/lib/toastActions';
 
 export interface User {
     id: number;
@@ -22,24 +23,7 @@ export interface Breadcrumb {
     depth?: number;
 }
 
-export interface Toast {
-    message: string;
-    type: 'default' | 'success' | 'error' | 'info' | 'warning' | 'loading';
-    position?:
-        | 'top-left'
-        | 'top-right'
-        | 'bottom-left'
-        | 'bottom-right'
-        | 'top-center'
-        | 'bottom-center';
-    description?: string;
-    action?: {
-        label: string;
-        type?: 'route' | 'url' | 'external_url' | 'function';
-        onClick?: string;
-    };
-    duration?: number;
-}
+export type { Toast };
 
 /**
  * A page's own props on top of every shared prop.

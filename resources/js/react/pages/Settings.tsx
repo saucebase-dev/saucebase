@@ -1,12 +1,13 @@
-import { useSettings } from '@/hooks/useSettings';
-import { useSettingsModal } from '@/hooks/useSettingsModal';
-import { useT } from '@/i18n';
 import { OverlayContainerProvider } from '@/lib/overlayContainer';
-import { cn, resolveModularPageComponent } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import { router } from '@inertiajs/react';
 import { Modal, useModal } from '@inertiaui/modal-react';
 import type { SettingsSection } from '@saucebase/core/lib/settings';
+import { useSettings } from '@saucebase/react/hooks/useSettings';
+import { useSettingsModal } from '@saucebase/react/hooks/useSettingsModal';
+import { useT } from '@saucebase/react/i18n';
 import { resolveIcon } from '@saucebase/react/lib/navigation';
+import { resolveModularPageComponent } from '@saucebase/react/lib/pages';
 import { X } from 'lucide-react';
 import { useEffect, useState, type ComponentType } from 'react';
 

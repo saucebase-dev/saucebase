@@ -1,4 +1,4 @@
-import { useT } from '@/i18n';
+import { useT } from '@saucebase/react/i18n';
 import type { Module } from './index';
 
 interface ModuleCardProps {

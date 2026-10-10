@@ -23,9 +23,9 @@ module contributes in `setup()`:
 
 | Call | Purpose |
 |---|---|
-| `registerIcon(name, Component)` (`@/lib/navigation`) | Icon for navigation items whose `icon` attribute is `name` |
-| `registerAction(id, handler)` (`@/lib/navigation`) | Click handler for navigation items whose `action` attribute is `id`; registering an id twice warns and replaces the first |
-| `registerGlobalComponent(slot, Component)` (`@/lib/globalComponents`) | Component rendered in a layout slot |
+| `registerIcon(name, Component)` (`@saucebase/<framework>/lib/navigation`) | Icon for navigation items whose `icon` attribute is `name` |
+| `registerAction(id, handler)` (`@saucebase/<framework>/lib/navigation`) | Click handler for navigation items whose `action` attribute is `id`; registering an id twice warns and replaces the first |
+| `registerGlobalComponent(slot, Component)` (`@saucebase/<framework>/lib/globalComponents`) | Component rendered in a layout slot |
 
 Slots: `top` and `bottom` wrap the page; `sidebar-brand` replaces the block
 above the sidebar navigation; `user-subtitle` replaces the email under the

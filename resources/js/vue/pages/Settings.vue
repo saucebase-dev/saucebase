@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { useSettings } from '@/composables/useSettings';
-import { useSettingsModal } from '@/composables/useSettingsModal';
+import { useSettings } from '@saucebase/vue/composables/useSettings';
+import { useSettingsModal } from '@saucebase/vue/composables/useSettingsModal';
 import { resolveIcon } from '@saucebase/vue/lib/navigation';
-import { cn, resolveModularPageComponent } from '@/lib/utils';
+import { cn } from '@/lib/utils';
+import { resolveModularPageComponent } from '@saucebase/vue/lib/pages';
 import type { SettingsSection } from '@saucebase/core/lib/settings';
 import { router } from '@inertiajs/vue3';
 import { Modal, useModal } from '@inertiaui/modal-vue';

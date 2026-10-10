@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { PageHero } from '@/components/ui/saucebase';
-import { useSettings } from '@/composables/useSettings';
+import { useSettings } from '@saucebase/vue/composables/useSettings';
 import SiteLayout from '@/layouts/SiteLayout.vue';
 import { computed } from 'vue';
 

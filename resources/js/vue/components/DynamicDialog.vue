@@ -9,7 +9,7 @@ import {
     AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { buttonVariants } from '@/components/ui/button';
-import { useDialog } from '@/composables/useDialog';
+import { useDialog } from '@saucebase/vue/composables/useDialog';
 import { computed } from 'vue';
 
 const { isOpen, options, resolve } = useDialog();

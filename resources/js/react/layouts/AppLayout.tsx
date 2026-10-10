@@ -13,9 +13,9 @@ import {
     SidebarTrigger,
 } from '@/components/ui/sidebar';
 import { useSidebarState } from '@/hooks/useSidebarState';
-import { useT } from '@/i18n';
 import type { Breadcrumb as BreadcrumbType } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
+import { useT } from '@saucebase/react/i18n';
 import { Fragment, type ReactNode } from 'react';
 import AppSidebar from './AppSidebar';
 

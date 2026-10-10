@@ -1,4 +1,4 @@
-import { useModules } from '@/hooks/useModules';
+import { useModules } from '@saucebase/react/hooks/useModules';
 import type { LucideIcon } from 'lucide-react';
 import {
     BarChart3,

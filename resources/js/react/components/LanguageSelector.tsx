@@ -7,8 +7,8 @@ import {
     DropdownMenuSubTrigger,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useLocalization } from '@/hooks/useLocalization';
-import { useT } from '@/i18n';
+import { useLocalization } from '@saucebase/react/hooks/useLocalization';
+import { useT } from '@saucebase/react/i18n';
 import { Globe } from 'lucide-react';
 import type { JSX, SVGProps } from 'react';
 import IconEN from '~icons/circle-flags/en';

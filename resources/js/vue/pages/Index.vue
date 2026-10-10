@@ -5,7 +5,7 @@ import {
     ModuleModal,
     useModuleList,
 } from '@/components/ui/saucebase';
-import { useSettings } from '@/composables/useSettings';
+import { useSettings } from '@saucebase/vue/composables/useSettings';
 import { BookOpen } from '@lucide/vue';
 import { ref } from 'vue';
 

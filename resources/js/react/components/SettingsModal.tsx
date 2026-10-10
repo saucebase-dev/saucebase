@@ -1,5 +1,5 @@
-import { useSettingsModal } from '@/hooks/useSettingsModal';
 import { useModalStack, type ModalInstance } from '@inertiaui/modal-react';
+import { useSettingsModal } from '@saucebase/react/hooks/useSettingsModal';
 import { useEffect, useRef } from 'react';
 
 /**

@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
-import { useT } from '@/i18n';
 import { Head, Link } from '@inertiajs/react';
+import { useT } from '@saucebase/react/i18n';
 
 const titles: Record<number, string> = {
     503: '503: Service Unavailable',

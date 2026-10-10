@@ -1,6 +1,5 @@
 import App from '@/components/App';
 import { initializeTheme } from '@/hooks/useTheme';
-import { I18nProvider } from '@/i18n';
 import '@css/app.css';
 import { createInertiaApp } from '@inertiajs/react';
 import {
@@ -11,16 +10,17 @@ import {
 } from '@inertiaui/modal-react';
 import { initializeModals } from '@saucebase/core/lib/modal';
 import { siteTitle } from '@saucebase/core/lib/settings';
+import { I18nProvider } from '@saucebase/react/i18n';
 import { getGlobalComponents } from '@saucebase/react/lib/globalComponents';
 import {
     discoverModuleSetups,
     executeAfterMountCallbacks,
     executeModuleSetups,
 } from '@saucebase/react/lib/moduleSetup';
+import { resolveModularPageComponent } from '@saucebase/react/lib/pages';
 import { flushSync } from 'react-dom';
 import { createRoot } from 'react-dom/client';
 import { registerNavigationDefaults } from './lib/navigation';
-import { resolveModularPageComponent } from './lib/utils';
 
 initializeTheme();
 

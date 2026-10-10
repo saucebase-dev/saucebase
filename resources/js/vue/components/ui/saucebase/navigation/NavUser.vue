@@ -20,8 +20,8 @@ import {
     SidebarMenuItem,
     useSidebar,
 } from '@/components/ui/sidebar';
-import { useSettings } from '@/composables/useSettings';
-import { settingsHref } from '@/composables/useSettingsModal';
+import { useSettings } from '@saucebase/vue/composables/useSettings';
+import { settingsHref } from '@saucebase/vue/composables/useSettingsModal';
 import { hasGlobalComponent } from '@saucebase/vue/lib/globalComponents';
 import { handleAction } from '@saucebase/vue/lib/navigation';
 import type { User } from '@/types';

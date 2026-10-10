@@ -1,11 +1,11 @@
 import App from '@/components/App';
-import { I18nProvider } from '@/i18n';
 import { createInertiaApp } from '@inertiajs/react';
 import createServer from '@inertiajs/react/server';
 import { siteTitle } from '@saucebase/core/lib/settings';
+import { I18nProvider } from '@saucebase/react/i18n';
+import { resolveModularPageComponent } from '@saucebase/react/lib/pages';
 import ReactDOMServer from 'react-dom/server';
 import { registerNavigationDefaults } from './lib/navigation';
-import { resolveModularPageComponent } from './lib/utils';
 
 registerNavigationDefaults();
 

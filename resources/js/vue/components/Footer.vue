@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useSettings } from '@/composables/useSettings';
+import { useSettings } from '@saucebase/vue/composables/useSettings';
 import { Link } from '@inertiajs/vue3';
 import IconHeart from '~icons/heroicons/heart';
 

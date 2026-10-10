@@ -8,7 +8,7 @@ import {
     DropdownMenuSubTrigger,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useLocalization } from '@/composables/useLocalization';
+import { useLocalization } from '@saucebase/vue/composables/useLocalization';
 import { Globe } from '@lucide/vue';
 import { computed } from 'vue';
 import IconEN from '~icons/circle-flags/en';
