@@ -43,7 +43,7 @@ Visit our [official documentation](https://saucebase-dev.github.io/docs/).
 
 The version badges above show the supported major (or minor, for Vue) lines
 declared by the project and stack manifests. Exact dependency constraints live
-in `composer.json`, `package.json`, and `stubs/saucebase/stack/*/package.json`.
+in `composer.json`, `package.json`, and `saucebase/core`'s `stubs/stack/*/config/package.json`.
 
 ## Adding a language
 

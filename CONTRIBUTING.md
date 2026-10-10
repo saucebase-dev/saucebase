@@ -9,8 +9,8 @@ Requirements are defined by the manifests:
 
 - PHP `^8.4` and Composer dependencies in `composer.json`
 - Node `>=22.12.0` and npm `>=10.5.1` in each stack manifest
-- Vue and React dependencies in `stubs/saucebase/stack/vue/package.json` and
-  `stubs/saucebase/stack/react/package.json`
+- Vue and React dependencies in `saucebase/core`'s
+  `stubs/stack/vue/config/package.json` and `stubs/stack/react/config/package.json`
 
 The root `package.json` is intentionally minimal before a frontend is selected.
 Use the Saucebase CLI to prepare a contributor stack:

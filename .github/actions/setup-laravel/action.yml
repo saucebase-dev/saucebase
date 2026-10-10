@@ -42,14 +42,6 @@ runs:
               extensions: pdo, pdo_sqlite, mbstring, zip, pcntl, intl, exif
               coverage: none
 
-        - name: Setup Node.js
-          if: inputs.skip-build != 'true'
-          uses: actions/setup-node@v5
-          with:
-              node-version: ${{ inputs.node-version }}
-              cache: 'npm'
-              cache-dependency-path: ${{ inputs.working-directory }}/stubs/saucebase/stack/${{ inputs.framework != '' && inputs.framework || 'vue' }}/package-lock.json
-
         - name: Copy .env
           shell: bash
           working-directory: ${{ inputs.working-directory }}
@@ -66,6 +58,14 @@ runs:
           shell: bash
           working-directory: ${{ inputs.working-directory }}
           run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+        - name: Setup Node.js
+          if: inputs.skip-build != 'true'
+          uses: actions/setup-node@v5
+          with:
+              node-version: ${{ inputs.node-version }}
+              cache: 'npm'
+              cache-dependency-path: ${{ inputs.working-directory }}/vendor/saucebase/core/stubs/stack/${{ inputs.framework != '' && inputs.framework || 'vue' }}/config/package-lock.json
 
         - name: Select framework
           if: inputs.framework != ''
