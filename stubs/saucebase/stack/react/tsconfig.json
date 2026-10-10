@@ -27,6 +27,7 @@
     "exclude": [
         "stubs",
         "modules/**/vendor",
+        "modules/*/resources/js/vue",
         "node_modules"
     ],
     "include": [

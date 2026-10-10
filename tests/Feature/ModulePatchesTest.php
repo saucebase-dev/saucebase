@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use Saucebase\Core\FrontendConfig;
 use Symfony\Component\Process\Process;
 use Tests\TestCase;
 
@@ -34,7 +35,9 @@ class ModulePatchesTest extends TestCase
     #[DataProvider('patches')]
     public function test_a_module_patch_applies_to_the_committed_files(string $patch): void
     {
-        if (! is_dir(resource_path('js/vue')) || ! is_dir(resource_path('js/react'))) {
+        $frontend = app(FrontendConfig::class);
+
+        if ($frontend->getFramework() !== null && ! $frontend->isDev()) {
             $this->markTestSkipped('Installed application: it owns the patched files now.');
         }
 
