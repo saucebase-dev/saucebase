@@ -22,8 +22,9 @@ such as `modules().has('auth')`.
 
 ### Frontend Conventions
 
-If both `resources/js/vue/` and `resources/js/react/` exist, this is a
-contributor checkout: follow `CONTRIBUTING.md` before changing any frontend code.
+If `frontend.json` has `"dev": true`, this is a contributor checkout, and the
+app's UI is read from `vendor/saucebase/core/stack/<framework>/js` rather than
+`resources/js/`: follow `CONTRIBUTING.md` before changing any frontend code.
 
 All components must support light and dark themes.
 

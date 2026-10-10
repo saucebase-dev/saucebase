@@ -6,6 +6,7 @@
 
 @import '@saucebase/core/app.css';
 
+@source '../../vendor/saucebase/core/stack/*/js/**/*.{vue,ts,tsx}';
 @source '../../modules/*/resources/js/**/*.{vue,jsx,tsx}';
 
 @custom-variant dark (&:is(.dark *, [data-theme="dark"] *));

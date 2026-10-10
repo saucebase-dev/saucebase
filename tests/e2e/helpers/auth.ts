@@ -30,7 +30,7 @@ export async function loginAs(
 /**
  * Checks authentication via the `auth.user` Inertia prop (shared globally by
  * the auth module, and what the frontend itself reads — see
- * `resources/js/vue/components/Header.vue`) rather than the post-login
+ * `components/Header.vue`) rather than the post-login
  * landing URL, which varies by which modules are installed (e.g. tenancy
  * redirects authenticated visitors away from `/dashboard`).
  *

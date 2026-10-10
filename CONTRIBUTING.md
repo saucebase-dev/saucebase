@@ -21,9 +21,12 @@ saucebase stack vue --dev
 saucebase stack react --dev
 ```
 
-Contributor mode retains both framework source trees and generates thin root
-entry-point passthroughs. Edit `resources/js/vue/` or `resources/js/react/`,
-never the generated root entry points or generated TypeScript declarations.
+The app's UI lives in `saucebase/core`, under `stack/vue/js/` and
+`stack/react/js/`. Contributor mode runs it from there (the `@` alias points at
+`vendor/saucebase/core/stack/<framework>/js`) and generates thin root
+entry-point passthroughs; an installed app gets its own copy in `resources/js/`.
+Edit the tree in core, never the generated root entry points or generated
+TypeScript declarations.
 Shared frontend changes must work with both stacks, and a module's Vue and
 React trees must stay in step.
 

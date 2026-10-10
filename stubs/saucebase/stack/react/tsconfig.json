@@ -15,7 +15,7 @@
         "allowImportingTsExtensions": true,
         "preserveSymlinks": true,
         "paths": {
-            "@/*": ["./resources/js/react/*"],
+            "@/*": ["./vendor/saucebase/core/stack/react/js/*"],
             "@js/*": ["./resources/js/*"],
             "@saucebase/core/*": ["./vendor/saucebase/core/resources/js/*"],
             "@saucebase/react/*": ["./vendor/saucebase/core/resources/js/react/*"],
@@ -26,13 +26,13 @@
     },
     "exclude": [
         "stubs",
-        "vendor",
+        "modules/**/vendor",
         "node_modules"
     ],
     "include": [
         "resources/js/*.ts",
-        "resources/js/react/**/*.ts",
-        "resources/js/react/**/*.tsx",
+        "vendor/saucebase/core/stack/react/js/**/*.ts",
+        "vendor/saucebase/core/stack/react/js/**/*.tsx",
         "modules/**/resources/js/**/*.ts",
         "modules/**/resources/js/**/*.tsx",
         "types/**/*.ts",
