@@ -15,7 +15,7 @@ Import `useHttp` from `@saucebase/vue/composables/useHttp` (Vue) or `@saucebase/
 Use `formatDate()` from `@saucebase/core/lib/dates` with the app's language (`useLocalization().language` in Vue, `useTranslation().locale` in React). `toLocaleDateString()` ignores the app's language, and `page.props.locale` goes stale when the language switcher changes it without a page load. `formatDateTime()` is only for pages that never render on the server.
 
 ## Icons
-Use the stack's Lucide package for everyday UI icons, as the shadcn components do. For any other Iconify set, import `~icons/<set>/<name>` (e.g. `~icons/simple-icons/github`); `unplugin-icons` compiles it to a component, so there's no need to add SVG files or another icon library. Every set is available: the stacks install the full `@iconify/json`.
+Use the stack's Lucide package for everyday UI icons, as the shadcn components do. For any other Iconify set, import `~icons/<set>/<name>` (e.g. `~icons/simple-icons/github`); `unplugin-icons` compiles it to a component, so there's no need to add SVG files or another icon library. The stacks install the eight sets Saucebase uses (`lucide`, `heroicons`, `simple-icons`, `fa-solid`, `solar`, `mdi`, `fluent`, `circle-flags`). For another set, run `npm i -D @iconify-json/<set>` and commit the `package.json` change; an icon from a set that isn't installed fails the build with "Icon not found".
 
 Navigation items name their icon by string. Register the component with `registerIcon(name, Component)` from `@saucebase/vue/lib/navigation` (or `@saucebase/react/...`) in the module's `setup()`. `resolveIcon()` returns `undefined`, with no warning, for a name nobody registered.
 
