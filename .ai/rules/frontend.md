@@ -20,4 +20,4 @@ Use the stack's Lucide package for everyday UI icons, as the shadcn components d
 Navigation items name their icon by string. Register the component with `registerIcon(name, Component)` from `@saucebase/vue/lib/navigation` (or `@saucebase/react/...`) in the module's `setup()`. `resolveIcon()` returns `undefined`, with no warning, for a name nobody registered.
 
 ## Aliases
-The Vite preset in `saucebase/core` defines `@saucebase/core` and `@saucebase/<framework>` for core's `resources/js`, `@` for the app's frontend code (`resources/js`, or core's `stack/<framework>/js` in a contributor checkout), `@js` for `resources/js`, `@css` for `resources/css`, and `@modules` for `modules/`. Built chunks and assets from `modules/<name>/` are emitted under `assets/<name>/`.
+The Vite preset in `saucebase/core` defines `@saucebase/core` and `@saucebase/<framework>` for core's `resources/js`, `@` for the app's frontend code (`resources/js`, or core's `stubs/stack/<framework>/js` in a contributor checkout), `@js` for `resources/js`, `@css` for `resources/css`, and `@modules` for `modules/`. Built chunks and assets from `modules/<name>/` are emitted under `assets/<name>/`.

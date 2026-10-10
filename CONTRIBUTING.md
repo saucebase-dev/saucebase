@@ -21,9 +21,9 @@ saucebase stack vue --dev
 saucebase stack react --dev
 ```
 
-The app's UI lives in `saucebase/core`, under `stack/vue/js/` and
-`stack/react/js/`. Contributor mode runs it from there (the `@` alias points at
-`vendor/saucebase/core/stack/<framework>/js`) and generates thin root
+The app's UI lives in `saucebase/core`, under `stubs/stack/vue/js/` and
+`stubs/stack/react/js/`. Contributor mode runs it from there (the `@` alias points at
+`vendor/saucebase/core/stubs/stack/<framework>/js`) and generates thin root
 entry-point passthroughs; an installed app gets its own copy in `resources/js/`.
 Edit the tree in core, never the generated root entry points or generated
 TypeScript declarations.

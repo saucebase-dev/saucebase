@@ -15,7 +15,7 @@
         "allowImportingTsExtensions": true,
         "preserveSymlinks": true,
         "paths": {
-            "@/*": ["./vendor/saucebase/core/stack/vue/js/*"],
+            "@/*": ["./vendor/saucebase/core/stubs/stack/vue/js/*"],
             "@js/*": ["./resources/js/*"],
             "@saucebase/core/*": ["./vendor/saucebase/core/resources/js/*"],
             "@saucebase/vue/*": ["./vendor/saucebase/core/resources/js/vue/*"],
@@ -32,8 +32,8 @@
     ],
     "include": [
         "resources/js/*.ts",
-        "vendor/saucebase/core/stack/vue/js/**/*.ts",
-        "vendor/saucebase/core/stack/vue/js/**/*.vue",
+        "vendor/saucebase/core/stubs/stack/vue/js/**/*.ts",
+        "vendor/saucebase/core/stubs/stack/vue/js/**/*.vue",
         "modules/**/resources/js/**/*.ts",
         "modules/**/resources/js/**/*.vue",
         "types/**/*.ts",
