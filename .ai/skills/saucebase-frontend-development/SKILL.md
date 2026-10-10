@@ -32,6 +32,21 @@ above the sidebar navigation; `user-subtitle` replaces the email under the
 user's name in the sidebar user menu. A new slot needs a case in
 `globalComponents` and a render in the layout that owns that region.
 
+## What a module may import
+
+| From | What | Notes |
+|---|---|---|
+| `@saucebase/core/lib/*` | `dates`, `initials`, `translations`, `settings`, `themeReveal`, `modal` | Framework-neutral. Ships with `saucebase/core`. |
+| `@saucebase/vue/composables/*` or `@saucebase/react/hooks/*` | `useAuth`, `useHttp`, `useLocalization`, `useModules`, `useSettings`, `useSettingsModal`, `useDialog` | |
+| `@saucebase/<framework>/lib/*` | `navigation`, `globalComponents`, `pages`; `language` (Vue); `toastActions` (React) | |
+| `@saucebase/react/i18n` | `useT`, `useTranslation`, `I18nProvider` | Vue uses `laravel-vue-i18n` directly. |
+| `@/components/*`, `@/layouts/*`, `@/lib/utils` (`cn`) | The app's own UI: shadcn primitives, layouts | The user owns these and may change them. |
+| `@modules/<name>/resources/js/...` | Another module's code | Use it sparingly: the import breaks when that module is not installed. |
+
+Never import a `vendor/` path, and never reach into the app's pages. The
+`@saucebase/*` names are aliases the Vite preset in `saucebase/core` defines for its
+`resources/js`; only the app's own framework has one.
+
 ## Navigation
 
 Items are declared in PHP (`routes/navigation.php`); see
