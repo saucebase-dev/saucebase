@@ -5,5 +5,6 @@ events.scanned.php
 maintenance.php
 routes.php
 routes.scanned.php
+saucebase-css
 schedule-*
 services.json

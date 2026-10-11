@@ -22,7 +22,7 @@ such as `modules().has('auth')`.
 
 ### Frontend Conventions
 
-If `saucebase.json` has `"dev": true`, this is a contributor checkout, and the
+If `saucebase.json` has `"contributor": true`, this is a contributor checkout, and the
 app's UI is read from `vendor/saucebase/core/stubs/stack/<framework>/js` rather than
 `resources/js/`: follow `CONTRIBUTING.md` before changing any frontend code.
 

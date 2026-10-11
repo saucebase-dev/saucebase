@@ -37,7 +37,7 @@ class ModulePatchesTest extends TestCase
     {
         $frontend = app(FrontendConfig::class);
 
-        if ($frontend->getFramework() !== null && ! $frontend->isDev()) {
+        if ($frontend->getFramework() !== null && ! $frontend->isContributor()) {
             $this->markTestSkipped('Installed application: it owns the patched files now.');
         }
 
