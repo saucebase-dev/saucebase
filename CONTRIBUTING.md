@@ -101,12 +101,13 @@ module providers extend `Saucebase\Core\Providers\ModuleServiceProvider`;
 `$name` and `$nameLower` properties are obsolete because the base provider
 resolves the module name through InterNACHI's `ModuleRegistry`.
 
-A shipped module's migrations are named `0000_00_00_NNNNNN_<action>_table.php`,
+A shipped module's migrations are named `1000_00_00_NNNNNN_<action>_table.php`,
 numbered in dependency order: a module installs its whole schema at once, so
-only the order matters. The app's `users` table is `0000_00_00_000000` and runs
-first. A module that needs another module's table uses `0000_00_01_` so it sorts
-after it. One that changes a `saucebase/core` table (core ships `0001_01_01_`)
-uses `0001_01_02_`. After a release, change the schema with a new timestamped migration,
+only the order matters. The prefix sorts them after Laravel's own migrations and
+`saucebase/core`'s (both `0001_01_01_`), so the `users` table and core's tables
+exist first, and before any real-dated migration. A module migration that has to
+run after those, because it needs another module's table or changes a core
+table, uses `1000_00_01_`. After a release, change the schema with a new timestamped migration,
 because renaming a shipped one breaks databases that already ran it.
 
 Installers choose their own database, so shipped migrations and queries must

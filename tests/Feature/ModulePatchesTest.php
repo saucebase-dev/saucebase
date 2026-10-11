@@ -3,7 +3,7 @@
 namespace Tests\Feature;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use Saucebase\Core\FrontendConfig;
+use Saucebase\Core\ProjectConfig;
 use Symfony\Component\Process\Process;
 use Tests\TestCase;
 
@@ -35,7 +35,7 @@ class ModulePatchesTest extends TestCase
     #[DataProvider('patches')]
     public function test_a_module_patch_applies_to_the_committed_files(string $patch): void
     {
-        $frontend = app(FrontendConfig::class);
+        $frontend = app(ProjectConfig::class);
 
         if ($frontend->getFramework() !== null && ! $frontend->isContributor()) {
             $this->markTestSkipped('Installed application: it owns the patched files now.');

@@ -5,11 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Response;
 use Inertia\Inertia;
 use Inertia\Response as InertiaResponse;
-use Saucebase\Core\FrontendConfig;
+use Saucebase\Core\ProjectConfig;
 
 class IndexController extends Controller
 {
-    public function index(FrontendConfig $config): Response|InertiaResponse
+    public function index(ProjectConfig $config): Response|InertiaResponse
     {
         if (empty($config->getFramework())) {
             return response()->view('setup');
