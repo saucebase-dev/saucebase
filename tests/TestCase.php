@@ -10,12 +10,8 @@ use Illuminate\Support\Facades\Vite;
 /**
  * Shared test setup for the application.
  *
- * A base test case in saucebase/core would let modules inherit this instead of
- * duplicating it, but the helpers worth sharing (createUser, AuthHelper,
- * TestFixtures) all manufacture App\Models\User, which core cannot name. Roles are
- * plain strings now (sc-690), so that is the only thing left in the way.
- *
- * @see https://app.shortcut.com/saucebase/story/701 Move core's tests into the package
+ * The tests of an installed module extend this class too: they expect the seeded
+ * roles and createUser().
  */
 abstract class TestCase extends BaseTestCase
 {

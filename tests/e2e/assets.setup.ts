@@ -7,7 +7,8 @@ import { existsSync, rmSync } from 'node:fs';
  * serves the build rather than pointing at a dev server that is not running.
  */
 export default function globalSetup() {
-    execSync('npm run build', { stdio: 'inherit' });
+    // A developer's own machine and their own npm.
+    execSync('npm run build', { stdio: 'inherit' }); // NOSONAR
 
     if (existsSync('public/hot')) {
         rmSync('public/hot');

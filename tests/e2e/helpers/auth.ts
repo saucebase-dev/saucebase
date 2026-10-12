@@ -14,7 +14,7 @@ export async function loginAs(
     user: { email: string; password: string },
 ): Promise<void> {
     const cookie = await laravel.callFunction<SessionCookie>(
-        'Tests\\Support\\AuthHelper::loginAs',
+        String.raw`Tests\Support\AuthHelper::loginAs`,
         [user.email],
     );
 
@@ -65,9 +65,13 @@ async function currentAuthUser(page: Page): Promise<unknown> {
 // the default 5s budget is tight under local multi-worker parallelism —
 // give it more room.
 export async function expectAuthenticated(page: Page): Promise<void> {
-    await expect.poll(() => currentAuthUser(page), { timeout: 15_000 }).not.toBeNull();
+    await expect
+        .poll(() => currentAuthUser(page), { timeout: 15_000 })
+        .not.toBeNull();
 }
 
 export async function expectGuest(page: Page): Promise<void> {
-    await expect.poll(() => currentAuthUser(page), { timeout: 15_000 }).toBeNull();
+    await expect
+        .poll(() => currentAuthUser(page), { timeout: 15_000 })
+        .toBeNull();
 }

@@ -9,6 +9,6 @@ setup('setup the database', async ({ laravel }) => {
     // This project runs on its own before any worker starts, so the writes cannot
     // race. See Tests\Support\TestFixtures::seedSharedAccounts().
     await laravel.callFunction(
-        'Tests\\Support\\TestFixtures::seedSharedAccounts',
+        String.raw`Tests\Support\TestFixtures::seedSharedAccounts`,
     );
 });

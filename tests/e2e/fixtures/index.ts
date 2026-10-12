@@ -55,7 +55,7 @@ export const test = base.extend<{
     ],
     credentials: async ({ laravel }, use) => {
         const creds = await laravel.callFunction<TestCredentials>(
-            'Tests\\Support\\TestFixtures::credentials',
+            String.raw`Tests\Support\TestFixtures::credentials`,
         );
         await use(creds);
     },

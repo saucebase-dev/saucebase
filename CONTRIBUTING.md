@@ -91,7 +91,7 @@ with the reason.
 Create a module from the maintained recipe:
 
 ```bash
-php artisan saucebase:recipe Example "Basic Recipe"
+php artisan saucebase:recipe Example basic
 composer update <vendor>/example
 npm run build
 ```
