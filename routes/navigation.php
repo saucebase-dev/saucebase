@@ -64,7 +64,7 @@ Navigation::add(
             'external' => true,
             'newPage' => true,
             'order' => 5,
-            'class' => 'bg-[#5865F2]/10 text-[#5865F2] hover:bg-[#5865F2]/20 hover:text-[#5865F2]/80 dark:hover:text-[#5865F2]',
+            'class' => 'bg-[#5865F2]/10 text-[#4752C4] hover:bg-[#5865F2]/20 hover:text-[#5865F2] dark:text-[#949CF7] dark:hover:text-[#B5BAFA]',
         ]);
     }
 );
@@ -79,7 +79,7 @@ Navigation::add(
             'external' => true,
             'newPage' => true,
             'order' => 99,
-            'class' => 'text-[#5865F2] hover:text-[#5865F2]/70',
+            'class' => 'text-[#4752C4] hover:text-[#5865F2] dark:text-[#949CF7] dark:hover:text-[#B5BAFA]',
         ]);
     }
 );
