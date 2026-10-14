@@ -96,6 +96,11 @@ composer update <vendor>/example
 npm run build
 ```
 
+Every module has a `package.json`, where it declares any npm package the stack
+manifest doesn't list (see `saucebase-module-development`). The app's npm
+workspaces install them: after adding a module, run `npm install` so
+`package-lock.json` lists it, or `npm ci` refuses the lockfile.
+
 Module directories are lowercase, while PHP namespaces are TitleCase. Main
 module providers extend `Saucebase\Core\Providers\ModuleServiceProvider`;
 `$name` and `$nameLower` properties are obsolete because the base provider
