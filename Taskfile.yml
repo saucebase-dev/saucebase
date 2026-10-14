@@ -22,9 +22,6 @@ includes:
     themes:
         taskfile: ./modules/themes/Taskfile.yml
         optional: true
-    demo:
-        taskfile: ./modules/demo/Taskfile.yml
-        optional: true
     blog:
         taskfile: ./modules/blog/Taskfile.yml
         optional: true
@@ -87,6 +84,10 @@ tasks:
         cmd: php artisan test {{.CLI_ARGS}}
         interactive: true
 
+    test:unit:
+        desc: Run frontend unit tests (lib/ code, Vitest)
+        cmd: npm run test:unit {{.CLI_ARGS}}
+
     test:e2e:
         desc: Run E2E tests
         cmd: npm run test:e2e {{.CLI_ARGS}}
@@ -105,11 +106,31 @@ tasks:
             - '{{.APP}} php artisan migrate:fresh --seed'
             - '{{.APP}} php artisan modules:seed'
 
+    db:reset:demo:
+        desc: Reset database and load sample content with an admin account
+        prompt: This will erase ALL data. Are you sure?
+        cmds:
+            - '{{.APP}} php artisan migrate:fresh --seed'
+            - '{{.APP}} php artisan modules:seed --demo'
+            - '{{.APP}} php artisan auth:make-admin chef@saucebase.dev'
+
+    db:seed:demo:
+        desc: Seed every module with sample content
+        cmd: '{{.APP}} php artisan modules:seed --demo'
+
     # ── Translation ───────────────────────────────────────────────
 
     translation:export:
-        desc: Export translations to JSON files for all languages
-        cmd: '{{.APP}} php artisan translatable:export pt_BR'
+        desc: 'Add missing strings from the app and every module to lang/<LOCALE>.json (task translation:export LOCALE=pt_BR)'
+        requires:
+            vars: [LOCALE]
+        cmd: '{{.APP}} php artisan translatable:export {{.LOCALE}}'
+
+    translation:missing:
+        desc: 'List strings still untranslated in lang/<LOCALE>.json (task translation:missing LOCALE=pt_BR)'
+        requires:
+            vars: [LOCALE]
+        cmd: '{{.APP}} php artisan translatable:inspect-translations {{.LOCALE}}'
 
     # ── Pipelines ─────────────────────────────────────────────────
 
@@ -118,4 +139,5 @@ tasks:
         cmds:
             - task: lint
             - task: analyse
-            - task: test
+            - task: test:php
+            - task: test:e2e

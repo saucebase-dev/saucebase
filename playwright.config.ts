@@ -2,7 +2,7 @@
 import { defineConfig, devices } from '@playwright/test';
 import type { LaravelOptions } from '@saucebase/laravel-playwright';
 import 'dotenv/config';
-import { collectModulePlaywrightConfigs } from './module-loader.js';
+import { collectModulePlaywrightConfigs } from './vendor/saucebase/core/resources/js/modules.ts';
 
 const BASE_URL = process.env.APP_URL ?? 'http://localhost';
 
@@ -41,23 +41,21 @@ async function createConfig() {
         {
             name: '@Core',
             testDir: './tests/e2e',
-            use: {}, // will be extended below
             dependencies: ['database.setup'], // Ensure database setup runs before core tests
         } as ModulePlaywrightConfig,
         // Add more projects here if needed
     ]
         .concat(moduleProjects)
-        .map((project) => {
+        .flatMap((project) => {
             // Extend each project with the selected devices
             return testDevices.map((device) => {
                 return {
                     ...project,
                     name: `${project.name} [${device}]`,
-                    use: { ...devices[device], ...(project.use ?? {}) },
+                    use: { ...devices[device], ...project.use },
                 };
             });
-        })
-        .flat();
+        });
 
     /**
      * @see https://playwright.dev/docs/test-configuration
@@ -69,8 +67,9 @@ async function createConfig() {
         forbidOnly: !!process.env.CI,
         /* Retry on CI only */
         retries: process.env.CI ? 2 : 0,
-        /* Opt out of parallel tests on CI. */
-        workers: process.env.CI ? 1 : undefined,
+        /* Opt out of parallel tests on CI. Locally, more than two browsers
+           loading pages at once outruns the PHP worker pool behind the app. */
+        workers: process.env.CI ? 1 : 2,
         /* Reporter to use. See https://playwright.dev/docs/test-reporters */
         reporter: [['html', { outputFolder: 'playwright-report' }], ['list']],
         /* Folder for test artifacts such as screenshots, videos, traces, etc. */
@@ -110,14 +109,15 @@ async function createConfig() {
             ...projects,
         ],
 
-        /* Only start webServer locally (not in CI where we build assets) */
-        ...(!process.env.CI && {
-            webServer: {
-                command: `npx vite --port 5173`,
-                timeout: 10 * 1000,
-                reuseExistingServer: true,
-            },
-        }),
+        /**
+         * Tests run against built assets, the way CI does.
+         *
+         * The dev server compiles on demand, and several browsers loading pages
+         * at once starve PHP-FPM behind it: the auth suite lost 11 tests to
+         * timeouts on the dev server and none on a build. Rebuild after changing
+         * frontend code.
+         */
+        ...(!process.env.CI && { globalSetup: './tests/e2e/assets.setup.ts' }),
     });
 }
 

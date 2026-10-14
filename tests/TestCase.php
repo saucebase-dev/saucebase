@@ -2,12 +2,17 @@
 
 namespace Tests;
 
-use App\Enums\Role;
 use App\Models\User;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\Vite;
 
+/**
+ * Shared test setup for the application.
+ *
+ * The tests of an installed module extend this class too: they expect the seeded
+ * roles and createUser().
+ */
 abstract class TestCase extends BaseTestCase
 {
     protected $seed = true;
@@ -31,7 +36,7 @@ abstract class TestCase extends BaseTestCase
     protected function createUser(): User
     {
         $user = User::factory()->create();
-        $user->assignRole(Role::USER);
+        $user->assignRole('user');
 
         return $user;
     }

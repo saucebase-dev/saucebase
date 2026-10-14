@@ -27,7 +27,8 @@ return [
     | same cache driver to group types of items stored in your caches.
     |
     | Supported drivers: "array", "database", "file", "memcached",
-    |                    "redis", "dynamodb", "octane", "null"
+    |                    "redis", "dynamodb", "storage", "octane",
+    |                    "session", "failover", "null"
     |
     */
 
@@ -49,7 +50,13 @@ return [
         'file' => [
             'driver' => 'file',
             'path' => storage_path('framework/cache/data'),
-            'lock_path' => storage_path('framework/cache/data'),
+            'lock_path' => storage_path('framework/cache/locks'),
+        ],
+
+        'storage' => [
+            'driver' => 'storage',
+            'disk' => env('CACHE_STORAGE_DISK'),
+            'path' => env('CACHE_STORAGE_PATH', 'framework/cache/data'),
         ],
 
         'memcached' => [
@@ -90,6 +97,14 @@ return [
             'driver' => 'octane',
         ],
 
+        'failover' => [
+            'driver' => 'failover',
+            'stores' => [
+                'database',
+                'array',
+            ],
+        ],
+
     ],
 
     /*
@@ -110,11 +125,9 @@ return [
     | Serializable Classes
     |--------------------------------------------------------------------------
     |
-    | This option defines the PHP classes that are allowed to be unserialized
-    | from the cache. Setting this to false disables object unserialization,
-    | which hardens against deserialization gadget chain attacks if the
-    | APP_KEY is leaked. List allowed classes explicitly if your application
-    | intentionally stores PHP objects in cache.
+    | This value determines the classes that can be unserialized from cache
+    | storage. By default, no PHP classes will be unserialized from your
+    | cache to prevent gadget chain attacks if your APP_KEY is leaked.
     |
     */
 

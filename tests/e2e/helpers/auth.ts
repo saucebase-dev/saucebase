@@ -14,7 +14,7 @@ export async function loginAs(
     user: { email: string; password: string },
 ): Promise<void> {
     const cookie = await laravel.callFunction<SessionCookie>(
-        'Tests\\Support\\AuthHelper::loginAs',
+        String.raw`Tests\Support\AuthHelper::loginAs`,
         [user.email],
     );
 
@@ -30,15 +30,9 @@ export async function loginAs(
 /**
  * Checks authentication via the `auth.user` Inertia prop (shared globally by
  * the auth module, and what the frontend itself reads — see
- * `resources/js/vue/components/Header.vue`) rather than the post-login
+ * `components/Header.vue`) rather than the post-login
  * landing URL, which varies by which modules are installed (e.g. tenancy
  * redirects authenticated visitors away from `/dashboard`).
- *
- * `/api/v1/user` looks like the obvious check but isn't wired for
- * session-cookie auth in this app (`bootstrap/app.php` never registers
- * Sanctum's `EnsureFrontendRequestsAreStateful`, so it only accepts bearer
- * tokens) — it always 401s for a real browser session regardless of login
- * state.
  *
  * A `reload()` is required before reading the prop: Inertia's client-side
  * router updates its in-memory page state on navigation but does not rewrite
@@ -71,9 +65,13 @@ async function currentAuthUser(page: Page): Promise<unknown> {
 // the default 5s budget is tight under local multi-worker parallelism —
 // give it more room.
 export async function expectAuthenticated(page: Page): Promise<void> {
-    await expect.poll(() => currentAuthUser(page), { timeout: 15_000 }).not.toBeNull();
+    await expect
+        .poll(() => currentAuthUser(page), { timeout: 15_000 })
+        .not.toBeNull();
 }
 
 export async function expectGuest(page: Page): Promise<void> {
-    await expect.poll(() => currentAuthUser(page), { timeout: 15_000 }).toBeNull();
+    await expect
+        .poll(() => currentAuthUser(page), { timeout: 15_000 })
+        .toBeNull();
 }

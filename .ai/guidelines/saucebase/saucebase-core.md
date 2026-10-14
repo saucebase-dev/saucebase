@@ -8,44 +8,64 @@ from prose.
 
 - Backend dependencies and constraints: `composer.json`
 - Static-analysis configuration: `phpstan.neon`
-- Vue stack: `stubs/saucebase/stack/vue/package.json`
-- React stack: `stubs/saucebase/stack/react/package.json`
-- Module behavior: `app/Providers/ModuleServiceProvider.php`,
-  `module-loader.js`, and the recipe stubs
-
-The root `package.json` is framework-neutral before stack selection. Do not use
-it alone to determine the supported Vue or React dependencies.
+- Frontend dependencies: `package.json`
+- Module behavior: `Saucebase\Core\Providers\ModuleServiceProvider` (the
+  `saucebase/core` package),
+  its Vite preset (`resources/js/vite.ts`), and the recipe stubs
 
 ### Module Conventions
 
-Modules are copy-and-own Composer packages installed under lowercase
-`modules/<name>/` directories. PHP namespaces remain TitleCase.
-
-An installed Composer module is active; there is no enable/disable toggle.
-Never bypass `module-loader.js` for module assets, translations, or Playwright
-project discovery.
-
-Every main module provider extends `App\Providers\ModuleServiceProvider`. Do not
-add `$name` or `$nameLower`: the base provider resolves the module name through
-`ModuleRegistry::moduleForClass()`.
-
-Use lowercase module identifiers in frontend checks such as
-`modules().has('auth')`.
+Module conventions come from the `saucebase/core` guideline. In the app,
+never bypass the Saucebase Vite preset for module assets, translations, or Playwright
+project discovery, and use lowercase module identifiers in frontend checks
+such as `modules().has('auth')`.
 
 ### Frontend Conventions
 
-Saucebase supports both Vue and React. Apply shared frontend infrastructure
-changes to both implementations.
+If `saucebase.json` has `"contributor": true`, this is a contributor checkout, and the
+app's UI is read from `vendor/saucebase/core/stubs/stack/<framework>/js` rather than
+`resources/js/`: follow `CONTRIBUTING.md` before changing any frontend code.
 
-In contributor mode, edit the real sources under `resources/js/vue/` and
-`resources/js/react/`. Do not edit generated root entry-point passthroughs or
-generated TypeScript declarations.
+All components must support light and dark themes.
 
-All components must support light and dark themes. Use stable `data-testid`
-attributes for E2E selectors; never select translated text, labels, or role
-names. Item-specific selectors use `{action}-${item.id}`.
+### Settings Modal
+
+Account and workspace settings are one modal over the current page, addressed by
+the URL fragment `#settings/<slug>`. There is no settings page, layout, or
+sidebar route.
+
+Sections come from `SettingsSection` subclasses (see
+`saucebase-module-development`). Only the requested section's `props()` runs;
+the rest are `Inertia::optional()` and resolve when the user switches to them.
+
+Two rules the fragment imposes:
+
+- **Links that open settings stay plain anchors.** Inertia's `Link` calls
+  `preventDefault()` and writes history with `pushState`, so the browser never
+  fires `hashchange` and nothing hears the fragment change. Use `settingsHref()`
+  (`useSettingsModal`), never `Link`.
+- **The modal's focus trap yields to overlays above it.** The modal traps focus
+  with a document-level `focusin` listener, and so does every dialog, menu or
+  popover portalled to the body, so the two would recurse until the stack
+  overflows. `initializeModals()` in `@saucebase/core/lib/modal`, called
+  once from the `app` entry, swallows the event while the modal
+  is `data-aria-hidden`. Panels and overlay primitives need no change; never fix
+  this inside `components/ui/`, which the shadcn CLI regenerates.
+
+### Where to Look
+
+- Module structure, provider, navigation, settings sections, seeders:
+  `saucebase-module-development` (from `saucebase/core`)
+- Filament: `saucebase-filament-development` (from `saucebase/core`)
+- Pages, navigation, module frontend wiring: `saucebase-frontend-development`
+- Which tests to write and run: `saucebase-testing`
+- Path-specific rules (migrations, frontend, E2E, settings panels, shadcn):
+  `.ai/rules/index.md`
 
 ### Verification
+
+Write the failing test before the change. Before finishing, run the affected
+tests, `vendor/bin/pint --dirty --format agent`, and `composer analyse`.
 
 Run the smallest relevant checks from `CONTRIBUTING.md`. Run module PHPUnit
 tests with a 2048 MB PHP memory limit.

@@ -1,9 +1,15 @@
 name: Tests
 
 on:
+    # No `branches:` filter on purpose. That key matches the PR's *base* branch, so an
+    # allowlist silently skips CI for every epic branch (dev-v3, dev-improvements, ...)
+    # — and a skipped run shows as no checks at all, which reads like success.
     pull_request:
-        branches: [main]
     workflow_dispatch:
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
 
 permissions:
     contents: read

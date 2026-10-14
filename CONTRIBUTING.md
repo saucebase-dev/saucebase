@@ -9,8 +9,8 @@ Requirements are defined by the manifests:
 
 - PHP `^8.4` and Composer dependencies in `composer.json`
 - Node `>=22.12.0` and npm `>=10.5.1` in each stack manifest
-- Vue and React dependencies in `stubs/saucebase/stack/vue/package.json` and
-  `stubs/saucebase/stack/react/package.json`
+- Vue and React dependencies in `saucebase/core`'s
+  `stubs/stack/vue/config/package.json` and `stubs/stack/react/config/package.json`
 
 The root `package.json` is intentionally minimal before a frontend is selected.
 Use the Saucebase CLI to prepare a contributor stack:
@@ -21,14 +21,32 @@ saucebase stack vue --dev
 saucebase stack react --dev
 ```
 
-Contributor mode retains both framework source trees and generates thin root
-entry-point passthroughs. Edit `resources/js/vue/` or `resources/js/react/`,
-not generated root entry points. Shared frontend changes must work with both
-stacks.
+The app's UI lives in `saucebase/core`, under `stubs/stack/vue/js/` and
+`stubs/stack/react/js/`. Contributor mode runs it from there (the `@` alias points at
+`vendor/saucebase/core/stubs/stack/<framework>/js`) and generates thin root
+entry-point passthroughs; an installed app gets its own copy in `resources/js/`.
+Edit the tree in core, never the generated root entry points or generated
+TypeScript declarations.
 
-Install dependencies and prepare the application:
+The CSS is the exception. It also lives in core (`stubs/stack/css/`), but its
+files find modules and packages by relative path, so `saucebase stack` copies
+them into `resources/css/`, which git ignores here. Edit that copy to see changes
+live, including a theme set with **Set as default**, then run
+`saucebase stack --sync` to copy it back and commit in core. `stack --reset`
+refuses to continue while the copy has edits core doesn't.
+Shared frontend changes must work with both stacks, and a module's Vue and
+React trees must stay in step.
+
+Modules follow the same layout. On a user's install the module installer keeps
+only the selected stack and flattens it into `resources/js/`, so documentation
+shipped with a module — its `README.md`, `CLAUDE.md` and `resources/boost/` —
+must describe that installed layout, not contributor mode.
+
+Clone the repository, install dependencies and prepare the application:
 
 ```bash
+git clone https://github.com/saucebase-dev/saucebase.git
+cd saucebase
 composer install
 cp .env.example .env
 php artisan key:generate
@@ -56,24 +74,77 @@ npm run build                        # production client and SSR builds
 Available npm scripts depend on the selected stack. The Vue and React stack
 manifests are the source of truth for frontend commands.
 
+When `saucebase/core` is symlinked into `vendor/` (a Composer path repository),
+`npm run dev` and `npm run build` print "Could not resolve ... treating it as an
+external dependency" warnings for the build plugins. They are harmless: Vite
+follows the symlink to load its config, then finds the plugins in the app. An
+app that installs core from Packagist doesn't see them.
+
+## Conventions
+
+Follow Laravel's conventions unless a recorded decision says otherwise. Where
+Laravel names or places something, do the same: exceptions end in `Exception`
+(`PurgeFailedException`), console commands in `Command`, form requests in
+`Request`. A deliberate departure is written down here or in the relevant skill,
+with the reason.
+
 ## Modules
 
 Create a module from the maintained recipe:
 
 ```bash
-php artisan saucebase:recipe example
-composer dump-autoload
+php artisan saucebase:recipe Example basic
+composer update <vendor>/example
 npm run build
 ```
 
-Module directories are lowercase, while PHP namespaces are TitleCase. Main
-module providers extend `App\Providers\ModuleServiceProvider`; `$name` and
-`$nameLower` properties are obsolete because the base provider resolves the
-module name through InterNACHI's `ModuleRegistry`.
+Every module has a `package.json`, where it declares any npm package the stack
+manifest doesn't list (see `saucebase-module-development`). The app's npm
+workspaces install them: after adding a module, run `npm install` so
+`package-lock.json` lists it, or `npm ci` refuses the lockfile.
 
-Do not bypass `module-loader.js`. It discovers module assets, translations, and
-Playwright projects. See
-`.ai/guidelines/saucebase/saucebase-core.md` for the maintained module patterns.
+Module directories are lowercase, while PHP namespaces are TitleCase. Main
+module providers extend `Saucebase\Core\Providers\ModuleServiceProvider`;
+`$name` and `$nameLower` properties are obsolete because the base provider
+resolves the module name through InterNACHI's `ModuleRegistry`.
+
+A shipped module's migrations are named `1000_00_00_NNNNNN_<action>_table.php`,
+numbered in dependency order: a module installs its whole schema at once, so
+only the order matters. The prefix sorts them after Laravel's own migrations and
+`saucebase/core`'s (both `0001_01_01_`), so the `users` table and core's tables
+exist first, and before any real-dated migration. A module migration that has to
+run after those, because it needs another module's table or changes a core
+table, uses `1000_00_01_`. After a release, change the schema with a new timestamped migration,
+because renaming a shipped one breaks databases that already ran it.
+
+Installers choose their own database, so shipped migrations and queries must
+work on MySQL, PostgreSQL and SQLite. MySQL indexes a foreign key column on its
+own; PostgreSQL and SQLite do not. Give every foreign key column that queries
+filter or join on an index of its own (or lead a composite index with it)
+rather than relying on `constrained()`.
+
+Tables for test-only models go in the module's `tests/Support/migrations/`; core
+loads them only while tests run. Never create a table inside a test: on MySQL the
+DDL commits the test's transaction.
+
+An action (`src/Actions/`) does one thing and has exactly one public method,
+`handle()`. Helpers it shares with other callers belong elsewhere — on the model,
+or with the module's other utilities — not as extra public methods on the action.
+
+Do not bypass the Vite preset in `saucebase/core` (`resources/js`). It discovers
+module assets, translations, and Playwright projects. Module patterns are maintained in `saucebase/core`'s
+`resources/boost/` (guideline plus the `saucebase-module-development` and
+`saucebase-filament-development` skills), so they update with core.
+
+A module ships its agent context in `resources/boost/`: a short
+`guidelines/core.md` that is always loaded, and a
+`skills/saucebase-<module>-development/SKILL.md` with the full detail. The
+module's `CLAUDE.md` only imports that skill, and its `AGENTS.md` only points to
+it. `composer boost:update` runs
+`php artisan modules:boost` first, which links each module into the vendor path
+Boost scans and registers it in `boost.json`, so modules never need listing by
+hand. It registers `saucebase/core` the same way; core is a regular Composer
+package, so it needs no link.
 
 ## Tests and quality checks
 
@@ -91,6 +162,17 @@ npm run test:e2e
 npm run build
 ```
 
+Tests run on SQLite. Before changing migrations or raw queries, also run them on
+MySQL and PostgreSQL. Point them at an empty database of their own, never your
+app's: `RefreshDatabase` empties whatever it runs against.
+
+```bash
+DB_CONNECTION=mysql DB_HOST=127.0.0.1 DB_DATABASE=testing DB_USERNAME=testing DB_PASSWORD=testing \
+    php -d memory_limit=2048M artisan test modules/tenancy/tests
+```
+
+Use `DB_CONNECTION=pgsql` (port 5432) for PostgreSQL.
+
 Some npm commands are unavailable until a frontend stack is selected. User-facing
 work should include feature or E2E coverage; complex isolated logic should
 include unit coverage. E2E tests must select stable `data-testid` attributes,
@@ -104,8 +186,10 @@ Documentation changes must be checked against implementation and manifests:
   lines.
 - `CONTRIBUTING.md` owns contributor setup and verification workflows.
 - `.ai/guidelines/` owns always-loaded agent conventions.
-- `.ai/skills/` owns task-specific agent workflows.
-- `AGENTS.md`, `CLAUDE.md`, and `boost.json` are local Laravel Boost outputs
+- `.ai/skills/` owns task-specific agent workflows for the app.
+- `.ai/rules/` owns path-scoped rules, listed in `.ai/rules/index.md`.
+- `saucebase/core`'s `resources/boost/` owns module and Filament conventions.
+- The root `AGENTS.md`, `CLAUDE.md`, and `boost.json` are local Laravel Boost outputs
   and are not tracked. Run `php artisan boost:install` once after cloning.
 
 Avoid repeating version tables across these files. When a dependency changes,
@@ -122,9 +206,10 @@ Never edit the `<laravel-boost-guidelines>` blocks in `AGENTS.md` or
 `CLAUDE.md` directly — they are overwritten on every regeneration, and they
 are not tracked, so the edit reaches nobody. `.ai/` is the only source.
 
-To pick up guidelines newly shipped by a package or module, run the Artisan
-command directly. Composer sets `COMPOSER_DEV_MODE`, which suppresses the
-discovery prompt, so `composer boost:update` cannot add new packages:
+Installed modules and core are picked up by `composer boost:update` automatically. To
+pick up guidelines newly shipped by any other package, run the Artisan command
+directly. Composer sets `COMPOSER_DEV_MODE`, which suppresses the discovery
+prompt, so `composer boost:update` cannot add third-party packages:
 
 ```bash
 php artisan boost:update

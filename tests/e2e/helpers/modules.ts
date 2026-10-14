@@ -6,11 +6,12 @@ import type { Laravel } from '@saucebase/laravel-playwright';
  * module-owned UI (not just proof of authentication) and must skip when that
  * UI belongs to a different combination of installed modules.
  */
-export async function isModuleInstalled(
+export function isModuleInstalled(
     laravel: Laravel,
     name: string,
 ): Promise<boolean> {
-    return laravel.callFunction<boolean>('Tests\\Support\\ModuleSupport::has', [
-        name,
-    ]);
+    return laravel.callFunction<boolean>(
+        String.raw`Tests\Support\ModuleSupport::has`,
+        [name],
+    );
 }

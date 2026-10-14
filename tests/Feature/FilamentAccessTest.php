@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Enums\Role;
 use App\Models\User;
 use Filament\Panel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -26,7 +25,7 @@ class FilamentAccessTest extends TestCase
     {
         /** @var User $admin */
         $admin = User::factory()->create();
-        $admin->assignRole(Role::ADMIN);
+        $admin->assignRole('admin');
 
         $this->assertTrue($admin->canAccessPanel($this->panel));
     }
@@ -35,7 +34,7 @@ class FilamentAccessTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->create();
-        $user->assignRole(Role::USER);
+        $user->assignRole('user');
 
         $this->assertFalse($user->canAccessPanel($this->panel));
     }

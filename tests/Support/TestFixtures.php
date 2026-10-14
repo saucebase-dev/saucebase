@@ -2,7 +2,6 @@
 
 namespace Tests\Support;
 
-use App\Enums\Role;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -49,7 +48,9 @@ class TestFixtures
                 ]
             );
 
-            $account->syncRoles([Role::USER->value]);
+            $account->syncRoles(['user']);
+
+            ModuleSupport::prepareUser($account);
         }
     }
 
@@ -57,8 +58,10 @@ class TestFixtures
      * Credentials for a single test.
      *
      * The admin and user accounts are created fresh per call, so each test — and
-     * so each worker — gets its own rows with factory-unique emails. The shared
-     * accounts are only read; they are provisioned by seedSharedAccounts().
+     * so each worker — gets its own rows. Their emails are random rather than the
+     * factory's: every call is its own PHP process, where Faker's `unique()` remembers
+     * nothing, so two tests could draw the same name. The shared accounts are only
+     * read; they are provisioned by seedSharedAccounts().
      *
      * @return array<string, array{email: string, password: string}>
      */
@@ -67,16 +70,22 @@ class TestFixtures
         $password = Str::password(12, symbols: false);
 
         $admin = User::factory()->create([
+            'email' => 'e2e-'.Str::lower(Str::random(12)).'@example.com',
             'password' => Hash::make($password),
             'email_verified_at' => now(),
         ]);
-        $admin->syncRoles([Role::ADMIN->value]);
+        $admin->syncRoles(['admin']);
 
         $user = User::factory()->create([
+            'email' => 'e2e-'.Str::lower(Str::random(12)).'@example.com',
             'password' => Hash::make($password),
             'email_verified_at' => now(),
         ]);
-        $user->syncRoles([Role::USER->value]);
+        $user->syncRoles(['user']);
+
+        // Installed modules get the accounts into a usable state — see prepareUser().
+        ModuleSupport::prepareUser($admin);
+        ModuleSupport::prepareUser($user);
 
         return [
             'admin' => ['email' => $admin->email, 'password' => $password],

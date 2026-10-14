@@ -2,14 +2,13 @@
 
 namespace App\Models;
 
-use App\Enums\Role;
-use App\Settings\LocalizationSettings;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Saucebase\Core\Settings\LocalizationSettings;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Permission\Traits\HasRoles;
@@ -34,7 +33,6 @@ class User extends Authenticatable implements FilamentUser, HasLocalePreference,
         'email',
         'password',
         'avatar',
-        'email_verified_at',
         'last_login_at',
     ];
 
@@ -122,40 +120,10 @@ class User extends Authenticatable implements FilamentUser, HasLocalePreference,
     }
 
     /**
-     * Check if user is an administrator
-     *
-     * @return bool True if the user has admin role
-     */
-    public function isAdmin(): bool
-    {
-        return $this->hasRole(Role::ADMIN);
-    }
-
-    /**
-     * Check if user is a regular user
-     *
-     * @return bool True if the user has user role
-     */
-    public function isUser(): bool
-    {
-        return $this->hasRole(Role::USER);
-    }
-
-    /**
-     * Check if user is a subscriber
-     *
-     * @return bool True if the user has subscriber role
-     */
-    public function isSubscriber(): bool
-    {
-        return $this->hasRole(Role::SUBSCRIBER);
-    }
-
-    /**
      * Determine if the user can access the Filament admin panel.
      */
     public function canAccessPanel(Panel $panel): bool
     {
-        return $this->isAdmin();
+        return $this->can('access admin panel');
     }
 }
