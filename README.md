@@ -1,6 +1,6 @@
 <p align="center">
   <br/>
-  <a href="https://saucebase-dev.github.io/docs/">Saucebase</a> is a modular Laravel SaaS starter kit for the modern web &mdash;
+  <a href="https://saucebase-dev.github.io/docs/">Saucebase</a> is a modular Laravel SaaS starter kit &mdash;
   <br/>
   own your code, ship faster.
   <br/><br/>
@@ -11,96 +11,51 @@
 [![Tests](https://github.com/saucebase-dev/saucebase/actions/workflows/test.yml/badge.svg)](https://github.com/saucebase-dev/saucebase/actions/workflows/test.yml)
 [![Laravel](https://img.shields.io/badge/Laravel-13-FF2D20?logo=laravel&logoColor=white)](https://laravel.com)
 [![PHP](https://img.shields.io/badge/PHP-8.4+-777BB4?logo=php&logoColor=white)](https://php.net)
-[![TypeScript](https://img.shields.io/badge/TypeScript-6.x-3178C6?logo=typescript&logoColor=white)](https://typescriptlang.org)
-[![Vite](https://img.shields.io/badge/Vite-8.x-646CFF?logo=vite&logoColor=white)](https://vite.dev)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-4.x-06B6D4?logo=tailwind-css&logoColor=white)](https://tailwindcss.com)
-[![Inertia.js](https://img.shields.io/badge/Inertia.js-3.x-9553E9)](https://inertiajs.com)
-[![Filament](https://img.shields.io/badge/Filament-5.x-10B981)](https://filamentphp.com)
-[![Playwright](https://img.shields.io/badge/Playwright-1.x-000000?logo=playwright&logoColor=white)](https://playwright.dev)
-
-Works with:<br/>
-[![Vue 3.5](https://img.shields.io/badge/Vue-3.5-4FC08D?logo=vue.js&logoColor=white)](https://vuejs.org) [![React 19](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)](https://react.dev)
+[![Vue 3.5](https://img.shields.io/badge/Vue-3.5-4FC08D?logo=vue.js&logoColor=white)](https://vuejs.org)
+[![React 19](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)](https://react.dev)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 </div>
 
 ## Install
 
-The **recommended** way to install Saucebase is by running the command below:
-
 ```bash
 curl -fsSL https://install.saucebase.dev | bash
 ```
 
-The CLI installs PHP/Composer if needed, then guides you through choosing a frontend framework and installing your first modules.
+It installs PHP and Composer if they are missing, then asks how to run the app (Docker, native PHP or Laravel Herd), Vue or React, and which modules to add.
 
-Looking for help? Start with our [Getting Started](https://saucebase-dev.github.io/docs/) guide.
+Already have PHP and Composer?
 
-Want to see it live? [Try the online demo](https://demo.saucebase.dev/).
+```bash
+composer global require saucebase/installer
+saucebase new my-app
+```
 
-## Documentation
+[Try the online demo](https://demo.saucebase.dev/).
 
-Visit our [official documentation](https://saucebase-dev.github.io/docs/).
+### With an AI agent
 
-The version badges above show the supported major (or minor, for Vue) lines
-declared by the project and stack manifests. Exact dependency constraints live
-in `composer.json`, `package.json`, and `saucebase/core`'s `stubs/stack/*/config/package.json`.
+Paste this into Claude Code, Cursor or any coding agent:
 
-## Adding a language
+```text
+Create a new Saucebase app called my-app. Install the CLI with
+`composer global require saucebase/installer`, then run
+`saucebase new my-app --driver=native --stack=vue --all-modules --no-interaction`.
+When it finishes, run `npm install` and `npm run build` in my-app, and tell me
+the URL to open.
+```
 
-Saucebase ships in English. Every string in the app and its modules is ready to translate.
-
-1. Collect the strings: `task translation:export LOCALE=pt_BR` writes every one to `lang/pt_BR.json`. Run it again whenever you add code or modules; it adds what is missing and keeps your translations.
-2. Translate the values in `lang/pt_BR.json`. `task translation:missing LOCALE=pt_BR` lists what is left.
-3. Rebuild the frontend (`npm run build`): the browser only gets a language's strings from the build.
-4. Name it under `locales` in `config/saucebase.php` (`'pt_BR' => 'Português (Brasil)'`). Publish that file first with `php artisan vendor:publish --tag=saucebase-config`.
-5. Switch it on in the admin: **Settings → Localization**. The language selector appears once two languages are on.
-6. Optional: add its flag to the icon map in `resources/js/*/components/LanguageSelector`. Without one it shows a globe.
-
-## Support
-
-Having trouble? Get help in the official [Saucebase Discord](https://discord.gg/CuhSFA7qY).
+This installs everything with defaults: native PHP, Vue and every module. To choose the environment, framework and modules yourself, run the interactive installer above instead.
 
 ## Contributing
 
-**New contributors welcome!** Check out our [Contributors Guide](CONTRIBUTING.md) for help getting started.
-
-## Modules
-
-| Module | Version | Description |
-| ------ | ------- | ----------- |
-| [auth](https://github.com/saucebase-dev/auth) | [![auth version](https://img.shields.io/packagist/v/saucebase/auth.svg?label=%20)](https://github.com/saucebase-dev/auth) | Authentication, social login, email verification, and admin impersonation |
-| [tenancy](https://github.com/saucebase-dev/tenancy) | [![tenancy version](https://img.shields.io/packagist/v/saucebase/tenancy.svg?label=%20)](https://github.com/saucebase-dev/tenancy) | Subdomain workspaces with isolated data, members, invitations, and branding |
-| [billing](https://github.com/saucebase-dev/billing) | [![billing version](https://img.shields.io/packagist/v/saucebase/billing.svg?label=%20)](https://github.com/saucebase-dev/billing) | Subscriptions, checkout sessions, and payment processing |
-| [announcements](https://github.com/saucebase-dev/announcements) | [![announcements version](https://img.shields.io/packagist/v/saucebase/announcements.svg?label=%20)](https://github.com/saucebase-dev/announcements) | Site-wide announcement banners with scheduling and dismissal support |
-| [roadmap](https://github.com/saucebase-dev/roadmap) | [![roadmap version](https://img.shields.io/packagist/v/saucebase/roadmap.svg?label=%20)](https://github.com/saucebase-dev/roadmap) | Feature requests, voting, and public product roadmap |
-| [themes](https://github.com/saucebase-dev/themes) | [![themes version](https://img.shields.io/packagist/v/saucebase/themes.svg?label=%20)](https://github.com/saucebase-dev/themes) | Visual theme editor for designing and baking your app's look and feel |
-| [blog](https://github.com/saucebase-dev/blog) | [![blog version](https://img.shields.io/packagist/v/saucebase/blog.svg?label=%20)](https://github.com/saucebase-dev/blog) | Public blog with categories, cover images, scheduling, and SEO |
-
-Each module ships [Laravel Boost](https://laravel.com/docs/boost) guidelines and a skill, so AI agents
-understand the modules you install. Run `composer boost:update` after installing one.
-
-Several official packages are maintained outside of this repo:
-
-| Package | Repository |
-| ------- | ---------- |
-| [saucebase/core](https://github.com/saucebase-dev/core) | [saucebase-dev/core](https://github.com/saucebase-dev/core) |
-| [saucebase/module-installer](https://github.com/saucebase-dev/module-installer) | [saucebase-dev/module-installer](https://github.com/saucebase-dev/module-installer) |
-| [saucebase/breadcrumbs](https://github.com/saucebase-dev/breadcrumbs) | [saucebase-dev/breadcrumbs](https://github.com/saucebase-dev/breadcrumbs) |
-| [saucebase/laravel-playwright](https://github.com/saucebase-dev/laravel-playwright) | [saucebase-dev/laravel-playwright](https://github.com/saucebase-dev/laravel-playwright) |
-
-## Links
-
-- [Contributing](CONTRIBUTING.md)
-- [Documentation](https://saucebase-dev.github.io/docs/)
-- [Demo](https://demo.saucebase.dev/)
+This repository is the contributor workspace. To work on Saucebase itself, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
-Saucebase is [MIT licensed](LICENSE).
+MIT.
 
-Third-party dependencies keep their own licenses. To list them:
+---
 
-```bash
-composer licenses
-npx license-checker --production
-```
+The documentation is being updated for v3.

@@ -42,9 +42,11 @@ only the selected stack and flattens it into `resources/js/`, so documentation
 shipped with a module — its `README.md`, `CLAUDE.md` and `resources/boost/` —
 must describe that installed layout, not contributor mode.
 
-Install dependencies and prepare the application:
+Clone the repository, install dependencies and prepare the application:
 
 ```bash
+git clone https://github.com/saucebase-dev/saucebase.git
+cd saucebase
 composer install
 cp .env.example .env
 php artisan key:generate
