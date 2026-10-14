@@ -2,8 +2,7 @@
   <br/>
   <strong>The AI-ready Laravel SaaS kit.</strong>
   <br/>
-  Launch your SaaS, not your boilerplate.
-  <br/><br/>
+ Everything your SaaS needs, ready for your AI to build on<br/><br/>
 </p>
 
 <div align="center">
