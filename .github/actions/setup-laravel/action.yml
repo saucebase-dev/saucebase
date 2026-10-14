@@ -123,7 +123,7 @@ runs:
           working-directory: ${{ inputs.working-directory }}
           run: |
               mkdir -p public/build
-              echo '{"resources/js/app.ts":{"file":"assets/app.js","src":"resources/js/app.ts","isEntry":true}}' > public/build/manifest.json
+              echo '{"resources/js/app.ts":{"file":"assets/app.js","src":"resources/js/app.ts","isEntry":true},"resources/css/filament/admin/theme.css":{"file":"assets/theme.css","src":"resources/css/filament/admin/theme.css","isEntry":true}}' > public/build/manifest.json
 
         - name: Build frontend assets
           if: inputs.skip-build != 'true'

@@ -54,6 +54,8 @@ class ModuleBoostIntegrationTest extends TestCase
             'packages' => [['name' => 'acme/fixture', 'version' => 'v1.0.0']],
             'packages-dev' => [],
         ]));
+        // Boost writes Claude Code's guidelines to AGENTS.md unless a CLAUDE.md exists, as it does in the app.
+        touch($this->root.'/CLAUDE.md');
         file_put_contents($this->root.'/boost.json', json_encode([
             'agents' => ['claude_code'],
             'guidelines' => true,
@@ -75,7 +77,7 @@ class ModuleBoostIntegrationTest extends TestCase
         Artisan::all();
 
         $this->originalBasePath = $this->app->basePath();
-        $this->realGuidelines = (string) @md5_file($this->originalBasePath.'/CLAUDE.md');
+        $this->realGuidelines = $this->fingerprint($this->originalBasePath.'/CLAUDE.md');
         $this->app->setBasePath($this->root);
 
         // Boost writes CLAUDE.md relative to the working directory, not the base path.
@@ -98,7 +100,7 @@ class ModuleBoostIntegrationTest extends TestCase
 
         parent::tearDown();
 
-        $this->assertSame($this->realGuidelines, (string) @md5_file($this->originalBasePath.'/CLAUDE.md'), 'The real CLAUDE.md was modified.');
+        $this->assertSame($this->realGuidelines, $this->fingerprint($this->originalBasePath.'/CLAUDE.md'), 'The real CLAUDE.md was modified.');
     }
 
     public function test_a_module_guideline_and_skill_are_written_for_agents(): void
@@ -119,6 +121,11 @@ class ModuleBoostIntegrationTest extends TestCase
 
         $this->assertStringNotContainsString('FIXTURE-GUIDELINE-MARKER', (string) file_get_contents($this->root.'/CLAUDE.md'));
         $this->assertDirectoryDoesNotExist($this->root.'/.claude/skills/fixture-development');
+    }
+
+    private function fingerprint(string $path): string
+    {
+        return is_file($path) ? (string) md5_file($path) : '';
     }
 
     /**
