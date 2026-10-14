@@ -1,8 +1,8 @@
 <p align="center">
   <br/>
-  <a href="https://saucebase-dev.github.io/docs/">Saucebase</a> is a modular Laravel SaaS starter kit &mdash;
+  <strong>The AI-ready Laravel SaaS kit.</strong>
   <br/>
-  own your code, ship faster.
+  Launch your SaaS, not your boilerplate.
   <br/><br/>
 </p>
 
@@ -16,6 +16,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 </div>
+
+Billing, workspaces, a blog and an admin are already built and tested, on a Vue or React UI you own. Every module ships Laravel Boost guidelines and skills, so Claude Code, Cursor or any agent builds on them correctly from the first prompt.
 
 ## Install
 
