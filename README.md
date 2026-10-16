@@ -33,7 +33,6 @@ composer global require saucebase/installer
 saucebase new my-app
 ```
 
-[Try the online demo](https://demo.saucebase.dev/).
 
 ### With an AI agent
 
