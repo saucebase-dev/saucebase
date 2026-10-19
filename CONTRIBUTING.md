@@ -28,7 +28,8 @@ saucebase stack vue --dev          # or: react. Also runs npm install.
 cp .env.example .env
 php artisan key:generate
 touch database/database.sqlite
-php artisan migrate
+php artisan migrate --seed         # the seeder creates the roles
+php artisan boost:install          # before adding modules, see below
 composer dev                       # http://127.0.0.1:8000
 ```
 
@@ -63,7 +64,10 @@ The app has no sign-in of its own. The home page works out of the box, but
 `/dashboard` and other signed-in pages need a login route. At the moment, the
 only compatible way to sign in is the auth module (see
 [Working on a module](#working-on-a-module)). Install it when your change needs
-signed-in pages.
+signed-in pages. Its pages are under `/auth/` (`/auth/login`, `/auth/register`).
+To open the admin panel at `/admin`, register, then run
+`php artisan auth:make-admin you@example.com`. This needs the roles from
+`migrate --seed`.
 
 ## Working on core
 
@@ -135,8 +139,10 @@ npm run dev                          # Vite only (use this with Herd)
 npm run build                        # production client and SSR builds
 ```
 
-Run `php artisan boost:install` once after cloning to generate your local
-`AGENTS.md`, `CLAUDE.md` and `boost.json` (see [Documentation](#documentation)).
+`php artisan boost:install` generates your local `AGENTS.md`, `CLAUDE.md` and
+`boost.json` (see [Documentation](#documentation)). Run it before adding a
+module: every `composer require` and `composer update` runs `boost:update`,
+which fails until Boost is installed.
 
 ## Conventions
 
@@ -214,9 +220,9 @@ php artisan test
 php -d memory_limit=2048M artisan test --testsuite=Modules
 composer analyse                      # Larastan/PHPStan level 5
 composer lint                         # Laravel Pint
-npm run lint
+npm run lint                          # ESLint, fixes files in place
 npm run format:check
-npm run test:e2e
+npm run test:e2e                      # first run: npx playwright install
 npm run build
 ```
 
@@ -248,7 +254,8 @@ Documentation changes must be checked against implementation and manifests:
 - `.ai/rules/` owns path-scoped rules, listed in `.ai/rules/index.md`.
 - `saucebase/core`'s `resources/boost/` owns module and Filament conventions.
 - The root `AGENTS.md`, `CLAUDE.md`, and `boost.json` are local Laravel Boost outputs
-  and are not tracked. Run `php artisan boost:install` once after cloning.
+  and are not tracked. `boost:install` also rewrites the tracked `.mcp.json`;
+  don't commit that change.
 
 Avoid repeating version tables across these files. When a dependency changes,
 update its manifest first and adjust only documentation that describes the
