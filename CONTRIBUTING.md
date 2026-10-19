@@ -1,32 +1,93 @@
 # Contributing to Saucebase
 
-Thank you for improving Saucebase. Contributions may target the framework-neutral
-core, one or both frontend stacks, documentation, tests, or module tooling.
+This repository is the contributor workspace: a Laravel app wired to develop
+Saucebase itself. Most of the product lives in other packages:
 
-## Before you start
+- [`saucebase/core`](https://github.com/saucebase-dev/core): the framework, the
+  Vue and React UI (`stubs/stack/`), and the Vite preset.
+- Modules such as [`saucebase/auth`](https://github.com/saucebase-dev/auth), one
+  repository each, installed into `modules/`.
+- [`saucebase/installer`](https://github.com/saucebase-dev/installer): the
+  `saucebase` CLI.
 
-Requirements are defined by the manifests:
+Fix a bug where its code lives, and open the pull request there.
 
-- PHP `^8.4` and Composer dependencies in `composer.json`
-- Node `>=22.12.0` and npm `>=10.5.1` in each stack manifest
-- Vue and React dependencies in `saucebase/core`'s
-  `stubs/stack/vue/config/package.json` and `stubs/stack/react/config/package.json`
+## Requirements
 
-The root `package.json` is intentionally minimal before a frontend is selected.
-Use the Saucebase CLI to prepare a contributor stack:
+- PHP 8.4+ and Composer
+- Node 22.12+ and npm 10.5+
+- The `saucebase` CLI: `composer global require saucebase/installer`
+
+## Set up
 
 ```bash
-saucebase stack vue --dev
-# or
-saucebase stack react --dev
+git clone https://github.com/saucebase-dev/saucebase.git
+cd saucebase
+composer install
+saucebase stack vue --dev          # or: react. Also runs npm install.
+cp .env.example .env
+php artisan key:generate
+touch database/database.sqlite
+php artisan migrate --seed         # the seeder creates the roles
+php artisan boost:install          # before adding modules, see below
+composer dev                       # http://127.0.0.1:8000
 ```
 
-The app's UI lives in `saucebase/core`, under `stubs/stack/vue/js/` and
-`stubs/stack/react/js/`. Contributor mode runs it from there (the `@` alias points at
-`vendor/saucebase/core/stubs/stack/<framework>/js`) and generates thin root
-entry-point passthroughs; an installed app gets its own copy in `resources/js/`.
-Edit the tree in core, never the generated root entry points or generated
-TypeScript declarations.
+`saucebase stack <vue|react> --dev` runs the UI straight from
+`vendor/saucebase/core`. It writes small entry files in `resources/js/` that
+point at core, and marks them skip-worktree so they don't show up in
+`git status`.
+
+`.env.example` uses SQLite, so nothing else is needed. With MySQL or PostgreSQL,
+set the `DB_*` variables and create the database before migrating.
+
+### Laravel Herd
+
+Herd serves the folder name as the domain, so clone into a folder named after
+the site you want, for example `saucebase-dev` for `saucebase-dev.test`. Then
+set the URL in `.env` and enable HTTPS:
+
+```dotenv
+APP_URL=https://saucebase-dev.test
+```
+
+```bash
+herd secure saucebase-dev
+npm run dev                        # Herd serves PHP; Vite serves assets
+```
+
+If several local sites share one Redis, give each its own `REDIS_PREFIX`.
+
+### Signing in
+
+The app has no sign-in of its own. The home page works out of the box, but
+`/dashboard` and other signed-in pages need a login route. At the moment, the
+only compatible way to sign in is the auth module (see
+[Working on a module](#working-on-a-module)). Install it when your change needs
+signed-in pages. Its pages are under `/auth/` (`/auth/login`, `/auth/register`).
+To open the admin panel at `/admin`, register, then run
+`php artisan auth:make-admin you@example.com`. This needs the roles from
+`migrate --seed`.
+
+## Working on core
+
+Core comes from Packagist by default. To change it, clone it next to this
+repository and link it as a Composer path repository:
+
+```bash
+git clone https://github.com/saucebase-dev/core.git ../core
+composer config repositories.core '{"type":"path","url":"../core","options":{"symlink":true}}'
+composer update saucebase/core
+```
+
+`vendor/saucebase/core` is now a symlink, so edits to core show up straight
+away. Do not commit the `composer.json` and `composer.lock` changes. To go back
+to the released version, run `composer config --unset repositories.core` and
+`composer update saucebase/core`.
+
+The app's UI lives in core, under `stubs/stack/vue/js/` and
+`stubs/stack/react/js/`. Edit it there, never the generated entry files in
+`resources/js/` or the generated TypeScript declarations.
 
 The CSS is the exception. It also lives in core (`stubs/stack/css/`), but its
 files find modules and packages by relative path, so `saucebase stack` copies
@@ -34,51 +95,54 @@ them into `resources/css/`, which git ignores here. Edit that copy to see change
 live, including a theme set with **Set as default**, then run
 `saucebase stack --sync` to copy it back and commit in core. `stack --reset`
 refuses to continue while the copy has edits core doesn't.
+
 Shared frontend changes must work with both stacks, and a module's Vue and
-React trees must stay in step.
-
-Modules follow the same layout. On a user's install the module installer keeps
-only the selected stack and flattens it into `resources/js/`, so documentation
-shipped with a module — its `README.md`, `CLAUDE.md` and `resources/boost/` —
-must describe that installed layout, not contributor mode.
-
-Clone the repository, install dependencies and prepare the application:
+React trees must stay in step. To switch stacks, or to regenerate the entry
+files after updating the CLI:
 
 ```bash
-git clone https://github.com/saucebase-dev/saucebase.git
-cd saucebase
-composer install
-cp .env.example .env
-php artisan key:generate
-php artisan migrate
-npm install
+saucebase stack --reset
+saucebase stack react --dev
 ```
 
-Docker users may instead run:
+When core is symlinked, `npm run dev` and `npm run build` print "Could not
+resolve ... treating it as an external dependency" warnings for the build
+plugins. They are harmless: Vite follows the symlink to load its config, then
+finds the plugins in the app.
+
+## Working on a module
+
+Clone the module into `modules/`, then follow the install steps in its README
+(for example [auth](https://github.com/saucebase-dev/auth#install)). Each module
+has its own steps, such as applying a patch or seeding. Its
+`composer require` resolves to your clone through the `modules/*` path
+repository in `composer.json`:
 
 ```bash
-docker compose up -d --wait
-docker compose exec app composer install
-docker compose exec app php artisan migrate
-npm install
+git clone https://github.com/saucebase-dev/auth.git modules/auth
+# then the module's install steps, e.g. composer require saucebase/auth
 ```
+
+Like the core link, these changes (`composer.json`, `composer.lock`, applied
+patches) are local. Do not commit them.
+
+On a user's install, the module installer keeps only the selected stack and
+flattens it into `resources/js/`, so documentation shipped with a module (its
+`README.md`, `CLAUDE.md` and `resources/boost/`) must describe that installed
+layout, not contributor mode.
 
 ## Development
 
 ```bash
-composer dev                         # app, queue, logs, and Vite
-npm run dev                          # Vite only
+composer dev                         # server, queue, logs and Vite
+npm run dev                          # Vite only (use this with Herd)
 npm run build                        # production client and SSR builds
 ```
 
-Available npm scripts depend on the selected stack. The Vue and React stack
-manifests are the source of truth for frontend commands.
-
-When `saucebase/core` is symlinked into `vendor/` (a Composer path repository),
-`npm run dev` and `npm run build` print "Could not resolve ... treating it as an
-external dependency" warnings for the build plugins. They are harmless: Vite
-follows the symlink to load its config, then finds the plugins in the app. An
-app that installs core from Packagist doesn't see them.
+`php artisan boost:install` generates your local `AGENTS.md`, `CLAUDE.md` and
+`boost.json` (see [Documentation](#documentation)). Run it before adding a
+module: every `composer require` and `composer update` runs `boost:update`,
+which fails until Boost is installed.
 
 ## Conventions
 
@@ -88,7 +152,7 @@ Laravel names or places something, do the same: exceptions end in `Exception`
 `Request`. A deliberate departure is written down here or in the relevant skill,
 with the reason.
 
-## Modules
+## Module conventions
 
 Create a module from the maintained recipe:
 
@@ -156,9 +220,9 @@ php artisan test
 php -d memory_limit=2048M artisan test --testsuite=Modules
 composer analyse                      # Larastan/PHPStan level 5
 composer lint                         # Laravel Pint
-npm run lint
+npm run lint                          # ESLint, fixes files in place
 npm run format:check
-npm run test:e2e
+npm run test:e2e                      # first run: npx playwright install
 npm run build
 ```
 
@@ -190,7 +254,8 @@ Documentation changes must be checked against implementation and manifests:
 - `.ai/rules/` owns path-scoped rules, listed in `.ai/rules/index.md`.
 - `saucebase/core`'s `resources/boost/` owns module and Filament conventions.
 - The root `AGENTS.md`, `CLAUDE.md`, and `boost.json` are local Laravel Boost outputs
-  and are not tracked. Run `php artisan boost:install` once after cloning.
+  and are not tracked. `boost:install` also rewrites the tracked `.mcp.json`;
+  don't commit that change.
 
 Avoid repeating version tables across these files. When a dependency changes,
 update its manifest first and adjust only documentation that describes the

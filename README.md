@@ -18,6 +18,9 @@
 
 Billing, workspaces, a blog and an admin are already built and tested, on a Vue or React UI you own. Every module ships Laravel Boost guidelines and skills, so Claude Code, Cursor or any agent builds on them correctly from the first prompt.
 
+> [!NOTE]
+> This repository is the **contributor workspace** for developing Saucebase. The framework itself is the [`saucebase/core`](https://github.com/saucebase-dev/core) package, and each module has its own repository. To build an app with Saucebase, use the installer below rather than cloning this repository.
+
 ## Install
 
 ```bash
@@ -50,7 +53,7 @@ This installs everything with defaults: native PHP, Vue and every module. To cho
 
 ## Contributing
 
-This repository is the contributor workspace. To work on Saucebase itself, see [CONTRIBUTING.md](CONTRIBUTING.md).
+This repository is the contributor workspace: clone it to work on [`saucebase/core`](https://github.com/saucebase-dev/core), the modules, or the app itself. Setup and workflow are in [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
