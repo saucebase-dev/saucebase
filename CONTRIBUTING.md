@@ -108,17 +108,19 @@ finds the plugins in the app.
 
 ## Working on a module
 
-Clone the module into `modules/` and require it. The `modules/*` path repository
-in `composer.json` picks it up:
+Clone the module into `modules/`, then follow the install steps in its README
+(for example [auth](https://github.com/saucebase-dev/auth#install)). Each module
+has its own steps, such as applying a patch or seeding. Its
+`composer require` resolves to your clone through the `modules/*` path
+repository in `composer.json`:
 
 ```bash
 git clone https://github.com/saucebase-dev/auth.git modules/auth
-composer require saucebase/auth:@dev
-npm install
-php artisan migrate
+# then the module's install steps, e.g. composer require saucebase/auth
 ```
 
-Like the core link, the `composer.json` change is local. Do not commit it.
+Like the core link, these changes (`composer.json`, `composer.lock`, applied
+patches) are local. Do not commit them.
 
 On a user's install, the module installer keeps only the selected stack and
 flattens it into `resources/js/`, so documentation shipped with a module (its
