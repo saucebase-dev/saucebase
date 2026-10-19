@@ -58,6 +58,56 @@ npm run dev                        # Herd serves PHP; Vite serves assets
 
 If several local sites share one Redis, give each its own `REDIS_PREFIX`.
 
+### Docker
+
+The `saucebase` CLI publishes the Docker files (nginx, PHP-FPM, MySQL, Redis,
+Mailpit and a queue worker). PHP, Composer and Node still run on the host for
+the CLI, Vite and the tests.
+
+```bash
+git clone https://github.com/saucebase-dev/saucebase.git
+cd saucebase
+saucebase docker:publish --ssl=no
+cp .env.example .env               # then edit, see below
+docker compose up -d --wait
+docker compose exec app composer install
+saucebase stack vue --dev          # or: react
+docker compose exec app php artisan key:generate
+docker compose up -d --wait --force-recreate
+docker compose exec app php artisan migrate --seed
+docker compose exec app php artisan boost:install
+npm run dev                        # http://localhost
+```
+
+In `.env`, switch to MySQL and set the credentials the `mysql` service is
+created with:
+
+```dotenv
+DB_CONNECTION=mysql
+DB_DATABASE=saucebase
+DB_USERNAME=saucebase
+DB_PASSWORD=secret
+```
+
+- Compose passes `.env` values to the containers when they start, and those
+  override `.env` inside the app. That's why the containers are recreated after
+  `key:generate`. Do the same after changing `.env`.
+- Run `boost:install` interactively and pick your agents. Inside the container
+  it can't detect them, and `boost:update` fails without any.
+- Ports clash with Herd or other local services? Change them in `.env`:
+  `APP_PORT`, `APP_HTTPS_PORT`, `FORWARD_DB_PORT`, `FORWARD_REDIS_PORT`,
+  `FORWARD_MAILPIT_PORT`, `FORWARD_MAILPIT_DASHBOARD_PORT`. Update `APP_URL` to
+  match.
+- Server-side rendering doesn't run with `npm run dev`: PHP in the container
+  can't reach Vite on the host, so pages render in the browser only.
+- Prefix artisan and Composer commands, including a module's install steps,
+  with `docker compose exec app`.
+
+> [!WARNING]
+> Run tests on the host, never inside the container. The container's
+> `DB_CONNECTION` overrides `phpunit.xml`, so tests would run against your app's
+> database and wipe it.
+
 ### Signing in
 
 The app has no sign-in of its own. The home page works out of the box, but

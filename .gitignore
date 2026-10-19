@@ -74,6 +74,7 @@ public/vendor/livewire/
 
 # Docker setup (published from saucebase/installer package)
 /docker/
+/docker-compose.yml
 
 # Generated files
 lang/php_*.json
