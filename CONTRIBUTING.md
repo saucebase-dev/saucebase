@@ -272,25 +272,15 @@ composer analyse                      # Larastan/PHPStan level 5
 composer lint                         # Laravel Pint
 npm run lint                          # ESLint, fixes files in place
 npm run format:check
-npm run test:e2e                      # first run: npx playwright install
+npm run test:e2e                      # wipes your app's database
 npm run build
 ```
 
-Tests run on SQLite. Before changing migrations or raw queries, also run them on
-MySQL and PostgreSQL. Point them at an empty database of their own, never your
-app's: `RefreshDatabase` empties whatever it runs against.
+Run PHP tests on the host, never inside Docker: the container's database
+settings override `phpunit.xml`, and the tests would wipe your app's database.
 
-```bash
-DB_CONNECTION=mysql DB_HOST=127.0.0.1 DB_DATABASE=testing DB_USERNAME=testing DB_PASSWORD=testing \
-    php -d memory_limit=2048M artisan test modules/tenancy/tests
-```
-
-Use `DB_CONNECTION=pgsql` (port 5432) for PostgreSQL.
-
-Some npm commands are unavailable until a frontend stack is selected. User-facing
-work should include feature or E2E coverage; complex isolated logic should
-include unit coverage. E2E tests must select stable `data-testid` attributes,
-not translated text.
+[TESTING.md](TESTING.md) covers each kind of test: running one module, other
+databases, end-to-end tests, and mutation testing with Infection.
 
 ## Documentation
 
