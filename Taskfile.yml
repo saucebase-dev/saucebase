@@ -28,6 +28,9 @@ includes:
     tenancy:
         taskfile: ./modules/tenancy/Taskfile.yml
         optional: true
+    newsletter:
+        taskfile: ./modules/newsletter/Taskfile.yml
+        optional: true
     # ── END MODULES ──────────────────────────────────────────────────
 
 tasks:

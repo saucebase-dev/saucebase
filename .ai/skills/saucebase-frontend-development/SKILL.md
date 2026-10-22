@@ -25,12 +25,19 @@ module contributes in `setup()`:
 |---|---|
 | `registerIcon(name, Component)` (`@saucebase/<framework>/lib/navigation`) | Icon for navigation items whose `icon` attribute is `name` |
 | `registerAction(id, handler)` (`@saucebase/<framework>/lib/navigation`) | Click handler for navigation items whose `action` attribute is `id`; registering an id twice warns and replaces the first |
-| `registerGlobalComponent(slot, Component)` (`@saucebase/<framework>/lib/globalComponents`) | Component rendered in a layout slot |
+| `registerGlobalComponent(slot, Component, { order? })` (`@saucebase/<framework>/lib/globalComponents`) | Component rendered in a layout slot |
 
-Slots: `top` and `bottom` wrap the page; `sidebar-brand` replaces the block
-above the sidebar navigation; `user-subtitle` replaces the email under the
-user's name in the sidebar user menu. A new slot needs a case in
-`globalComponents` and a render in the layout that owns that region.
+Slots are named `{area}::{region}.{position}`, like Filament's render hooks.
+Areas: `app` (shell), `site` (public layout), `dashboard` (signed-in layout),
+`home` (index page). `before`/`after` sit outside a region, `start`/`end`
+inside it. The full list is `GlobalComponentSlots` in `@saucebase/core/types`:
+`app::page.*`, `site::{header,content,footer}.*`, `home::content.*`,
+`dashboard::{header,content}.*` and `dashboard::sidebar.{start,end}`.
+`dashboard::sidebar.brand` replaces the brand above the sidebar navigation;
+`dashboard::user-menu.subtitle` replaces the email in the user menu. Pass
+`{ order }` (default 100, lower first) to sort components in a slot. A module
+adds its own slot by augmenting `GlobalComponentSlots` and rendering
+`<GlobalComponents position="…" />`.
 
 ## What a module may import
 
