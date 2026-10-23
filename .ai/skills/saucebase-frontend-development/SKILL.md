@@ -17,7 +17,8 @@ Also read `.ai/rules/frontend.md` before editing under `resources/js/`.
 ## Module setup hooks
 
 Each module's `resources/js/<framework>/app` entry (`resources/js/app` once
-installed) may export `setup()` and `afterMount()`.
+installed) may export `setup()` and `afterMount()`. Vue entries are `app.ts`,
+React entries `app.tsx`; core finds no other name.
 Core imports every module's entry eagerly and runs all `setup()` calls before
 the first render, then all `afterMount()` calls after the browser mounts. The
 server renders the same app, so `setup()` runs there too: keep it to
