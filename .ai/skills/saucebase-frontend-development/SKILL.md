@@ -16,21 +16,43 @@ Also read `.ai/rules/frontend.md` before editing under `resources/js/`.
 
 ## Module setup hooks
 
-Each module's `resources/js/app` entry may export `setup()` and `afterMount()`.
+Each module's `resources/js/<framework>/app` entry (`resources/js/app` once
+installed) may export `setup()` and `afterMount()`. Vue entries are `app.ts`,
+React entries `app.tsx`; core finds no other name.
 Core imports every module's entry eagerly and runs all `setup()` calls before
-the app mounts, then all `afterMount()` calls after it. Register everything a
-module contributes in `setup()`:
+the first render, then all `afterMount()` calls after the browser mounts. The
+server renders the same app, so `setup()` runs there too: keep it to
+registrations and put anything that touches `window`, `document` or storage in
+`afterMount()`. Register everything a module contributes in `setup()`:
 
 | Call | Purpose |
 |---|---|
 | `registerIcon(name, Component)` (`@saucebase/<framework>/lib/navigation`) | Icon for navigation items whose `icon` attribute is `name` |
 | `registerAction(id, handler)` (`@saucebase/<framework>/lib/navigation`) | Click handler for navigation items whose `action` attribute is `id`; registering an id twice warns and replaces the first |
-| `registerGlobalComponent(slot, Component)` (`@saucebase/<framework>/lib/globalComponents`) | Component rendered in a layout slot |
+| `registerGlobalComponent(slot, Component, { order? })` (`@saucebase/<framework>/lib/globalComponents`) | Component rendered in a layout slot |
 
-Slots: `top` and `bottom` wrap the page; `sidebar-brand` replaces the block
-above the sidebar navigation; `user-subtitle` replaces the email under the
-user's name in the sidebar user menu. A new slot needs a case in
-`globalComponents` and a render in the layout that owns that region.
+Slots are named `{area}::{region}.{position}`, like Filament's render hooks.
+Areas: `app` (shell), `site` (public layout), `dashboard` (signed-in layout),
+`home` (index page). `before`/`after` sit outside a region, `start`/`end`
+inside it. The full list is `GlobalComponentSlots` in `@saucebase/core/types`:
+`app::page.*`, `site::{header,content,footer}.*`, `home::content.*`,
+`dashboard::{header,content}.*` and `dashboard::sidebar.{start,end}`.
+`dashboard::sidebar.brand` replaces the brand above the sidebar navigation;
+`dashboard::user-menu.subtitle` replaces the email in the user menu. Pass
+`{ order }` (default 100, lower first) to sort components in a slot. A module
+adds its own slot by augmenting `GlobalComponentSlots` and rendering
+`<GlobalComponents position="…" />`.
+
+## Server rendering
+
+Pages that opt into SSR render on the server, then the browser hydrates that
+HTML instead of rendering again. The first browser render must match it:
+
+- Read `window`, `document` and storage in `onMounted()` / `useEffect()`, never
+  during setup or render; guard shared helpers with `typeof window`.
+- Teleport or portal to `<body>` only after mount (`useMounted()` from VueUse,
+  a `mounted` state in React): the server can't render into `<body>`.
+- Derive what renders from page props, which are the same on both sides.
 
 ## What a module may import
 

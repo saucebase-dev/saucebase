@@ -6,15 +6,15 @@
     "license": "MIT",
     "require": {
         "php": "^8.4",
-        "laravel/framework": "^13.37.0",
+        "laravel/framework": "^13.38.0",
         "laravel/tinker": "^3.0.2",
-        "saucebase/core": "^1.14"
+        "saucebase/core": "^2.0"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.7",
         "fakerphp/faker": "^1.24.1",
         "kkomelin/laravel-translatable-string-exporter": "^1.26",
-        "larastan/larastan": "^3.13",
+        "larastan/larastan": "^3.13.1",
         "laravel/boost": "^2.10.3",
         "laravel/pail": "^1.2.7",
         "laravel/pint": "^1.32.1",
