@@ -2,60 +2,22 @@
 import { defineConfig, devices } from '@playwright/test';
 import type { LaravelOptions } from '@saucebase/laravel-playwright';
 import 'dotenv/config';
-import { collectModulePlaywrightConfigs } from './vendor/saucebase/core/resources/js/modules.ts';
+import { saucebaseProjects } from './vendor/saucebase/core/resources/js/modules.ts';
 
 const BASE_URL = process.env.APP_URL ?? 'http://localhost';
 
-export type ModulePlaywrightConfig = {
-    name: string;
-    testDir: string;
-    use?: Record<string, unknown>;
-    // allow arbitrary extra properties
-    [key: string]: unknown;
-};
-
 async function createConfig() {
-    // Collect Playwright configs from all modules
-    // cast to ModulePlaywrightConfig[] so modules can include extra keys beyond name/testDir/use
-    const { projects: moduleProjects, setups: moduleSetups } =
-        ((await collectModulePlaywrightConfigs()) || {
-            projects: [],
-            setups: [],
-        }) as {
-            projects: ModulePlaywrightConfig[];
-            setups: ModulePlaywrightConfig[];
-        };
-
-    const testDevices = [
-        'Desktop Chrome',
-        // 'Desktop Firefox',
-        // 'Desktop Safari',
-        // 'iPhone 14',
-        // Add more devices here if needed
-    ];
-
-    const projects = [
-        /**
-         * Default project for core E2E tests
-         */
-        {
-            name: '@Core',
-            testDir: './tests/e2e',
-            dependencies: ['database.setup'], // Ensure database setup runs before core tests
-        } as ModulePlaywrightConfig,
-        // Add more projects here if needed
-    ]
-        .concat(moduleProjects)
-        .flatMap((project) => {
-            // Extend each project with the selected devices
-            return testDevices.map((device) => {
-                return {
-                    ...project,
-                    name: `${project.name} [${device}]`,
-                    use: { ...devices[device], ...project.use },
-                };
-            });
-        });
+    // database.setup, every module's setups and projects, per device, in order.
+    const projects = await saucebaseProjects({
+        devices: {
+            'Desktop Chrome': devices['Desktop Chrome'],
+            // 'Desktop Firefox': devices['Desktop Firefox'],
+            // 'Desktop Safari': devices['Desktop Safari'],
+            // 'iPhone 14': devices['iPhone 14'],
+        },
+        // The app's own tests; core adds the modules'.
+        projects: [{ name: '@Core', testDir: './tests/e2e' }],
+    });
 
     /**
      * @see https://playwright.dev/docs/test-configuration
@@ -97,17 +59,7 @@ async function createConfig() {
         },
 
         /* Configure projects for major browsers */
-        projects: [
-            /**
-             * Global setup
-             */
-            {
-                name: 'database.setup',
-                testMatch: /database\.setup\.ts/,
-            },
-            ...moduleSetups,
-            ...projects,
-        ],
+        projects,
 
         /**
          * Tests run against built assets, the way CI does.
