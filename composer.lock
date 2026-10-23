@@ -7046,16 +7046,16 @@
         },
         {
             "name": "saucebase/core",
-            "version": "v2.0.1",
+            "version": "v2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/saucebase-dev/core.git",
-                "reference": "dbc0e4cc4fd6886b6a991d09f9aca583ee57379f"
+                "reference": "bafcde878bc4851fb48de25bf979af20c09d9244"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/saucebase-dev/core/zipball/dbc0e4cc4fd6886b6a991d09f9aca583ee57379f",
-                "reference": "dbc0e4cc4fd6886b6a991d09f9aca583ee57379f",
+                "url": "https://api.github.com/repos/saucebase-dev/core/zipball/bafcde878bc4851fb48de25bf979af20c09d9244",
+                "reference": "bafcde878bc4851fb48de25bf979af20c09d9244",
                 "shasum": ""
             },
             "require": {
@@ -7127,9 +7127,9 @@
             ],
             "support": {
                 "issues": "https://github.com/saucebase-dev/core/issues",
-                "source": "https://github.com/saucebase-dev/core/tree/v2.0.1"
+                "source": "https://github.com/saucebase-dev/core/tree/v2.0.2"
             },
-            "time": "2026-10-23T20:48:29+00:00"
+            "time": "2026-10-23T20:54:46+00:00"
         },
         {
             "name": "saucebase/module-installer",
