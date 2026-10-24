@@ -189,8 +189,9 @@ npm run dev                          # Vite only (use this with Herd)
 npm run build                        # production client and SSR builds
 ```
 
-`php artisan boost:install` generates your local `AGENTS.md`, `CLAUDE.md` and
-`boost.json` (see [Documentation](#documentation)). Run it before adding a
+`php artisan boost:install` generates your local `AGENTS.md`, `boost.json` and
+agent folders such as `.claude/` (see [Documentation](#documentation)). Pick
+your agents when it asks: `boost:update` fails without any. Run it before adding a
 module: every `composer require` and `composer update` runs `boost:update`,
 which fails until Boost is installed.
 
@@ -293,8 +294,8 @@ Documentation changes must be checked against implementation and manifests:
 - `.ai/skills/` owns task-specific agent workflows for the app.
 - `.ai/rules/` owns path-scoped rules, listed in `.ai/rules/index.md`.
 - `saucebase/core`'s `resources/boost/` owns module and Filament conventions.
-- The root `AGENTS.md`, `CLAUDE.md`, and `boost.json` are local Laravel Boost outputs
-  and are not tracked. `boost:install` also rewrites the tracked `.mcp.json`;
+- The root `AGENTS.md`, `boost.json` and agent folders (`.claude/`, `.agents/`) are
+  local Laravel Boost outputs and are not tracked. `boost:install` also rewrites the tracked `.mcp.json`;
   don't commit that change.
 
 Avoid repeating version tables across these files. When a dependency changes,
@@ -307,9 +308,8 @@ Change agent instructions in `.ai/`, then regenerate your local outputs:
 composer boost:update
 ```
 
-Never edit the `<laravel-boost-guidelines>` blocks in `AGENTS.md` or
-`CLAUDE.md` directly — they are overwritten on every regeneration, and they
-are not tracked, so the edit reaches nobody. `.ai/` is the only source.
+Never edit the `<laravel-boost-guidelines>` block in `AGENTS.md` directly. It is
+overwritten on every regeneration and isn't tracked, so the edit reaches nobody. `.ai/` is the only source.
 
 Installed modules and core are picked up by `composer boost:update` automatically. To
 pick up guidelines newly shipped by any other package, run the Artisan command
