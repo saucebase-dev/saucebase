@@ -15,8 +15,8 @@ Set up the repository first, as described in [CONTRIBUTING.md](CONTRIBUTING.md).
 
 - PHPUnit runs on SQLite in memory (`phpunit.xml`). It never needs your app's
   database.
-- End-to-end tests are the exception: they run against the real app and reset
-  its database. See [End-to-end tests](#end-to-end-tests-playwright).
+- End-to-end tests run on their own server and SQLite database (`.env.e2e`), so
+  they never touch your app's data. See [End-to-end tests](#end-to-end-tests-playwright).
 - Pick the test for the change:
 
 | Change                                                                      | Test                                                |
@@ -79,19 +79,21 @@ npm run test:unit
 
 ## End-to-end tests (Playwright)
 
-> [!CAUTION]
-> The setup project runs `migrate:fresh` and the seeders against the database in
-> `.env`. It **wipes your local app data** on every run.
+The suite runs on its own server and database, from `.env.e2e`: a copy of `.env`
+with `APP_ENV=e2e`, `APP_URL=http://localhost:8100` and SQLite
+`database/e2e.sqlite`. Playwright starts that server itself (`laravelServer()` in
+`playwright.config.ts`) and migrates its database, so your app and its data stay
+untouched, however you serve them.
 
 ```bash
+php artisan playwright:env              # first run only: writes .env.e2e from .env
 npx playwright install                 # first run only
 npm run test:e2e                       # everything
 npx playwright test --project="@auth*" # one module
 npm run test:e2e:ui                    # pick and watch tests
 ```
 
-- The app must be served at `APP_URL` (Herd: `https://<folder>.test`). Outside
-  CI, the assets are rebuilt before the run.
+- Outside CI, the assets are rebuilt before the run.
 - Each module ships its specs in `modules/<module>/tests/e2e`, registered as a
   `@<module>` project.
 - Select elements by `data-testid`, never by translated text.

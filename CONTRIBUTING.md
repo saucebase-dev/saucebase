@@ -273,7 +273,7 @@ composer analyse                      # Larastan/PHPStan level 5
 composer lint                         # Laravel Pint
 npm run lint                          # ESLint, fixes files in place
 npm run format:check
-npm run test:e2e                      # wipes your app's database
+npm run test:e2e                      # own server and database (.env.e2e)
 npm run build
 ```
 
