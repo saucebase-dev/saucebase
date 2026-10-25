@@ -1,8 +1,9 @@
 *.log
 .DS_Store
 .env
-.env.backup
-.env.production
+.env.*
+!.env.*.example
+!.env.example
 .phpactor.json
 .phpunit.result.cache
 /.fleet
@@ -73,6 +74,7 @@ public/vendor/livewire/
 /playwright/
 /test-results/
 /playwright-report/
+/storage/framework/playwright/
 /playwright/.cache/
 /playwright-mcp/
 /.playwright-mcp/

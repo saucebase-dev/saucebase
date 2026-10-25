@@ -68,23 +68,12 @@ jobs:
             - name: Install Playwright
               run: npx playwright install chromium --with-deps
 
-            - name: Start Laravel server
-              run: php artisan serve --host=0.0.0.0 --port=8000 &
-              env:
-                  APP_ENV: testing
-
-            - name: Wait for server
-              run: |
-                  timeout 30 bash -c 'until curl -f http://localhost:8000 > /dev/null 2>&1; do
-                    echo "Waiting for Laravel server..."
-                    sleep 2
-                  done'
-                  echo "Server is ready!"
+            # Playwright starts the server itself (laravelServer() in playwright.config.ts).
+            - name: Prepare E2E environment
+              run: php artisan playwright:env --force
 
             - name: Run E2E tests
               run: npm run test:e2e
-              env:
-                  APP_URL: http://localhost:8000
 
             - name: Upload test report
               if: failure()

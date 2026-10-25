@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b12c322c6addb8f8fc1126de5e32822e",
+    "content-hash": "7b9972500e7557a56c020dcda73858bb",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -7046,16 +7046,16 @@
         },
         {
             "name": "saucebase/core",
-            "version": "v2.0.2",
+            "version": "v2.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/saucebase-dev/core.git",
-                "reference": "bafcde878bc4851fb48de25bf979af20c09d9244"
+                "reference": "920c60c7508e70d6b7d3c3ec1fabff6dd3f36c6a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/saucebase-dev/core/zipball/bafcde878bc4851fb48de25bf979af20c09d9244",
-                "reference": "bafcde878bc4851fb48de25bf979af20c09d9244",
+                "url": "https://api.github.com/repos/saucebase-dev/core/zipball/920c60c7508e70d6b7d3c3ec1fabff6dd3f36c6a",
+                "reference": "920c60c7508e70d6b7d3c3ec1fabff6dd3f36c6a",
                 "shasum": ""
             },
             "require": {
@@ -7127,9 +7127,9 @@
             ],
             "support": {
                 "issues": "https://github.com/saucebase-dev/core/issues",
-                "source": "https://github.com/saucebase-dev/core/tree/v2.0.2"
+                "source": "https://github.com/saucebase-dev/core/tree/v2.5.0"
             },
-            "time": "2026-10-23T20:54:46+00:00"
+            "time": "2026-10-25T20:36:55+00:00"
         },
         {
             "name": "saucebase/module-installer",
@@ -13968,24 +13968,25 @@
         },
         {
             "name": "saucebase/laravel-playwright",
-            "version": "v1.1.0",
+            "version": "v2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/saucebase-dev/laravel-playwright.git",
-                "reference": "471614ecad25e5c0e960bd5bb7aff9f37cba2cf6"
+                "reference": "766eafcecd55d4135ca7487be47d40ab852bb4e6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/saucebase-dev/laravel-playwright/zipball/471614ecad25e5c0e960bd5bb7aff9f37cba2cf6",
-                "reference": "471614ecad25e5c0e960bd5bb7aff9f37cba2cf6",
+                "url": "https://api.github.com/repos/saucebase-dev/laravel-playwright/zipball/766eafcecd55d4135ca7487be47d40ab852bb4e6",
+                "reference": "766eafcecd55d4135ca7487be47d40ab852bb4e6",
                 "shasum": ""
             },
             "require": {
+                "illuminate/support": "^12.0|^13.0",
                 "php": ">=8.3"
             },
             "require-dev": {
                 "larastan/larastan": "^3.0",
-                "orchestra/testbench": "^11.0",
+                "orchestra/testbench": "^10.0|^11.0",
                 "phpstan/phpstan": "^2.0",
                 "phpunit/phpunit": "^11.0"
             },
@@ -14028,7 +14029,7 @@
                 "issues": "https://github.com/sauce-base/laravel-playwright/issues",
                 "source": "https://github.com/sauce-base/laravel-playwright"
             },
-            "time": "2026-03-20T20:02:20+00:00"
+            "time": "2026-10-25T20:18:44+00:00"
         },
         {
             "name": "sebastian/cli-parser",
