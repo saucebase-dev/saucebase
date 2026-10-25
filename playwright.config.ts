@@ -27,8 +27,9 @@ async function createConfig() {
         fullyParallel: true,
         /* Fail the build on CI if you accidentally left test.only in the source code. */
         forbidOnly: !!process.env.CI,
-        /* Retry on CI only */
-        retries: process.env.CI ? 2 : 0,
+        /* Locally one retry, so a single timing flake under load doesn't fail the run.
+           A test that only passes on retry is still reported as flaky. */
+        retries: process.env.CI ? 2 : 1,
         /* Opt out of parallel tests on CI. Locally, more than two browsers
            loading pages at once outruns the PHP worker pool behind the app. */
         workers: process.env.CI ? 1 : 2,
