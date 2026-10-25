@@ -110,12 +110,11 @@ tasks:
             - '{{.APP}} php artisan modules:seed'
 
     db:reset:demo:
-        desc: Reset database and load sample content with an admin account
+        desc: Reset database and load sample content (the auth module's demo includes an admin)
         prompt: This will erase ALL data. Are you sure?
         cmds:
             - '{{.APP}} php artisan migrate:fresh --seed'
             - '{{.APP}} php artisan modules:seed --demo'
-            - '{{.APP}} php artisan auth:make-admin chef@saucebase.dev'
 
     db:seed:demo:
         desc: Seed every module with sample content
