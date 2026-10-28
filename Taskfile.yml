@@ -31,6 +31,9 @@ includes:
     newsletter:
         taskfile: ./modules/newsletter/Taskfile.yml
         optional: true
+    api-tokens:
+        taskfile: ./modules/api-tokens/Taskfile.yml
+        optional: true
     # ── END MODULES ──────────────────────────────────────────────────
 
 tasks:
