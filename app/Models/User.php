@@ -15,7 +15,11 @@ use Spatie\Permission\Traits\HasRoles;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-class User extends Authenticatable implements FilamentUser, HasLocalePreference, HasMedia
+// One interface per line: modules add theirs with patches, each on its own line.
+class User extends Authenticatable implements
+    FilamentUser,
+    HasLocalePreference,
+    HasMedia
     // , MustVerifyEmail
 {
     use HasFactory;
