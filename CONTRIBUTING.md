@@ -189,6 +189,24 @@ npm run dev                          # Vite only (use this with Herd)
 npm run build                        # production client and SSR builds
 ```
 
+Background work has its own tasks, which start no web server:
+
+```bash
+task queue                           # queue worker
+task schedule                        # scheduler
+task workers                         # both; Ctrl-C stops both
+```
+
+- **Herd or native PHP:** run `task workers` beside `npm run dev`. `composer dev`
+  already runs a queue worker but no scheduler, so use `task schedule` beside it.
+- **Docker:** Compose already runs a queue worker, so use `task schedule`. With
+  `APP` set to `docker compose exec app` in `Taskfile.yml`, these run in the
+  container. A second queue worker is harmless.
+
+`Taskfile.yml` is committed with no modules listed. Installing a module adds its
+tasks locally; run `php artisan saucebase:taskfile-sync` to list exactly the
+modules you have. Don't commit those lines.
+
 `php artisan boost:install` generates your local `AGENTS.md`, `boost.json` and
 agent folders such as `.claude/` (see [Documentation](#documentation)). Pick
 your agents when it asks: `boost:update` fails without any. Run it before adding a

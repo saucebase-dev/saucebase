@@ -7,30 +7,6 @@ vars:
 
 includes:
     # ── BEGIN MODULES ────────────────────────────────────────────────
-    auth:
-        taskfile: ./modules/auth/Taskfile.yml
-        optional: true
-    billing:
-        taskfile: ./modules/billing/Taskfile.yml
-        optional: true
-    announcements:
-        taskfile: ./modules/announcements/Taskfile.yml
-        optional: true
-    roadmap:
-        taskfile: ./modules/roadmap/Taskfile.yml
-        optional: true
-    themes:
-        taskfile: ./modules/themes/Taskfile.yml
-        optional: true
-    blog:
-        taskfile: ./modules/blog/Taskfile.yml
-        optional: true
-    tenancy:
-        taskfile: ./modules/tenancy/Taskfile.yml
-        optional: true
-    newsletter:
-        taskfile: ./modules/newsletter/Taskfile.yml
-        optional: true
     # ── END MODULES ──────────────────────────────────────────────────
 
 tasks:
@@ -43,6 +19,18 @@ tasks:
     serve:
         desc: Start dev server (app, queue, logs, vite)
         cmd: composer dev
+
+    queue:
+        desc: Run the queue worker (restarts when code changes)
+        cmd: '{{.APP}} php artisan queue:listen --tries=1 --timeout=0'
+
+    schedule:
+        desc: Run the scheduler (runs due tasks every minute)
+        cmd: '{{.APP}} php artisan schedule:work'
+
+    workers:
+        desc: Run the queue worker and scheduler together
+        deps: [queue, schedule]
 
     build:
         desc: Production build (includes SSR)
