@@ -31,6 +31,7 @@ tasks:
     workers:
         desc: Run the queue worker and scheduler together
         deps: [queue, schedule]
+        failfast: true # one stopping stops both (Task 3.46.1+), so jobs never pile up unprocessed
 
     build:
         desc: Production build (includes SSR)
@@ -93,6 +94,15 @@ tasks:
     db:reset:
         desc: Reset the app and E2E databases (migrate:fresh + module seeds; DEMO=--demo adds sample content)
         prompt: This will erase ALL data, in the E2E database too. Are you sure?
+        # Checked before anything runs. Without .env.e2e, --env=e2e loads .env, and a cached
+        # config or exported DB_* variables do the same: the E2E reset would wipe the app's database.
+        preconditions:
+            - sh: test -f .env.e2e
+              msg: '.env.e2e is missing. Create it with: php artisan playwright:env'
+            - sh: |
+                  db='echo config("database.default").":".config("database.connections.".config("database.default").".database");'
+                  [ "$(php artisan tinker --env=e2e --execute="$db" 2>/dev/null)" != "$(php artisan tinker --execute="$db" 2>/dev/null)" ]
+              msg: 'The E2E environment resolves to the app database (check .env.e2e, a cached config, or exported DB_* variables). Nothing was reset.'
         cmds:
             - '{{.APP}} php artisan migrate:fresh --seed'
             - '{{.APP}} php artisan modules:seed {{.DEMO}}'
