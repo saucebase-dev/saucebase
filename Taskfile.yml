@@ -91,18 +91,20 @@ tasks:
     # ── Helpers ───────────────────────────────────────────────────
 
     db:reset:
-        desc: Reset database (migrate:fresh + module seeds)
-        prompt: This will erase ALL data. Are you sure?
+        desc: Reset the app and E2E databases (migrate:fresh + module seeds; DEMO=--demo adds sample content)
+        prompt: This will erase ALL data, in the E2E database too. Are you sure?
         cmds:
             - '{{.APP}} php artisan migrate:fresh --seed'
-            - '{{.APP}} php artisan modules:seed'
+            - '{{.APP}} php artisan modules:seed {{.DEMO}}'
+            # On the host, like the E2E run itself; its server only migrates, so an
+            # edited migration needs this to apply there.
+            - php artisan migrate:fresh --env=e2e --force
 
     db:reset:demo:
-        desc: Reset database and load sample content (the auth module's demo includes an admin)
-        prompt: This will erase ALL data. Are you sure?
+        desc: Reset the app and E2E databases and load sample content (the auth module's demo includes an admin)
         cmds:
-            - '{{.APP}} php artisan migrate:fresh --seed'
-            - '{{.APP}} php artisan modules:seed --demo'
+            - task: db:reset
+              vars: { DEMO: '--demo' }
 
     db:seed:demo:
         desc: Seed every module with sample content
