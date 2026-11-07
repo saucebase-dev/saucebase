@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fdbf0671d9775885e5e68c407808ed79",
+    "content-hash": "36becdb7b3a3c3deb095d53f11e49bfa",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -7051,16 +7051,16 @@
         },
         {
             "name": "saucebase/core",
-            "version": "v2.11.0",
+            "version": "v2.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/saucebase-dev/core.git",
-                "reference": "abe6cac0a3e2485a45395c44545de4e212898f22"
+                "reference": "071aecf898ea63650a2313c8c627717f76c1e88d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/saucebase-dev/core/zipball/abe6cac0a3e2485a45395c44545de4e212898f22",
-                "reference": "abe6cac0a3e2485a45395c44545de4e212898f22",
+                "url": "https://api.github.com/repos/saucebase-dev/core/zipball/071aecf898ea63650a2313c8c627717f76c1e88d",
+                "reference": "071aecf898ea63650a2313c8c627717f76c1e88d",
                 "shasum": ""
             },
             "require": {
@@ -7132,9 +7132,9 @@
             ],
             "support": {
                 "issues": "https://github.com/saucebase-dev/core/issues",
-                "source": "https://github.com/saucebase-dev/core/tree/v2.11.0"
+                "source": "https://github.com/saucebase-dev/core/tree/v2.12.0"
             },
-            "time": "2026-11-06T20:46:19+00:00"
+            "time": "2026-11-07T16:43:51+00:00"
         },
         {
             "name": "saucebase/module-installer",
