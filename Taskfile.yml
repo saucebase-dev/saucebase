@@ -92,7 +92,7 @@ tasks:
     # ── Helpers ───────────────────────────────────────────────────
 
     db:reset:
-        desc: Reset the app and E2E databases (migrate:fresh + module seeds; DEMO=--demo adds sample content)
+        desc: Reset the app and E2E databases (migrate:fresh + module seeds; STATE=showcase adds sample content)
         prompt: This will erase ALL data, in the E2E database too. Are you sure?
         # Checked before anything runs. Without .env.e2e, --env=e2e loads .env, and a cached
         # config or exported DB_* variables do the same: the E2E reset would wipe the app's database.
@@ -105,20 +105,20 @@ tasks:
               msg: 'The E2E environment resolves to the app database (check .env.e2e, a cached config, or exported DB_* variables). Nothing was reset.'
         cmds:
             - '{{.APP}} php artisan migrate:fresh --seed'
-            - '{{.APP}} php artisan modules:seed {{.DEMO}}'
+            - '{{.APP}} php artisan modules:seed {{if .STATE}}--state={{.STATE}}{{end}}'
             # On the host, like the E2E run itself; its server only migrates, so an
             # edited migration needs this to apply there.
             - php artisan migrate:fresh --env=e2e --force
 
-    db:reset:demo:
-        desc: Reset the app and E2E databases and load sample content (the auth module's demo includes an admin)
+    db:reset:showcase:
+        desc: Reset the app and E2E databases and load sample content (the auth module's showcase includes an admin)
         cmds:
             - task: db:reset
-              vars: { DEMO: '--demo' }
+              vars: { STATE: showcase }
 
-    db:seed:demo:
+    db:seed:showcase:
         desc: Seed every module with sample content
-        cmd: '{{.APP}} php artisan modules:seed --demo'
+        cmd: '{{.APP}} php artisan modules:seed --state=showcase'
 
     # ── Translation ───────────────────────────────────────────────
 
