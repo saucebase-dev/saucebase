@@ -7,6 +7,8 @@ description: Choose, write, and run Saucebase tests — PHPUnit (app and modules
 
 Write the failing test first, then the code that makes it pass.
 
+Test behaviour, not wording or looks: customers translate, reword and restyle, and the tests must still pass. Assert test ids, URLs, counts, `data-state` and data the test created; never UI copy, CSS, sizes or positions. Missing a hook? Add a `data-testid` or `data-state`. Details in `.ai/rules/e2e-tests.md`.
+
 ## Which suite
 
 | Change | Suite | Location |
