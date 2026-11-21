@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "36becdb7b3a3c3deb095d53f11e49bfa",
+    "content-hash": "98afe2ac08fea8350835912524d7371d",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -7051,16 +7051,16 @@
         },
         {
             "name": "saucebase/core",
-            "version": "v2.12.0",
+            "version": "v3.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/saucebase-dev/core.git",
-                "reference": "071aecf898ea63650a2313c8c627717f76c1e88d"
+                "reference": "7055df8864ba009aa735ef0939a398b6a2bec963"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/saucebase-dev/core/zipball/071aecf898ea63650a2313c8c627717f76c1e88d",
-                "reference": "071aecf898ea63650a2313c8c627717f76c1e88d",
+                "url": "https://api.github.com/repos/saucebase-dev/core/zipball/7055df8864ba009aa735ef0939a398b6a2bec963",
+                "reference": "7055df8864ba009aa735ef0939a398b6a2bec963",
                 "shasum": ""
             },
             "require": {
@@ -7075,7 +7075,7 @@
                 "laravel/framework": "^13.38",
                 "php": "^8.4",
                 "saucebase/breadcrumbs": "^1.1",
-                "saucebase/module-installer": "^3.0.1",
+                "saucebase/module-installer": "^3.3",
                 "spatie/laravel-data": "^4.23",
                 "spatie/laravel-navigation": "^1.3",
                 "spatie/laravel-permission": "^8.3.2",
@@ -7100,6 +7100,9 @@
                     "dont-discover": [
                         "internachi/modular"
                     ]
+                },
+                "branch-alias": {
+                    "dev-dev": "3.x-dev"
                 }
             },
             "autoload": {
@@ -7132,22 +7135,23 @@
             ],
             "support": {
                 "issues": "https://github.com/saucebase-dev/core/issues",
-                "source": "https://github.com/saucebase-dev/core/tree/v2.12.0"
+                "source": "https://github.com/saucebase-dev/core/tree/v3.1.1"
             },
-            "time": "2026-11-07T16:43:51+00:00"
+            "time": "2026-11-20T20:30:40+00:00",
+            "published-time": "2026-11-20T20:30:45+00:00"
         },
         {
             "name": "saucebase/module-installer",
-            "version": "v3.2.0",
+            "version": "v3.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/saucebase-dev/module-installer.git",
-                "reference": "93279038a9ee1afd25d0ee9d6c9ad7c2519b1d46"
+                "reference": "397d8c0d2e56dcebf0689b29e8ac25c247b43019"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/saucebase-dev/module-installer/zipball/93279038a9ee1afd25d0ee9d6c9ad7c2519b1d46",
-                "reference": "93279038a9ee1afd25d0ee9d6c9ad7c2519b1d46",
+                "url": "https://api.github.com/repos/saucebase-dev/module-installer/zipball/397d8c0d2e56dcebf0689b29e8ac25c247b43019",
+                "reference": "397d8c0d2e56dcebf0689b29e8ac25c247b43019",
                 "shasum": ""
             },
             "require": {
@@ -7163,7 +7167,10 @@
             },
             "type": "composer-plugin",
             "extra": {
-                "class": "Saucebase\\ModuleInstaller\\Plugin"
+                "class": "Saucebase\\ModuleInstaller\\Plugin",
+                "branch-alias": {
+                    "dev-dev": "3.3.x-dev"
+                }
             },
             "autoload": {
                 "psr-4": {
@@ -7184,9 +7191,10 @@
             "description": "Custom Composer installer for Sauce Base modules (type: saucebase-module). Installs to modules/<name> (lowercase) with configurable base dir.",
             "support": {
                 "issues": "https://github.com/saucebase-dev/module-installer/issues",
-                "source": "https://github.com/saucebase-dev/module-installer/tree/v3.2.0"
+                "source": "https://github.com/saucebase-dev/module-installer/tree/v3.3.0"
             },
-            "time": "2026-11-03T21:09:29+00:00"
+            "time": "2026-11-15T17:10:40+00:00",
+            "published-time": "2026-11-15T17:10:54+00:00"
         },
         {
             "name": "scrivo/highlight.php",
@@ -15255,5 +15263,5 @@
         "php": "^8.4"
     },
     "platform-dev": {},
-    "plugin-api-version": "2.9.0"
+    "plugin-api-version": "2.11.0"
 }
