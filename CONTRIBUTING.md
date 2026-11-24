@@ -219,14 +219,13 @@ Stories live beside their components in core, in the stack you're on
 in that stack's `js/.storybook/`. Every story is also a test: it must render, and its
 `play` function must pass.
 
-Two things differ from an installed app because core is a symlink here:
-
-- Open stories through `vendor/saucebase/core/stubs/...`, not `../core/...`. At
-  core's real path your editor finds no `tsconfig.json` or ESLint config and
-  reports errors that aren't there.
-- Props tables and "Show code" come from an older docgen (Storybook prints a
-  deprecation warning on start). Installed apps use the newer one, which
-  can't read components through the symlink.
+Core's components live outside this app, where its `tsconfig.json` doesn't
+reach. `saucebase stack <stack> --dev` writes core a `tsconfig.json` of its own
+(in `stubs/stack/<stack>/js/`, git-ignored, pointing at this app), so Storybook's
+props tables, "Show code" and its `/mcp` docs work as in an installed app, and
+your editor type-checks core's files. If Storybook prints a "Builder docgen"
+deprecation warning, that file is missing: run `saucebase stack --reset`, then
+`saucebase stack <stack> --dev` again.
 
 `Taskfile.yml` is committed with no modules listed. Installing a module adds its
 tasks locally; run `php artisan saucebase:taskfile-sync` to list exactly the
