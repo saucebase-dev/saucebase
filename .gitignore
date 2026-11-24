@@ -25,6 +25,9 @@
 /auth.json
 
 /node_modules
+# Storybook: test coverage and the static build
+/coverage
+/storage/storybook
 /public/build
 /public/hot
 /public/modules
