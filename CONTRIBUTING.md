@@ -223,7 +223,8 @@ for parts of Saucebase's own welcome page) shows in the sidebar only where
 
 Core's components live outside this app, where its `tsconfig.json` doesn't
 reach. `saucebase stack <stack> --dev` writes core a `tsconfig.json` of its own
-(in `stubs/stack/<stack>/js/`, git-ignored, pointing at this app), so Storybook's
+and a `node_modules` link (in `stubs/stack/<stack>/js/`, git-ignored, pointing at
+this app), so Storybook's
 props tables, "Show code" and its `/mcp` docs work as in an installed app, and
 your editor type-checks core's files. If Storybook prints a "Builder docgen"
 deprecation warning, that file is missing: run `saucebase stack --reset`, then
