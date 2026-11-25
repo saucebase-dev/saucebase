@@ -217,7 +217,9 @@ npm run storybook:build              # static build in storage/storybook
 Stories live beside their components in core, in the stack you're on
 (`stubs/stack/vue/js/` or `stubs/stack/react/js/`). Storybook's own config is
 in that stack's `js/.storybook/`. Every story is also a test: it must render, and its
-`play` function must pass.
+`play` function must pass. A story tagged `contributor` (`tags: ['contributor']`,
+for parts of Saucebase's own welcome page) shows in the sidebar only where
+`saucebase.json` has `"contributor": true`; installed apps still run it as a test.
 
 Core's components live outside this app, where its `tsconfig.json` doesn't
 reach. `saucebase stack <stack> --dev` writes core a `tsconfig.json` of its own
