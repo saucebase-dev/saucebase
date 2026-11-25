@@ -203,6 +203,33 @@ task workers                         # both; Ctrl-C stops both
   `APP` set to `docker compose exec app` in `Taskfile.yml`, these run in the
   container. A second queue worker is harmless.
 
+### Storybook
+
+Core's components have stories, and the design system (colours, type, shape,
+brand) has pages, in Storybook:
+
+```bash
+npm run storybook                    # http://localhost:6006
+npm run test:stories                 # every story renders and its checks pass
+npm run storybook:build              # static build in storage/storybook
+```
+
+Stories live beside their components in core, in the stack you're on
+(`stubs/stack/vue/js/` or `stubs/stack/react/js/`). Storybook's own config is
+in that stack's `js/.storybook/`. Every story is also a test: it must render, and its
+`play` function must pass. A story tagged `contributor` (`tags: ['contributor']`,
+for parts of Saucebase's own welcome page) shows in the sidebar only where
+`saucebase.json` has `"contributor": true`; installed apps still run it as a test.
+
+Core's components live outside this app, where its `tsconfig.json` doesn't
+reach. `saucebase stack <stack> --dev` writes core a `tsconfig.json` of its own
+and a `node_modules` link (in `stubs/stack/<stack>/js/`, git-ignored, pointing at
+this app), so Storybook's
+props tables, "Show code" and its `/mcp` docs work as in an installed app, and
+your editor type-checks core's files. If Storybook prints a "Builder docgen"
+deprecation warning, that file is missing: run `saucebase stack --reset`, then
+`saucebase stack <stack> --dev` again.
+
 `Taskfile.yml` is committed with no modules listed. Installing a module adds its
 tasks locally; run `php artisan saucebase:taskfile-sync` to list exactly the
 modules you have. Don't commit those lines.
