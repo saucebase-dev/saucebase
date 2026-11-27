@@ -69,6 +69,16 @@ Never import a `vendor/` path, and never reach into the app's pages. The
 `@saucebase/*` names are aliases the Vite preset in `saucebase/core` defines for its
 `resources/js`; only the app's own framework has one.
 
+## Reuse the shared dialogs
+
+Before building a dialog, check what core already provides. A confirmation
+(delete, revoke, sign out everywhere) goes through `useDialog().confirm()`, with
+`variant: 'destructive'` and an icon when the action can't be undone; never a
+page's own `AlertDialog`. Build a new dialog only when it holds a form or content
+of its own, and then use the app's `@/components/ui/dialog` primitives. Every
+confirmation then looks and behaves the same, and tests reach it through
+`confirm-dialog`, `confirm-dialog-confirm`, and `confirm-dialog-cancel`.
+
 ## Navigation
 
 Items are declared in PHP (`routes/navigation.php`); see
