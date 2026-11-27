@@ -20,7 +20,7 @@
         "laravel/pint": "^1.32.1",
         "mockery/mockery": "^1.6.15",
         "nunomaduro/collision": "^8.9.5",
-        "phpunit/phpunit": "^13.4.3",
+        "phpunit/phpunit": "^13.4.4",
         "saucebase/laravel-playwright": "^2.1"
     },
     "suggest": {
